@@ -1,0 +1,181 @@
+﻿feature_type,feature_subtype,record_count,named_records,missing_name_count,missing_name_percent,decision,activity_category,confidence_basis,notes
+admin facility,office,319,274,45,14.11,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,tourist information centre,148,143,5,3.38,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,municipal office,144,140,4,2.78,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,law court,87,86,1,1.15,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,justice service,47,47,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,customer service centre,35,29,6,17.14,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,prison complex,20,1,19,95.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,prison,17,17,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,research station,12,12,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,youth justice,3,3,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+admin facility,weather station,1,0,1,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+agricultural area,farm,43,11,32,74.42,exclude,,high: irrelevant feature type,Not an activity-place feature type
+agricultural area,vineyard,16,6,10,62.5,exclude,,high: irrelevant feature type,Not an activity-place feature type
+cableway,cableway terminal,109,109,0,0.0,exclude,,high: subtype and name evidence,Transport infrastructure rather than an activity destination
+cableway,chairlift,94,64,30,31.91,exclude,,high: subtype and name evidence,Access-dependent transport infrastructure
+cableway,t-bar tow,36,36,0,0.0,exclude,,high: subtype and name evidence,Access-dependent specialist infrastructure
+cableway,poma tow,15,15,0,0.0,exclude,,high: subtype and name evidence,Access-dependent specialist infrastructure
+care facility,child care,5119,5118,1,0.02,exclude,,high: irrelevant feature type,Not an activity-place feature type
+care facility,aged care,836,836,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+care facility,supported residential facility,116,116,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+care facility,disability support centre,16,15,1,6.25,exclude,,high: irrelevant feature type,Not an activity-place feature type
+commercial facility,shopping precinct,1611,23,1588,98.57,exclude,,high: irrelevant feature type,Not an activity-place feature type
+commercial facility,shopping centre,307,306,1,0.33,exclude,,high: irrelevant feature type,Not an activity-place feature type
+commercial facility,entertainment centre,74,74,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+commercial facility,business park,6,6,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+communication service,telephone exchange,1271,1101,170,13.38,exclude,,high: irrelevant feature type,Not an activity-place feature type
+communication service,broadcast television facility,566,566,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+communication service,broadcast radio facility,289,255,34,11.76,exclude,,high: irrelevant feature type,Not an activity-place feature type
+communication service,radio communication facility,279,268,11,3.94,exclude,,high: irrelevant feature type,Not an activity-place feature type
+community space,camp ground,1676,1628,48,2.86,exclude,,high: subtype and name evidence,Overnight facility outside the short-activity use case
+community space,caravan park,611,601,10,1.64,exclude,,high: subtype and name evidence,Accommodation facility outside the short-activity use case
+community space,rest area,558,227,331,59.32,exclude,,high: explicit subtype,Rest facility rather than an activity destination
+community space,parking area,394,282,112,28.43,exclude,,high: explicit subtype,Transport infrastructure rather than an activity destination
+community space,showground,80,69,11,13.75,exclude,,high: subtype and name evidence,Event-dependent facility without verified public access
+community venue,hall,1804,1586,218,12.08,exclude,,high: subtype and name evidence,Building rather than a specific activity destination
+community venue,community centre,454,411,43,9.47,exclude,,high: subtype and name evidence,Activities and access cannot be inferred from the location alone
+community venue,senior citizens,182,171,11,6.04,exclude,,high: subtype and name evidence,Not relevant to the target child activity use case
+community venue,neighbourhood house,72,72,0,0.0,exclude,,high: subtype and name evidence,Activities and access cannot be inferred from the location alone
+control point,survey monument,662,135,527,79.61,exclude,,high: irrelevant feature type,Not an activity-place feature type
+control point,trig station,1,0,1,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+cultural centre,library,321,320,1,0.31,exclude,,high: subtype and name evidence,Not a physical activity destination
+cultural centre,museum,200,199,1,0.5,exclude,,high: subtype and name evidence,Not a physical activity destination
+cultural centre,art gallery,78,77,1,1.28,exclude,,high: subtype and name evidence,Not a physical activity destination
+cultural centre,observatory,10,3,7,70.0,exclude,,high: subtype and name evidence,Access-dependent venue rather than a casual activity location
+cultural centre,aquarium,1,1,0,0.0,fallback,,"medium: explicit subtype, access unverified","Cost, opening hours and indoor access are unverified"
+cultural centre,arboretum,1,1,0,0.0,include,park_and_garden,high: explicit subtype,Outdoor garden environment suitable for walking and exploration
+defence site,barracks,12,8,4,33.33,exclude,,high: irrelevant feature type,Not an activity-place feature type
+defence site,military area,12,11,1,8.33,exclude,,high: irrelevant feature type,Not an activity-place feature type
+defence site,airforce base,4,3,1,25.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+defence site,naval base,1,1,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+dumping ground,transfer station,283,276,7,2.47,exclude,,high: irrelevant feature type,Not an activity-place feature type
+dumping ground,landfill,189,179,10,5.29,exclude,,high: irrelevant feature type,Not an activity-place feature type
+dumping ground,spoil banks,23,1,22,95.65,exclude,,high: irrelevant feature type,Not an activity-place feature type
+dumping ground,scrap yard,10,1,9,90.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,education complex,2656,4,2652,99.85,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,primary school,1858,1858,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,secondary school,712,712,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,primary/secondary school,438,438,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,special school,272,272,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,tertiary institution,115,113,2,1.74,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,further education,70,69,1,1.43,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,university,56,56,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+education centre,school camp,20,18,2,10.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,fire station,1703,1703,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,police station,401,401,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,ambulance station,306,306,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,neighbourhood safer place,299,299,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,ses unit,202,202,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,emergency coordination centre,192,192,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,fire lookout,96,96,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,lifesaving club,66,66,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,coast guard,19,18,1,5.26,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,fire station (forest industry),19,19,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,refuge,5,5,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+emergency facility,emergency complex,3,3,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+excavation site,quarry,1925,63,1862,96.73,exclude,,high: irrelevant feature type,Not an activity-place feature type
+excavation site,adit,1558,0,1558,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+excavation site,mine,1277,274,1003,78.54,exclude,,high: irrelevant feature type,Not an activity-place feature type
+excavation site,abandoned quarry,207,19,188,90.82,exclude,,high: irrelevant feature type,Not an activity-place feature type
+excavation site,abandoned mine,15,5,10,66.67,exclude,,high: irrelevant feature type,Not an activity-place feature type
+health facility,maternal/child health centre,213,185,28,13.15,exclude,,high: irrelevant feature type,Not an activity-place feature type
+health facility,community health centre,66,66,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+hospital,general hospital,282,282,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+hospital,hospital complex,222,7,215,96.85,exclude,,high: irrelevant feature type,Not an activity-place feature type
+hospital,day procedure centre,92,92,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+hospital,bush nursing hospital,2,2,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,factory,115,44,71,61.74,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,dairy,114,3,111,97.37,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,mill/timber operations,80,41,39,48.75,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,abattoir,12,3,9,75.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,brickworks,9,0,9,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+industrial facility,proving ground,3,3,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+landmark,tower,1754,327,1427,81.36,exclude,,high: subtype and name evidence,Landmark rather than an accessible activity destination
+landmark,monument,1008,926,82,8.13,exclude,,high: subtype and name evidence,Landmark rather than an activity destination
+landmark,lookout,491,286,205,41.75,review,,,
+landmark,tourist attraction,466,456,10,2.15,review,,,
+landmark,cairn,9,4,5,55.56,exclude,,high: subtype and name evidence,Landmark rather than a reliable activity destination
+pipeline,gas pipeline,136,116,20,14.71,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline,oil pipeline,6,6,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline facility,pumping station,330,28,302,91.52,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline facility,treatment plant,178,88,90,50.56,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline facility,gas plant,12,12,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline facility,oil terminal,8,8,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+pipeline facility,oil refinery,2,2,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place,historic site,195,188,7,3.59,exclude,,high: subtype and name evidence,Does not directly identify a physical activity opportunity
+place of worship,church,2218,1772,446,20.11,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,mosque,38,38,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,synagogue,33,32,1,3.03,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,vihara (buddhist),9,9,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,gurdwara (sikh),8,8,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,mandir (hindu),7,7,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+place of worship,monastry,2,2,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,wind turbine,1807,1286,521,28.83,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,power sub station,379,157,222,58.58,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,solar array,107,0,107,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,solar power station,55,54,1,1.82,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,power terminal station,47,42,5,10.64,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,wind farm,42,42,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,hydro power station,31,31,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,battery bank,21,18,3,14.29,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,gas power station,14,14,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,biomass power station,8,6,2,25.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,coal power station,5,5,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+power facility,cooling tower,4,0,4,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+recreational resource,playground,6081,850,5231,86.02,include,playground,high: explicit subtype,Mapped from explicit subtype: playground
+recreational resource,club house,1839,633,1206,65.58,exclude,,high: explicit subtype,Access may require club membership
+recreational resource,picnic site,835,473,362,43.35,include,picnic_day_use,high: explicit subtype,Mapped from explicit subtype: picnic site
+recreational resource,day visitor area,401,401,0,0.0,include,picnic_day_use,high: explicit subtype,Mapped from explicit subtype: day visitor area
+recreational resource,skate park,328,297,31,9.45,include,skate_bmx,high: explicit subtype,Mapped from explicit subtype: skate park
+recreational resource,rotunda,181,31,150,82.87,exclude,,high: explicit subtype,Supporting structure rather than an activity destination
+recreational resource,group camp,126,120,6,4.76,exclude,,high: subtype and name evidence,Booking-dependent group facility
+recreational resource,trailhead,117,117,0,0.0,include,trail_access,high: explicit subtype,Mapped from explicit subtype: trailhead
+recreational resource,bmx track,113,52,61,53.98,include,skate_bmx,high: explicit subtype,Mapped from explicit subtype: bmx track
+recreational resource,hut,104,101,3,2.88,exclude,,high: explicit subtype,Supporting structure rather than an activity destination
+recreational resource,grandstand,26,22,4,15.38,exclude,,high: explicit subtype,Supporting infrastructure rather than an activity destination
+recreational resource,amphitheatre,10,8,2,20.0,exclude,,high: subtype and name evidence,Supporting venue rather than a physical activity destination
+reserve,park,26596,12863,13733,51.64,include,park_and_garden,high: explicit subtype,Mapped from explicit subtype: park
+reserve,cemetery,854,807,47,5.5,exclude,,high: explicit subtype,Not suitable as an activity destination
+reserve,conservation park,734,729,5,0.68,review,,,
+reserve,gardens,183,166,17,9.29,include,park_and_garden,high: explicit subtype,Mapped from explicit subtype: gardens
+reserve,national park,113,113,0,0.0,review,,,
+reserve,amusement centre,14,10,4,28.57,fallback,,"medium: explicit subtype, access unverified",Cost and opening hours are unverified
+reserve,zoo,8,8,0,0.0,fallback,,"medium: explicit subtype, access unverified",Cost and opening hours are unverified
+reserve,city square,6,6,0,0.0,review,,,
+residential building,retirement village,746,741,5,0.67,exclude,,high: irrelevant feature type,Not an activity-place feature type
+sign,emergency marker,4817,4760,57,1.18,exclude,,high: irrelevant feature type,Not an activity-place feature type
+sign,snow pole,76,76,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+sign,information bay,12,2,10,83.33,exclude,,high: irrelevant feature type,Not an activity-place feature type
+sport facility,sports ground,5797,889,4908,84.66,include,sports_ground,high: explicit subtype,Mapped from explicit subtype: sports ground
+sport facility,tennis court,1959,309,1650,84.23,include,court,high: explicit subtype,Mapped from explicit subtype: tennis court
+sport facility,training track,1101,12,1089,98.91,review,,low: ambiguous subtype,Review name_label where available
+sport facility,sports complex,811,488,323,39.83,include,sports_ground,high: explicit subtype,Mapped from explicit subtype: sports complex
+sport facility,netball court,594,37,557,93.77,include,court,high: explicit subtype,Mapped from explicit subtype: netball court
+sport facility,bowling green,583,491,92,15.78,fallback,,"medium: explicit subtype, access unverified",Membership or booking requirements are unverified
+sport facility,golf course,468,429,39,8.33,fallback,,"medium: explicit subtype, access unverified",Cost and public access are unverified
+sport facility,swimming pool,355,95,260,73.24,fallback,,"medium: explicit subtype, access unverified","Cost, opening hours and indoor status are unverified"
+sport facility,basketball court,242,102,140,57.85,include,court,high: explicit subtype,Mapped from explicit subtype: basketball court
+sport facility,motor track,152,88,64,42.11,exclude,,high: explicit subtype,Unsuitable for casual family activity recommendations
+sport facility,baseball field,139,14,125,89.93,include,sports_ground,high: explicit subtype,Mapped from explicit subtype: baseball field
+sport facility,equestrian facility,138,31,107,77.54,exclude,,high: explicit subtype,Access-dependent specialist facility
+sport facility,racecourse,130,106,24,18.46,exclude,,high: explicit subtype,Access-dependent specialist facility
+sport facility,athletic field,106,29,77,72.64,include,sports_ground,high: explicit subtype,Mapped from explicit subtype: athletic field
+sport facility,target range,106,80,26,24.53,exclude,,high: explicit subtype,Unsuitable for general child activity recommendations
+sport facility,horse racetrack,85,13,72,84.71,exclude,,high: explicit subtype,Access-dependent specialist facility
+sport facility,croquet green,84,76,8,9.52,fallback,,"medium: explicit subtype, access unverified",Membership or booking requirements are unverified
+sport facility,hockey ground,66,9,57,86.36,include,sports_ground,high: explicit subtype,Mapped from explicit subtype: hockey ground
+sport facility,boating club,36,36,0,0.0,exclude,,high: subtype and name evidence,Membership and equipment-dependent facility
+sport facility,velodrome,27,6,21,77.78,review,,,
+sport facility,harness racetrack,26,10,16,61.54,exclude,,high: explicit subtype,Access-dependent specialist facility
+sport facility,greyhound racetrack,13,6,7,53.85,exclude,,high: explicit subtype,Unsuitable for child activity recommendations
+sport facility,golf driving range,6,2,4,66.67,fallback,,"medium: explicit subtype, access unverified",Cost and public access are unverified
+storage facility,silo,2581,73,2508,97.17,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,grain bunker,668,7,661,98.95,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,oil tank,372,0,372,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,hangar,321,0,321,100.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,depot,289,143,146,50.52,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,stockyard,60,38,22,36.67,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,gas tank,25,1,24,96.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,petroleum tank,17,3,14,82.35,exclude,,high: irrelevant feature type,Not an activity-place feature type
+storage facility,boathouse,2,2,0,0.0,exclude,,high: irrelevant feature type,Not an activity-place feature type
