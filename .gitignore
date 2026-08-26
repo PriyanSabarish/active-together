@@ -44,3 +44,10 @@ logs/
 .RData
 .Ruserdata
 .Rproj.user/
+# Generated Greater Melbourne master outputs
+data/processed/vicmap/vicmap_*_greater_melbourne.csv
+
+# Generated Vicmap QA and review working files
+data/validation/vicmap/vicmap_app_ready_qa_sample.csv
+data/validation/vicmap/vicmap_product_review_candidates.csv
+data/validation/vicmap/*_reviewed.xlsx
