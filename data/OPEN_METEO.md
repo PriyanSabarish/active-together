@@ -12,7 +12,8 @@ This creates three dated files under `data/raw/open_meteo/`:
 - `air_quality_YYYY-MM-DD.json`
 - `download_manifest_YYYY-MM-DD.json`
 
-The snapshot covers nine representative Greater Melbourne locations. Weather
+The snapshot covers the 31 Metropolitan Melbourne municipalities using ABS 2025
+LGA point coordinates from `pipeline/config/open_meteo_locations.csv`. Weather
 contains seven days of hourly values; air quality contains its default reliable
 five-day hourly window. Forecast fields cover temperature, apparent temperature,
 precipitation probability, weather code, wind speed, and wind gusts. Air-quality

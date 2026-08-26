@@ -147,7 +147,7 @@ def save_optional_charts(
     except ImportError:
         return False
 
-    cbd_weather = weather.loc[weather["site_name"] == "melbourne_cbd"]
+    cbd_weather = weather.loc[weather["site_name"] == "melbourne"]
     figure, axis = plt.subplots(figsize=(11, 5))
     axis.plot(cbd_weather["time"], cbd_weather["temperature_2m"], label="Temperature")
     axis.plot(

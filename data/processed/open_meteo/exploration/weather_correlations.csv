@@ -1,6 +1,6 @@
 variable,temperature_2m,apparent_temperature,precipitation_probability,wind_speed_10m,wind_gusts_10m
-temperature_2m,1.0,0.936,0.266,0.458,0.611
-apparent_temperature,0.936,1.0,0.207,0.137,0.332
-precipitation_probability,0.266,0.207,1.0,0.346,0.432
-wind_speed_10m,0.458,0.137,0.346,1.0,0.926
-wind_gusts_10m,0.611,0.332,0.432,0.926,1.0
+temperature_2m,1.0,0.933,0.268,0.479,0.626
+apparent_temperature,0.933,1.0,0.196,0.156,0.35
+precipitation_probability,0.268,0.196,1.0,0.369,0.435
+wind_speed_10m,0.479,0.156,0.369,1.0,0.913
+wind_gusts_10m,0.626,0.35,0.435,0.913,1.0

@@ -40,7 +40,7 @@ python pipeline/wrangling/wrangle_air_quality.py
 
 ## Air Quality 缺失值规则
 
-探索阶段发现每个地点最后一个小时的 UV、PM2.5、PM10 同时为空。清洗脚本采用完整且可
+探索阶段发现每个 LGA 最后一个小时的 UV、PM2.5、PM10 同时为空。清洗脚本采用完整且可
 审计的规则：
 
 - 三个指标同时为空：删除该地点—小时记录；

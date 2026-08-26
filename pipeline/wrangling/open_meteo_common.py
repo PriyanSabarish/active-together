@@ -32,6 +32,8 @@ def load_hourly_snapshot(path: Path) -> pd.DataFrame:
         hourly = pd.DataFrame(location["hourly"])
         metadata = {
             "site_name": location["site_name"],
+            "display_name": location.get("display_name", location["site_name"]),
+            "lga_code": location.get("lga_code"),
             "requested_latitude": location["requested_latitude"],
             "requested_longitude": location["requested_longitude"],
             "grid_latitude": location["latitude"],
@@ -53,10 +55,11 @@ def add_time_columns(data: pd.DataFrame) -> pd.DataFrame:
     local = parsed.dt.tz_localize(
         "Australia/Sydney", ambiguous="raise", nonexistent="raise"
     )
-    result.insert(8, "timestamp_local", local)
-    result.insert(9, "timestamp_utc", local.dt.tz_convert("UTC"))
-    result.insert(10, "date_local", local.dt.date.astype("string"))
-    result.insert(11, "hour_local", local.dt.hour.astype("int8"))
+    metadata_count = result.columns.get_loc("source_file") + 1
+    result.insert(metadata_count, "timestamp_local", local)
+    result.insert(metadata_count + 1, "timestamp_utc", local.dt.tz_convert("UTC"))
+    result.insert(metadata_count + 2, "date_local", local.dt.date.astype("string"))
+    result.insert(metadata_count + 3, "hour_local", local.dt.hour.astype("int8"))
     return result
 
 
