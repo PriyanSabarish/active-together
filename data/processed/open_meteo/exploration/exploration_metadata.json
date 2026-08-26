@@ -1,0 +1,30 @@
+{
+  "weather_source_file": "weather_forecast_2026-08-26.json",
+  "air_quality_source_file": "air_quality_2026-08-26.json",
+  "weather_rows": 1512,
+  "air_quality_rows": 1080,
+  "site_count": 9,
+  "weather_units": {
+    "time": "iso8601",
+    "temperature_2m": "°C",
+    "apparent_temperature": "°C",
+    "precipitation_probability": "%",
+    "weather_code": "wmo code",
+    "wind_speed_10m": "km/h",
+    "wind_gusts_10m": "km/h"
+  },
+  "air_quality_units": {
+    "time": "iso8601",
+    "uv_index": "",
+    "pm2_5": "μg/m³",
+    "pm10": "μg/m³"
+  },
+  "exploratory_thresholds": {
+    "precipitation_probability_pct": 50,
+    "uv_index_levels": [
+      3,
+      6
+    ]
+  },
+  "threshold_note": "Exploratory flags only; they are not safety guarantees."
+}

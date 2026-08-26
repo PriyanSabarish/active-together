@@ -1,0 +1,3 @@
+# Keep raw source snapshots local; commit only this rule.
+*
+!.gitignore

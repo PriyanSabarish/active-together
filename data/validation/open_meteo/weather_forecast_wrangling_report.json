@@ -1,0 +1,22 @@
+{
+  "source_file": "weather_forecast_2026-08-26.json",
+  "input_rows": 1512,
+  "output_rows": 1512,
+  "removed_rows": 0,
+  "site_count": 9,
+  "duplicate_site_time_keys": 0,
+  "output_missing_by_column": {},
+  "rows_per_site": {
+    "craigieburn": 168,
+    "dandenong": 168,
+    "frankston": 168,
+    "lilydale": 168,
+    "melbourne_cbd": 168,
+    "pakenham": 168,
+    "ringwood": 168,
+    "sunbury": 168,
+    "werribee": 168
+  },
+  "weather_code_mapping_complete": true,
+  "range_checks_passed": true
+}

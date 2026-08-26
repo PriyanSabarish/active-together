@@ -1,0 +1,37 @@
+{
+  "source_file": "air_quality_2026-08-26.json",
+  "input_rows": 1080,
+  "output_rows": 1071,
+  "removed_rows": 9,
+  "site_count": 9,
+  "duplicate_site_time_keys": 0,
+  "output_missing_by_column": {},
+  "rows_per_site": {
+    "craigieburn": 119,
+    "dandenong": 119,
+    "frankston": 119,
+    "lilydale": 119,
+    "melbourne_cbd": 119,
+    "pakenham": 119,
+    "ringwood": 119,
+    "sunbury": 119,
+    "werribee": 119
+  },
+  "missing_policy": "Drop rows where UV, PM2.5, and PM10 are all missing; do not impute raw forecasts.",
+  "removed_all_metric_missing_rows": 9,
+  "removed_rows_by_site": {
+    "craigieburn": 1,
+    "dandenong": 1,
+    "frankston": 1,
+    "lilydale": 1,
+    "melbourne_cbd": 1,
+    "pakenham": 1,
+    "ringwood": 1,
+    "sunbury": 1,
+    "werribee": 1
+  },
+  "removed_timestamps": [
+    "2026-08-30 23:00:00+10:00"
+  ],
+  "range_checks_passed": true
+}
