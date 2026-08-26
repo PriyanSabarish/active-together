@@ -1,0 +1,102 @@
+﻿place_id,display_name,place_name,name_source,activity_category,classification_confidence,lga_name,longitude,latitude,feature_type,feature_subtype,decision,source_dataset,source_record_id
+vicmap_foi_1341932,Victoria University Cyan Basketball Court,Victoria University Cyan - Basketball Court,reviewed_override,court,high,MELTON,144.56513018,-37.705176369,sport facility,basketball court,fallback,vicmap_foi,1341932
+vicmap_foi_990887,Legend Park Tennis Club,Legend Park Tennis Club,vicmap_name_label,court,high,MONASH,145.181450866,-37.872805948,sport facility,tennis court,fallback,vicmap_foi,990887
+vicmap_foi_70559,Essex Heights Tennis Club,Essex Heights Tennis Club,reviewed_override,court,high,MONASH,145.12386649,-37.860978739,sport facility,tennis court,fallback,vicmap_foi,70559
+vicmap_foi_904010,Oakleigh Tennis Club,Oakleigh Tennis Club,vicmap_name_label,court,high,MONASH,145.092687086,-37.89135889,sport facility,tennis court,fallback,vicmap_foi,904010
+vicmap_foi_990901,Glenvale Tennis Club,Glenvale Tennis Club,vicmap_name_label,court,high,MONASH,145.189655396,-37.885129948,sport facility,tennis court,fallback,vicmap_foi,990901
+vicmap_foi_70746,Glen Iris Valley Recreation Club,Glen Iris Valley Recreation Club,vicmap_name_label,court,high,MONASH,145.118422486,-37.869445597,sport facility,tennis court,fallback,vicmap_foi,70746
+vicmap_foi_1262811,Syndal Tennis Club,Syndal Tennis Club,vicmap_name_label,court,high,MONASH,145.146732254,-37.867835619,sport facility,tennis court,fallback,vicmap_foi,1262811
+vicmap_foi_1340304,Mt Waverley Tennis Club,Mt Waverley Tennis Club,vicmap_name_label,court,high,MONASH,145.135483422,-37.871442344,sport facility,tennis court,fallback,vicmap_foi,1340304
+vicmap_foi_1341886,Parkwood Green Recreation Reserve - Tennis Court,Parkwood Green Recreation Reserve - Tennis Court,reviewed_override,court,high,MELTON,144.746196508,-37.698408206,sport facility,tennis court,fallback,vicmap_foi,1341886
+vicmap_foi_667093,Mulgrave Country Club Bowling Club,Mulgrave Country Club Bowling Club,vicmap_name_label,,medium,MONASH,145.185092141,-37.920930993,sport facility,bowling green,fallback,vicmap_foi,667093
+vicmap_foi_1262799,Unnamed Bowling Green - Melton,,generated_fallback,,medium,MELTON,144.756920589,-37.71452096,sport facility,bowling green,fallback,vicmap_foi,1262799
+vicmap_foi_667100,Oakleigh Bowling Club,Oakleigh Bowling Club,vicmap_name_label,,medium,MONASH,145.090004357,-37.895023047,sport facility,bowling green,fallback,vicmap_foi,667100
+vicmap_foi_667115,South Oakleigh Bowling Club,South Oakleigh Bowling Club,vicmap_name_label,,medium,MONASH,145.092632117,-37.91068501,sport facility,bowling green,fallback,vicmap_foi,667115
+vicmap_foi_1262425,Unnamed Bowling Green - Melton,,generated_fallback,,medium,MELTON,144.565062866,-37.693798981,sport facility,bowling green,fallback,vicmap_foi,1262425
+vicmap_foi_71656,Mt Waverley Bowling Club,Mt Waverley Bowling Club,vicmap_name_label,,medium,MONASH,145.124541568,-37.870152313,sport facility,bowling green,fallback,vicmap_foi,71656
+vicmap_foi_72109,Riversdale Golf Bowling Club,Riversdale Golf Bowling Club,vicmap_name_label,,medium,MONASH,145.114406606,-37.87193382,sport facility,bowling green,fallback,vicmap_foi,72109
+vicmap_foi_1262813,Unnamed Bowling Green - Monash,,generated_fallback,,medium,MONASH,145.165230492,-37.90511943,sport facility,bowling green,fallback,vicmap_foi,1262813
+vicmap_foi_1262426,Unnamed Bowling Green - Melton,,generated_fallback,,medium,MELTON,144.750998567,-37.756947847,sport facility,bowling green,fallback,vicmap_foi,1262426
+vicmap_foi_1262816,Unnamed Bowling Green - Monash,,generated_fallback,,medium,MONASH,145.189081481,-37.912352991,sport facility,bowling green,fallback,vicmap_foi,1262816
+vicmap_foi_1262817,Unnamed Bowling Green - Monash,,generated_fallback,,medium,MONASH,145.194454756,-37.92066414,sport facility,bowling green,fallback,vicmap_foi,1262817
+vicmap_foi_667091,Mount Cottrell Bowls Club,Mount Cottrell Bowls Club,vicmap_name_label,,medium,MELTON,144.615910822,-37.738765065,sport facility,bowling green,fallback,vicmap_foi,667091
+vicmap_foi_667046,Diggers Rest Bowling Club,Diggers Rest Bowling Club,vicmap_name_label,,medium,MELTON,144.721596243,-37.629681325,sport facility,bowling green,fallback,vicmap_foi,667046
+vicmap_foi_78163,Monash Croquet Club,Monash Croquet Club,vicmap_name_label,,medium,MONASH,145.109351001,-37.868926425,sport facility,croquet green,fallback,vicmap_foi,78163
+vicmap_foi_1341810,Victoria University Cyan Skateboarding Facility,Victoria University / Cyan - Skateboarding Facility,reviewed_override,skate_bmx,high,MELTON,144.564884874,-37.705046654,recreational resource,skate park,fallback,vicmap_foi,1341810
+vicmap_foi_71522,Metropolitan Golf Club,Metropolitan Golf Club,vicmap_name_label,,medium,MONASH,145.093014918,-37.916762737,sport facility,golf course,fallback,vicmap_foi,71522
+vicmap_foi_71784,Oakleigh Public Golf Course,Oakleigh Public Golf Course,vicmap_name_label,,medium,MONASH,145.103355636,-37.890663254,sport facility,golf course,fallback,vicmap_foi,71784
+vicmap_foi_72111,Riversdale Golf Club,Riversdale Golf Club,vicmap_name_label,,medium,MONASH,145.115957361,-37.87144727,sport facility,golf course,fallback,vicmap_foi,72111
+vicmap_foi_71010,Huntingdale Golf Club,Huntingdale Golf Club,vicmap_name_label,,medium,MONASH,145.099571797,-37.919777107,sport facility,golf course,fallback,vicmap_foi,71010
+vicmap_foi_70749,Glen Waverley Public Golf Course,Glen Waverley Public Golf Course,vicmap_name_label,,medium,MONASH,145.193948316,-37.888909069,sport facility,golf course,fallback,vicmap_foi,70749
+vicmap_foi_75932,Melton Valley Golf Club,Melton Valley Golf Club,vicmap_name_label,,medium,MELTON,144.595043384,-37.68051103,sport facility,golf course,fallback,vicmap_foi,75932
+vicmap_foi_1341883,Melton Secondary College Oval,Melton Secondary College - Oval,reviewed_override,sports_ground,high,MELTON,144.566176803,-37.683536771,sport facility,sports ground,fallback,vicmap_foi,1341883
+vicmap_foi_1341652,Diggers Rest Bowling Club - Lawn Bowls Green,Diggers Rest Bowling Club - Lawn Bowls Green,vicmap_name_label,sports_ground,high,MELTON,144.721596243,-37.629681325,sport facility,sports ground,fallback,vicmap_foi,1341652
+vicmap_foi_650987,Unnamed Swimming Pool - Melton,,generated_fallback,,medium,MELTON,144.570533183,-37.679116803,sport facility,swimming pool,fallback,vicmap_foi,650987
+vicmap_foi_990153,Unnamed Swimming Pool - Monash,,generated_fallback,,medium,MONASH,145.156178413,-37.888846459,sport facility,swimming pool,fallback,vicmap_foi,990153
+vicmap_foi_990166,Unnamed Swimming Pool - Monash,,generated_fallback,,medium,MONASH,145.163588384,-37.89513566,sport facility,swimming pool,fallback,vicmap_foi,990166
+vicmap_foi_1316318,Unnamed Swimming Pool - Monash,,generated_fallback,,medium,MONASH,145.097117934,-37.89237625,sport facility,swimming pool,fallback,vicmap_foi,1316318
+vicmap_foi_71478,Melbourne Cricket Ground (MCG),Melbourne Cricket Ground,reviewed_override,sports_ground,high,MELBOURNE,144.983459863,-37.819977375,sport facility,sports ground,fallback,vicmap_foi,71478
+vicmap_foi_651005,Unnamed Swimming Pool - Melbourne,,generated_fallback,,medium,MELBOURNE,144.942970004,-37.799533135,sport facility,swimming pool,fallback,vicmap_foi,651005
+vicmap_foi_1002039,Sea Life Melbourne Aquarium,Sea Life Melbourne Aquarium,vicmap_name_label,,medium,MELBOURNE,144.958361427,-37.820648979,cultural centre,aquarium,fallback,vicmap_foi,1002039
+vicmap_foi_1342910,Unnamed Swimming Pool - Melbourne,,generated_fallback,,medium,MELBOURNE,144.963548975,-37.807033814,sport facility,swimming pool,fallback,vicmap_foi,1342910
+vicmap_foi_1342936,Unnamed Swimming Pool - Melbourne,,generated_fallback,,medium,MELBOURNE,144.924365015,-37.7966066,sport facility,swimming pool,fallback,vicmap_foi,1342936
+vicmap_foi_1342996,Ikon Park,Ikon Park,reviewed_override,sports_ground,high,MELBOURNE,144.962008816,-37.783781935,sport facility,sports ground,fallback,vicmap_foi,1342996
+vicmap_foi_1342999,Princess Hill Tennis Club,Princess Hill Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.962439429,-37.785863934,sport facility,tennis court,fallback,vicmap_foi,1342999
+vicmap_foi_1343004,Melbourne University Sports Precinct,Melbourne University,reviewed_override,sports_ground,high,MELBOURNE,144.961711905,-37.79438747,sport facility,sports ground,fallback,vicmap_foi,1343004
+vicmap_foi_1343009,Parkville Tennis Club,Parkville Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958181446,-37.79099652,sport facility,tennis court,fallback,vicmap_foi,1343009
+vicmap_foi_1343011,Princes Park Carlton Bowls Club,Princes Park Carlton Bowls Club,vicmap_name_label,,medium,MELBOURNE,144.961790848,-37.77941255,sport facility,bowling green,fallback,vicmap_foi,1343011
+vicmap_foi_1343026,Carlton Gardens Tennis Club,Carlton Gardens Tennis Club,vicmap_name_label,sports_ground,high,MELBOURNE,144.973388073,-37.802377961,sport facility,sports complex,fallback,vicmap_foi,1343026
+vicmap_foi_1343076,Princess Hill Tennis Club,Princess Hill Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.962871178,-37.785911307,sport facility,tennis court,fallback,vicmap_foi,1343076
+vicmap_foi_1343081,Kensington Flemington Bowling Club,Kensington  Flemington Bowling Club,vicmap_name_label,,medium,MELBOURNE,144.923779981,-37.787986499,sport facility,bowling green,fallback,vicmap_foi,1343081
+vicmap_foi_1343087,Princes Park Carlton Bowls Club,Princes Park Carlton Bowls Club,vicmap_name_label,sports_ground,high,MELBOURNE,144.961582475,-37.779176941,sport facility,sports complex,fallback,vicmap_foi,1343087
+vicmap_foi_1343107,Carlton Gardens Tennis Club,Carlton Gardens Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.973254791,-37.802165235,sport facility,tennis court,fallback,vicmap_foi,1343107
+vicmap_foi_1343108,Carlton Gardens Tennis Club,Carlton Gardens Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.97348476,-37.802477235,sport facility,tennis court,fallback,vicmap_foi,1343108
+vicmap_foi_1343175,Royal College of Surgeons Gardens,Royal College Of Surgeons Gardens,reviewed_override,park_and_garden,high,MELBOURNE,144.972471207,-37.808821357,reserve,park,fallback,vicmap_foi,1343175
+vicmap_foi_1343178,City Of Melbourne Bowls Club Inc.,City Of Melbourne Bowls Club Inc.,vicmap_name_label,sports_ground,high,MELBOURNE,144.953974065,-37.809374555,sport facility,sports complex,fallback,vicmap_foi,1343178
+vicmap_foi_1343208,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.979139328,-37.837758689,sport facility,tennis court,fallback,vicmap_foi,1343208
+vicmap_foi_1343224,University Oval,University Cricket Ground,reviewed_override,sports_ground,high,MELBOURNE,144.961651788,-37.795097369,reserve,park,fallback,vicmap_foi,1343224
+vicmap_foi_1343269,City Of Melbourne Bowls Club,City Of Melbourne Bowls Club,vicmap_name_label,,medium,MELBOURNE,144.954139261,-37.809221869,sport facility,bowling green,fallback,vicmap_foi,1343269
+vicmap_foi_1343270,City Of Melbourne Bowls Club,City Of Melbourne Bowls Club,vicmap_name_label,,medium,MELBOURNE,144.953739368,-37.809334859,sport facility,bowling green,fallback,vicmap_foi,1343270
+vicmap_foi_1343302,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.97931754,-37.837781254,sport facility,tennis court,fallback,vicmap_foi,1343302
+vicmap_foi_1343303,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.979496395,-37.837804356,sport facility,tennis court,fallback,vicmap_foi,1343303
+vicmap_foi_1343304,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.979276181,-37.838102657,sport facility,tennis court,fallback,vicmap_foi,1343304
+vicmap_foi_1343305,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.979621407,-37.838289932,sport facility,tennis court,fallback,vicmap_foi,1343305
+vicmap_foi_1343315,Princess Hill Tennis Club,Princess Hill Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.962265117,-37.785844671,sport facility,tennis court,fallback,vicmap_foi,1343315
+vicmap_foi_1343327,Parkville Tennis Club,Parkville Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.957865056,-37.790974045,sport facility,tennis court,fallback,vicmap_foi,1343327
+vicmap_foi_1343350,Carlton Gardens Tennis Club,Carlton Gardens Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.973413984,-37.802146455,sport facility,tennis court,fallback,vicmap_foi,1343350
+vicmap_foi_1343388,Flemington And Kensington Bowls Club,Flemington And Kensington Bowls Club,vicmap_name_label,sports_ground,high,MELBOURNE,144.923779981,-37.787986499,sport facility,sports complex,fallback,vicmap_foi,1343388
+vicmap_foi_1343394,Princes Park Carlton Bowls Club,Princes Park Carlton Bowls Club,vicmap_name_label,,medium,MELBOURNE,144.961359271,-37.779381536,sport facility,bowling green,fallback,vicmap_foi,1343394
+vicmap_foi_1343409,Carlton Gardens Tennis Club,Carlton Gardens Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.97332633,-37.80249822,sport facility,tennis court,fallback,vicmap_foi,1343409
+vicmap_foi_1343446,Fawkner Park Tennis Club,Fawkner Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.979440628,-37.838118657,sport facility,tennis court,fallback,vicmap_foi,1343446
+vicmap_foi_1343464,Parkville Tennis Club,Parkville Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958023288,-37.790983943,sport facility,tennis court,fallback,vicmap_foi,1343464
+vicmap_foi_1343471,Marvel Stadium,Marvel Stadium,reviewed_override,sports_ground,high,MELBOURNE,144.947628883,-37.816470958,sport facility,sports ground,fallback,vicmap_foi,1343471
+vicmap_foi_1343550,Melbourne Zoological Gardens,Melbourne Zoological Gardens,vicmap_name_label,,medium,MELBOURNE,144.951446136,-37.784275312,reserve,zoo,fallback,vicmap_foi,1343550
+vicmap_foi_1343553,Princes Hill Tennis Club,Princes Hill Tennis Club,vicmap_name_label,sports_ground,high,MELBOURNE,144.962546789,-37.78591701,sport facility,sports complex,fallback,vicmap_foi,1343553
+vicmap_foi_1343554,Princess Hill Tennis Club,Princess Hill Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.962670524,-37.785889783,sport facility,tennis court,fallback,vicmap_foi,1343554
+vicmap_foi_1342882,Unnamed Swimming Pool - Melbourne,,generated_fallback,,medium,MELBOURNE,144.971957424,-37.793446365,sport facility,swimming pool,fallback,vicmap_foi,1342882
+vicmap_foi_1343451,Melbourne University Outdoor Basketball Court,Melbourne University,reviewed_override,court,high,MELBOURNE,144.961346015,-37.795476265,sport facility,basketball court,fallback,vicmap_foi,1343451
+vicmap_foi_1342994,Royal Park Golf Club,Royal Park Golf Club,vicmap_name_label,sports_ground,high,MELBOURNE,144.956315077,-37.78190397,sport facility,sports complex,fallback,vicmap_foi,1342994
+vicmap_foi_1343007,North Park Tennis Club,North Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.944572952,-37.790026684,sport facility,tennis court,fallback,vicmap_foi,1343007
+vicmap_foi_1343012,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958153114,-37.779369566,sport facility,tennis court,fallback,vicmap_foi,1343012
+vicmap_foi_1343086,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958851198,-37.778255586,sport facility,tennis court,fallback,vicmap_foi,1343086
+vicmap_foi_1343158,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.95816132,-37.778513886,sport facility,tennis court,fallback,vicmap_foi,1343158
+vicmap_foi_1343160,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.957652234,-37.779573721,sport facility,tennis court,fallback,vicmap_foi,1343160
+vicmap_foi_1343231,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958259656,-37.779072001,sport facility,tennis court,fallback,vicmap_foi,1343231
+vicmap_foi_1343232,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958013803,-37.779306904,sport facility,tennis court,fallback,vicmap_foi,1343232
+vicmap_foi_1343325,North Park Tennis Club,North Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.944381088,-37.790024262,sport facility,tennis court,fallback,vicmap_foi,1343325
+vicmap_foi_1343329,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958696066,-37.778238134,sport facility,tennis court,fallback,vicmap_foi,1343329
+vicmap_foi_1343330,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958120865,-37.779009995,sport facility,tennis court,fallback,vicmap_foi,1343330
+vicmap_foi_1343331,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.95787745,-37.77924507,sport facility,tennis court,fallback,vicmap_foi,1343331
+vicmap_foi_1343392,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.95865027,-37.778593563,sport facility,tennis court,fallback,vicmap_foi,1343392
+vicmap_foi_1343393,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958400807,-37.779135307,sport facility,tennis court,fallback,vicmap_foi,1343393
+vicmap_foi_1343463,North Park Tennis Club,North Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.944763544,-37.790031878,sport facility,tennis court,fallback,vicmap_foi,1343463
+vicmap_foi_1343465,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958489824,-37.778566285,sport facility,tennis court,fallback,vicmap_foi,1343465
+vicmap_foi_1343559,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958538237,-37.778221545,sport facility,tennis court,fallback,vicmap_foi,1343559
+vicmap_foi_1343560,Royal Park Tennis Club,Royal Park Tennis Club,vicmap_name_label,court,high,MELBOURNE,144.958326632,-37.778540633,sport facility,tennis court,fallback,vicmap_foi,1343560
+vicmap_foi_626787,Royal Park Golf Course,Royal Park Golf Course,vicmap_name_label,,medium,MELBOURNE,144.952395107,-37.779381797,sport facility,golf course,fallback,vicmap_foi,626787
+vicmap_foi_1343019,Melbourne and Olympic Parks,Melbourne Park,reviewed_override,sports_ground,high,MELBOURNE,144.98071276,-37.821905606,sport facility,sports complex,fallback,vicmap_foi,1343019
+vicmap_foi_893556,Eynesbury Golf Course,Eynesbury Golf Course,vicmap_name_label,,medium,MELTON,144.56517825,-37.794687951,sport facility,golf course,fallback,vicmap_foi,893556
+vicmap_foi_1262818,Unnamed Swimming Pool - Monash,,generated_fallback,,medium,MONASH,145.194053621,-37.920732739,sport facility,swimming pool,fallback,vicmap_foi,1262818
+vicmap_foi_1343184,Unnamed Amusement Centre - Melbourne,,generated_fallback,,medium,MELBOURNE,144.967183423,-37.812644644,reserve,amusement centre,fallback,vicmap_foi,1343184
+vicmap_foi_667068,Glen Waverley Bowls Club,Glen Waverley Bowls Club,vicmap_name_label,,medium,MONASH,145.160897848,-37.889224748,sport facility,bowling green,fallback,vicmap_foi,667068
+vicmap_foi_903257,Wetlands Golf N Games,Wetlands Golf N Games,vicmap_name_label,,medium,MONASH,145.202689991,-37.922998621,sport facility,golf course,fallback,vicmap_foi,903257

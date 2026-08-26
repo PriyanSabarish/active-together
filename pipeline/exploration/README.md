@@ -65,6 +65,7 @@ The initial seven activity categories are:
 ## Current classification outcome
 
 | Decision  | Subtypes | Records  |
+|---|---|
 | Include   | 17       | 44,369   |
 | Exclude   | 148      | 57,258   |
 | Fallback  | 8        | 1,519    |
