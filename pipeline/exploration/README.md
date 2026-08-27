@@ -1,5 +1,3 @@
-#
-
 # Data Exploration
 
 This directory contains exploratory notebooks used to understand project data sources before formal wrangling and integration.
@@ -22,10 +20,10 @@ Vicmap Features of Interest Index Centroid WFS
 ### WFS layer:
 open-data-platform:foi_index_centroid
 
-### Raw snapshot:
+### Historical raw snapshot:
 data/raw/vicmap/foi_index_centroid_full_2026-08-26.geojson
 
-The raw snapshot is downloaded through the WFS API and is not committed to GitHub.
+The notebook records the exploration performed against the 2026-08-26 snapshot. The raw snapshot was downloaded through the WFS API and is not committed to GitHub. Routine pipeline refreshes do not rewrite this historical notebook.
 
 ## Vicmap exploration workflow
 The Vicmap exploration followed these steps:
@@ -79,7 +77,7 @@ data/validation/vicmap/vicmap_subtype_review.csv
 This table will be used as an input to the formal Vicmap wrangling pipeline.
 
 ## Scope note
-The current working geographic scope is Greater Melbourne. The final scope may later be narrowed to selected local government areas. Geographic filtering will remain configurable so the wrangling process does not need to be redesigned.
+Exploration initially retained Greater Melbourne so that geographic filtering would remain reusable. The final product scope selected after exploration is the City of Melbourne, the City of Melton and the City of Monash. The wrangling pipeline continues to retain Greater Melbourne master outputs locally in case the product scope changes later.
 
 
 

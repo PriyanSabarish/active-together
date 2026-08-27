@@ -1,4 +1,3 @@
-#
 # Vicmap Product Data Validation
 
 ## Purpose
@@ -23,6 +22,12 @@ Run the validation script from the project root:
 
 ```powershell
 python pipeline/validation/validate_vicmap.py
+```
+
+For the normal end-to-end workflow, use:
+
+```powershell
+python pipeline/run_vicmap_pipeline.py
 ```
 
 The script stops with an error if a required validation rule fails.
@@ -128,7 +133,7 @@ vicmap_app_ready.csv contains the records currently approved for normal product 
 vicmap_fallback.csv contains potentially useful places that should not be presented as unrestricted recommendations because access, fees, booking requirements or operating conditions may vary.
 The validation files are QA and audit artifacts. They are not intended to be loaded directly by the application.
 
-##Reproducibility
+## Reproducibility
 Validation should be rerun whenever:
 - a new Vicmap source snapshot is downloaded;
 - wrangling or classification rules change;

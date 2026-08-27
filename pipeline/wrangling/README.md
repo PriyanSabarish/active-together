@@ -24,20 +24,26 @@ python pipeline/wrangling/wrangle_vicmap.py
 The script validates each major processing stage and stops if a required rule fails.
 
 ## Current data source
-The current pipeline reads a locally saved Vicmap WFS GeoJSON snapshot:
-data/raw/vicmap/foi_index_centroid_full_2026-08-26.geojson
+The pipeline reads the latest dated complete Vicmap WFS GeoJSON snapshot matching:
+
+`data/raw/vicmap/foi_index_centroid_full_YYYY-MM-DD.geojson`
+
+The latest snapshot is selected by the date in the filename, not by file modification time.
+
 Dataset:
 - Vicmap Features of Interest Index Centroid
 - Source format: WFS GeoJSON
 - Coordinate reference system: EPSG:4326
 - Raw records: 106,084
-The current script does not download data directly from the WFS API. A separate data-acquisition step can later download the latest snapshot before this script is executed.
+
+The wrangling script does not call the WFS API directly. New snapshots are downloaded by `pipeline/acquisition/fetch_vicmap.py` before wrangling.
 
 ## Additional inputs
 
 ### LGA boundaries
 data/raw/boundaries/vicmap_lga_2026-08-26.geojson
 The boundary snapshot is used to spatially assign each Vicmap point to a local government area.
+It is a fixed, versioned input committed to the repository and is not replaced during routine FOI refreshes.
 
 ### Subtype classification rules
 data/validation/vicmap/vicmap_subtype_review.csv
@@ -227,9 +233,9 @@ The wrangling pipeline should be rerun whenever:
 - the product council scope changes; or
 - product filtering policies are modified.
 For a future API refresh:
-1. download and save a new raw GeoJSON snapshot;
-2. update the configured raw-data path;
-3. run the wrangling script;
-4. inspect any new or stale review records;
-5. run the validation script; and
-6. publish the outputs only after validation succeeds.
+1. run `python pipeline/run_vicmap_pipeline.py --refresh`;
+2. inspect any new or stale review records or candidates;
+3. rerun the pipeline after resolving any blocking issues; and
+4. publish the outputs only after validation succeeds.
+
+Individual acquisition, wrangling and validation scripts may still be run separately when diagnosing a failed stage.

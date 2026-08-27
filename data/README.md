@@ -82,6 +82,16 @@ Location:
 
 These files are original source snapshots. They are retained for reproducibility and should not be loaded directly by the application.
 
+Vicmap FOI snapshots and their metadata remain local and are not committed to GitHub.
+
+### Fixed LGA boundary
+
+The pipeline uses the versioned spatial reference:
+
+`data/raw/boundaries/vicmap_lga_2026-08-26.geojson`
+
+This relatively stable boundary file is committed to the repository because wrangling and validation both require it. Routine FOI refreshes do not replace the boundary. A boundary update should be an explicit, reviewed change because it may alter council assignments.
+
 ### Greater Melbourne master data
 
 Location:
@@ -110,20 +120,28 @@ They support auditing and data maintenance and are not direct application inputs
 
 ## Updating the data
 
-The current processed files were generated from a saved Vicmap WFS GeoJSON snapshot.
+The current processed files are generated from dated Vicmap WFS GeoJSON snapshots.
 
-To regenerate the data:
+To download a new FOI snapshot and run the complete workflow from the project root:
 
-1. obtain the latest raw Vicmap snapshot;
-2. run `pipeline/wrangling/wrangle_vicmap.py`;
-3. run `pipeline/validation/validate_vicmap.py`;
-4. confirm that validation completes successfully; and
-5. replace the application data only after the checks pass.
+```powershell
+python pipeline/run_vicmap_pipeline.py --refresh
+```
+
+To rerun wrangling and validation using the latest existing local snapshot:
+
+```powershell
+python pipeline/run_vicmap_pipeline.py
+```
+
+The unified runner stops when acquisition, wrangling or validation fails. Product files should be shared with the application only after validation succeeds.
 
 ## Technical documentation
 
 Detailed technical documentation is available at:
 
+- `pipeline/README.md`
+- `pipeline/acquisition/README.md`
 - `pipeline/exploration/README.md`
 - `pipeline/wrangling/README.md`
 - `pipeline/validation/README.md`

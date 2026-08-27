@@ -1,8 +1,9 @@
 """Load and validate the Vicmap wrangling inputs."""
 
 # 1. Imports
-from pathlib import Path
 import json
+from datetime import datetime
+from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
@@ -11,13 +12,9 @@ import pandas as pd
 # Resolve project paths from this script location
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-RAW_DATA_PATH = (
-    PROJECT_ROOT
-    / "data"
-    / "raw"
-    / "vicmap"
-    / "foi_index_centroid_full_2026-08-26.geojson"
-)
+RAW_VICMAP_DIR = PROJECT_ROOT / "data" / "raw" / "vicmap"
+RAW_SNAPSHOT_PATTERN = "foi_index_centroid_full_*.geojson"
+RAW_SNAPSHOT_PREFIX = "foi_index_centroid_full_"
 
 SUBTYPE_REVIEW_PATH = (
     PROJECT_ROOT / "data" / "validation" / "vicmap" / "vicmap_subtype_review.csv"
@@ -115,12 +112,41 @@ PRODUCT_LGAS = {
 
 
 # 4. Input functions
+def find_latest_raw_snapshot():
+    """Select the complete Vicmap snapshot with the latest filename date."""
+
+    dated_snapshots = []
+
+    for snapshot_path in RAW_VICMAP_DIR.glob(RAW_SNAPSHOT_PATTERN):
+        date_text = snapshot_path.stem.removeprefix(RAW_SNAPSHOT_PREFIX)
+
+        try:
+            snapshot_date = datetime.strptime(date_text, "%Y-%m-%d").date()
+        except ValueError:
+            # Ignore files that do not follow the dated snapshot convention
+            continue
+
+        dated_snapshots.append((snapshot_date, snapshot_path))
+
+    if not dated_snapshots:
+        raise FileNotFoundError(
+            "No dated complete Vicmap snapshot was found in "
+            f"{RAW_VICMAP_DIR}. Expected: {RAW_SNAPSHOT_PATTERN}"
+        )
+
+    _, latest_snapshot_path = max(dated_snapshots, key=lambda item: item[0])
+
+    return latest_snapshot_path
+
+
 def load_inputs():
     """Load the raw places, subtype rules, boundaries and product review."""
 
+    raw_data_path = find_latest_raw_snapshot()
+
     # Confirm that all required input files exist
     for input_path in [
-        RAW_DATA_PATH,
+        raw_data_path,
         SUBTYPE_REVIEW_PATH,
         LGA_BOUNDARY_PATH,
         PRODUCT_REVIEW_PATH,
@@ -129,7 +155,7 @@ def load_inputs():
             raise FileNotFoundError(f"Required input file not found: {input_path}")
 
     # Load the complete raw GeoJSON snapshot
-    with RAW_DATA_PATH.open(
+    with raw_data_path.open(
         mode="r",
         encoding="utf-8",
     ) as file:
@@ -163,6 +189,8 @@ def load_inputs():
         dtype="string",
         keep_default_na=False,
     )
+
+    print(f"Raw Vicmap snapshot selected: {raw_data_path.name}")
 
     return raw_records, subtype_review, lga_boundaries, product_review
 
