@@ -1,114 +1,85 @@
-# Data Pipeline
+# Vicmap Data Pipeline
 
-This directory contains the reproducible data-processing workflows for Active Together.
+This pipeline creates the location CSV used by Active Together for Melbourne,
+Melton and Monash.
 
-The current automated workflow covers the Vicmap Features of Interest dataset and produces product-facing location data for Melbourne, Melton and Monash.
-
-## Current workflow
+## Workflow
 
 ```text
 Vicmap WFS API
       ↓
 acquisition/fetch_vicmap.py
       ↓
-data/raw/vicmap/foi_index_centroid_full_YYYY-MM-DD.geojson
-      ├──────────────┐
-fixed LGA boundary ─┤
-review rules ───────┤
-                    ↓
-       wrangling/wrangle_vicmap.py
-                    ↓
+dated raw GeoJSON snapshot
+      ↓
+wrangling/wrangle_vicmap.py
+      ↓
 data/processed/vicmap/vicmap_app_ready.csv
-data/processed/vicmap/vicmap_fallback.csv
-                    ↓
+      ↓
 validation/validate_vicmap.py
 ```
 
-Exploration notebooks and notes support rule development but are not executed by the automated refresh workflow.
+The fixed LGA boundary file and the subtype classification table are supporting
+inputs. Exploration notebooks and QA files help explain decisions but are not
+application inputs.
 
-## Unified runner
+The classification table retains all historical exploration decisions, but the
+current production workflow uses only rows marked `include`.
 
-Run commands from the project root.
+## Run with an existing snapshot
 
-### Process the latest existing snapshot
+From the project root:
 
 ```powershell
 python pipeline/run_vicmap_pipeline.py
 ```
 
-This runs:
+This runs wrangling followed by validation. The newest dated complete snapshot
+in `data/raw/vicmap/` is selected automatically.
 
-```text
-wrangling → validation
-```
-
-The wrangling script automatically selects the complete raw snapshot with the latest date in its filename.
-
-### Download and process a new snapshot
+## Download and process fresh Vicmap data
 
 ```powershell
 python pipeline/run_vicmap_pipeline.py --refresh
 ```
 
-This runs:
+This runs acquisition, wrangling and validation. The default WFS page size is
+5,000 records.
 
-```text
-acquisition → wrangling → validation
-```
-
-The WFS page size can be changed only when needed for API troubleshooting:
-
-```powershell
-python pipeline/run_vicmap_pipeline.py --refresh --page-size 2000
-```
-
-The default page size is 5,000 records.
-
-## Pipeline stages
+## Stages
 
 ### Acquisition
 
-Downloads the Vicmap WFS layer in pages, validates the complete response and saves a dated raw GeoJSON snapshot with metadata and a SHA-256 checksum.
-
-Existing same-day snapshots are not overwritten.
-
-The LGA boundary is a fixed, versioned pipeline input and is not replaced during routine FOI acquisition.
+Downloads the complete Vicmap WFS layer and saves a dated raw snapshot. Existing
+same-day snapshots are not overwritten.
 
 ### Wrangling
 
-Standardises source records, assigns Greater Melbourne councils, applies subtype classification and duplicate decisions, creates display names, applies product-scope review rules, and exports the processed datasets.
-
-Greater Melbourne master outputs are retained locally, while the product outputs are limited to Melbourne, Melton and Monash.
+Keeps records with a usable ID, Vicmap name and valid coordinates; applies the
+approved subtype categories; limits records to Melbourne, Melton and Monash;
+and writes one app-ready CSV.
 
 ### Validation
 
-Checks table structure, product decisions, category values, council assignments, coordinates and completed review decisions. It also generates QA samples and unresolved review candidates.
+Checks the CSV structure, required values, unique IDs, coordinates, categories,
+council coverage and spatial boundaries. Validation reports errors but does not
+change the product data.
 
-Validation checks the processed outputs; it does not modify the app-ready or fallback data.
+## Product output
 
-## Product outputs
-
-Application developers should use:
+Application developers should use only:
 
 ```text
 data/processed/vicmap/vicmap_app_ready.csv
-data/processed/vicmap/vicmap_fallback.csv
 ```
 
-See `data/README.md` for column descriptions and usage guidance.
+The raw Vicmap snapshots are excluded from GitHub. The fixed boundary file,
+scripts, classification rules and app-ready CSV are versioned so the workflow
+can be understood and reproduced.
 
-## Failure behaviour
+## More information
 
-Each stage stops with an error when a required check fails. The unified runner does not continue to later stages after a failure.
-
-New processed data should be shared with the application only when the complete validation stage succeeds.
-
-Raw FOI snapshots are excluded from GitHub and remain in `data/raw/` according to the project data management rules. The fixed LGA boundary is committed because it is required to reproduce council assignments.
-
-## Documentation
-
-- [Data acquisition](acquisition/README.md)
-- [Data exploration](exploration/README.md)
-- [Data wrangling](wrangling/README.md)
-- [Data validation](validation/README.md)
-
+- [Acquisition](acquisition/README.md)
+- [Exploration](exploration/README.md)
+- [Wrangling](wrangling/README.md)
+- [Validation](validation/README.md)

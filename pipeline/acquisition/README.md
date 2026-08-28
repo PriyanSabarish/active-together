@@ -84,8 +84,8 @@ The metadata records:
 - the download timestamp;
 - the timestamp reported by the source;
 - the record count and page size;
-- the snapshot filename; and
-- the snapshot SHA-256 checksum.
+- the output coordinate system; and
+- the snapshot filename.
 
 Raw snapshots and metadata are excluded from GitHub by `.gitignore`. They are retained locally for reproducibility and should be managed according to the project data management plan.
 
@@ -97,8 +97,7 @@ The acquisition process is designed to preserve existing raw data:
 - complete snapshots use a date in the filename;
 - an existing snapshot or metadata file is never overwritten;
 - the script stops before downloading if today's output already exists;
-- downloaded data is validated before publication; and
-- the GeoJSON is first written to a temporary `.part` file and renamed only after the write succeeds.
+- downloaded data is checked before it is saved.
 
 If today's snapshot already exists, do not delete it merely to repeat the command. Confirm whether a new download is necessary and preserve the existing snapshot where possible.
 
@@ -116,7 +115,6 @@ data/raw/vicmap/foi_index_centroid_full_YYYY-MM-DD.geojson
 pipeline/wrangling/wrangle_vicmap.py
       ↓
 data/processed/vicmap/vicmap_app_ready.csv
-data/processed/vicmap/vicmap_fallback.csv
       ↓
 pipeline/validation/validate_vicmap.py
 ```

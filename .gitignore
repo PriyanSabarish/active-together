@@ -57,3 +57,6 @@ data/processed/vicmap/vicmap_*_greater_melbourne.csv
 data/validation/vicmap/vicmap_app_ready_qa_sample.csv
 data/validation/vicmap/vicmap_product_review_candidates.csv
 data/validation/vicmap/*_reviewed.xlsx
+
+# Legacy Vicmap outputs kept locally for historical reference
+data/archive/

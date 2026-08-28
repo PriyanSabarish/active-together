@@ -1,36 +1,36 @@
-
 # Data Guide
 
 ## Start here
 
-This document explains which data files are intended for use by the application.
+This page explains which Vicmap files other team members should use.
 
-For the current product, the main geographic scope is:
+The current product covers:
 
 - Melbourne
 - Melton
 - Monash
 
-## App-ready data
+## Application data
 
-### Vicmap activity locations
+The application should use only:
 
-File:
+```text
+data/processed/vicmap/vicmap_app_ready.csv
+```
 
-`data/processed/vicmap/vicmap_app_ready.csv`
+This CSV contains named Vicmap locations that:
 
-This is the main Vicmap dataset for the application.
+- have a usable source ID and valid coordinates;
+- match an approved activity subtype;
+- are located inside one of the three selected councils; and
+- passed the automated validation checks.
 
-It contains locations that:
+The current file contains 2,585 locations. It is a static application-ready
+output that can be regenerated from a newer Vicmap API snapshot.
 
-- are inside Melbourne, Melton or Monash;
-- belong to one of the seven supported activity categories;
-- passed the current wrangling and validation rules; and
-- are approved for normal recommendations.
+## Activity categories
 
-Application developers should use this file as the primary Vicmap input.
-
-Current activity categories:
+Each location has one of seven labels:
 
 - `playground`
 - `park_and_garden`
@@ -40,105 +40,78 @@ Current activity categories:
 - `skate_bmx`
 - `picnic_day_use`
 
-Important columns:
+These labels allow the future activity-template data to match an activity with
+suitable types of locations.
 
-| Column                       | Description                        |
+## Output columns
+
+| Column | Description |
 |---|---|
-| `place_id`                   | Unique location identifier         |
-| `display_name`               | Name to display in the application |
-| `activity_category`          | Application activity category      |
-| `lga_name`                   | Council name                       |
-| `longitude`                  | Longitude in EPSG:4326             |
-| `latitude`                   | Latitude in EPSG:4326              |
-| `classification_confidence`  | Confidence in the category mapping |
-| `source_dataset`             | Original source dataset            |
-| `source_record_id`           | Identifier from the source dataset |
+| `place_id` | Stable application identifier |
+| `display_name` | Vicmap location name shown to users |
+| `place_name` | Cleaned Vicmap source name |
+| `name_source` | Vicmap field used for the name |
+| `activity_category` | One of the seven location labels |
+| `classification_confidence` | Confidence recorded in the subtype rule |
+| `lga_name` | Melbourne, Melton or Monash |
+| `longitude` | Longitude in EPSG:4326 |
+| `latitude` | Latitude in EPSG:4326 |
+| `feature_type` | Original Vicmap feature type |
+| `feature_subtype` | Original Vicmap feature subtype |
+| `decision` | Always `include` for this output |
+| `source_dataset` | Always `vicmap_foi` |
+| `source_record_id` | Original Vicmap feature ID |
 
-## Fallback data
+## Supporting files
 
-File:
+### Raw Vicmap snapshots
 
-`data/processed/vicmap/vicmap_fallback.csv`
-
-This file contains potentially useful places that may have:
-
-- access restrictions;
-- booking requirements;
-- membership requirements;
-- entry fees; or
-- uncertain operating conditions.
-
-Do not mix these records directly into normal recommendations.
-
-The application should only use this file if it has explicit fallback behaviour or can communicate the uncertainty to users.
-
-## Files not intended for direct application use
-
-### Raw data
-
-Location:
-
-`data/raw/`
-
-These files are original source snapshots. They are retained for reproducibility and should not be loaded directly by the application.
-
-Vicmap FOI snapshots and their metadata remain local and are not committed to GitHub.
-
-### Fixed LGA boundary
-
-The pipeline uses the versioned spatial reference:
-
-`data/raw/boundaries/vicmap_lga_2026-08-26.geojson`
-
-This relatively stable boundary file is committed to the repository because wrangling and validation both require it. Routine FOI refreshes do not replace the boundary. A boundary update should be an explicit, reviewed change because it may alter council assignments.
-
-### Greater Melbourne master data
-
-Location:
-
-`data/processed/vicmap/`
-
-Files containing `greater_melbourne` are reusable master datasets covering 31 metropolitan councils.
-
-They are retained in case the product scope changes. The current application should use `vicmap_app_ready.csv` instead.
-
-### Validation files
-
-Location:
-
-`data/validation/vicmap/`
-
-These files contain:
-
-- classification rules;
-- duplicate-review records;
-- manual review decisions;
-- QA samples; and
-- unresolved low-priority name-enrichment candidates.
-
-They support auditing and data maintenance and are not direct application inputs.
-
-## Updating the data
-
-The current processed files are generated from dated Vicmap WFS GeoJSON snapshots.
-
-To download a new FOI snapshot and run the complete workflow from the project root:
-
-```powershell
-python pipeline/run_vicmap_pipeline.py --refresh
+```text
+data/raw/vicmap/
 ```
 
-To rerun wrangling and validation using the latest existing local snapshot:
+Raw GeoJSON snapshots and metadata remain local and are ignored by Git. They
+are pipeline inputs, not application inputs.
+
+### Council boundaries
+
+```text
+data/raw/boundaries/vicmap_lga_2026-08-26.geojson
+```
+
+This fixed boundary snapshot is committed because wrangling and validation need
+it to reproduce the three-council scope.
+
+### Classification rules
+
+```text
+data/validation/vicmap/vicmap_subtype_review.csv
+```
+
+This table records the exploration decisions for all Vicmap subtypes. The
+current wrangling script uses only rows whose `decision` is `include`. Other
+decision values remain as historical exploration information.
+
+QA samples and review working files are supporting analysis only. They are not
+loaded by the application and do not rewrite the app-ready CSV.
+
+## Refresh the data
+
+Use the newest existing local snapshot:
 
 ```powershell
 python pipeline/run_vicmap_pipeline.py
 ```
 
-The unified runner stops when acquisition, wrangling or validation fails. Product files should be shared with the application only after validation succeeds.
+Download a new Vicmap snapshot before processing:
+
+```powershell
+python pipeline/run_vicmap_pipeline.py --refresh
+```
+
+Only share a regenerated app-ready CSV after validation completes successfully.
 
 ## Technical documentation
-
-Detailed technical documentation is available at:
 
 - `pipeline/README.md`
 - `pipeline/acquisition/README.md`
@@ -146,31 +119,4 @@ Detailed technical documentation is available at:
 - `pipeline/wrangling/README.md`
 - `pipeline/validation/README.md`
 
-Most team members only need this data guide and the app-ready CSV.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Most team members only need this guide and `vicmap_app_ready.csv`.

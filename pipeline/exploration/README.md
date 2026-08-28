@@ -1,85 +1,89 @@
-# Data Exploration
+# Vicmap Data Exploration
 
-This directory contains exploratory notebooks used to understand project data sources before formal wrangling and integration.
+## Purpose
 
-Exploration notebooks are used for schema inspection, missing-value analysis, category review and data-quality assessment. They do not modify the original raw data.
+The exploration notebook was used to understand the Vicmap Features of Interest
+dataset before writing the reproducible pipeline. Exploration does not modify
+the raw source data or the application-ready CSV.
 
-## Notebooks
-
-### Vicmap FOI
-
-Notebook:
+## Notebook
 
 ```text
-vicmap_exploration.ipynb
+pipeline/exploration/vicmap_exploration.ipynb
 ```
 
-### Source:
-Vicmap Features of Interest Index Centroid WFS
+The notebook records the analysis performed using the historical
+`foi_index_centroid_full_2026-08-26.geojson` snapshot. Raw snapshots remain
+local and are not committed to GitHub.
 
-### WFS layer:
-open-data-platform:foi_index_centroid
+## Source
 
-### Historical raw snapshot:
-data/raw/vicmap/foi_index_centroid_full_2026-08-26.geojson
+- Dataset: Vicmap Features of Interest Index Centroid
+- WFS layer: `open-data-platform:foi_index_centroid`
+- Geometry: Point
+- Coordinate system: EPSG:4326
 
-The notebook records the exploration performed against the 2026-08-26 snapshot. The raw snapshot was downloaded through the WFS API and is not committed to GitHub. Routine pipeline refreshes do not rewrite this historical notebook.
+## Exploration process
 
-## Vicmap exploration workflow
-The Vicmap exploration followed these steps:
-1. Download the complete WFS dataset using pagination.
-2. Load and inspect the GeoJSON structure.
-3. Review fields, missing values and coordinate coverage.
-4. Analyse feature_type and feature_subtype distributions.
-5. Create a subtype-level review table.
-6. Define seven clear activity categories.
-7. Apply high-confidence include and exclude rules.
-8. Identify unverified fallback facilities.
-9. Retain ambiguous subtypes for further review.
-10. Export the subtype review table for later wrangling.
+The notebook:
+
+1. inspected the GeoJSON structure and fields;
+2. checked record counts, coordinates, IDs and missing names;
+3. reviewed `feature_type` and `feature_subtype` values;
+4. created an inventory of 180 subtypes;
+5. defined seven activity-location categories; and
+6. recorded subtype decisions in a reusable classification table.
 
 ## Key findings
+
 - Records: 106,084
 - Feature types: 30
 - Feature subtypes: 180
-- Geometry: Point
-- CRS: EPSG:4326
 - Missing coordinates: 0
-- Duplicate feature_id values: 0
-- Missing name_label: approximately 46.4%
-The dataset contains both suitable activity locations and many unrelated facilities. Classification must therefore operate primarily at the subtype level.
+- Duplicate `feature_id` values: 0
+- Missing place names: approximately 46.4%
 
+Vicmap contains both useful activity locations and many unrelated facilities.
+Subtype classification is therefore required before geographic filtering.
 
-## Activity categories
-The initial seven activity categories are:
-- playground
-- park_and_garden
-- sports_ground
-- court
-- trail_access
-- skate_bmx
-- picnic_day_use
+## Seven location categories
 
-## Current classification outcome
+- `playground`
+- `park_and_garden`
+- `sports_ground`
+- `court`
+- `trail_access`
+- `skate_bmx`
+- `picnic_day_use`
 
-| Decision  | Subtypes | Records  |
-|---|---|
-| Include   | 17       | 44,369   |
-| Exclude   | 148      | 57,258   |
-| Fallback  | 8        | 1,519    |
-| Review    | 7        | 2,938    |
-The seven remaining review subtypes require name-level classification, access verification or supporting spatial data.
+## Historical decision inventory
+
+The exploration table contains four decision labels:
+
+| Decision | Subtypes | Historical records |
+|---|---:|---:|
+| `include` | 17 | 44,369 |
+| `exclude` | 148 | 57,258 |
+| `fallback` | 8 | 1,519 |
+| `review` | 7 | 2,938 |
+
+These values describe the exploration stage. Under the simplified production
+logic, `wrangle_vicmap.py` uses only the 17 `include` subtype rules. It does not
+generate fallback data, apply name-level manual decisions or consult external
+websites. The other labels remain only as an audit trail of the exploration.
 
 ## Exploration output
 
-The subtype review table is stored at:
+```text
 data/validation/vicmap/vicmap_subtype_review.csv
-This table will be used as an input to the formal Vicmap wrangling pipeline.
+```
 
-## Scope note
-Exploration initially retained Greater Melbourne so that geographic filtering would remain reusable. The final product scope selected after exploration is the City of Melbourne, the City of Melton and the City of Monash. The wrangling pipeline continues to retain Greater Melbourne master outputs locally in case the product scope changes later.
+This table is the classification input used by wrangling.
 
+## Geographic scope
 
+Exploration examined the complete statewide Vicmap snapshot so subtype rules
+would not depend on one council. The current wrangling script then applies the
+rules and keeps only locations inside Melbourne, Melton and Monash.
 
-
-
+The current pipeline does not generate Greater Melbourne master outputs.
