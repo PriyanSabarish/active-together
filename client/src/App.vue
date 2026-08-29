@@ -33,6 +33,7 @@ watch(
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
 }
 
 .slide-left-enter-active,

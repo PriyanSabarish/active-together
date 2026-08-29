@@ -9,6 +9,7 @@
       <span class="crumb">Back to your top 3</span>
     </div>
 
+    <div class="scroll-area">
     <div class="head-row">
       <div>
         <h1>{{ place.name }}</h1>
@@ -76,6 +77,7 @@
 
     <div class="disclaimer">
       Candidate activity opportunity — opening hours, cost and accessibility aren't available yet.
+    </div>
     </div>
 
     <div class="btn-row" style="margin-top: 20px">

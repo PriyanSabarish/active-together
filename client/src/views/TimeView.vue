@@ -1,6 +1,7 @@
 <template>
   <AppHeader :step="2" back />
 
+  <div class="scroll-area">
   <h1>When are you free</h1>
   <p class="subtitle">Limited to today's forecast window.</p>
 
@@ -88,6 +89,7 @@
       <p class="weather-main">{{ wx.temp }}°C, {{ wx.desc }}</p>
       <p class="weather-sub">{{ rainLabel }} · UV {{ wx.uv }} · {{ windLabel }}</p>
     </div>
+  </div>
   </div>
 
   <div class="btn-row">
