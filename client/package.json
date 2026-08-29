@@ -1,0 +1,21 @@
+{
+  "name": "active-together-client",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Active Together — iteration 1 client (find the opportunity)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "pinia": "^2.2.6",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "vite": "^7.1.12"
+  }
+}
