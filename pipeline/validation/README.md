@@ -68,8 +68,49 @@ Monash, including deterministic labels for 703 unnamed source records. It
 contains no missing required values, duplicate place IDs or duplicate
 coordinate-subtype rows and passes all naming, category and spatial checks.
 
-## QA note
+## Classification QA sampling
 
-QA samples and earlier review tables are supporting analysis files only. They
-can be used to describe known Vicmap limitations, but they are not application
-inputs and are not used to rewrite the app-ready CSV.
+`generate_vicmap_qa_sample.py` creates a reproducible sample for manual checks
+of the Vicmap subtype-to-category classification. It is separate from the
+normal pipeline and does not modify `vicmap_app_ready.csv`.
+
+From the project root, run:
+
+```powershell
+python pipeline/validation/generate_vicmap_qa_sample.py
+```
+
+The script:
+
+- reads the validated `vicmap_app_ready.csv` file;
+- uses the fixed random seed `5120`;
+- samples up to 30 records from each activity category;
+- includes every record when a category contains fewer than 30 records; and
+- refuses to overwrite an existing QA sample.
+
+The current sample contains 152 records across all seven categories and is
+saved as:
+
+```text
+data/validation/vicmap/vicmap_qa_sample.csv
+```
+
+### Review process
+
+Two reviewers should assess the same sample independently. Each reviewer uses
+only their own result, suggested-category and notes columns. Recommended result
+values are `correct`, `incorrect` and `unsure`.
+
+When both reviews are complete:
+
+- matching decisions can be accepted directly;
+- disagreements and `unsure` records require final resolution; and
+- the agreed result can be saved as `vicmap_qa_results.csv`.
+
+QA results measure classification quality. They do not automatically change
+the application CSV. If QA identifies a systematic subtype-classification
+problem, the team should review `vicmap_subtype_review.csv`, rerun wrangling
+and validation, and document the rule change.
+
+Earlier QA and product-review files belong to the retired record-level review
+workflow and are not inputs to the current pipeline.
