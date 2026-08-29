@@ -215,6 +215,9 @@ export const useSearchStore = defineStore('search', {
       if (state.durationMin < 90) return 80
       if (state.durationMin < 110) return 100
       return 120
+    },
+    place(state) {
+      return (id) => state.results.find((p) => p.id === id)
     }
   },
   actions: {
