@@ -1,6 +1,7 @@
 <template>
   <AppHeader :step="1" />
 
+  <div class="scroll-area">
   <h1>Where are you starting from</h1>
   <p class="subtitle">Covers Melbourne, Monash and Melton for now.</p>
 
@@ -74,8 +75,9 @@
       {{ km }} km
     </button>
   </div>
+  </div>
 
-  <hr class="divider" style="margin-top: auto" />
+  <hr class="divider" style="margin-bottom: 16px" />
   <button class="btn btn-primary" :disabled="!ready" @click="next">Next</button>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
   <AppHeader :step="3" back />
 
+  <div class="scroll-area">
   <h1>Your top options</h1>
   <p class="subtitle">Candidate places from open data.</p>
   <p class="hint">Icon shape = category, badge colour = conditions</p>
@@ -75,8 +76,9 @@
       Only two places within {{ store.radiusKm }} km of {{ store.locationLabel }}.
     </p>
   </template>
+  </div>
 
-  <hr class="divider" style="margin-top: auto" />
+  <hr class="divider" style="margin-bottom: 16px" />
   <button class="btn btn-secondary" style="width: 100%" @click="$router.back()">Back</button>
 </template>
 
