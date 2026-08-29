@@ -18,15 +18,24 @@ The application should use only:
 data/processed/vicmap/vicmap_app_ready.csv
 ```
 
-This CSV contains named Vicmap locations that:
+This CSV contains Vicmap locations that:
 
-- have a usable source ID and valid coordinates;
+- have a usable source ID, subtype and valid coordinates;
 - match an approved activity subtype;
 - are located inside one of the three selected councils; and
 - passed the automated validation checks.
 
-The current file contains 2,585 locations. It is a static application-ready
+The current file contains 3,237 locations. It is a static application-ready
 output that can be regenerated from a newer Vicmap API snapshot.
+
+When Vicmap does not provide a name, the pipeline creates a deterministic label:
+
+```text
+Unnamed {Feature Subtype} - {Council} - {Source Record ID}
+```
+
+For example: `Unnamed Playground - Monash - 12345`. This is a location label,
+not a claim that Vicmap supplied an official facility name.
 
 ## Activity categories
 
@@ -48,9 +57,9 @@ suitable types of locations.
 | Column | Description |
 |---|---|
 | `place_id` | Stable application identifier |
-| `display_name` | Vicmap location name shown to users |
-| `place_name` | Cleaned Vicmap source name |
-| `name_source` | Vicmap field used for the name |
+| `display_name` | Source name or deterministic unnamed label shown to users |
+| `place_name` | Cleaned source name or deterministic unnamed label |
+| `name_source` | `vicmap_name`, `vicmap_name_label` or `generated_from_subtype` |
 | `activity_category` | One of the seven location labels |
 | `classification_confidence` | Confidence recorded in the subtype rule |
 | `lga_name` | Melbourne, Melton or Monash |

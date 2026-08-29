@@ -1,7 +1,5 @@
 """Validate the Vicmap CSV used by the application.
 
-This script checks the generated CSV but does not change its records.
-Vicmap remains the source of truth for names, categories and coordinates.
 """
 
 from pathlib import Path
@@ -35,6 +33,12 @@ ALLOWED_CATEGORIES = {
     "trail_access",
     "skate_bmx",
     "picnic_day_use",
+}
+
+ALLOWED_NAME_SOURCES = {
+    "vicmap_name",
+    "vicmap_name_label",
+    "generated_from_subtype",
 }
 
 REQUIRED_COLUMNS = [
@@ -153,6 +157,29 @@ def validate_product_rules(records):
 
     if not records["source_dataset"].eq("vicmap_foi").all():
         raise ValueError("Every record must identify Vicmap FOI as its source.")
+
+    invalid_name_sources = set(records["name_source"]) - ALLOWED_NAME_SOURCES
+    if invalid_name_sources:
+        raise ValueError(f"Invalid name sources: {sorted(invalid_name_sources)}")
+
+    generated = records["name_source"].eq("generated_from_subtype")
+    expected_names = (
+        "Unnamed "
+        + records.loc[generated, "feature_subtype"].astype("string").str.title()
+        + " - "
+        + records.loc[generated, "lga_name"].astype("string").str.title()
+        + " - "
+        + records.loc[generated, "source_record_id"].astype("string")
+    )
+
+    if not records.loc[generated, "display_name"].astype("string").eq(
+        expected_names
+    ).all():
+        raise ValueError("One or more generated names do not follow the rule.")
+
+    duplicate_columns = ["feature_subtype", "longitude", "latitude"]
+    if records.duplicated(duplicate_columns).any():
+        raise ValueError("Duplicate coordinate-subtype records were found.")
 
     print("Product rules passed.")
 

@@ -55,15 +55,16 @@ same-day snapshots are not overwritten.
 
 ### Wrangling
 
-Keeps records with a usable ID, Vicmap name and valid coordinates; applies the
+Keeps records with a usable ID, subtype and valid coordinates; applies the
 approved subtype categories; limits records to Melbourne, Melton and Monash;
-and writes one app-ready CSV.
+creates deterministic labels where Vicmap names are missing; removes exact
+coordinate-subtype duplicates; and writes one app-ready CSV.
 
 ### Validation
 
 Checks the CSV structure, required values, unique IDs, coordinates, categories,
-council coverage and spatial boundaries. Validation reports errors but does not
-change the product data.
+generated-name rules, coordinate-subtype duplicates, council coverage and
+spatial boundaries. Validation reports errors but does not change product data.
 
 ## Product output
 

@@ -25,6 +25,8 @@ The script confirms that:
 - longitude and latitude are numeric and valid;
 - every record has `decision = include`;
 - every record identifies `vicmap_foi` as its source;
+- each generated name follows the deterministic unnamed-label format;
+- no subtype is repeated at exactly the same coordinates;
 - only the seven approved activity categories are used;
 - Melbourne, Melton and Monash are all represented; and
 - each place falls inside its stated council boundary.
@@ -61,9 +63,10 @@ Vicmap validation completed successfully.
 
 ## Current result
 
-The current app-ready file contains 2,585 named places across Melbourne,
-Melton and Monash. It contains no missing required values or duplicate place
-IDs and passes all category, coordinate and spatial checks.
+The current app-ready file contains 3,237 places across Melbourne, Melton and
+Monash, including deterministic labels for 703 unnamed source records. It
+contains no missing required values, duplicate place IDs or duplicate
+coordinate-subtype rows and passes all naming, category and spatial checks.
 
 ## QA note
 

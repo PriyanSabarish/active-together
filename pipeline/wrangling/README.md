@@ -25,11 +25,22 @@ The script:
 
 1. loads the newest complete Vicmap snapshot;
 2. keeps the source fields required by the product;
-3. removes records without a usable ID, Vicmap name or valid coordinates;
+3. removes records without a usable ID, subtype or valid coordinates;
 4. keeps only subtypes marked `include` in the classification table;
 5. assigns locations to council boundaries;
 6. keeps Melbourne, Melton and Monash; and
-7. exports a stable 14-column CSV.
+7. keeps one record for each subtype at the same coordinates;
+8. creates a deterministic label when Vicmap has no name; and
+9. exports a stable 14-column CSV.
+
+Generated labels follow this format:
+
+```text
+Unnamed {Feature Subtype} - {Council} - {Source Record ID}
+```
+
+They are marked with `name_source = generated_from_subtype` and do not represent
+official facility names.
 
 ## Activity categories
 
@@ -48,8 +59,8 @@ data/processed/vicmap/vicmap_app_ready.csv
 ```
 
 This is the only Vicmap location table intended for the application. Each row
-represents one named location and contains its category, council, coordinates,
-source subtype and traceable Vicmap identifier.
+represents one source location and contains its display label, category,
+council, coordinates, source subtype and traceable Vicmap identifier.
 
 ## Run the script
 

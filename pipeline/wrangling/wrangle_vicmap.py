@@ -133,7 +133,7 @@ def clean_text(series):
 
 
 def prepare_places(places):
-    """Keep records with a usable ID, name and coordinates."""
+    """Keep records with a usable ID, subtype and coordinates."""
 
     places = places[list(RAW_COLUMNS)].copy()
 
@@ -148,12 +148,12 @@ def prepare_places(places):
 
     # Prefer the readable Vicmap label, then use the source name.
     places["place_name"] = places["name_label"].fillna(places["name"])
-    places["name_source"] = "vicmap_name"
+    places["name_source"] = pd.Series(pd.NA, index=places.index, dtype="string")
+    places.loc[places["name"].notna(), "name_source"] = "vicmap_name"
     places.loc[places["name_label"].notna(), "name_source"] = "vicmap_name_label"
 
     valid_records = (
         places["feature_id"].notna()
-        & places["place_name"].notna()
         & places["longitude"].between(-180, 180)
         & places["latitude"].between(-90, 90)
         & places["feature_type"].notna()
@@ -166,7 +166,6 @@ def prepare_places(places):
     places["source_record_id"] = places["feature_id"].astype("int64").astype("string")
     places["place_id"] = "vicmap_foi_" + places["source_record_id"]
     places["source_dataset"] = "vicmap_foi"
-    places["display_name"] = places["place_name"]
 
     print(f"Records removed for missing required data: {removed_count:,}")
 
@@ -260,6 +259,54 @@ def assign_council(places, boundaries):
     return pd.DataFrame(scoped.drop(columns=["geometry", "index_right"]))
 
 
+def remove_coordinate_duplicates(records):
+    """Keep one record for each subtype at the same coordinates."""
+
+    records = records.copy()
+    records["has_source_name"] = records["place_name"].notna()
+    records = records.sort_values(
+        [
+            "has_source_name",
+            "feature_subtype",
+            "longitude",
+            "latitude",
+            "source_record_id",
+        ],
+        ascending=[False, True, True, True, True],
+    )
+
+    duplicate_columns = ["feature_subtype", "longitude", "latitude"]
+    duplicate_count = int(records.duplicated(duplicate_columns).sum())
+    records = records.drop_duplicates(duplicate_columns, keep="first")
+    records = records.drop(columns="has_source_name")
+
+    print(f"Coordinate-subtype duplicates removed: {duplicate_count:,}")
+    return records
+
+
+def generate_missing_names(records):
+    """Create deterministic labels for unnamed Vicmap places."""
+
+    records = records.copy()
+    missing_name = records["place_name"].isna()
+
+    generated_names = (
+        "Unnamed "
+        + records.loc[missing_name, "feature_subtype"].str.title()
+        + " - "
+        + records.loc[missing_name, "lga_name"].str.title()
+        + " - "
+        + records.loc[missing_name, "source_record_id"]
+    )
+
+    records.loc[missing_name, "place_name"] = generated_names
+    records.loc[missing_name, "name_source"] = "generated_from_subtype"
+    records["display_name"] = records["place_name"]
+
+    print(f"Generated names for unnamed records: {int(missing_name.sum()):,}")
+    return records
+
+
 def build_output(records):
     """Select the stable fields supplied to the application."""
 
@@ -305,6 +352,8 @@ def main():
     rules = prepare_rules(rules)
     places = apply_category_rules(places, rules)
     places = assign_council(places, boundaries)
+    places = remove_coordinate_duplicates(places)
+    places = generate_missing_names(places)
 
     output = build_output(places)
     save_output(output)
