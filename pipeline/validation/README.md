@@ -105,7 +105,19 @@ When both reviews are complete:
 
 - matching decisions can be accepted directly;
 - disagreements and `unsure` records require final resolution; and
-- the agreed result can be saved as `vicmap_qa_results.csv`.
+- final decisions should be recorded in the `final_result`, `final_category`
+  and `resolution_notes` columns of the QA sample.
+
+### Current QA result
+
+The completed classification QA reviewed 152 sampled records. Of these, 151
+were confirmed as correctly classified and one was judged incorrect, producing
+an overall sample accuracy of 99.34%. The two initial reviewer disagreements
+were resolved, leaving no unresolved records.
+
+The complete methodology, category-level results, interpretation and
+limitations are documented in
+`data/validation/vicmap/vicmap_qa_report.md`.
 
 QA results measure classification quality. They do not automatically change
 the application CSV. If QA identifies a systematic subtype-classification
