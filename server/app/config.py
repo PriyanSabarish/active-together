@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     environment: Literal["local", "staging", "production"] = "local"
     debug: bool = True
 
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/active_together"
+    database_url: str = "postgresql+pg8000://postgres:postgres@localhost:5433/active_together"
 
     open_meteo_forecast_url: str = "https://api.open-meteo.com/v1/forecast"
     open_meteo_air_quality_url: str = "https://air-quality-api.open-meteo.com/v1/air-quality"
