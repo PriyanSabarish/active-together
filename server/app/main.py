@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PILOT_LGAS = {"Melbourne (C)", "Monash (C)", "Melton (C)"}
+PILOT_LGAS = {"Melbourne", "Monash", "Melton"}
 
 
 @app.get("/health")
@@ -55,30 +55,23 @@ async def create_recommendations(
     req: RecommendationRequest,
     db: Session = Depends(get_db),
 ):
-    # A13: Precision guard
     lat = round(req.latitude, 4)
     lon = round(req.longitude, 4)
 
-    # A15: Input validation
     if req.radius_km not in (3, 5, 10):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="radius_km must be 3, 5, or 10",
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="radius_km must be 3, 5, or 10")
 
     if not (20 <= req.duration_min <= 120):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="duration_min must be between 20 and 120",
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="duration_min must be between 20 and 120")
 
-    # A4 & A14: Fetch places from DB
     try:
         candidates = fetch_candidate_places(db, lat=lat, lon=lon, radius_km=float(req.radius_km))
-    except Exception:
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Places dataset currently unavailable",
+            detail=f"Places dataset currently unavailable: {e}",
         )
 
     # A5: Pilot boundary check

@@ -6,21 +6,21 @@ from app.models import ActivityCategory, Place
 
 PLACES_QUERY = text("""
     SELECT
-        place_id,
-        display_name,
-        activity_category,
-        lga_name,
-        ST_Y(geom::geometry) AS latitude,
-        ST_X(geom::geometry) AS longitude,
-        ST_Distance(geom, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography) AS distance_m,
-        classification_confidence
-    FROM places
-    WHERE ST_DWithin(
-        geom,
-        ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
-        :radius_m
-    )
-    ORDER BY distance_m ASC;
+    place_id,
+    display_name,
+    activity_category,
+    lga_name,
+    ST_Y(location::geometry) AS latitude,
+    ST_X(location::geometry) AS longitude,
+    ST_Distance(location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography) AS distance_m,
+    classification_confidence
+   FROM places
+WHERE ST_DWithin(
+    location,
+    ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
+    :radius_m
+)
+ORDER BY distance_m ASC;
 """)
 
 
@@ -42,7 +42,7 @@ def fetch_candidate_places(db: Session, lat: float, lon: float, radius_km: float
             latitude=round(r["latitude"], settings.coordinate_decimal_places),
             longitude=round(r["longitude"], settings.coordinate_decimal_places),
             distance_m=float(r["distance_m"]),
-            classification_confidence=float(r["classification_confidence"]),
+            classification_confidence=str(r["classification_confidence"]),
         )
         for r in rows
     ]
