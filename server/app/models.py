@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from pydantic import BaseModel, Field
+from typing import Optional
 
 # Domain bounds & API constraints
 ALLOWED_RADIUS_KM = (3, 5, 10)
@@ -17,6 +19,11 @@ DURATION_BUCKETS = (20, 40, 60)
 
 # Enum - fixed variables 
 
+class RecommendationRequest(BaseModel):
+    latitude: float = Field(..., description="User latitude")
+    longitude: float = Field(..., description="User longitude")
+    radius_km: Optional[float] = Field(5.0, description="Search radius in kilometers")
+    duration_min: Optional[int] = Field(60, description="Activity duration in minutes")
 
 class ActivityCategory(str, Enum):
     """seven categoris produced by Vicmap"""
