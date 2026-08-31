@@ -10,7 +10,8 @@ from typing import Any, Literal
 DataMode = Literal["live", "cached"]
 EnvironmentTier = Literal["normal", "deprioritised"]
 
-
+#它表示一个天气查询地点，也就是三个 LGA 的代表点之一。
+#frozen=True 表示创建后不能随意修改，避免请求过程中坐标被意外改变。
 @dataclass(frozen=True, slots=True)
 class Location:
     lga_code: str
@@ -18,8 +19,7 @@ class Location:
     display_name: str
     latitude: float
     longitude: float
-
-
+#这是在线和离线模式共用的标准化数据：
 @dataclass(frozen=True, slots=True)
 class EnvironmentContext:
     lga_code: str
@@ -57,7 +57,7 @@ class EnvironmentContext:
             parsed[key] = datetime.fromisoformat(parsed[key])
         return cls(**parsed)
 
-
+#这是环境规则判断结果：
 @dataclass(frozen=True, slots=True)
 class EnvironmentAssessment:
     tier: EnvironmentTier
@@ -68,7 +68,7 @@ class EnvironmentAssessment:
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
-
+#最终给后端的对象：
 @dataclass(frozen=True, slots=True)
 class EnvironmentResult:
     context: EnvironmentContext

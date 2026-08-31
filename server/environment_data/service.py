@@ -38,7 +38,7 @@ class EnvironmentService:
         contexts = self._normalize_with_optional_air(weather, air, fetched_at, "cached")
         self.repository.write_offline_bundle(contexts)
         return len(contexts)
-
+ #entrance
     def get_context(self, site_name: str, requested_at: datetime) -> EnvironmentResult:
         location = self.locations.get(site_name)
         if location is None:

@@ -11,6 +11,7 @@ PM25_THRESHOLD_UGM3 = 25.0
 PM10_THRESHOLD_UGM3 = 80.0
 UV_REMINDER_THRESHOLD = 3.0
 
+#check environment
 
 def assess_environment(context: EnvironmentContext) -> EnvironmentAssessment:
     warnings: list[str] = []
