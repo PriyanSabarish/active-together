@@ -1,11 +1,14 @@
 """
 Recommendation pipeline orchestration.
 
-Combines duration bucketing, environmental threshold assessment, eligibility
-filtering, and candidate ranking to produce activity recommendation combos.
+Evaluates activity duration, environmental conditions, and place eligibility
+to generate ranked activity recommendations or provide fallback guidance when
+no matching candidates are found.
 """
 
 from __future__ import annotations
+
+from typing import Final
 
 from app.models import (
     Combo,
@@ -19,6 +22,20 @@ from app.recommendation.duration import match_bucket
 from app.recommendation.eligibility import MIN_CONFIDENCE, filter_eligible
 from app.recommendation.ordering import order_candidates
 from app.recommendation.tier import assess
+
+PREFERENCES_AVAILABLE: Final[bool] = False
+
+ZERO_RESULT_LEAD: Final[str] = "No activities match this search."
+SUGGEST_RADIUS: Final[str] = "Try a larger search radius."
+SUGGEST_TIME: Final[str] = "Try a different time."
+SUGGEST_PREFERENCES: Final[str] = "Review your activity preferences."
+
+
+def build_zero_result_message() -> str:
+    suggestions = [SUGGEST_RADIUS, SUGGEST_TIME]
+    if PREFERENCES_AVAILABLE:
+        suggestions.append(SUGGEST_PREFERENCES)
+    return f"{ZERO_RESULT_LEAD} {' '.join(suggestions)}"
 
 
 def recommend(
@@ -38,6 +55,13 @@ def recommend(
         min_confidence=min_confidence,
     )
     ordered = order_candidates(eligible, tier)
+
+    if not ordered:
+        return Recommendation(
+            status=RecommendationStatus.ZERO_RESULTS,
+            combos=(),
+            message=build_zero_result_message(),
+        )
 
     combos = tuple(
         Combo(
