@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -6,8 +6,9 @@ from app.config import settings
 from app.data.database import get_db
 from app.data.places import fetch_candidate_places
 from app.data.weather import fetch_weather_context
-from app.models import Context, Place
+from app.models import Context, Place, RecommendationRequest
 
+# from app.recommendation import recommend
 
 app = FastAPI(title=settings.app_name, debug=settings.debug)
 
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+PILOT_LGAS = {"Melbourne (C)", "Monash (C)", "Melton (C)"}
 
 
 @app.get("/health")
@@ -45,3 +48,56 @@ async def get_context(
     lon: float = Query(..., ge=-180, le=180),
 ):
     return await fetch_weather_context(lat=lat, lon=lon)
+
+
+@app.post("/recommendations")
+async def create_recommendations(
+    req: RecommendationRequest,
+    db: Session = Depends(get_db),
+):
+    # A13: Precision guard
+    lat = round(req.latitude, 4)
+    lon = round(req.longitude, 4)
+
+    # A15: Input validation
+    if req.radius_km not in (3, 5, 10):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="radius_km must be 3, 5, or 10",
+        )
+
+    if not (20 <= req.duration_min <= 120):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="duration_min must be between 20 and 120",
+        )
+
+    # A4 & A14: Fetch places from DB
+    try:
+        candidates = fetch_candidate_places(db, lat=lat, lon=lon, radius_km=float(req.radius_km))
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Places dataset currently unavailable",
+        )
+
+    # A5: Pilot boundary check
+    if not candidates or not any(p.lga_name in PILOT_LGAS for p in candidates):
+        return {
+            "status": "out_of_bounds",
+            "message": "Selected location is outside the active pilot area.",
+            "combos": [],
+        }
+
+    # A6 & A7: Weather context lookup
+    context = await fetch_weather_context(lat=lat, lon=lon)
+
+    # A12: Handover to Backend B
+    # return recommend(candidates=candidates, context=context, duration_min=req.duration_min)
+
+    return {
+        "status": "ok",
+        "candidates_found": len(candidates),
+        "weather_available": context.available,
+        "sample": candidates[:3],
+    }
