@@ -1,0 +1,32 @@
+{
+  "precip_prob": {
+    "value": 0.6,
+    "effect": "deprioritise",
+    "message": "Rain is likely at this time.",
+    "source": "Precipitation probability >= 60%"
+  },
+  "wind_gust_kmh": {
+    "value": 40.0,
+    "effect": "deprioritise",
+    "message": "Strong wind gusts are forecast.",
+    "source": "Wind gusts >= 40 km/h"
+  },
+  "pm25": {
+    "value": 25.0,
+    "effect": "deprioritise",
+    "message": "Fine particle levels are elevated.",
+    "source": "PM2.5 >= 25 ug/m3"
+  },
+  "pm10": {
+    "value": 80.0,
+    "effect": "deprioritise",
+    "message": "Coarse particle levels are elevated.",
+    "source": "PM10 >= 80 ug/m3"
+  },
+  "uv_index": {
+    "value": 3.0,
+    "effect": "remind",
+    "message": "UV is elevated. Sun protection is suggested.",
+    "source": "UV index >= 3.0"
+  }
+}
