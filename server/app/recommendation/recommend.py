@@ -1,14 +1,18 @@
 """
-Recommendation pipeline orchestration.
+    recommend(candidates, context, duration_min) -> Recommendation
+    
+assembles the pieces built so far: bucket the duration (B2), assess the
+weather (B3, B4), filter for eligibility (B5), order and cap (B6), and return
+either combos or a zero-result message (B10).
 
-Evaluates activity duration, environmental conditions, and place eligibility
-to generate ranked activity recommendations or provide fallback guidance when
-no matching candidates are found.
+On radius_km: Backend A's get_candidates already filters by radius, so it
+defaults to None and the radius check is skipped. Passing it enables B5's
+defensive re-check.
 """
 
 from __future__ import annotations
 
-from typing import Final
+from typing import Any
 
 from app.models import (
     Combo,
@@ -20,22 +24,73 @@ from app.models import (
 from app.recommendation.combos import find_combo
 from app.recommendation.duration import match_bucket
 from app.recommendation.eligibility import MIN_CONFIDENCE, filter_eligible
+from app.recommendation.explanation import build_explanation
 from app.recommendation.ordering import order_candidates
 from app.recommendation.tier import assess
 
-PREFERENCES_AVAILABLE: Final[bool] = False
+# Story 3.1: the zero-result message suggests a larger radius, a different
+# time, or reviewing preferences.
+#
+# Preference filtering is Epic 4, iteration 2. Until it exists there is no
+# preferences screen for a parent to review, so suggesting it would be dead
+# advice. The suggestion is written and gated rather than omitted, so
+# iteration 2 turns it on by flipping one flag.
+PREFERENCES_AVAILABLE = False
 
-ZERO_RESULT_LEAD: Final[str] = "No activities match this search."
-SUGGEST_RADIUS: Final[str] = "Try a larger search radius."
-SUGGEST_TIME: Final[str] = "Try a different time."
-SUGGEST_PREFERENCES: Final[str] = "Review your activity preferences."
+SUGGEST_RADIUS = "Try a larger search radius."
+SUGGEST_TIME = "Try a different time."
+SUGGEST_PREFERENCES = "Review your activity preferences."
+
+# No candidates were passed in at all, or none survived eligibility. The
+# distinction is deliberately not surfaced: story 3.1 requires that excluded
+# records are not shown, and explaining why one was excluded surfaces it.
+ZERO_RESULT_LEAD = "No activities match this search."
 
 
-def build_zero_result_message() -> str:
+def zero_result_message() -> str:
     suggestions = [SUGGEST_RADIUS, SUGGEST_TIME]
     if PREFERENCES_AVAILABLE:
         suggestions.append(SUGGEST_PREFERENCES)
-    return f"{ZERO_RESULT_LEAD} {' '.join(suggestions)}"
+    return " ".join([ZERO_RESULT_LEAD, *suggestions])
+
+
+def _build_combo(
+    place: Place,
+    bucket: int,
+    duration_min: int,
+    tier: Any,
+    summary: str,
+    timestamp: str | None,
+) -> Combo:
+    """Assemble one combo card payload (B7), story 3.2.
+
+    Every field is either a verified value from Backend A or a value this
+    module derived and can account for. Opening hours, cost, accessibility and
+    facilities are absent because Place does not carry them and nothing here
+    infers them (B9, story 1.2).
+    """
+    template = find_combo(place.activity_category, bucket)
+    if template is None:
+        raise ValueError(
+            f"Missing ComboTemplate for category '{place.activity_category}' and bucket {bucket}."
+        )
+
+    return Combo(
+        place=place,
+        activity_type=template.activity_type,
+        entered_duration_min=duration_min,
+        duration_bucket=bucket,
+        combo_template=template.title,
+        tier=tier,
+        environmental_summary=summary,
+        explanation=build_explanation(
+            distance_m=place.distance_m,
+            entered_duration_min=duration_min,
+            bucket=bucket,
+            summary=summary,
+            timestamp=timestamp,
+        ),
+    )
 
 
 def recommend(
@@ -43,6 +98,7 @@ def recommend(
     context: Context,
     duration_min: int,
     radius_km: int | None = None,
+    timestamp: str | None = None,
     min_confidence: float = MIN_CONFIDENCE,
 ) -> Recommendation:
     bucket = match_bucket(duration_min)
@@ -60,21 +116,14 @@ def recommend(
         return Recommendation(
             status=RecommendationStatus.ZERO_RESULTS,
             combos=(),
-            message=build_zero_result_message(),
+            message=zero_result_message(),
         )
 
     combos = tuple(
-        Combo(
-            place=place,
-            activity_type=place.activity_category.value,
-            entered_duration_min=duration_min,
-            duration_bucket=bucket,
-            combo_template=find_combo(place.activity_category, bucket) or "",
-            tier=tier,
-            environmental_summary=summary,
-            explanation="",
-        )
+        _build_combo(place, bucket, duration_min, tier, summary, timestamp)
         for place in ordered
     )
 
+    # Fewer than three returns what exists — the cap in order_candidates
+    # truncates but never pads (B11).
     return Recommendation(status=RecommendationStatus.OK, combos=combos)
