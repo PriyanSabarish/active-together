@@ -1,0 +1,86 @@
+{
+  "playground.20": {
+    "template_id": "playground_20",
+    "title": "Quick playground circuit"
+  },
+  "playground.40": {
+    "template_id": "playground_40",
+    "title": "Playground explore and climb"
+  },
+  "playground.60": {
+    "template_id": "playground_60",
+    "title": "Extended playground session"
+  },
+  "park_and_garden.20": {
+    "template_id": "park_and_garden_20",
+    "title": "Short park walk"
+  },
+  "park_and_garden.40": {
+    "template_id": "park_and_garden_40",
+    "title": "Walk and explore"
+  },
+  "park_and_garden.60": {
+    "template_id": "park_and_garden_60",
+    "title": "Long park explore"
+  },
+  "sports_ground.20": {
+    "template_id": "sports_ground_20",
+    "title": "Quick ball games"
+  },
+  "sports_ground.40": {
+    "template_id": "sports_ground_40",
+    "title": "Running and ball games"
+  },
+  "sports_ground.60": {
+    "template_id": "sports_ground_60",
+    "title": "Extended field session"
+  },
+  "court.20": {
+    "template_id": "court_20",
+    "title": "Short court practice"
+  },
+  "court.40": {
+    "template_id": "court_40",
+    "title": "Court games"
+  },
+  "court.60": {
+    "template_id": "court_60",
+    "title": "Extended court session"
+  },
+  "trail_access.20": {
+    "template_id": "trail_access_20",
+    "title": "Short trail out and back"
+  },
+  "trail_access.40": {
+    "template_id": "trail_access_40",
+    "title": "Trail walk"
+  },
+  "trail_access.60": {
+    "template_id": "trail_access_60",
+    "title": "Long trail walk"
+  },
+  "skate_bmx.20": {
+    "template_id": "skate_bmx_20",
+    "title": "Quick skate session"
+  },
+  "skate_bmx.40": {
+    "template_id": "skate_bmx_40",
+    "title": "Skate practice"
+  },
+  "skate_bmx.60": {
+    "template_id": "skate_bmx_60",
+    "title": "Extended skate session"
+  },
+  "picnic_day_use.20": {
+    "template_id": "picnic_day_use_20",
+    "title": "Quick snack stop"
+  },
+  "picnic_day_use.40": {
+    "template_id": "picnic_day_use_40",
+    "title": "Picnic and play"
+  },
+  "picnic_day_use.60": {
+    "template_id": "picnic_day_use_60",
+    "title": "Long picnic visit"
+  }
+}
