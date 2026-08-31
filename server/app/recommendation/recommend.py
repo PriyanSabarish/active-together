@@ -1,22 +1,13 @@
 """
-recommend() — Backend B's side of the seam (tasks B6, B10, B11).
-
     recommend(candidates, context, duration_min) -> Recommendation
-
-Assembles the pieces built so far: bucket the duration (B2), assess the
+    
+assembles the pieces built so far: bucket the duration (B2), assess the
 weather (B3, B4), filter for eligibility (B5), order and cap (B6), and return
 either combos or a zero-result message (B10).
 
-Not finished yet:
-    B8   explanation text, currently empty
-    B9   anti-invention rules over that text
-
-SEAM NOTE: radius_km is not in the agreed signature. Backend A's
-get_candidates already filters by radius, so it defaults to None and the
-radius check is skipped. Passing it enables B5's defensive re-check. This is
-an added optional keyword rather than a change to the agreed positional call,
-but it should be confirmed with the Backend A owner before the strands meet
-at A12.
+On radius_km: Backend A's get_candidates already filters by radius, so it
+defaults to None and the radius check is skipped. Passing it enables B5's
+defensive re-check.
 """
 
 from __future__ import annotations
@@ -33,6 +24,7 @@ from app.models import (
 from app.recommendation.combos import find_combo
 from app.recommendation.duration import match_bucket
 from app.recommendation.eligibility import MIN_CONFIDENCE, filter_eligible
+from app.recommendation.explanation import build_explanation
 from app.recommendation.ordering import order_candidates
 from app.recommendation.tier import assess
 
@@ -68,6 +60,7 @@ def _build_combo(
     duration_min: int,
     tier: Any,
     summary: str,
+    timestamp: str | None,
 ) -> Combo:
     """Assemble one combo card payload (B7), story 3.2.
 
@@ -90,7 +83,13 @@ def _build_combo(
         combo_template=template.title,
         tier=tier,
         environmental_summary=summary,
-        explanation="",  # B8
+        explanation=build_explanation(
+            distance_m=place.distance_m,
+            entered_duration_min=duration_min,
+            bucket=bucket,
+            summary=summary,
+            timestamp=timestamp,
+        ),
     )
 
 
@@ -99,6 +98,7 @@ def recommend(
     context: Context,
     duration_min: int,
     radius_km: int | None = None,
+    timestamp: str | None = None,
     min_confidence: float = MIN_CONFIDENCE,
 ) -> Recommendation:
     bucket = match_bucket(duration_min)
@@ -120,7 +120,7 @@ def recommend(
         )
 
     combos = tuple(
-        _build_combo(place, bucket, duration_min, tier, summary)
+        _build_combo(place, bucket, duration_min, tier, summary, timestamp)
         for place in ordered
     )
 
