@@ -19,13 +19,13 @@ MIN_CONFIDENCE: Final[float] = 0.0
 
 def is_eligible(
     place: Place,
-    radius_km: int,
+    radius_km: int | None,
     bucket: int,
     min_confidence: float = MIN_CONFIDENCE,
 ) -> bool:
     if place.lga_name not in PILOT_LGAS:
         return False
-    if place.distance_m > radius_km * 1000:
+    if radius_km is not None and place.distance_m > radius_km * 1000:
         return False
     if place.classification_confidence < min_confidence:
         return False
@@ -34,7 +34,7 @@ def is_eligible(
 
 def filter_eligible(
     places: tuple[Place, ...],
-    radius_km: int,
+    radius_km: int | None,
     duration_min: int,
     min_confidence: float = MIN_CONFIDENCE,
 ) -> tuple[Place, ...]:
