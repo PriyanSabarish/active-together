@@ -8,7 +8,7 @@ from app.data.places import fetch_candidate_places
 from app.data.weather import fetch_weather_context
 from app.models import Context, Place, RecommendationRequest
 
-# from app.recommendation import recommend
+from app.recommendation.recommend import recommend
 
 app = FastAPI(title=settings.app_name, debug=settings.debug)
 
@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PILOT_LGAS = {"Melbourne", "Monash", "Melton"}
+PILOT_LGAS = {"melbourne", "monash", "melton"}
 
 
 @app.get("/health")
@@ -75,7 +75,7 @@ async def create_recommendations(
         )
 
     # A5: Pilot boundary check
-    if not candidates or not any(p.lga_name in PILOT_LGAS for p in candidates):
+    if not candidates or not any(p.lga_name.lower() in PILOT_LGAS for p in candidates):
         return {
             "status": "out_of_bounds",
             "message": "Selected location is outside the active pilot area.",
@@ -86,11 +86,4 @@ async def create_recommendations(
     context = await fetch_weather_context(lat=lat, lon=lon)
 
     # A12: Handover to Backend B
-    # return recommend(candidates=candidates, context=context, duration_min=req.duration_min)
-
-    return {
-        "status": "ok",
-        "candidates_found": len(candidates),
-        "weather_available": context.available,
-        "sample": candidates[:3],
-    }
+    return recommend(candidates=candidates, context=context, duration_min=req.duration_min)

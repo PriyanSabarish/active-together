@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE IF NOT EXISTS place (
+CREATE TABLE IF NOT EXISTS places (
     place_id text PRIMARY KEY,
     display_name text NOT NULL,
     activity_category text NOT NULL,
@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS place (
     location geography(Point, 4326) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS place_location_idx ON place USING GIST (location);
-CREATE INDEX IF NOT EXISTS place_lga_idx ON place (lga_name);
-CREATE INDEX IF NOT EXISTS place_category_idx ON place (activity_category);
+CREATE INDEX IF NOT EXISTS place_location_idx ON places USING GIST (location);
+CREATE INDEX IF NOT EXISTS place_lga_idx ON places (lga_name);
+CREATE INDEX IF NOT EXISTS place_category_idx ON places (activity_category);
