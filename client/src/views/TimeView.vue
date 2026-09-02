@@ -2,44 +2,10 @@
   <AppHeader :step="2" back />
 
   <div class="scroll-area">
-  <h1>When are you free</h1>
-  <p class="subtitle">Limited to today's forecast window.</p>
+  <h1>How long do you have</h1>
+  <p class="subtitle">Recommendations use the current forecast for your starting point.</p>
 
-  <div class="mode-row">
-    <button class="mode-btn" :class="{ on: store.timeMode === 'now' }" @click="store.timeMode = 'now'">Now</button>
-    <button class="mode-btn" :class="{ on: store.timeMode === 'pick' }" @click="store.timeMode = 'pick'">Pick a time</button>
-  </div>
-
-  <template v-if="store.timeMode === 'pick'">
-    <div class="select-field">
-      <svg width="16" height="16" viewBox="0 0 17 17">
-        <rect x="1" y="3" width="15" height="13" rx="2" fill="none" stroke="#5F5E5A" stroke-width="1.5" />
-        <line x1="1" y1="7" x2="16" y2="7" stroke="#5F5E5A" stroke-width="1.5" />
-        <line x1="5" y1="1" x2="5" y2="4" stroke="#5F5E5A" stroke-width="1.5" />
-        <line x1="12" y1="1" x2="12" y2="4" stroke="#5F5E5A" stroke-width="1.5" />
-      </svg>
-      <select v-model="day">
-        <option>Today</option>
-      </select>
-      <svg class="chev" width="12" height="8" viewBox="0 0 14 8"><path d="M1 1 l6 6 l6 -6" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-    </div>
-
-    <div class="select-field">
-      <svg width="16" height="16" viewBox="0 0 17 17">
-        <circle cx="8.5" cy="8.5" r="7.5" fill="none" stroke="#5F5E5A" stroke-width="1.5" />
-        <line x1="8.5" y1="8.5" x2="8.5" y2="3.5" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" />
-        <line x1="8.5" y1="8.5" x2="12.5" y2="10.5" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-      <select v-model.number="store.hour">
-        <option v-for="f in FORECAST" :key="f.h" :value="f.h">{{ f.label }}</option>
-      </select>
-      <svg class="chev" width="12" height="8" viewBox="0 0 14 8"><path d="M1 1 l6 6 l6 -6" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-    </div>
-  </template>
-
-  <hr class="divider" />
-
-  <p class="section-label">On-site time (not including travel)</p>
+  <p class="section-label" style="margin-top: 18px">On-site time (not including travel)</p>
   <div class="slider-wrap">
     <input
       v-model.number="store.durationMin"
@@ -64,31 +30,53 @@
     </svg>
     <div>
       <p class="plan-title">Matched to a {{ store.planMin }}-minute plan</p>
-      <p class="plan-note">Ties at 30 or 50 min round to the lower plan.</p>
+      <p class="plan-note">Plans come in 20, 40 and 60 minutes. Ties at 30 or 50 min round to the lower plan.</p>
     </div>
   </div>
 
   <hr class="divider" />
 
-  <p class="section-label">{{ timeCaption }} near {{ store.locationLabel }}</p>
+  <p class="section-label">Right now near {{ store.locationLabel }}</p>
   <div class="weather-card">
-    <svg v-if="wx.rain < 25" width="44" height="44" viewBox="0 0 44 44">
-      <circle cx="22" cy="22" r="12" fill="none" stroke="#BA7517" stroke-width="2.5" />
-      <line x1="22" y1="3" x2="22" y2="7" stroke="#BA7517" stroke-width="2" />
-      <line x1="22" y1="37" x2="22" y2="41" stroke="#BA7517" stroke-width="2" />
-      <line x1="3" y1="22" x2="7" y2="22" stroke="#BA7517" stroke-width="2" />
-      <line x1="37" y1="22" x2="41" y2="22" stroke="#BA7517" stroke-width="2" />
-    </svg>
-    <svg v-else width="44" height="44" viewBox="0 0 44 44">
-      <path d="M12 26 a8 8 0 1 1 2 -15 a10 10 0 0 1 19 3 a7 7 0 0 1 -2 12 Z" fill="none" stroke="#5F5E5A" stroke-width="2.5" stroke-linejoin="round" />
-      <line x1="16" y1="32" x2="14" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-      <line x1="24" y1="32" x2="22" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-      <line x1="32" y1="32" x2="30" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-    </svg>
-    <div>
-      <p class="weather-main">{{ wx.temp }}°C, {{ wx.desc }}</p>
-      <p class="weather-sub">{{ rainLabel }} · UV {{ wx.uv }} · {{ windLabel }}</p>
-    </div>
+    <template v-if="store.contextLoading">
+      <span class="wx-spinner" />
+      <div>
+        <p class="weather-main">Checking the forecast…</p>
+        <p class="weather-sub">Live data from Open-Meteo</p>
+      </div>
+    </template>
+
+    <template v-else-if="!wx || !wx.available">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="17" fill="none" stroke="#B4B2A9" stroke-width="2.5" />
+        <path d="M16 17 a6 6 0 1 1 8.5 5.5 c-2 1 -2.5 2.2 -2.5 4" fill="none" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="22" cy="31.5" r="1.8" fill="#B4B2A9" />
+      </svg>
+      <div>
+        <p class="weather-main">Weather unavailable</p>
+        <p class="weather-sub">We'll still show places; conditions will be marked unavailable.</p>
+      </div>
+    </template>
+
+    <template v-else>
+      <svg v-if="rainPct == null || rainPct < 25" width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="12" fill="none" stroke="#BA7517" stroke-width="2.5" />
+        <line x1="22" y1="3" x2="22" y2="7" stroke="#BA7517" stroke-width="2" />
+        <line x1="22" y1="37" x2="22" y2="41" stroke="#BA7517" stroke-width="2" />
+        <line x1="3" y1="22" x2="7" y2="22" stroke="#BA7517" stroke-width="2" />
+        <line x1="37" y1="22" x2="41" y2="22" stroke="#BA7517" stroke-width="2" />
+      </svg>
+      <svg v-else width="44" height="44" viewBox="0 0 44 44">
+        <path d="M12 26 a8 8 0 1 1 2 -15 a10 10 0 0 1 19 3 a7 7 0 0 1 -2 12 Z" fill="none" stroke="#5F5E5A" stroke-width="2.5" stroke-linejoin="round" />
+        <line x1="16" y1="32" x2="14" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
+        <line x1="24" y1="32" x2="22" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
+        <line x1="32" y1="32" x2="30" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <div>
+        <p class="weather-main">{{ weatherMain }}</p>
+        <p class="weather-sub">{{ weatherSub }}</p>
+      </div>
+    </template>
   </div>
   </div>
 
@@ -99,31 +87,35 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import { useSearchStore, FORECAST } from '../store'
+import { useSearchStore, precipPercent } from '../store'
 
 const store = useSearchStore()
 const router = useRouter()
-const day = ref('Today')
+
+onMounted(() => {
+  if (store.hasLocation) store.loadContext()
+})
 
 const wx = computed(() => store.weather)
 
-const timeCaption = computed(() =>
-  store.timeMode === 'now' ? 'Right now' : `At ${wx.value.label} today`
-)
+const rainPct = computed(() => precipPercent(wx.value?.precip_prob))
 
-const rainLabel = computed(() => {
-  if (wx.value.rain >= 50) return 'High rain chance'
-  if (wx.value.rain >= 25) return 'Medium rain chance'
-  return 'Low rain chance'
+const weatherMain = computed(() => {
+  const parts = []
+  if (wx.value?.temp_c != null) parts.push(`${Math.round(wx.value.temp_c)}°C`)
+  if (rainPct.value != null) parts.push(`${rainPct.value}% chance of rain`)
+  return parts.length ? parts.join(', ') : 'Conditions available'
 })
 
-const windLabel = computed(() => {
-  if (wx.value.wind >= 28) return 'strong wind'
-  if (wx.value.wind >= 20) return 'fresh wind'
-  return 'light wind'
+const weatherSub = computed(() => {
+  const parts = []
+  if (wx.value?.uv_index != null) parts.push(`UV ${wx.value.uv_index}`)
+  if (wx.value?.wind_gust_kmh != null) parts.push(`gusts ${Math.round(wx.value.wind_gust_kmh)} km/h`)
+  if (wx.value?.pm25 != null) parts.push(`PM2.5 ${Math.round(wx.value.pm25)}`)
+  return parts.length ? parts.join(' · ') : 'Some readings are missing for this time'
 })
 
 function findActivities() {
@@ -272,6 +264,19 @@ function findActivities() {
   align-items: center;
   gap: 18px;
 }
+
+.wx-spinner {
+  width: 26px;
+  height: 26px;
+  margin: 9px;
+  border: 2.5px solid var(--green-dark);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .weather-main { font-size: 14.5px; font-weight: 500; }
 .weather-sub { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
