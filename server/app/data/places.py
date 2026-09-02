@@ -41,7 +41,7 @@ def fetch_candidate_places(db: Session, lat: float, lon: float, radius_km: float
             lga_name=r["lga_name"],
             latitude=round(r["latitude"], settings.coordinate_decimal_places),
             longitude=round(r["longitude"], settings.coordinate_decimal_places),
-            distance_m=float(r["distance_m"]),
+            distance_m=int(round(r["distance_m"])),
             classification_confidence=str(r["classification_confidence"]),
         )
         for r in rows
