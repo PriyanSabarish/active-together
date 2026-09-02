@@ -9,3 +9,7 @@ venv/
 .cache/
 data/raw/
 *.db
+
+# generated
+test/coverage/
+.DS_Store
