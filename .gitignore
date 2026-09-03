@@ -7,9 +7,59 @@ __pycache__/
 .venv/
 venv/
 .cache/
-data/raw/
-*.db
+# Ignore raw datasets by default
+data/raw/*
 
-# generated
-test/coverage/
+# Keep the fixed LGA boundary required by the Vicmap pipeline
+!data/raw/boundaries/
+data/raw/boundaries/*
+!data/raw/boundaries/vicmap_lga_2026-08-26.geojson
+*.db
+# Operating system files
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files and logs
+*.tmp
+*.temp
+*.bak
+*.log
+*~
+tmp/
+temp/
+logs/
+
+# Python and Jupyter local state
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local IDE configuration
+.idea/
+.vscode/*.code-workspace
+
+# Local AI tool metadata and caches
+.cursor/
+.claude/
+.windsurf/
+.aider*
+# RStudio local files
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+# Generated Greater Melbourne master outputs
+data/processed/vicmap/vicmap_*_greater_melbourne.csv
+
+# Generated Vicmap QA and review working files
+data/validation/vicmap/vicmap_app_ready_qa_sample.csv
+data/validation/vicmap/vicmap_product_review_candidates.csv
+data/validation/vicmap/*_reviewed.xlsx
+
+# Legacy Vicmap outputs kept locally for historical reference
+data/archive/
+
+# generated test output
+test/coverage/
