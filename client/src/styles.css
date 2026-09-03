@@ -172,3 +172,4 @@ h1 {
 
 .badge.good { background: var(--green-light); color: var(--green-dark); }
 .badge.warn { background: var(--amber-light); color: var(--amber); }
+.badge.muted { background: var(--paper); color: var(--ink-3); }

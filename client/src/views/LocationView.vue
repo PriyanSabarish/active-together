@@ -13,6 +13,7 @@
     <span v-else class="spinner" />
     {{ locating ? 'Locating…' : store.useMyLocation ? 'Using your location' : 'Use my location' }}
   </button>
+  <p v-if="locationError" class="location-error">{{ locationError }}</p>
 
   <div class="or-row"><span class="or-line" /><span class="or-text">or</span><span class="or-line" /></div>
 
@@ -93,6 +94,7 @@ const router = useRouter()
 const query = ref(store.suburb)
 const open = ref(false)
 const locating = ref(false)
+const locationError = ref('')
 
 const suggestions = computed(() => {
   const q = query.value.trim().toLowerCase()
@@ -100,7 +102,7 @@ const suggestions = computed(() => {
   return SUBURBS.filter((s) => s.toLowerCase().startsWith(q) && s !== query.value).slice(0, 5)
 })
 
-const ready = computed(() => store.useMyLocation || SUBURBS.includes(store.suburb))
+const ready = computed(() => store.hasLocation)
 
 const pointLabel = computed(() =>
   store.useMyLocation ? 'your location' : store.suburb ? store.suburb : 'your point'
@@ -108,9 +110,14 @@ const pointLabel = computed(() =>
 
 const ringRadius = computed(() => ({ 3: 34, 5: 48, 10: 56 }[store.radiusKm]))
 
+function matchSuburb(text) {
+  const t = text.trim().toLowerCase()
+  return SUBURBS.find((s) => s.toLowerCase() === t) ?? ''
+}
+
 function onInput() {
   store.useMyLocation = false
-  store.suburb = SUBURBS.includes(query.value.trim()) ? query.value.trim() : ''
+  store.suburb = matchSuburb(query.value)
   open.value = true
 }
 
@@ -123,19 +130,35 @@ function pickSuburb(s) {
   query.value = s
   store.suburb = s
   store.useMyLocation = false
+  locationError.value = ''
   open.value = false
 }
 
 function pickMyLocation() {
   if (locating.value) return
+  locationError.value = ''
+  if (!('geolocation' in navigator)) {
+    locationError.value = 'Location is not available in this browser. Enter a suburb instead.'
+    return
+  }
   locating.value = true
   query.value = ''
   store.suburb = ''
-  // Demo stand-in for the browser geolocation flow.
-  setTimeout(() => {
-    locating.value = false
-    store.useMyLocation = true
-  }, 900)
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      locating.value = false
+      store.setMyLocation({ latitude: pos.coords.latitude, longitude: pos.coords.longitude })
+    },
+    (err) => {
+      locating.value = false
+      store.useMyLocation = false
+      locationError.value =
+        err.code === err.PERMISSION_DENIED
+          ? 'Location permission was denied. Enter a suburb instead.'
+          : 'We could not get your location. Enter a suburb instead.'
+    },
+    { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+  )
 }
 
 function next() {
@@ -164,6 +187,12 @@ function next() {
 }
 
 .use-location.active { outline: 2px solid var(--green); }
+
+.location-error {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--amber);
+}
 
 .spinner {
   width: 14px;

@@ -1,175 +1,184 @@
 import { defineStore } from 'pinia'
+import { postRecommendations, getContext } from './api'
 
 // ---------------------------------------------------------------------------
-// All data below is FABRICATED for the demo. When the FastAPI backend is
-// ready, replace fetchRecommendations() with a real call to
-// POST /api/recommendations and delete the mock tables.
+// Places, weather and ranking all come from the backend now:
+//   POST /recommendations  -> ranked combos (up to three)
+//   GET  /data/context     -> current conditions for the time screen
+//
+// The only client-side table left is the suburb -> coordinate lookup below.
+// The backend takes a latitude/longitude, not a suburb name, and there is no
+// geocoding endpoint yet, so the client resolves the pilot suburbs itself.
 // ---------------------------------------------------------------------------
 
-export const SUBURBS = [
-  'Carlton', 'Fitzroy', 'Brunswick', 'Richmond', 'South Yarra',
-  'Parkville', 'Clayton', 'Glen Waverley', 'Mount Waverley', 'Melton'
-]
+// Approximate suburb centroids inside the three pilot LGAs
+// (City of Melbourne, City of Monash, City of Melton).
+export const SUBURB_COORDS = {
+  // City of Melbourne
+  'Carlton': { latitude: -37.8001, longitude: 144.9674 },
+  'Carlton North': { latitude: -37.7845, longitude: 144.9722 },
+  'Docklands': { latitude: -37.8149, longitude: 144.9462 },
+  'East Melbourne': { latitude: -37.8157, longitude: 144.9871 },
+  'Flemington': { latitude: -37.7878, longitude: 144.9302 },
+  'Kensington': { latitude: -37.7941, longitude: 144.9303 },
+  'Melbourne': { latitude: -37.8136, longitude: 144.9631 },
+  'North Melbourne': { latitude: -37.7989, longitude: 144.9421 },
+  'Parkville': { latitude: -37.7853, longitude: 144.9503 },
+  'Southbank': { latitude: -37.8243, longitude: 144.9644 },
+  'South Yarra': { latitude: -37.8386, longitude: 144.9924 },
+  'West Melbourne': { latitude: -37.8078, longitude: 144.9403 },
+  // City of Monash
+  'Ashwood': { latitude: -37.8664, longitude: 145.1042 },
+  'Chadstone': { latitude: -37.8873, longitude: 145.0952 },
+  'Clarinda': { latitude: -37.9329, longitude: 145.1053 },
+  'Clayton': { latitude: -37.9249, longitude: 145.1194 },
+  'Clayton South': { latitude: -37.9411, longitude: 145.1233 },
+  'Glen Waverley': { latitude: -37.8781, longitude: 145.1642 },
+  'Hughesdale': { latitude: -37.8974, longitude: 145.0763 },
+  'Huntingdale': { latitude: -37.9108, longitude: 145.1063 },
+  'Mount Waverley': { latitude: -37.8767, longitude: 145.1293 },
+  'Mulgrave': { latitude: -37.9262, longitude: 145.1781 },
+  'Notting Hill': { latitude: -37.9067, longitude: 145.1424 },
+  'Oakleigh': { latitude: -37.9004, longitude: 145.0888 },
+  'Oakleigh East': { latitude: -37.8993, longitude: 145.1150 },
+  'Oakleigh South': { latitude: -37.9223, longitude: 145.0912 },
+  'Wheelers Hill': { latitude: -37.9021, longitude: 145.1866 },
+  // City of Melton
+  'Brookfield': { latitude: -37.7002, longitude: 144.5580 },
+  'Burnside': { latitude: -37.7503, longitude: 144.7553 },
+  'Caroline Springs': { latitude: -37.7418, longitude: 144.7372 },
+  'Diggers Rest': { latitude: -37.6272, longitude: 144.7203 },
+  'Eynesbury': { latitude: -37.7932, longitude: 144.6126 },
+  'Fraser Rise': { latitude: -37.6901, longitude: 144.7292 },
+  'Hillside': { latitude: -37.6893, longitude: 144.7502 },
+  'Kurunjang': { latitude: -37.6690, longitude: 144.5902 },
+  'Melton': { latitude: -37.6833, longitude: 144.5833 },
+  'Melton South': { latitude: -37.7001, longitude: 144.5731 },
+  'Melton West': { latitude: -37.6821, longitude: 144.5562 },
+  'Rockbank': { latitude: -37.7302, longitude: 144.6563 },
+  'Taylors Hill': { latitude: -37.7152, longitude: 144.7501 }
+}
 
-// Mock hourly forecast for "today" (Open-Meteo stand-in).
-export const FORECAST = [
-  { h: 9,  label: '9:00 AM',  temp: 16, rain: 10, wind: 12, uv: 2, desc: 'partly cloudy' },
-  { h: 10, label: '10:00 AM', temp: 18, rain: 10, wind: 14, uv: 3, desc: 'partly cloudy' },
-  { h: 11, label: '11:00 AM', temp: 19, rain: 5,  wind: 16, uv: 4, desc: 'mostly sunny' },
-  { h: 12, label: '12:00 PM', temp: 21, rain: 5,  wind: 18, uv: 5, desc: 'sunny' },
-  { h: 13, label: '1:00 PM',  temp: 22, rain: 5,  wind: 20, uv: 5, desc: 'sunny' },
-  { h: 14, label: '2:00 PM',  temp: 22, rain: 10, wind: 24, uv: 4, desc: 'mostly sunny' },
-  { h: 15, label: '3:00 PM',  temp: 22, rain: 10, wind: 26, uv: 4, desc: 'mostly sunny' },
-  { h: 16, label: '4:00 PM',  temp: 22, rain: 10, wind: 26, uv: 4, desc: 'mostly sunny' },
-  { h: 17, label: '5:00 PM',  temp: 21, rain: 20, wind: 30, uv: 2, desc: 'clouding over' },
-  { h: 18, label: '6:00 PM',  temp: 19, rain: 35, wind: 28, uv: 1, desc: 'cloudy' }
-]
+export const SUBURBS = Object.keys(SUBURB_COORDS).sort()
 
-const CATEGORY_META = {
-  park: {
-    label: 'Park and playground',
-    exposure: 'sheltered',
-    expect: 'Category-level suggestion: playgrounds and open lawn typically found here. Not verified.'
-  },
-  ground: {
-    label: 'Sporting ground',
-    exposure: 'open',
-    expect: 'Category-level suggestion: open oval and marked courts typically found here. Not verified.'
-  },
-  trail: {
-    label: 'Trail',
-    exposure: 'exposed',
-    expect: 'Category-level suggestion: shared walking and cycling path. Not verified.'
+// The backend's DURATION_BUCKETS. Ties (30, 50) resolve to the lower bucket,
+// matching app/recommendation/duration.py. Results carry the bucket the
+// backend actually chose; this is only for the preview on the time screen.
+export const DURATION_BUCKETS = [20, 40, 60]
+
+export function matchBucket(durationMin) {
+  return DURATION_BUCKETS.reduce((best, b) => {
+    const d = Math.abs(durationMin - b)
+    const bd = Math.abs(durationMin - best)
+    return d < bd || (d === bd && b < best) ? b : best
+  })
+}
+
+// The seven Vicmap categories the backend can return, with the icon shape
+// used on the cards (canopy = park-like, ring = ground-like, zigzag = trail).
+export const CATEGORY_META = {
+  playground: { label: 'Playground', shape: 'park' },
+  park_and_garden: { label: 'Park and garden', shape: 'park' },
+  picnic_day_use: { label: 'Picnic and day-use area', shape: 'park' },
+  sports_ground: { label: 'Sporting ground', shape: 'ground' },
+  court: { label: 'Court', shape: 'ground' },
+  skate_bmx: { label: 'Skate and BMX', shape: 'ground' },
+  trail_access: { label: 'Trail', shape: 'trail' }
+}
+
+export function categoryLabel(category) {
+  return CATEGORY_META[category]?.label ?? category.replace(/_/g, ' ')
+}
+
+function badgeFor(summary, tier) {
+  if (summary && summary.available === false) return { type: 'muted', label: 'weather unavailable' }
+  if (tier !== 'deprioritised') return { type: 'good', label: 'good fit' }
+  const text = (summary?.warnings ?? []).join(' ').toLowerCase()
+  if (text.includes('rain')) return { type: 'warn', label: 'rain risk' }
+  if (text.includes('wind')) return { type: 'warn', label: 'windy' }
+  if (text.includes('particle')) return { type: 'warn', label: 'air quality' }
+  return { type: 'warn', label: 'conditions' }
+}
+
+function formatDistance(distanceM) {
+  const km = distanceM / 1000
+  return km >= 1 ? `${km.toFixed(1)} km` : `${Math.round(distanceM / 10) * 10} m`
+}
+
+function conditionsFor(summary) {
+  if (!summary || !summary.available) {
+    return [{ icon: 'unknown', text: 'Weather data is unavailable for this time.' }]
   }
+  const rows = []
+  const sky = []
+  if (summary.temp_c != null) sky.push(`${Math.round(summary.temp_c)}°C`)
+  if (summary.precip_prob != null) sky.push(`${Math.round(summary.precip_prob * 100)}% chance of rain`)
+  if (sky.length) rows.push({ icon: 'sun', text: sky.join(' · ') })
+
+  if (summary.uv_index != null) {
+    const reminder = (summary.reminders ?? []).find((r) => /uv/i.test(r))
+    rows.push({ icon: 'uv', text: reminder ? `UV ${summary.uv_index}, sun protection suggested` : `UV ${summary.uv_index}, low sun risk` })
+  }
+
+  if (summary.wind_gust_kmh != null) {
+    const windy = (summary.warnings ?? []).some((w) => /wind/i.test(w))
+    rows.push({ icon: windy ? 'wind' : 'check', text: `Wind gusts up to ${Math.round(summary.wind_gust_kmh)} km/h` })
+  }
+
+  if (summary.pm25 != null || summary.pm10 != null) {
+    const parts = []
+    if (summary.pm25 != null) parts.push(`PM2.5 ${Math.round(summary.pm25)}`)
+    if (summary.pm10 != null) parts.push(`PM10 ${Math.round(summary.pm10)}`)
+    const elevated = (summary.warnings ?? []).some((w) => /particle/i.test(w))
+    rows.push({ icon: elevated ? 'wind' : 'check', text: `${elevated ? 'Elevated' : 'Good'} air quality · ${parts.join(', ')}` })
+  }
+
+  if (rows.length === 0) rows.push({ icon: 'unknown', text: 'Weather data is unavailable for this time.' })
+  return rows
 }
 
-// Candidate places per starting point. Distances are made up but plausible.
-// Melton is deliberately sparse: 0 results at 3 km, 1 at 5 km, 3 at 10 km —
-// it demos the zero/single-result variants and the adaptive-radius story.
-const PLACES = {
-  Carlton: [
-    { id: 'argyle-square', name: 'Argyle Square', category: 'park', km: 0.4 },
-    { id: 'fawkner-park', name: 'Fawkner Park', category: 'park', km: 0.6 },
-    { id: 'uni-oval', name: 'University Square Oval', category: 'ground', km: 1.1 },
-    { id: 'princes-park', name: 'Princes Park Reserve', category: 'ground', km: 1.4 },
-    { id: 'royal-park-trail', name: 'Royal Park Trail', category: 'trail', km: 2.1 },
-    { id: 'capital-city-trail', name: 'Capital City Trail', category: 'trail', km: 2.8 }
-  ],
-  Fitzroy: [
-    { id: 'edinburgh-gardens', name: 'Edinburgh Gardens', category: 'park', km: 0.5 },
-    { id: 'alfred-crescent', name: 'Alfred Crescent Oval', category: 'ground', km: 0.7 },
-    { id: 'darling-gardens', name: 'Darling Gardens', category: 'park', km: 1.6 },
-    { id: 'merri-creek-trail', name: 'Merri Creek Trail', category: 'trail', km: 1.9 }
-  ],
-  Brunswick: [
-    { id: 'gilpin-park', name: 'Gilpin Park', category: 'park', km: 0.8 },
-    { id: 'brunswick-velodrome', name: 'Brunswick Velodrome', category: 'ground', km: 1.0 },
-    { id: 'merri-creek-trail-b', name: 'Merri Creek Trail', category: 'trail', km: 1.2 },
-    { id: 'princes-park-b', name: 'Princes Park Reserve', category: 'ground', km: 2.4 }
-  ],
-  Richmond: [
-    { id: 'citizens-park', name: 'Citizens Park', category: 'ground', km: 0.6 },
-    { id: 'burnley-park', name: 'Burnley Park', category: 'park', km: 1.3 },
-    { id: 'yarra-trail-r', name: 'Main Yarra Trail', category: 'trail', km: 1.7 }
-  ],
-  'South Yarra': [
-    { id: 'fawkner-park-sy', name: 'Fawkner Park', category: 'park', km: 0.9 },
-    { id: 'yarra-trail-sy', name: 'Yarra River Trail', category: 'trail', km: 1.4 },
-    { id: 'como-park', name: 'Como Park', category: 'ground', km: 1.8 }
-  ],
-  Parkville: [
-    { id: 'royal-park', name: 'Royal Park', category: 'park', km: 0.5 },
-    { id: 'ryder-oval', name: 'Ryder Oval', category: 'ground', km: 0.9 },
-    { id: 'capital-city-trail-p', name: 'Capital City Trail', category: 'trail', km: 1.1 }
-  ],
-  Clayton: [
-    { id: 'clayton-reserve', name: 'Clayton Reserve', category: 'ground', km: 0.9 },
-    { id: 'namatjira-park', name: 'Namatjira Park', category: 'park', km: 1.2 },
-    { id: 'djerring-trail', name: 'Djerring Trail', category: 'trail', km: 1.5 }
-  ],
-  'Glen Waverley': [
-    { id: 'central-reserve', name: 'Central Reserve', category: 'ground', km: 1.0 },
-    { id: 'valley-reserve', name: 'Valley Reserve', category: 'park', km: 2.2 },
-    { id: 'scotchmans-creek', name: "Scotchmans Creek Trail", category: 'trail', km: 2.6 }
-  ],
-  'Mount Waverley': [
-    { id: 'mt-waverley-reserve', name: 'Mount Waverley Reserve', category: 'ground', km: 0.8 },
-    { id: 'damper-creek', name: 'Damper Creek Reserve', category: 'park', km: 1.6 },
-    { id: 'scotchmans-creek-mw', name: "Scotchmans Creek Trail", category: 'trail', km: 2.0 }
-  ],
-  Melton: [
-    { id: 'hannah-watts', name: 'Hannah Watts Park', category: 'park', km: 4.2 },
-    { id: 'navan-park', name: 'Navan Park', category: 'ground', km: 5.8 },
-    { id: 'toolern-creek', name: 'Toolern Creek Trail', category: 'trail', km: 7.5 }
-  ]
-}
-
-function forecastFor(hour) {
-  return FORECAST.find((f) => f.h === hour) ?? FORECAST[FORECAST.length - 1]
-}
-
-function windWord(wind) {
-  if (wind >= 28) return 'strong wind'
-  if (wind >= 20) return 'fresh wind'
-  return 'light wind'
-}
-
-function rainWord(rain) {
-  if (rain >= 50) return 'High rain chance'
-  if (rain >= 25) return 'Medium rain chance'
-  return 'Low rain chance'
-}
-
-// Rule-based badge: worst applicable condition wins, matching the doc's
-// transparent-ranking approach.
-function badgeFor(place, wx) {
-  const exposure = CATEGORY_META[place.category].exposure
-  if (wx.rain >= 50) return { type: 'warn', label: 'rain risk' }
-  if (wx.wind >= 24 && exposure === 'exposed') return { type: 'warn', label: 'windy' }
-  if (wx.uv >= 8) return { type: 'warn', label: 'high UV' }
-  return { type: 'good', label: 'good fit' }
-}
-
-function buildResult(place, index, ctx) {
-  const meta = CATEGORY_META[place.category]
-  const badge = badgeFor(place, ctx.wx)
-  const warn = badge.type === 'warn'
-
-  let reason
-  if (warn && badge.label === 'windy') reason = 'Further away; wind gusts today.'
-  else if (warn && badge.label === 'rain risk') reason = 'Rain is likely around that time.'
-  else if (index === 0) reason = 'Closest option, fits your time window.'
-  else reason = 'Fits your duration with room to spare.'
+// Convert one backend Combo into the flat shape the cards render.
+export function mapCombo(combo, ctx) {
+  const place = combo.place
+  const summary = combo.environmental_summary ?? { available: false }
+  const label = categoryLabel(place.activity_category)
+  const unnamed = !place.display_name
+  const distanceM = Number(place.distance_m ?? 0)
+  const warnings = summary.warnings ?? []
+  const reminders = summary.reminders ?? []
 
   const reasons = [
-    `${place.km} km away, within your ${ctx.radiusKm} km radius`,
-    `Fits your ${ctx.durationMin}-min window with room to spare`,
-    warn
-      ? badge.label === 'windy'
-        ? 'Wind gusts forecast around that time'
-        : 'Rain is likely around that time'
-      : 'No weather or air-quality warnings right now'
+    `About ${formatDistance(distanceM)} away, within your ${ctx.radiusKm} km radius`,
+    `Fits your ${combo.entered_duration_min}-min window using the ${combo.duration_bucket}-min plan`,
+    ...warnings,
+    ...reminders
   ]
-
-  const conditions = [
-    { icon: 'sun', text: `${ctx.wx.temp}°C · ${rainWord(ctx.wx.rain).toLowerCase()} · ${windWord(ctx.wx.wind)}` },
-    { icon: 'uv', text: `UV ${ctx.wx.uv}, ${ctx.wx.uv >= 3 ? 'sun protection recommended' : 'low sun risk'}` },
-    warn && badge.label === 'windy'
-      ? { icon: 'wind', text: `Wind gusts up to ${ctx.wx.wind + 9} km/h around that time` }
-      : { icon: 'check', text: 'Good air quality · PM2.5 12, PM10 18' }
-  ]
+  if (!summary.available) reasons.push('Weather data is unavailable for this time.')
+  else if (warnings.length === 0 && reminders.length === 0) reasons.push('No weather or air-quality warnings right now')
 
   return {
-    id: place.id,
-    name: place.name,
-    category: place.category,
-    categoryLabel: meta.label,
-    distanceKm: place.km,
-    badge,
-    reason,
+    id: place.place_id,
+    name: unnamed ? `Unnamed ${label.toLowerCase()}` : place.display_name,
+    unnamed,
+    category: place.activity_category,
+    categoryLabel: label,
+    lga: place.lga_name,
+    latitude: place.latitude,
+    longitude: place.longitude,
+    distanceM,
+    distanceKm: Math.round(distanceM / 100) / 10,
+    tier: combo.tier,
+    badge: badgeFor(summary, combo.tier),
+    reason: combo.explanation,
     reasons,
-    conditions,
-    expect: meta.expect
+    conditions: conditionsFor(summary),
+    warnings,
+    reminders,
+    activityType: combo.activity_type,
+    comboTitle: combo.combo_template,
+    durationBucket: combo.duration_bucket,
+    enteredDurationMin: combo.entered_duration_min,
+    expect: `${combo.combo_template}: ${combo.activity_type}. Category-level suggestion based on open data. Not verified on site.`
   }
 }
 
@@ -178,43 +187,38 @@ export const useSearchStore = defineStore('search', {
     // screen 1
     suburb: '',
     useMyLocation: false,
+    myLocation: null, // { latitude, longitude } from the browser
     radiusKm: 5,
-    recent: ['Carlton', 'Fitzroy'],
+    recent: ['Carlton', 'Clayton'],
     // screen 2
-    timeMode: 'now', // 'now' | 'pick'
-    hour: 16,
     durationMin: 45,
+    context: null, // GET /data/context payload for the chosen point
+    contextLoading: false,
     // results
     loading: false,
-    results: []
+    status: 'idle', // 'idle' | 'ok' | 'zero_results' | 'out_of_bounds' | 'error'
+    message: '',
+    error: '',
+    results: [],
+    _requestSeq: 0
   }),
   getters: {
     locationLabel(state) {
       if (state.useMyLocation) return 'your location'
-      return state.suburb || 'Carlton'
+      return state.suburb || 'your point'
     },
-    effectiveSuburb(state) {
-      if (state.useMyLocation) return 'Carlton' // demo: "my location" resolves near Carlton
-      return SUBURBS.includes(state.suburb) ? state.suburb : 'Carlton'
+    coords(state) {
+      if (state.useMyLocation) return state.myLocation
+      return SUBURB_COORDS[state.suburb] ?? null
     },
-    effectiveHour(state) {
-      if (state.timeMode === 'now') {
-        const h = new Date().getHours()
-        return Math.min(Math.max(h, 9), 18)
-      }
-      return state.hour
+    hasLocation() {
+      return this.coords != null
     },
-    weather() {
-      return forecastFor(this.effectiveHour)
+    weather(state) {
+      return state.context
     },
-    // Ties at 30 or 50 min round to the lower plan.
     planMin(state) {
-      if (state.durationMin < 30) return 20
-      if (state.durationMin < 50) return 40
-      if (state.durationMin < 70) return 60
-      if (state.durationMin < 90) return 80
-      if (state.durationMin < 110) return 100
-      return 120
+      return matchBucket(state.durationMin)
     },
     place(state) {
       return (id) => state.results.find((p) => p.id === id)
@@ -225,20 +229,60 @@ export const useSearchStore = defineStore('search', {
       if (!name) return
       this.recent = [name, ...this.recent.filter((r) => r !== name)].slice(0, 3)
     },
-    // Simulated POST /api/recommendations — swap for a real fetch later.
+    setMyLocation(coords) {
+      this.myLocation = coords
+      this.useMyLocation = true
+      this.suburb = ''
+    },
+    // Current conditions for the chosen point, shown on the time screen.
+    async loadContext() {
+      const coords = this.coords
+      if (!coords) {
+        this.context = null
+        return
+      }
+      this.contextLoading = true
+      try {
+        this.context = await getContext(coords)
+      } catch {
+        this.context = { available: false }
+      } finally {
+        this.contextLoading = false
+      }
+    },
+    // POST /recommendations for the current location, radius and duration.
     async fetchRecommendations() {
+      const coords = this.coords
+      if (!coords) {
+        this.status = 'idle'
+        this.results = []
+        return
+      }
+      const seq = ++this._requestSeq
       this.loading = true
       this.results = []
-      await new Promise((r) => setTimeout(r, 700))
-
-      const candidates = PLACES[this.effectiveSuburb] ?? []
-      const ctx = { wx: this.weather, radiusKm: this.radiusKm, durationMin: this.durationMin }
-      this.results = candidates
-        .filter((p) => p.km <= this.radiusKm)
-        .sort((a, b) => a.km - b.km)
-        .slice(0, 3)
-        .map((p, i) => buildResult(p, i, ctx))
-      this.loading = false
+      this.status = 'idle'
+      this.message = ''
+      this.error = ''
+      try {
+        const data = await postRecommendations({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          radiusKm: this.radiusKm,
+          durationMin: this.durationMin
+        })
+        if (seq !== this._requestSeq) return // a newer search superseded this one
+        const ctx = { radiusKm: this.radiusKm }
+        this.results = (data.combos ?? []).map((c) => mapCombo(c, ctx))
+        this.status = data.status ?? (this.results.length ? 'ok' : 'zero_results')
+        this.message = data.message ?? ''
+      } catch (e) {
+        if (seq !== this._requestSeq) return
+        this.status = 'error'
+        this.error = e?.message ?? 'Something went wrong.'
+      } finally {
+        if (seq === this._requestSeq) this.loading = false
+      }
     }
   }
 })
