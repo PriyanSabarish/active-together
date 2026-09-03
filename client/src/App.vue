@@ -1,6 +1,7 @@
 <template>
   <div class="phone">
-    <router-view v-slot="{ Component, route }">
+    <LoginGate v-if="!authed" @authenticated="signIn" />
+    <router-view v-else v-slot="{ Component, route }">
       <transition :name="transitionName" mode="out-in">
         <div :key="route.name" class="screen">
           <component :is="Component" />
@@ -13,6 +14,29 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import LoginGate from './components/LoginGate.vue'
+
+// Local-only admin gate for the pilot demo. Kept for the browser session so a
+// refresh does not ask again; closing the tab signs out.
+const AUTH_KEY = 'at-admin-authed'
+const authed = ref(readAuthed())
+
+function readAuthed() {
+  try {
+    return sessionStorage.getItem(AUTH_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+function signIn() {
+  authed.value = true
+  try {
+    sessionStorage.setItem(AUTH_KEY, '1')
+  } catch {
+    /* storage unavailable; stay signed in for this render */
+  }
+}
 
 const ORDER = ['location', 'time', 'results', 'detail']
 const router = useRouter()
