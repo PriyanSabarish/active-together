@@ -70,6 +70,16 @@
 
   <!-- results -->
   <template v-else>
+    <PlaceMap
+      class="results-map"
+      :center="store.coords"
+      :places="store.results"
+      fit
+      height="180px"
+      @select="openById"
+    />
+    <p class="map-hint">Tap a pin to open that place</p>
+
     <article
       v-for="place in store.results"
       :key="place.id"
@@ -83,7 +93,10 @@
         <CategoryIcon :category="place.category" />
         <div class="card-title">
           <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
-          <p class="place-meta">{{ place.categoryLabel }} · {{ place.distanceKm }} km</p>
+          <p class="place-meta">
+            {{ place.categoryLabel }} · {{ place.distanceKm }} km
+            <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+          </p>
         </div>
         <ConditionBadge :badge="place.badge" />
       </div>
@@ -119,6 +132,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CategoryIcon from '../components/CategoryIcon.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
+import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
 
 const store = useSearchStore()
@@ -137,6 +151,10 @@ function widen() {
 function open(place) {
   router.push(`/place/${place.id}`)
 }
+
+function openById(id) {
+  router.push(`/place/${id}`)
+}
 </script>
 
 <style scoped>
@@ -144,6 +162,15 @@ function open(place) {
   font-size: 10px;
   color: var(--ink-5);
   margin-top: 4px;
+}
+
+.results-map { margin-top: 14px; }
+
+.map-hint {
+  font-size: 10px;
+  color: var(--ink-5);
+  margin-top: 6px;
+  text-align: center;
 }
 
 .result-card {
@@ -172,6 +199,13 @@ function open(place) {
 }
 
 .place-name.unnamed { color: var(--ink-3); font-style: italic; }
+
+.record-id {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
+}
 
 .place-meta {
   font-size: 11.5px;

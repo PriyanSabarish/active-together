@@ -49,19 +49,7 @@
     </button>
   </div>
 
-  <div class="map-preview">
-    <div class="grid-line h" style="top: 25%" />
-    <div class="grid-line h" style="top: 50%" />
-    <div class="grid-line h" style="top: 75%" />
-    <div class="grid-line v" style="left: 25%" />
-    <div class="grid-line v" style="left: 50%" />
-    <div class="grid-line v" style="left: 75%" />
-    <svg class="radius-ring" viewBox="0 0 120 120">
-      <circle cx="60" cy="60" :r="ringRadius" fill="none" stroke="#639922" stroke-width="1.5" stroke-dasharray="4 4" />
-      <path d="M53 49 C53 44 56.5 40 60 40 C63.5 40 67 44 67 49 C67 55 60 66 60 66 C60 66 53 55 53 49 Z" fill="#3B6D11" />
-      <circle cx="60" cy="49" r="3" fill="#F1EFE8" />
-    </svg>
-  </div>
+  <PlaceMap class="map-preview" :center="store.coords" :radius-km="store.radiusKm" height="172px" />
   <p class="map-caption">{{ store.radiusKm }} km radius around {{ pointLabel }}</p>
 
   <p class="section-label" style="margin-top: 20px">Maximum distance</p>
@@ -86,6 +74,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
+import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore, SUBURBS } from '../store'
 
 const store = useSearchStore()
@@ -107,8 +96,6 @@ const ready = computed(() => store.hasLocation)
 const pointLabel = computed(() =>
   store.useMyLocation ? 'your location' : store.suburb ? store.suburb : 'your point'
 )
-
-const ringRadius = computed(() => ({ 3: 34, 5: 48, 10: 56 }[store.radiusKm]))
 
 function matchSuburb(text) {
   const t = text.trim().toLowerCase()
@@ -308,29 +295,7 @@ function next() {
   color: var(--green-dark);
 }
 
-.map-preview {
-  margin-top: 16px;
-  height: 172px;
-  border-radius: 14px;
-  background: var(--paper);
-  position: relative;
-  overflow: hidden;
-}
-
-.grid-line { position: absolute; background: var(--line-2); }
-.grid-line.h { left: 0; right: 0; height: 1px; }
-.grid-line.v { top: 0; bottom: 0; width: 1px; }
-
-.radius-ring {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.radius-ring circle { transition: r 0.25s ease; }
+.map-preview { margin-top: 16px; }
 
 .map-caption {
   text-align: center;

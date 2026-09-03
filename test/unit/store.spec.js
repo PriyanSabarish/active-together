@@ -87,10 +87,19 @@ describe('AC-1.2.2 — Each candidate shows name, category and distance', () => 
     expect(r.reasons[0]).toMatch(/About .* away/)
   })
 
-  it('TC-1.2.2-02 — a record with no official name gets a distinguishable generated label', () => {
+  it('TC-1.2.2-02 — a record with no official name falls back to its category label', () => {
     const r = mapCombo(makeCombo({ place: { display_name: null, activity_category: 'playground' } }), { radiusKm: 5 })
     expect(r.unnamed).toBe(true)
-    expect(r.name).toBe('Unnamed playground')
+    expect(r.name).toBe('Playground')
+    expect(r.recordId).toBeNull()
+  })
+
+  it('TC-1.2.2-02 — a pipeline-generated "Unnamed ..." label is shown without the word Unnamed', () => {
+    const r = mapCombo(makeCombo({ place: { display_name: 'Unnamed Park - Monash - 643568', activity_category: 'park_and_garden' } }), { radiusKm: 5 })
+    expect(r.unnamed).toBe(true)
+    expect(r.name).toBe('Park - Monash')
+    expect(r.recordId).toBe('643568')
+    expect(r.name).not.toMatch(/unnamed/i)
   })
 })
 
