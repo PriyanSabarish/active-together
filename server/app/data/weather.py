@@ -28,6 +28,12 @@ async def fetch_weather_context(lat: float, lon: float) -> Context:
 
             fc_data = fc_resp.json().get("current", {})
 
+            # Open-Meteo returns precipitation_probability as 0-100; the
+            # Context contract (and every threshold/explanation that reads
+            # precip_prob) expects a 0.0-1.0 fraction.
+            precip_prob_pct = fc_data.get("precipitation_probability")
+            precip_prob = precip_prob_pct / 100 if precip_prob_pct is not None else None
+
             # Air quality is optional; if it fails, context stays valid with None fields
             pm25, pm10 = None, None
             try:
@@ -42,7 +48,7 @@ async def fetch_weather_context(lat: float, lon: float) -> Context:
             return Context(
                 available=True,
                 temp_c=fc_data.get("temperature_2m"),
-                precip_prob=fc_data.get("precipitation_probability"),
+                precip_prob=precip_prob,
                 wind_gust_kmh=fc_data.get("wind_gusts_10m"),
                 uv_index=fc_data.get("uv_index"),
                 pm25=pm25,

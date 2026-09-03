@@ -13,31 +13,22 @@
     <div class="head-row">
       <div>
         <h1>{{ place.name }}</h1>
-        <p class="subtitle">{{ place.categoryLabel }} · {{ place.distanceKm }} km away</p>
+        <p class="subtitle">
+          {{ place.categoryLabel }} · {{ place.distanceKm }} km away
+          <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+        </p>
       </div>
       <ConditionBadge :badge="place.badge" />
     </div>
 
     <hr class="divider" />
 
-    <div class="map-card">
-      <div class="grid-line h" style="top: 33%" />
-      <div class="grid-line h" style="top: 66%" />
-      <div class="grid-line v" style="left: 35%" />
-      <div class="grid-line v" style="left: 71%" />
-      <svg class="map-route" viewBox="0 0 327 108">
-        <circle cx="75" cy="71" r="3.5" fill="#888780" />
-        <text x="75" y="88" font-size="9" fill="#888780" text-anchor="middle">You</text>
-        <line x1="80" y1="66" x2="235" y2="23" stroke="#639922" stroke-width="1.3" stroke-dasharray="3 3" />
-        <path d="M235 14 C235 10 238 7 241 7 C244 7 247 10 247 14 C247 18 241 25 241 25 C241 25 235 18 235 14 Z" fill="#3B6D11" />
-        <circle cx="241" cy="14" r="2.5" fill="#F1EFE8" />
-      </svg>
-    </div>
+    <PlaceMap class="map-card" :center="store.coords" :places="[place]" fit height="140px" />
     <p class="map-caption">{{ place.distanceKm }} km, straight-line distance</p>
 
     <p class="section-label" style="margin-top: 20px">On-site duration</p>
-    <p class="duration-main">{{ store.planMin }}-minute on-site plan</p>
-    <p class="duration-sub">Matches your {{ store.durationMin }}-min request · excludes travel</p>
+    <p class="duration-main">{{ place.durationBucket }}-minute on-site plan</p>
+    <p class="duration-sub">Matches your {{ place.enteredDurationMin }}-min request · excludes travel</p>
 
     <hr class="divider" />
 
@@ -56,6 +47,10 @@
           <line x1="1" y1="6.5" x2="8" y2="6.5" stroke="#854F0B" stroke-width="1.3" stroke-linecap="round" />
           <line x1="1" y1="10" x2="10" y2="10" stroke="#854F0B" stroke-width="1.3" stroke-linecap="round" />
         </svg>
+        <svg v-else-if="c.icon === 'unknown'" width="12" height="12" viewBox="0 0 12 12">
+          <path d="M4.3 4.6 a1.7 1.7 0 1 1 2.5 1.5 c-0.6 0.3 -0.8 0.7 -0.8 1.3" fill="none" stroke="#5F5E5A" stroke-width="1.3" stroke-linecap="round" />
+          <circle cx="6" cy="9.4" r="0.8" fill="#5F5E5A" />
+        </svg>
         <svg v-else width="12" height="12" viewBox="0 0 12 12">
           <path d="M2 6 l3 3 l6 -7" fill="none" stroke="#27500A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -66,6 +61,7 @@
     <hr class="divider" />
 
     <p class="section-label">Why this appears in your top 3</p>
+    <p class="explanation">{{ place.reason }}</p>
     <ul class="why-list">
       <li v-for="r in place.reasons" :key="r">{{ r }}</li>
     </ul>
@@ -73,6 +69,7 @@
     <hr class="divider" />
 
     <p class="section-label">What to expect</p>
+    <p class="expect-title">{{ place.comboTitle }}</p>
     <p class="expect">{{ place.expect }}</p>
 
     <div class="disclaimer">
@@ -102,6 +99,7 @@
 <script setup>
 import { computed } from 'vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
+import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
 
 const props = defineProps({ id: { type: String, required: true } })
@@ -109,13 +107,21 @@ const store = useSearchStore()
 const place = computed(() => store.place(props.id))
 
 function getDirections() {
-  // Demo handoff: opens the public maps search for the place name.
-  const q = encodeURIComponent(`${place.value.name}, VIC`)
+  // Hand off to Google Maps using the place coordinates from the backend so
+  // unnamed places still resolve.
+  const q = encodeURIComponent(`${place.value.latitude},${place.value.longitude}`)
   window.open(`https://www.google.com/maps/search/?api=1&query=${q}`, '_blank')
 }
 </script>
 
 <style scoped>
+.record-id {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
+}
+
 .crumb {
   font-size: 13px;
   color: var(--ink-3);
@@ -128,20 +134,6 @@ function getDirections() {
   gap: 12px;
   margin-top: 12px;
 }
-
-.map-card {
-  height: 108px;
-  border-radius: 14px;
-  background: var(--paper);
-  position: relative;
-  overflow: hidden;
-}
-
-.grid-line { position: absolute; background: var(--line-2); }
-.grid-line.h { left: 0; right: 0; height: 1px; }
-.grid-line.v { top: 0; bottom: 0; width: 1px; }
-
-.map-route { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .map-caption {
   text-align: center;
@@ -180,8 +172,21 @@ function getDirections() {
   flex-shrink: 0;
 }
 
+.explanation {
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
 .why-list {
   list-style: none;
+}
+
+.expect-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 .why-list li {

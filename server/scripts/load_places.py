@@ -16,7 +16,7 @@ REQUIRED_COLUMNS = {
 }
 
 INSERT_SQL = text("""
-    INSERT INTO place (
+    INSERT INTO places (
         place_id, display_name, activity_category, classification_confidence,
         lga_name, feature_type, feature_subtype, source_dataset,
         source_record_id, location

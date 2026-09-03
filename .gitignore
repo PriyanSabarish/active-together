@@ -60,3 +60,6 @@ data/validation/vicmap/*_reviewed.xlsx
 
 # Legacy Vicmap outputs kept locally for historical reference
 data/archive/
+
+# generated test output
+test/coverage/

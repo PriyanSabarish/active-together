@@ -19,6 +19,37 @@
     <p class="loading-note">Checking places and today's forecast…</p>
   </template>
 
+  <!-- backend / network error -->
+  <template v-else-if="store.status === 'error'">
+    <div class="empty-state">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="17" fill="none" stroke="#B4B2A9" stroke-width="2.5" />
+        <line x1="22" y1="13" x2="22" y2="25" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="22" cy="31" r="1.8" fill="#B4B2A9" />
+      </svg>
+      <p class="empty-title">We couldn't load places</p>
+      <p class="empty-text">{{ store.error }}</p>
+      <button class="btn btn-primary widen-btn" @click="store.fetchRecommendations()">Try again</button>
+    </div>
+  </template>
+
+  <!-- outside the pilot area -->
+  <template v-else-if="store.status === 'out_of_bounds'">
+    <div class="empty-state">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <path d="M22 4 C13 4 7 11 7 19 C7 30 22 41 22 41 C22 41 37 30 37 19 C37 11 31 4 22 4 Z" fill="none" stroke="#B4B2A9" stroke-width="2.5" stroke-linejoin="round" />
+        <line x1="17" y1="14" x2="27" y2="24" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="27" y1="14" x2="17" y2="24" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
+      </svg>
+      <p class="empty-title">Outside the pilot area</p>
+      <p class="empty-text">
+        {{ store.message || 'Selected location is outside the active pilot area.' }}
+        Active Together currently covers the City of Melbourne, Monash and Melton.
+      </p>
+      <button class="btn btn-primary widen-btn" @click="$router.push('/')">Change location</button>
+    </div>
+  </template>
+
   <!-- zero results -->
   <template v-else-if="store.results.length === 0">
     <div class="empty-state">
@@ -28,8 +59,8 @@
       </svg>
       <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
       <p class="empty-text">
-        We couldn't find activity places within {{ store.radiusKm }} km of
-        {{ store.locationLabel }}. Try a wider search radius.
+        {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
+        <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
       </p>
       <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
         Search {{ nextRadius }} km instead
@@ -39,6 +70,16 @@
 
   <!-- results -->
   <template v-else>
+    <PlaceMap
+      class="results-map"
+      :center="store.coords"
+      :places="store.results"
+      fit
+      height="180px"
+      @select="openById"
+    />
+    <p class="map-hint">Tap a pin to open that place</p>
+
     <article
       v-for="place in store.results"
       :key="place.id"
@@ -51,8 +92,11 @@
       <div class="card-top">
         <CategoryIcon :category="place.category" />
         <div class="card-title">
-          <p class="place-name">{{ place.name }}</p>
-          <p class="place-meta">{{ place.categoryLabel }} · {{ place.distanceKm }} km</p>
+          <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
+          <p class="place-meta">
+            {{ place.categoryLabel }} · {{ place.distanceKm }} km
+            <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+          </p>
         </div>
         <ConditionBadge :badge="place.badge" />
       </div>
@@ -64,7 +108,7 @@
           <line x1="7.5" y1="7.5" x2="7.5" y2="3.5" stroke="#888780" stroke-width="1.3" />
           <line x1="7.5" y1="7.5" x2="10.5" y2="9.5" stroke="#888780" stroke-width="1.3" />
         </svg>
-        {{ store.planMin }} min on-site · excludes travel
+        {{ place.durationBucket }} min on-site · {{ place.comboTitle }}
       </p>
     </article>
 
@@ -88,13 +132,14 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CategoryIcon from '../components/CategoryIcon.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
+import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
 
 const store = useSearchStore()
 const router = useRouter()
 
-// Landing here directly (e.g. page refresh) still shows data.
-if (!store.loading && store.results.length === 0) store.fetchRecommendations()
+// Landing here directly (e.g. page refresh) still runs the search.
+if (!store.loading && store.status === 'idle') store.fetchRecommendations()
 
 const nextRadius = computed(() => (store.radiusKm === 3 ? 5 : 10))
 
@@ -106,6 +151,10 @@ function widen() {
 function open(place) {
   router.push(`/place/${place.id}`)
 }
+
+function openById(id) {
+  router.push(`/place/${id}`)
+}
 </script>
 
 <style scoped>
@@ -113,6 +162,15 @@ function open(place) {
   font-size: 10px;
   color: var(--ink-5);
   margin-top: 4px;
+}
+
+.results-map { margin-top: 14px; }
+
+.map-hint {
+  font-size: 10px;
+  color: var(--ink-5);
+  margin-top: 6px;
+  text-align: center;
 }
 
 .result-card {
@@ -138,6 +196,15 @@ function open(place) {
 .place-name {
   font-size: 14.5px;
   font-weight: 500;
+}
+
+.place-name.unnamed { color: var(--ink-3); font-style: italic; }
+
+.record-id {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
 }
 
 .place-meta {
