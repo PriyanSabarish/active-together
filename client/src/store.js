@@ -137,12 +137,26 @@ function conditionsFor(summary) {
   return rows
 }
 
+// The data pipeline labels places that have no official name as
+// "Unnamed {Subtype} - {Council} - {Record ID}". For display (team decision)
+// drop the word "Unnamed", move the record id into its own small tag, and
+// keep the `unnamed` flag for styling.
+const GENERATED_LABEL = /^\s*unnamed\s+(.*?)(?:\s*-\s*(\d+))?\s*$/i
+
+export function displayName(rawName, label) {
+  const raw = (rawName ?? '').trim()
+  if (!raw) return { name: label, unnamed: true, recordId: null }
+  const m = raw.match(GENERATED_LABEL)
+  if (m) return { name: m[1].trim(), unnamed: true, recordId: m[2] ?? null }
+  return { name: raw, unnamed: false, recordId: null }
+}
+
 // Convert one backend Combo into the flat shape the cards render.
 export function mapCombo(combo, ctx) {
   const place = combo.place
   const summary = combo.environmental_summary ?? { available: false }
   const label = categoryLabel(place.activity_category)
-  const unnamed = !place.display_name
+  const { name, unnamed, recordId } = displayName(place.display_name, label)
   const distanceM = Number(place.distance_m ?? 0)
   const warnings = summary.warnings ?? []
   const reminders = summary.reminders ?? []
@@ -158,8 +172,9 @@ export function mapCombo(combo, ctx) {
 
   return {
     id: place.place_id,
-    name: unnamed ? `Unnamed ${label.toLowerCase()}` : place.display_name,
+    name,
     unnamed,
+    recordId,
     category: place.activity_category,
     categoryLabel: label,
     lga: place.lga_name,

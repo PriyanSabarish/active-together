@@ -13,26 +13,17 @@
     <div class="head-row">
       <div>
         <h1>{{ place.name }}</h1>
-        <p class="subtitle">{{ place.categoryLabel }} · {{ place.distanceKm }} km away</p>
+        <p class="subtitle">
+          {{ place.categoryLabel }} · {{ place.distanceKm }} km away
+          <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+        </p>
       </div>
       <ConditionBadge :badge="place.badge" />
     </div>
 
     <hr class="divider" />
 
-    <div class="map-card">
-      <div class="grid-line h" style="top: 33%" />
-      <div class="grid-line h" style="top: 66%" />
-      <div class="grid-line v" style="left: 35%" />
-      <div class="grid-line v" style="left: 71%" />
-      <svg class="map-route" viewBox="0 0 327 108">
-        <circle cx="75" cy="71" r="3.5" fill="#888780" />
-        <text x="75" y="88" font-size="9" fill="#888780" text-anchor="middle">You</text>
-        <line x1="80" y1="66" x2="235" y2="23" stroke="#639922" stroke-width="1.3" stroke-dasharray="3 3" />
-        <path d="M235 14 C235 10 238 7 241 7 C244 7 247 10 247 14 C247 18 241 25 241 25 C241 25 235 18 235 14 Z" fill="#3B6D11" />
-        <circle cx="241" cy="14" r="2.5" fill="#F1EFE8" />
-      </svg>
-    </div>
+    <PlaceMap class="map-card" :center="store.coords" :places="[place]" fit height="140px" />
     <p class="map-caption">{{ place.distanceKm }} km, straight-line distance</p>
 
     <p class="section-label" style="margin-top: 20px">On-site duration</p>
@@ -108,6 +99,7 @@
 <script setup>
 import { computed } from 'vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
+import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
 
 const props = defineProps({ id: { type: String, required: true } })
@@ -123,6 +115,13 @@ function getDirections() {
 </script>
 
 <style scoped>
+.record-id {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
+}
+
 .crumb {
   font-size: 13px;
   color: var(--ink-3);
@@ -135,20 +134,6 @@ function getDirections() {
   gap: 12px;
   margin-top: 12px;
 }
-
-.map-card {
-  height: 108px;
-  border-radius: 14px;
-  background: var(--paper);
-  position: relative;
-  overflow: hidden;
-}
-
-.grid-line { position: absolute; background: var(--line-2); }
-.grid-line.h { left: 0; right: 0; height: 1px; }
-.grid-line.v { top: 0; bottom: 0; width: 1px; }
-
-.map-route { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .map-caption {
   text-align: center;
