@@ -90,7 +90,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import { useSearchStore, precipPercent } from '../store'
+import { useSearchStore } from '../store'
 
 const store = useSearchStore()
 const router = useRouter()
@@ -101,7 +101,9 @@ onMounted(() => {
 
 const wx = computed(() => store.weather)
 
-const rainPct = computed(() => precipPercent(wx.value?.precip_prob))
+const rainPct = computed(() =>
+  wx.value?.precip_prob == null ? null : Math.round(wx.value.precip_prob * 100)
+)
 
 const weatherMain = computed(() => {
   const parts = []

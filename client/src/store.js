@@ -100,14 +100,6 @@ function badgeFor(summary, tier) {
   return { type: 'warn', label: 'conditions' }
 }
 
-// The contract (server/app/models.py) says precip_prob is 0.0-1.0, but the
-// Open-Meteo adapter currently passes the raw percentage through (5 = 5%).
-// Accept both so the display is right either way.
-export function precipPercent(value) {
-  if (value == null) return null
-  return Math.round(value > 1 ? value : value * 100)
-}
-
 function formatDistance(distanceM) {
   const km = distanceM / 1000
   return km >= 1 ? `${km.toFixed(1)} km` : `${Math.round(distanceM / 10) * 10} m`
@@ -120,7 +112,7 @@ function conditionsFor(summary) {
   const rows = []
   const sky = []
   if (summary.temp_c != null) sky.push(`${Math.round(summary.temp_c)}°C`)
-  if (summary.precip_prob != null) sky.push(`${precipPercent(summary.precip_prob)}% chance of rain`)
+  if (summary.precip_prob != null) sky.push(`${Math.round(summary.precip_prob * 100)}% chance of rain`)
   if (sky.length) rows.push({ icon: 'sun', text: sky.join(' · ') })
 
   if (summary.uv_index != null) {
