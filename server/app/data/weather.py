@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import Optional
 
@@ -22,7 +21,8 @@ class RateLimitError(Exception):
     pass
 
 
-_meteo_limiter = AsyncLimiter(max_rate=60, time_period=60)  # cap outbound calls, shared IP gets throttled fast
+# WeatherAPI's free tier  
+_weatherapi_limiter = AsyncLimiter(max_rate=100, time_period=60)
 
 
 @retry(
@@ -31,63 +31,58 @@ _meteo_limiter = AsyncLimiter(max_rate=60, time_period=60)  # cap outbound calls
     stop=stop_after_attempt(3),
     reraise=True,
 )
-async def _safe_get(client: httpx.AsyncClient, url: str, params: dict) -> Optional[httpx.Response]:
-    async with _meteo_limiter:
+async def _safe_get(client: httpx.AsyncClient, params: dict) -> Optional[httpx.Response]:
+    async with _weatherapi_limiter:
         try:
-            resp = await client.get(url, params=params)
+            resp = await client.get(settings.weatherapi_url, params=params)
             if resp.status_code == 429:
-                logger.warning("429 from %s, retry-after=%s", url, resp.headers.get("Retry-After"))
+                logger.warning("429 from WeatherAPI, retry-after=%s", resp.headers.get("Retry-After"))
                 raise RateLimitError
             return resp
         except httpx.RequestError as exc:
             # network blip, not worth retrying here — let the caller treat it as unavailable
-            logger.debug("request to %s failed: %s", url, exc)
+            logger.debug("request to WeatherAPI failed: %s", exc)
             return None
 
 
 async def _execute_weather_fetch(lat: float, lon: float) -> Context:
-    fc_params = {
-        "latitude": lat,
-        "longitude": lon,
-        "current": "temperature_2m,precipitation_probability,wind_gusts_10m,uv_index",
-    }
-    aq_params = {
-        "latitude": lat,
-        "longitude": lon,
-        "current": "pm2_5,pm10",
+    params = {
+        "key": settings.weatherapi_key,
+        "q": f"{lat},{lon}",
+        "days": 1,       # need forecastday for daily_chance_of_rain
+        "aqi": "yes",    # bundles air quality into the same call
     }
 
     async with httpx.AsyncClient(timeout=settings.open_meteo_timeout_seconds) as client:
-        # forecast + air quality in parallel, one round trip's worth of latency
-        fc_task = _safe_get(client, settings.open_meteo_forecast_url, fc_params)
-        aq_task = _safe_get(client, settings.open_meteo_air_quality_url, aq_params)
-
         try:
-            fc_resp, aq_resp = await asyncio.gather(fc_task, aq_task, return_exceptions=True)
+            resp = await _safe_get(client, params)
 
-            # forecast is required — no forecast, no context
-            if not isinstance(fc_resp, httpx.Response) or fc_resp.status_code != 200:
-                logger.warning("forecast fetch failed: %s", getattr(fc_resp, "status_code", "timeout"))
+            if not isinstance(resp, httpx.Response) or resp.status_code != 200:
+                logger.warning("weather fetch failed: %s", getattr(resp, "status_code", "timeout"))
                 return Context(available=False)
 
-            fc_data = fc_resp.json().get("current", {})
-            precip_pct = fc_data.get("precipitation_probability")
+            data = resp.json()
+            current = data.get("current", {})
+            air_quality = current.get("air_quality", {})
 
-            # air quality is a nice-to-have, don't fail the whole context over it
-            pm25, pm10 = None, None
-            if isinstance(aq_resp, httpx.Response) and aq_resp.status_code == 200:
-                aq_data = aq_resp.json().get("current", {})
-                pm25 = aq_data.get("pm2_5")
-                pm10 = aq_data.get("pm10")
+            # WeatherAPI's current.json has no "chance of rain right now" — closest
+            # equivalent is the day's forecasted chance of rain, 0-100 -> 0.0-1.0
+            forecastday = data.get("forecast", {}).get("forecastday", [])
+            daily_chance_of_rain = (
+                forecastday[0].get("day", {}).get("daily_chance_of_rain")
+                if forecastday else None
+            )
 
             return Context(
                 available=True,
-                temp_c=fc_data.get("temperature_2m"),
-                precip_prob=precip_pct / 100 if precip_pct is not None else None,  # API gives 0-100, we want 0-1
-                wind_gust_kmh=fc_data.get("wind_gusts_10m"),
-                uv_index=fc_data.get("uv_index"),
-                pm25=pm25,
-                pm10=pm10,
+                temp_c=current.get("temp_c"),
+                precip_prob=(
+                    daily_chance_of_rain / 100 if daily_chance_of_rain is not None else None
+                ),
+                wind_gust_kmh=current.get("gust_kph"),
+                uv_index=current.get("uv"),
+                pm25=air_quality.get("pm2_5"),
+                pm10=air_quality.get("pm10"),
             )
         except Exception as exc:
             logger.error("weather context processing failed: %s", exc)
