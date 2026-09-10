@@ -1,13 +1,17 @@
 <template>
   <div class="phone">
     <LoginGate v-if="!authed" @authenticated="signIn" />
-    <router-view v-else v-slot="{ Component, route }">
-      <transition :name="transitionName" mode="out-in">
-        <div :key="route.name" class="screen">
-          <component :is="Component" />
-        </div>
-      </transition>
-    </router-view>
+    <template v-else>
+      <router-view v-slot="{ Component, route }">
+        <transition :name="transitionName" mode="out-in">
+          <div :key="route.name" class="screen" :inert="showOnboarding">
+            <component :is="Component" />
+          </div>
+        </transition>
+      </router-view>
+      <!-- Sits on top of the first screen and dims it; the app stays visible behind. -->
+      <OnboardingModal v-if="showOnboarding" @done="finishOnboarding" />
+    </template>
   </div>
 </template>
 
@@ -15,6 +19,7 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'
+import OnboardingModal from './components/OnboardingModal.vue'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
@@ -31,10 +36,33 @@ function readAuthed() {
 
 function signIn() {
   authed.value = true
+  showOnboarding.value = !hasOnboarded()
   try {
     sessionStorage.setItem(AUTH_KEY, '1')
   } catch {
     /* storage unavailable; stay signed in for this render */
+  }
+}
+
+// First-run walkthrough. Shown once per device after a fresh sign-in, so a
+// returning user (or a reload mid-session) goes straight to the app.
+const ONBOARDED_KEY = 'at-onboarded-v1'
+const showOnboarding = ref(false)
+
+function hasOnboarded() {
+  try {
+    return localStorage.getItem(ONBOARDED_KEY) === '1'
+  } catch {
+    return true // storage blocked: never trap the user in the walkthrough
+  }
+}
+
+function finishOnboarding() {
+  showOnboarding.value = false
+  try {
+    localStorage.setItem(ONBOARDED_KEY, '1')
+  } catch {
+    /* storage unavailable; fine for this session */
   }
 }
 
