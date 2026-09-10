@@ -47,6 +47,21 @@ Council source acquisition is optional and does not run as part of the normal
 Vicmap pipeline. Fixed snapshots preserve the source records used during
 manual review.
 
+Run the complete Iteration 2 workflow without publication:
+
+```powershell
+python pipeline/run_name_enrichment_pipeline.py
+```
+
+Run it with explicit publication after validation:
+
+```powershell
+python pipeline/run_name_enrichment_pipeline.py --publish
+```
+
+See `run_name_enrichment_pipeline_README.md` for stage order, expected counts
+and failure behaviour.
+
 ## Run with an existing snapshot
 
 From the project root:
