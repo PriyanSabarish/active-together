@@ -92,7 +92,9 @@
       </button>
       <span class="crumb">Back to your top 3</span>
     </div>
-    <p class="subtitle" style="margin-top: 20px">Place not found.</p>
+    <p class="subtitle" style="margin-top: 20px">
+      {{ store.loading ? 'Loading your top 3…' : 'Place not found.' }}
+    </p>
   </template>
 </template>
 
@@ -105,6 +107,10 @@ import { useSearchStore } from '../store'
 const props = defineProps({ id: { type: String, required: true } })
 const store = useSearchStore()
 const place = computed(() => store.place(props.id))
+
+// Landing here directly (e.g. page refresh) — the inputs are restored from
+// storage but results are not, so run the search again and let `place` resolve.
+if (!place.value && !store.loading && store.status === 'idle') store.fetchRecommendations()
 
 function getDirections() {
   // Hand off to Google Maps using the place coordinates from the backend so
