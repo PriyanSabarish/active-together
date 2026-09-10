@@ -14,6 +14,19 @@ data/raw/*
 !data/raw/boundaries/
 data/raw/boundaries/*
 !data/raw/boundaries/vicmap_lga_2026-08-26.geojson
+
+# Keep the fixed Monash VPA snapshot used by Iteration 2
+!data/raw/monash/
+data/raw/monash/*
+!data/raw/monash/vpa_open_space_monash_2026-09-10.geojson
+!data/raw/monash/vpa_open_space_monash_2026-09-10.metadata.json
+
+# Keep the fixed City of Melbourne snapshots used by Iteration 2
+!data/raw/melbourne/
+data/raw/melbourne/*
+!data/raw/melbourne/city_of_melbourne_playgrounds_2026-09-10.geojson
+!data/raw/melbourne/city_of_melbourne_landmarks_2026-09-10.geojson
+!data/raw/melbourne/city_of_melbourne_sources_2026-09-10.metadata.json
 *.db
 # Operating system files
 .DS_Store

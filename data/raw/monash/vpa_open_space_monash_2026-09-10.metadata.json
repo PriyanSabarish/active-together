@@ -1,0 +1,8 @@
+{
+  "dataset": "VPA Draft Open Space Data",
+  "source_url": "https://services5.arcgis.com/DmRfik4clMVydXO3/arcgis/rest/services/VPA_Draft_Open_Space_Data/FeatureServer/0/query",
+  "filter": "LGA = 'MONASH'",
+  "downloaded_at_utc": "2026-09-10T05:22:44.364691+00:00",
+  "record_count": 831,
+  "snapshot_file": "vpa_open_space_monash_2026-09-10.geojson"
+}

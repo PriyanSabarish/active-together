@@ -1,0 +1,19 @@
+{
+  "provider": "City of Melbourne Open Data Portal",
+  "license": "CC BY",
+  "downloaded_at_utc": "2026-09-10T07:25:36.053727+00:00",
+  "datasets": {
+    "playgrounds": {
+      "dataset_id": "playgrounds",
+      "source_url": "https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/playgrounds/exports/geojson",
+      "record_count": 45,
+      "snapshot_file": "city_of_melbourne_playgrounds_2026-09-10.geojson"
+    },
+    "landmarks": {
+      "dataset_id": "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor",
+      "source_url": "https://data.melbourne.vic.gov.au/api/explore/v2.1/catalog/datasets/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/exports/geojson",
+      "record_count": 242,
+      "snapshot_file": "city_of_melbourne_landmarks_2026-09-10.geojson"
+    }
+  }
+}
