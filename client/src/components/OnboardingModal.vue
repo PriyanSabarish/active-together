@@ -13,6 +13,7 @@
     </div>
 
     <div
+      ref="wrapEl"
       class="onb-track-wrap"
       @pointerdown="onDown"
       @pointermove="onMove"
@@ -43,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, h, ref } from 'vue'
+import { computed, h, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const emit = defineEmits(['done'])
 
@@ -230,43 +231,103 @@ const SLIDES = [
 const index = ref(0)
 const isLast = computed(() => index.value === SLIDES.length - 1)
 
+const wrapEl = ref(null)
 const dragX = ref(0)
 const dragging = ref(false)
 let startX = 0
 let startY = 0
 let wrapWidth = 1
+let axis = null // 'x' once we commit to a horizontal swipe, 'y' if we hand off to the browser
 
 const trackStyle = computed(() => ({
   transform: `translateX(calc(${-index.value * 100}% + ${dragX.value}px))`,
   transition: dragging.value ? 'none' : 'transform 0.28s ease'
 }))
 
-function onDown(e) {
-  if (e.pointerType === 'mouse' && e.button !== 0) return
+function begin(x, y) {
   dragging.value = true
-  startX = e.clientX
-  startY = e.clientY
-  wrapWidth = e.currentTarget.clientWidth || 1
-  e.currentTarget.setPointerCapture?.(e.pointerId)
+  axis = null
+  startX = x
+  startY = y
+  wrapWidth = wrapEl.value?.clientWidth || 1
 }
 
-function onMove(e) {
-  if (!dragging.value) return
-  const dx = e.clientX - startX
+function move(x, y) {
+  if (!dragging.value) return false
+  const dx = x - startX
+  const dy = y - startY
+  if (!axis) {
+    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return false
+    axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+  }
+  if (axis !== 'x') return false
   // resist beyond the first/last slide
   const atEdge = (index.value === 0 && dx > 0) || (isLast.value && dx < 0)
   dragX.value = atEdge ? dx * 0.3 : dx
+  return true
 }
 
-function onUp() {
+function end() {
   if (!dragging.value) return
   dragging.value = false
   const dx = dragX.value
   dragX.value = 0
-  if (Math.abs(dx) < Math.max(40, wrapWidth * 0.15)) return
+  if (axis !== 'x' || Math.abs(dx) < Math.max(40, wrapWidth * 0.15)) return
   if (dx < 0 && !isLast.value) index.value += 1
   else if (dx > 0 && index.value > 0) index.value -= 1
 }
+
+// Mouse / pen: pointer events. Touch is handled below, because on phones the
+// browser fires pointercancel as soon as it decides the finger is scrolling.
+function onDown(e) {
+  if (e.pointerType === 'touch') return
+  if (e.pointerType === 'mouse' && e.button !== 0) return
+  begin(e.clientX, e.clientY)
+  e.currentTarget.setPointerCapture?.(e.pointerId)
+}
+
+function onMove(e) {
+  if (e.pointerType === 'touch') return
+  move(e.clientX, e.clientY)
+}
+
+function onUp(e) {
+  if (e.pointerType === 'touch') return
+  end()
+}
+
+// Touch: non-passive listeners so a horizontal swipe can preventDefault and
+// keep the gesture instead of letting the page scroll.
+function onTouchStart(e) {
+  const t = e.touches[0]
+  if (t) begin(t.clientX, t.clientY)
+}
+
+function onTouchMove(e) {
+  const t = e.touches[0]
+  if (t && move(t.clientX, t.clientY) && e.cancelable) e.preventDefault()
+}
+
+function onTouchEnd() {
+  end()
+}
+
+onMounted(() => {
+  const el = wrapEl.value
+  el.addEventListener('touchstart', onTouchStart, { passive: true })
+  el.addEventListener('touchmove', onTouchMove, { passive: false })
+  el.addEventListener('touchend', onTouchEnd)
+  el.addEventListener('touchcancel', onTouchEnd)
+})
+
+onBeforeUnmount(() => {
+  const el = wrapEl.value
+  if (!el) return
+  el.removeEventListener('touchstart', onTouchStart)
+  el.removeEventListener('touchmove', onTouchMove)
+  el.removeEventListener('touchend', onTouchEnd)
+  el.removeEventListener('touchcancel', onTouchEnd)
+})
 
 function next() {
   if (isLast.value) finish()
