@@ -68,7 +68,7 @@ suitable types of locations.
 | `place_id` | Stable application identifier |
 | `display_name` | Source name or deterministic unnamed label shown to users |
 | `place_name` | Cleaned source name or deterministic unnamed label |
-| `name_source` | `vicmap_name`, `vicmap_name_label` or `generated_from_subtype` |
+| `name_source` | Name provenance: `vicmap_name`, `vicmap_name_label`, `vpa_open_space`, `city_of_melbourne_playgrounds`, `city_of_melbourne_landmarks`, `melton_open_space`, `melton_ovals_and_fields` or `generated_from_subtype` |
 | `activity_category` | One of the seven location labels |
 | `classification_confidence` | Confidence recorded in the subtype rule |
 | `lga_name` | Melbourne, Melton or Monash |

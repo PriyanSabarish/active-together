@@ -61,12 +61,20 @@ A successful run ends with:
 Vicmap validation completed successfully.
 ```
 
-## Current result
+## Iteration 1 baseline result
 
-The current app-ready file contains 3,237 places across Melbourne, Melton and
-Monash, including deterministic labels for 703 unnamed source records. It
-contains no missing required values, duplicate place IDs or duplicate
-coordinate-subtype rows and passes all naming, category and spatial checks.
+The Iteration 1 baseline at
+`data/processed/vicmap/vicmap_app_ready.csv` contains 3,237 places across
+Melbourne, Melton and Monash, including deterministic labels for 703 unnamed
+source records. It contains no missing required values, duplicate place IDs or
+duplicate coordinate-subtype rows and passes all naming, category and spatial
+checks.
+
+After the reviewed name-enrichment workflow, the published application file at
+`data/vicmap_app_ready.csv` still contains the same 3,237 places. It includes
+517 approved name updates and retains 186 deterministic generated labels. See
+the staged council validators and `validate_name_enrichment.py` below for the
+additional source-specific and consolidated checks.
 
 ## Classification QA sampling
 
