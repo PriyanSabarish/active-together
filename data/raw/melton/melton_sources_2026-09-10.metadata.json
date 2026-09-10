@@ -1,0 +1,21 @@
+{
+  "provider": "Melton City Council via data.gov.au",
+  "license": "Creative Commons Attribution 2.5 Australia",
+  "downloaded_at_utc": "2026-09-10T09:36:08.503737+00:00",
+  "source_coordinate_system": "EPSG:28355",
+  "source_crs_note": "The GeoJSON is labelled EPSG:4326 but its coordinates are MGA Zone 55 (EPSG:28355). Processing overrides the label.",
+  "datasets": {
+    "open_space": {
+      "dataset": "Melton Open Space",
+      "source_url": "https://data.gov.au/geoserver/melton-open-space/wfs?request=GetFeature&typeName=ckan_e3fb7007_d697_4c92_b3bb_4420478e5e1f&outputFormat=json",
+      "record_count": 1347,
+      "snapshot_file": "melton_open_space_2026-09-10.geojson"
+    },
+    "ovals_and_fields": {
+      "dataset": "Melton Ovals and Fields",
+      "source_url": "https://data.gov.au/geoserver/melton-ovals-and-fields/wfs?request=GetFeature&typeName=ckan_91517082_af13_4663_84ce_604a92d24e86&outputFormat=json",
+      "record_count": 46,
+      "snapshot_file": "melton_ovals_and_fields_2026-09-10.geojson"
+    }
+  }
+}

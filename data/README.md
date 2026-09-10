@@ -10,12 +10,12 @@ The current product covers:
 - Melton
 - Monash
 
-## Application data
+## Published application data
 
-The application should use only:
+After name-enrichment validation and publication, the application should use:
 
 ```text
-data/processed/vicmap/vicmap_app_ready.csv
+data/vicmap_app_ready.csv
 ```
 
 This CSV contains Vicmap locations that:
@@ -26,7 +26,16 @@ This CSV contains Vicmap locations that:
 - passed the automated validation checks.
 
 The current file contains 3,237 locations. It is a static application-ready
-output that can be regenerated from a newer Vicmap API snapshot.
+output that can be regenerated from the fixed reviewed inputs.
+
+The pre-enrichment Vicmap baseline remains at:
+
+```text
+data/processed/vicmap/vicmap_app_ready.csv
+```
+
+Keeping the baseline separate allows every council enrichment stage to be
+rerun and independently validated.
 
 When Vicmap does not provide a name, the pipeline creates a deterministic label:
 
@@ -90,6 +99,36 @@ data/raw/boundaries/vicmap_lga_2026-08-26.geojson
 
 This fixed boundary snapshot is committed because wrangling and validation need
 it to reproduce the three-council scope.
+
+### Fixed council name sources
+
+Iteration 2 name enrichment uses manually reviewed snapshots under:
+
+```text
+data/raw/monash/
+data/raw/melbourne/
+data/raw/melton/
+```
+
+Only the specific dated snapshots referenced by the wrangling and validation
+scripts are versioned. Their optional acquisition scripts are not part of the
+routine Vicmap pipeline. A refreshed council source must be explored and
+manually reviewed before replacing a fixed snapshot.
+
+### Consolidated name enrichment
+
+The three council-specific staged outputs are combined into:
+
+```text
+data/processed/name_enrichment/vicmap_app_ready_name_enriched.csv
+```
+
+After validation, the explicit publication command replaces only the delivery
+CSV at `data/vicmap_app_ready.csv`:
+
+```powershell
+python pipeline/validation/validate_name_enrichment.py --publish
+```
 
 ### Classification rules
 

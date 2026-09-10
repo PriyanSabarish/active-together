@@ -157,3 +157,17 @@ If an API request fails:
 - wrangling can continue using the latest previously validated snapshot.
 
 If the API introduces new records or subtypes, wrangling or validation may stop for review. This is expected behaviour and prevents unreviewed source changes from silently entering the product output.
+
+## Optional council-source acquisition
+
+Iteration 2 name enrichment uses fixed, manually reviewed council-source
+snapshots. These acquisition utilities are not called by
+`run_vicmap_pipeline.py`:
+
+- `fetch_monash_source.py` — fixed VPA Open Space source for Monash;
+- `fetch_melbourne_source.py` — fixed City of Melbourne sources; and
+- `fetch_melton_source.py` — fixed Melton Open Space and Ovals and Fields
+  sources.
+
+Use the matching uniquely named README beside each script for its source,
+licence, output and refresh policy.

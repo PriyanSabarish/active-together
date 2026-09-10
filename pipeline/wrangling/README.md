@@ -86,3 +86,22 @@ python pipeline/run_vicmap_pipeline.py
 
 Exploration and QA files document source-data limitations and classification
 decisions. They do not directly edit or override the app-ready records.
+
+## Staged council-name enrichment
+
+Council name enrichment is kept separate from the base Vicmap wrangling step.
+Each script reads fixed reviewed snapshots and writes one complete staged CSV:
+
+- `wrangle_monash_names.py`
+- `wrangle_melbourne_names.py`
+- `wrangle_melton_names.py`
+- `consolidate_name_enrichment.py`
+
+The corresponding uniquely named README beside each script documents its
+inputs, approved rules and expected result. These scripts do not fetch source
+data and do not overwrite `data/processed/vicmap/vicmap_app_ready.csv`.
+
+After the three council outputs pass their own validation,
+`consolidate_name_enrichment.py` combines their non-overlapping name changes
+into `data/processed/name_enrichment/vicmap_app_ready_name_enriched.csv`. See
+`consolidate_name_enrichment_README.md` for the complete workflow.

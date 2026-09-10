@@ -26,6 +26,27 @@ application inputs.
 The classification table retains all historical exploration decisions, but the
 current production workflow uses only rows marked `include`.
 
+## Name enrichment workflow
+
+The base Vicmap output remains the reproducible input for three independently
+reviewed council-name stages:
+
+```text
+data/processed/vicmap/vicmap_app_ready.csv
+      ↓
+Monash + Melbourne + Melton staged enrichment
+      ↓
+wrangling/consolidate_name_enrichment.py
+      ↓
+validation/validate_name_enrichment.py
+      ↓
+data/vicmap_app_ready.csv
+```
+
+Council source acquisition is optional and does not run as part of the normal
+Vicmap pipeline. Fixed snapshots preserve the source records used during
+manual review.
+
 ## Run with an existing snapshot
 
 From the project root:
@@ -66,12 +87,19 @@ Checks the CSV structure, required values, unique IDs, coordinates, categories,
 generated-name rules, coordinate-subtype duplicates, council coverage and
 spatial boundaries. Validation reports errors but does not change product data.
 
-## Product output
+## Base and published outputs
 
-Application developers should use only:
+The base Vicmap processing output is:
 
 ```text
 data/processed/vicmap/vicmap_app_ready.csv
+```
+
+After consolidated name-enrichment validation and publication, application
+developers should use:
+
+```text
+data/vicmap_app_ready.csv
 ```
 
 The raw Vicmap snapshots are excluded from GitHub. The fixed boundary file,

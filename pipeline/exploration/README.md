@@ -12,6 +12,17 @@ the raw source data or the application-ready CSV.
 pipeline/exploration/vicmap_exploration.ipynb
 ```
 
+Iteration 2 council-name exploration is documented separately:
+
+```text
+pipeline/exploration/01_monash_unnamed_exploration_README.md
+pipeline/exploration/02_melbourne_unnamed_exploration_README.md
+pipeline/exploration/03_melton_unnamed_exploration_README.md
+```
+
+Each README summarises its notebook, source decisions, manual review and final
+accepted coverage without requiring notebook outputs to be rerun.
+
 The notebook records the analysis performed using the historical
 `foi_index_centroid_full_2026-08-26.geojson` snapshot. Raw snapshots remain
 local and are not committed to GitHub.

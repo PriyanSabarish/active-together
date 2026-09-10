@@ -27,6 +27,13 @@ data/raw/melbourne/*
 !data/raw/melbourne/city_of_melbourne_playgrounds_2026-09-10.geojson
 !data/raw/melbourne/city_of_melbourne_landmarks_2026-09-10.geojson
 !data/raw/melbourne/city_of_melbourne_sources_2026-09-10.metadata.json
+
+# Keep the fixed Melton City Council snapshots used by Iteration 2
+!data/raw/melton/
+data/raw/melton/*
+!data/raw/melton/melton_open_space_2026-09-10.geojson
+!data/raw/melton/melton_ovals_and_fields_2026-09-10.geojson
+!data/raw/melton/melton_sources_2026-09-10.metadata.json
 *.db
 # Operating system files
 .DS_Store

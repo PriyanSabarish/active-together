@@ -126,3 +126,21 @@ and validation, and document the rule change.
 
 Earlier QA and product-review files belong to the retired record-level review
 workflow and are not inputs to the current pipeline.
+
+## Staged council-name validation
+
+The following validators independently check the staged name-enrichment
+outputs against the baseline and their fixed official snapshots:
+
+- `validate_monash_names.py`
+- `validate_melbourne_names.py`
+- `validate_melton_names.py`
+- `validate_name_enrichment.py`
+
+Each validator checks the exact approved IDs and names, unchanged non-name
+fields, retained generated names and source-specific spatial evidence. See the
+uniquely named README beside each script for its expected result.
+
+The consolidated validator is the final publication gate. Its optional
+`--publish` flag replaces `data/vicmap_app_ready.csv` only after all checks
+pass; it never overwrites the Iteration 1 baseline.
