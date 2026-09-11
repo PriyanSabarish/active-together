@@ -1,6 +1,6 @@
 # Activity samples for teammate integration
 
-Module 2 supplies three draft activities and nine age variants. You can use them
+The module 3 pilot supplies six draft activities and eighteen age variants. You can use them
 now to debug reading, filtering, cards, steps and an explicit group of activities.
 No Groq key, database, backend server or network request is needed to load them.
 Production deployment of this content still needs independent human review.
@@ -16,7 +16,7 @@ python content/tools/validate_activity_templates.py --preview
 python content/tools/export_activity_templates.py --preview --output content/examples/activities.preview.json
 ```
 
-Expected validation: `Valid development preview: 3 activities, 9 age variants.`
+Expected validation: `Valid development preview: 6 activities, 18 age variants.`
 The generated file is included with the samples, so frontend teammates
 can read it directly without installing Python. Regenerate it whenever sample
 YAML changes; it is a development fixture, not a second authoring source.
@@ -24,12 +24,15 @@ The export command replaces the requested JSON file only after validation passes
 
 | Activity ID | Type | Equipment | Age variants |
 | --- | --- | --- | --- |
+| `balance_shapes` | `movement_play` | None | 5-7, 8-10, 11-12 |
 | `colour_hunt` | `exploration_play` | None | 5-7, 8-10, 11-12 |
 | `follow_the_leader` | `movement_play` | None | 5-7, 8-10, 11-12 |
+| `imaginary_delivery` | `imaginative_play` | None | 5-7, 8-10, 11-12 |
+| `notice_the_change` | `exploration_play` | None | 5-7, 8-10, 11-12 |
 | `pass_and_move` | `ball_play` | Soft ball for rolling | 5-7, 8-10, 11-12 |
 
-Each variant has a challenge, three ordered steps and an ending in these samples.
-Three is not a schema limit: consumers must handle other positive step counts.
+Each variant has a challenge, ordered steps and an ending. Most have three steps;
+Imaginary Delivery for 11-12 has four. Consumers must handle any positive step count.
 Use `equipment.required`, `requirements` and `participation` when displaying the
 preparation information. A category mapping does not establish these conditions.
 
@@ -62,7 +65,7 @@ schema version `0.1.0`. The full format is:
 ```
 
 The example above shows the envelope only; the supplied preview file contains
-three complete records. Records are sorted by `activity_id` for reproducible
+six complete records. Records are sorted by `activity_id` for reproducible
 exports. This ordering is not a recommendation ranking.
 
 ## Python integration
@@ -160,8 +163,9 @@ or actual reviewer identity. Those remain team review responsibilities.
 ## Current scope
 
 Teammates can begin content/UI integration after this module is pushed to the
-shared branch. Module 3 expands the pilot set and completes human review.
+shared branch. Module 3's content and technical checks are ready; independent
+human review is pending in [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md).
 Duration selection, place matching, preferences, weather, verification, runtime
-API integration and AI stories are not implemented by this package. All three
+API integration and AI stories are not implemented by this package. All six
 authors are recorded as Jiabin; the consolidated AI usage statement remains to
 be written before final handoff.

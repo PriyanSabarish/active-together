@@ -1,0 +1,79 @@
+# Pilot draft. Observe changes in a partner's pose without collecting objects.
+schema_version: "0.1.0"
+activity_id: notice_the_change
+version: 1
+title: Notice the Change
+summary: Take turns changing a small part of a pose and noticing what is different.
+activity_type: exploration_play
+core_mechanic: compare
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: Show small pose changes, keep the child in sight and offer clues when wanted.
+equipment:
+  required: []
+  optional: []
+requirements:
+  - An adult checks a clear, level area where the pair can stand without contact.
+  - Both people can observe each other without blocking routes or active play.
+setup:
+  - Face each other with enough room for small arm movements.
+  - Agree to stay in place and change only comfortable hand or arm positions.
+  - When a change is hidden, the child looks to one side with eyes open and stays still.
+  - Either person can request a clue, pass a turn or finish the activity.
+age_variants:
+  "5-7":
+    challenge: Notice one visible change and then choose a change yourself.
+    steps:
+      - step_id: watch_change
+        instruction: Watch my hands and point to what changes.
+        parent_prompt: Slowly change one hand from open to closed while the child watches.
+      - step_id: compare_positions
+        instruction: Tell me or show me which hand changed.
+        parent_prompt: Show the original and new positions again if the child wants help.
+      - step_id: child_changes
+        instruction: Change one hand position for me to notice.
+        parent_prompt: Describe what you see; the child does not need to copy your example.
+    ending: Reveal the last change and return both hands to rest.
+  "8-10":
+    challenge: Remember a pose and identify one change after looking away.
+    steps:
+      - step_id: remember_pose
+        instruction: Look at my arm positions, then look to one side.
+        parent_prompt: Stay nearby with the child in sight; change one small arm position.
+      - step_id: spot_change
+        instruction: Look back and describe the change you notice.
+        parent_prompt: Offer a clue or show both poses again; guessing is optional.
+      - step_id: swap_roles
+        instruction: Choose one pose change for me to spot.
+        parent_prompt: Look at the child's feet while they change one arm, keeping them in sight.
+    ending: Explain the final change to each other and return to rest.
+  "11-12":
+    challenge: Compare two pose changes and choose a useful clue for an observer.
+    steps:
+      - step_id: study_pose
+        instruction: Study my hand and arm positions, then look to one side.
+        parent_prompt: Make two small comfortable changes while keeping the child in sight.
+      - step_id: compare_changes
+        instruction: Look back and explain the two differences you notice.
+        parent_prompt: Offer a comparison with the original pose; there is no score for recall.
+      - step_id: design_clue
+        instruction: Choose a pose change and a clue to help me notice it.
+        parent_prompt: Keep the child in sight while looking at their feet, then look up and use the clue.
+    ending: Reveal the change and explain how the clue helped, then relax.
+adaptations:
+  simplify:
+    - Make one slow change while the observer watches the whole time.
+    - Point or demonstrate instead of describing the change in words.
+  extend:
+    - Swap who invents the change and who gives a clue for another round.
+constraints:
+  - Stay in place with eyes open; do not add hiding, blindfolds or searching elsewhere.
+  - The adult must keep the child in sight throughout each turn.
+  - Change only comfortable hand or arm positions; do not require contact or props.
+  - Story wording must preserve the observation and comparison tasks.
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

@@ -33,7 +33,10 @@ class ActivityLibraryTests(unittest.TestCase):
             (self.content / folder).mkdir(parents=True, exist_ok=True)
         for relative in ("schema/activity_template.schema.yaml", "taxonomy/activity_types.yaml"):
             shutil.copyfile(CONTENT_DIR / relative, self.content / relative)
-        self.sample = read_yaml(CONTENT_DIR / "activities/_candidates/follow_the_leader.yaml")
+        self.sample = next(item for item in load_preview_activities()
+                           if item["activity_id"] == "follow_the_leader")
+        # Use a test draft even after the real activity is promoted to reviewed/.
+        self.sample["review"] = {"author": "Jiabin", "reviewed_by": None, "status": "draft"}
         self.save(self.sample)
 
     def save(self, activity, folder="_candidates", filename="follow_the_leader.yaml"):
@@ -50,11 +53,12 @@ class ActivityLibraryTests(unittest.TestCase):
         )
 
     def test_samples_and_generated_preview_agree(self):
-        """Keep the checked-in JSON synchronized with all three YAML samples."""
+        """Keep the checked-in JSON synchronized with the six pilot activities."""
         payload = build_export(preview=True)
-        expected_ids = ["colour_hunt", "follow_the_leader", "pass_and_move"]
+        expected_ids = ["balance_shapes", "colour_hunt", "follow_the_leader",
+                        "imaginary_delivery", "notice_the_change", "pass_and_move"]
         self.assertEqual([item["activity_id"] for item in payload["activities"]], expected_ids)
-        self.assertEqual(sum(len(item["age_variants"]) for item in payload["activities"]), 9)
+        self.assertEqual(sum(len(item["age_variants"]) for item in payload["activities"]), 18)
         exported = json.loads((CONTENT_DIR / "examples/activities.preview.json").read_text(encoding="utf-8"))
         self.assertEqual(payload, exported)
         self.assertTrue(all(item["review"]["author"] == "Jiabin" for item in payload["activities"]))
@@ -185,10 +189,27 @@ class ActivityLibraryTests(unittest.TestCase):
         output = self.content / "export.json"
         result = self.run_cli("export_activity_templates.py", "--preview", "--output", str(output))
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(len(json.loads(output.read_text(encoding="utf-8"))["activities"]), 3)
+        self.assertEqual(len(json.loads(output.read_text(encoding="utf-8"))["activities"]), 6)
         result = self.run_cli("validate_activity_templates.py", "--preview")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("3 activities, 9 age variants", result.stdout)
+        self.assertIn("6 activities, 18 age variants", result.stdout)
+
+    def test_different_step_counts_survive_export(self):
+        """Preserve complete variants rather than truncating all activities to three steps."""
+        records = build_export(preview=True)["activities"]
+        delivery = next(item for item in records if item["activity_id"] == "imaginary_delivery")
+        self.assertEqual(len(delivery["age_variants"]["5-7"]["steps"]), 3)
+        self.assertEqual(len(delivery["age_variants"]["11-12"]["steps"]), 4)
+        self.assertEqual(delivery["age_variants"]["11-12"]["steps"][-1]["step_id"], "complete_delivery")
+
+    def test_pilot_variants_are_not_exact_copies(self):
+        """Flag exact duplicate instructions; people still judge meaningful differences."""
+        seen = set()
+        for activity in load_preview_activities():
+            for band, variant in activity["age_variants"].items():
+                signature = tuple(step["instruction"].strip().casefold() for step in variant["steps"])
+                self.assertNotIn(signature, seen, (activity["activity_id"], band))
+                seen.add(signature)
 
     def test_invalid_cli_request_preserves_existing_output(self):
         """An invalid argument cannot overwrite an existing output file."""

@@ -4,6 +4,118 @@
   "activities": [
     {
       "schema_version": "0.1.0",
+      "activity_id": "balance_shapes",
+      "version": 1,
+      "title": "Balance Shapes",
+      "summary": "Explore steady body shapes and choose how to make them easier to hold.",
+      "activity_type": "movement_play",
+      "core_mechanic": "balance",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Demonstrate comfortable shapes, stay nearby and help the child adjust."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a clear, level, firm area with space to stretch without contact.",
+        "The activity stays on the ground away from traffic and moving equipment."
+      ],
+      "setup": [
+        "Begin with both feet on the ground in a comfortable position.",
+        "Explain that steady shapes can be small and both feet can stay down.",
+        "Agree that either person can change a shape, pause or stop whenever wanted."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Explore one steady shape at a time with both feet grounded.",
+          "steps": [
+            {
+              "step_id": "wide_shape",
+              "instruction": "Keep both feet down and stretch your arms sideways.",
+              "parent_prompt": "Show a small comfortable stretch and check room around each person."
+            },
+            {
+              "step_id": "small_shape",
+              "instruction": "Bring your arms close and make a smaller shape.",
+              "parent_prompt": "Keep both feet still; a smaller arm position is enough."
+            },
+            {
+              "step_id": "choose_shape",
+              "instruction": "Choose a shape that feels steady to you.",
+              "parent_prompt": "Invite the child to keep or change either demonstrated arm position."
+            }
+          ],
+          "ending": "Return to a comfortable resting position and finish together."
+        },
+        "8-10": {
+          "challenge": "Compare two arm positions and notice which feels steadier.",
+          "steps": [
+            {
+              "step_id": "first_position",
+              "instruction": "Try a steady shape with your arms stretched sideways.",
+              "parent_prompt": "Keep both feet comfortably grounded; do not time the hold."
+            },
+            {
+              "step_id": "second_position",
+              "instruction": "Keep your feet still and try a different arm position.",
+              "parent_prompt": "Invite a comfortable change, then ask how it feels compared with the first."
+            },
+            {
+              "step_id": "adjust_shape",
+              "instruction": "Adjust your arms to make your shape feel steadier.",
+              "parent_prompt": "Let the child decide; neither shape needs to be judged best."
+            }
+          ],
+          "ending": "Relax the shape and describe one adjustment you noticed."
+        },
+        "11-12": {
+          "challenge": "Design and adjust a controlled transition between two grounded shapes.",
+          "steps": [
+            {
+              "step_id": "design_pair",
+              "instruction": "Choose two comfortable shapes with both feet on the ground.",
+              "parent_prompt": "Help check space for both shapes and let the child choose arm positions."
+            },
+            {
+              "step_id": "try_transition",
+              "instruction": "Move slowly between your shapes while keeping your feet grounded.",
+              "parent_prompt": "Let the child pause between shapes; there is no speed or holding target."
+            },
+            {
+              "step_id": "improve_transition",
+              "instruction": "Change one part to make the transition feel steadier.",
+              "parent_prompt": "Ask whether a smaller arm movement or a pause helps, then try the change."
+            }
+          ],
+          "ending": "Return to rest and name the change that helped you."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Keep the arms close and use a smaller comfortable range of movement."
+        ],
+        "extend": [
+          "Give each existing shape an imaginary name and repeat the same transition."
+        ]
+      },
+      "constraints": [
+        "Keep both feet on the ground; do not add raised surfaces or one-leg challenges.",
+        "Do not add closed eyes, spinning, jumping, pushing or timed holding targets.",
+        "Stop or change any movement that feels uncomfortable or unsteady.",
+        "Story wording must retain the grounded positions and controlled transitions."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
       "activity_id": "colour_hunt",
       "version": 1,
       "title": "Colour Hunt",
@@ -224,6 +336,240 @@
         "Do not add climbing, backward travel, chasing, contact or speed competitions.",
         "Do not require equipment, landmarks or surfaces absent from the requirements.",
         "Keep the listed tasks and each age variant's ending when adding story wording."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "imaginary_delivery",
+      "version": 1,
+      "title": "Imaginary Delivery",
+      "summary": "Pretend to carry a make-believe parcel and decide how to deliver it together.",
+      "activity_type": "imaginative_play",
+      "core_mechanic": "pretend",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Join the pretend delivery and agree any movements within the checked space."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a small, clear, level area with room for a few forward steps together.",
+        "The delivery begins and ends within that area, away from traffic and active play."
+      ],
+      "setup": [
+        "Agree on a nearby imaginary delivery spot inside the checked area.",
+        "Explain that there is no real parcel to find, pick up or carry.",
+        "Use comfortable arm movements and slow forward steps; staying in place is also allowed.",
+        "Either person can change the pretend idea, pause or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Imagine one parcel and act out delivering it with an adult.",
+          "steps": [
+            {
+              "step_id": "choose_parcel",
+              "instruction": "Pretend you have a soft, light parcel in your hands.",
+              "parent_prompt": "Offer a simple imaginary parcel such as a cushion; nothing is actually held."
+            },
+            {
+              "step_id": "carry_parcel",
+              "instruction": "Carry your pretend parcel beside me with slow steps.",
+              "parent_prompt": "Walk together towards the agreed spot, or mime the delivery in place."
+            },
+            {
+              "step_id": "deliver_parcel",
+              "instruction": "Show me how you give me the pretend parcel.",
+              "parent_prompt": "Mime receiving it without requiring touching or carrying any real object."
+            }
+          ],
+          "ending": "Set the imaginary parcel down in the story and relax your arms."
+        },
+        "8-10": {
+          "challenge": "Choose an imaginary parcel's shape and adapt how you carry it.",
+          "steps": [
+            {
+              "step_id": "describe_parcel",
+              "instruction": "Choose whether your pretend parcel is wide or narrow.",
+              "parent_prompt": "Keep the imagined parcel light and use only comfortable arm positions."
+            },
+            {
+              "step_id": "try_carrying",
+              "instruction": "Show how you carry that shape to our delivery spot.",
+              "parent_prompt": "Move together slowly within the checked area or mime the steps in place."
+            },
+            {
+              "step_id": "change_shape",
+              "instruction": "Pretend its shape changes and adjust your delivery movements.",
+              "parent_prompt": "Stay at the delivery spot and use smaller arm movements if needed."
+            }
+          ],
+          "ending": "Hand over the pretend parcel and describe how its shape changed your actions."
+        },
+        "11-12": {
+          "challenge": "Plan a pretend delivery and adapt it when the imaginary parcel changes.",
+          "steps": [
+            {
+              "step_id": "plan_delivery",
+              "instruction": "Invent a light parcel and explain your delivery plan.",
+              "parent_prompt": "Agree the nearby destination first; the plan uses the same checked space."
+            },
+            {
+              "step_id": "act_delivery",
+              "instruction": "Act out carrying your parcel towards our agreed delivery spot.",
+              "parent_prompt": "Walk beside the child with slow forward steps, or perform the delivery in place."
+            },
+            {
+              "step_id": "adapt_plan",
+              "instruction": "Imagine its shape changes and decide how to adjust your plan.",
+              "parent_prompt": "Pause the walking and let the child adapt the arm movements without expanding the area."
+            },
+            {
+              "step_id": "complete_delivery",
+              "instruction": "Show your adjusted delivery and explain what you changed.",
+              "parent_prompt": "Play the receiver and let the child finish using the agreed movements."
+            }
+          ],
+          "ending": "Complete the handover in the story, then return your arms to rest."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Mime the whole delivery in place with small arm movements.",
+          "Let the adult suggest the parcel while the child chooses how to carry it."
+        ],
+        "extend": [
+          "Swap sender and receiver roles using the same area and movement limits."
+        ]
+      },
+      "constraints": [
+        "All parcels are imaginary; do not collect, lift or deliver real objects.",
+        "Remain together within the checked area; do not approach strangers as recipients.",
+        "Do not add obstacles, roads, water, climbing, running or jumping to the story.",
+        "Keep the parcel light in the story and every movement comfortable.",
+        "Future story wording must retain the same delivery area and permitted actions."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "notice_the_change",
+      "version": 1,
+      "title": "Notice the Change",
+      "summary": "Take turns changing a small part of a pose and noticing what is different.",
+      "activity_type": "exploration_play",
+      "core_mechanic": "compare",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Show small pose changes, keep the child in sight and offer clues when wanted."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a clear, level area where the pair can stand without contact.",
+        "Both people can observe each other without blocking routes or active play."
+      ],
+      "setup": [
+        "Face each other with enough room for small arm movements.",
+        "Agree to stay in place and change only comfortable hand or arm positions.",
+        "When a change is hidden, the child looks to one side with eyes open and stays still.",
+        "Either person can request a clue, pass a turn or finish the activity."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Notice one visible change and then choose a change yourself.",
+          "steps": [
+            {
+              "step_id": "watch_change",
+              "instruction": "Watch my hands and point to what changes.",
+              "parent_prompt": "Slowly change one hand from open to closed while the child watches."
+            },
+            {
+              "step_id": "compare_positions",
+              "instruction": "Tell me or show me which hand changed.",
+              "parent_prompt": "Show the original and new positions again if the child wants help."
+            },
+            {
+              "step_id": "child_changes",
+              "instruction": "Change one hand position for me to notice.",
+              "parent_prompt": "Describe what you see; the child does not need to copy your example."
+            }
+          ],
+          "ending": "Reveal the last change and return both hands to rest."
+        },
+        "8-10": {
+          "challenge": "Remember a pose and identify one change after looking away.",
+          "steps": [
+            {
+              "step_id": "remember_pose",
+              "instruction": "Look at my arm positions, then look to one side.",
+              "parent_prompt": "Stay nearby with the child in sight; change one small arm position."
+            },
+            {
+              "step_id": "spot_change",
+              "instruction": "Look back and describe the change you notice.",
+              "parent_prompt": "Offer a clue or show both poses again; guessing is optional."
+            },
+            {
+              "step_id": "swap_roles",
+              "instruction": "Choose one pose change for me to spot.",
+              "parent_prompt": "Look at the child's feet while they change one arm, keeping them in sight."
+            }
+          ],
+          "ending": "Explain the final change to each other and return to rest."
+        },
+        "11-12": {
+          "challenge": "Compare two pose changes and choose a useful clue for an observer.",
+          "steps": [
+            {
+              "step_id": "study_pose",
+              "instruction": "Study my hand and arm positions, then look to one side.",
+              "parent_prompt": "Make two small comfortable changes while keeping the child in sight."
+            },
+            {
+              "step_id": "compare_changes",
+              "instruction": "Look back and explain the two differences you notice.",
+              "parent_prompt": "Offer a comparison with the original pose; there is no score for recall."
+            },
+            {
+              "step_id": "design_clue",
+              "instruction": "Choose a pose change and a clue to help me notice it.",
+              "parent_prompt": "Keep the child in sight while looking at their feet, then look up and use the clue."
+            }
+          ],
+          "ending": "Reveal the change and explain how the clue helped, then relax."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Make one slow change while the observer watches the whole time.",
+          "Point or demonstrate instead of describing the change in words."
+        ],
+        "extend": [
+          "Swap who invents the change and who gives a clue for another round."
+        ]
+      },
+      "constraints": [
+        "Stay in place with eyes open; do not add hiding, blindfolds or searching elsewhere.",
+        "The adult must keep the child in sight throughout each turn.",
+        "Change only comfortable hand or arm positions; do not require contact or props.",
+        "Story wording must preserve the observation and comparison tasks."
       ],
       "safety_reference": "schema/safety_constraints.yaml",
       "review": {

@@ -1,7 +1,7 @@
 # Activity library foundation
 
-Modules 1 and 2 deliver a content contract, source-grounded taxonomy mapping,
-three complete activity examples, a loader and JSON export. Start integration
+Modules 1-3 deliver a content contract, source-grounded taxonomy mapping,
+six activity drafts, a loader, JSON export and a human review checklist. Start integration
 with [INTEGRATION.md](INTEGRATION.md). Target 18 distinct
 activity families, first reaching 6 usable pilot activities; deploy only the
 subset that has passed human review and integration checks.
@@ -14,7 +14,11 @@ subset that has passed human review and integration checks.
 - `_candidates/follow_the_leader.yaml`: one activity with three age variants.
 - `_candidates/colour_hunt.yaml`: observation play with three age variants.
 - `_candidates/pass_and_move.yaml`: ball play with three age variants and required equipment.
-- `../examples/activities.preview.json`: generated sample containing all three drafts.
+- `_candidates/balance_shapes.yaml`: grounded balance and controlled transitions.
+- `_candidates/notice_the_change.yaml`: observation and memory of pose changes.
+- `_candidates/imaginary_delivery.yaml`: pretend play, including a four-step age variant.
+- `../examples/activities.preview.json`: generated sample containing all six drafts.
+- `REVIEW_CHECKLIST.md`: per-activity review queue and deployment handoff checks.
 - `source_inventory.md`: exact dataset version, counts and branch differences.
 - `reviewed/`: approved activity files only; currently empty of activities.
 

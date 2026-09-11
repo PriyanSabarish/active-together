@@ -3,7 +3,7 @@
 ## Activity library foundation v0.1
 
 For the new reusable activity library, start with [activities/README.md](activities/README.md).
-Its taxonomy, schema and three candidates are available for team review. The initial
+Its taxonomy, schema and six candidates are available for team review. The initial
 target is 18 activity families, with 3 integration examples and then 6 pilot activities.
 
     taxonomy/      controlled activity types and proposed subtype mappings
@@ -19,6 +19,8 @@ This is a separate content contract from the existing mission format below.
 The existing mission tools do not load or validate activities/. Module 2 provides
 a loader and JSON export; the application is not connected yet. Teammates can
 start with [activities/INTEGRATION.md](activities/INTEGRATION.md).
+Module 3 adds the six-activity pilot and [human review checklist](activities/REVIEW_CHECKLIST.md).
+Human approval remains pending; all current activities are development drafts.
 
 ## Existing combo and mission library
 
