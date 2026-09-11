@@ -1,0 +1,122 @@
+# Activity library foundation
+
+Module 1 delivers a proposed content contract, source-grounded taxonomy mapping
+and one complete activity example. The team can review the data shape before
+module 2 supplies three examples, a loader and JSON export. Target 18 distinct
+activity families, first reaching 6 usable pilot activities; deploy only the
+subset that has passed human review and integration checks.
+
+## Start here
+
+- `../taxonomy/activity_types.yaml`: six proposed activity types and mechanic IDs.
+- `../taxonomy/subtype_activity_mapping.yaml`: all 16 retained subtype combinations.
+- `../schema/activity_template.schema.yaml`: executable JSON Schema written in YAML.
+- `_candidates/follow_the_leader.yaml`: one activity with three age variants.
+- `source_inventory.md`: exact dataset version, counts and branch differences.
+- `reviewed/`: approved activity files only; currently empty of activities.
+
+Use UTF-8, two-space indentation and quoted age-band keys. One YAML file holds
+one activity family. Its filename equals `activity_id`. Source content is English;
+translation can be added later without changing activity IDs.
+
+For activities in Jiabin's authoring workstream, use `review.author: Jiabin`.
+Keep `reviewed_by: null` and `status: draft` until independent human review.
+AI assistance with structure, drafting and checks will be documented in a
+consolidated AI usage statement before final handoff; that statement is pending.
+
+## Three different concepts
+
+| Field | Meaning | Example |
+| --- | --- | --- |
+| `activity_category` | Existing place category; appears only in the mapping | `court` |
+| `activity_type` | Primary type of play; defined in the activity taxonomy | `movement_play` |
+| `activity_id` | Stable identity of a specific game | `follow_the_leader` |
+| `core_mechanic` | Main rule that makes the game work | `imitate` |
+
+Each activity has one primary type and one main mechanic. Related experiences
+do not require duplicate activities or extra tags. A movement game with an animal
+title stays movement_play; use imaginative_play when pretending drives its rules.
+The initial six types are a small authoring vocabulary, not a promise that each
+type has content ready. Add types only when a genuinely different game needs one.
+
+## Field contract v0.1
+
+All top-level fields below are required. Empty equipment and adaptation lists
+are valid; requirements, setup, constraints and steps must contain actual text.
+
+| Field | What an author writes |
+| --- | --- |
+| `schema_version` | `"0.1.0"`; identifies the data contract |
+| `activity_id` | Stable snake_case ID; not a title, age or duration |
+| `version` | Positive integer; increase when content changes after review |
+| `title`, `summary` | Name and short explanation of the core game |
+| `activity_type` | One ID from `activity_types.yaml` |
+| `core_mechanic` | One ID from its `core_mechanics` list |
+| `participation` | Minimum children, minimum adults and the adult's role |
+| `equipment` | Required and optional items; optional items cannot be necessary to finish |
+| `requirements` | Preconditions to check, not claims about a mapped place |
+| `setup` | Preparation shared by all supported age variants |
+| `age_variants` | At least one of `"5-7"`, `"8-10"`, `"11-12"`; target all three where appropriate |
+| `age_variants.<band>.challenge` | What changes about the task at this age |
+| `age_variants.<band>.steps` | Ordered list of `step_id`, `instruction`, `parent_prompt` |
+| `age_variants.<band>.ending` | Standalone way to finish this activity |
+| `adaptations` | Allowed simplifications and extensions within the existing constraints |
+| `constraints` | Boundaries retained by future selection and story composition |
+| `safety_reference` | `schema/safety_constraints.yaml`, relative to `content/` |
+| `review` | Author, reviewer or null, and draft/reviewed status |
+
+Array order is execution order. Do not add a second sequence number to maintain.
+Step IDs are unique within each age variant. Unsupported age bands are omitted;
+the future selector must not substitute another age band. Older variants change
+the task, not just vocabulary. These bands are provisional content adaptations,
+not evidence of developmental suitability.
+
+The YAML schema checks field shapes, required values and reviewer presence.
+Cross-file ID membership, duplicate IDs, reviewer independence and genuine age
+differences require additional checks or human review. A full authoring validator
+is a later module. Existing `schema/check_drafts.py` is for missions only.
+
+## Location mapping boundary
+
+Mappings use the exact `(activity_category, feature_type, feature_subtype)` triple.
+`candidate_activity_types` is a planning shortlist. It does not grant permission
+to use a site, provide equipment, or prove any activity is eligible. Requirements
+still apply, even for equipment-free activities. No automatic bare-site fallback
+is defined; unknown triples have no mapping. Cycling and skating are separate
+games within wheeled_play and are not interchangeable.
+
+This module records relationships but implements no location matching or ranking.
+Names enriched from council sources must not be used to infer extra facilities.
+
+## Handoff to the application
+
+Module 2 will load YAML and return ordinary JSON-compatible values, preserving
+the field names above. The proposed export envelope is:
+
+```json
+{
+  "schema_version": "0.1.0",
+  "activities": []
+}
+```
+
+Each item in `activities` will be a complete record matching the activity schema.
+The initial reviewed export is empty because no activity has human approval yet.
+An explicit development-only preview may expose drafts for interface testing;
+it must not be used by the production loading path. This is a file/data contract,
+not a new API endpoint. Future loading is limited to `reviewed/*.yaml` and must
+fail closed on invalid records or missing review; candidate files are never a
+production fallback.
+
+## Duration and future stories
+
+No duration, weather, preference, photo verification or AI service fields are
+part of v0.1. A later version will distinguish each activity's estimated duration
+from the combo's 3-4 total-duration choices. No timing is inferred from step count;
+the number of choices and timing values remain to be agreed and tried in practice.
+
+For Iteration 3, a combo can reference 2-3 activities by ID, version and age band.
+Story wording may supply an introduction, transitions and an ending, while keeping
+each activity's tasks, equipment, preconditions and constraints. Activities must
+stand alone and never refer to an unnamed previous task. This is a design boundary,
+not an implemented AI control or story-generation feature.

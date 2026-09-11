@@ -1,5 +1,22 @@
 # Content library
 
+## Activity library foundation v0.1
+
+For the new reusable activity library, start with [activities/README.md](activities/README.md).
+Its taxonomy, schema and first candidate are a proposal for team review. The initial
+target is 18 activity families, with 3 integration examples and then 6 pilot activities.
+
+    taxonomy/      controlled activity types and proposed subtype mappings
+    activities/    one activity family per YAML file, with age variants
+    schema/activity_template.schema.yaml    activity JSON Schema, written in YAML
+    tools/inspect_location_taxonomy.py      read-only source inventory
+
+This is a separate content contract from the existing mission format below.
+The existing mission tools do not load or validate activities/. A loader and
+JSON export are planned for module 2; the application is not connected yet.
+
+## Existing combo and mission library
+
 Hand-reviewed source of truth for what a family is asked to do. Read this before editing anything here.
 
 ## What is in here

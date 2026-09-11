@@ -1,0 +1,46 @@
+# Activity types describe play, not the place where it happens.
+schema_version: "0.1.0"
+status: draft
+
+activity_types:
+  - id: movement_play
+    label: Movement play
+    description: Copy, balance or arrange controlled body movements.
+    boundary: Use when body movement is the main purpose of the game.
+
+  - id: exploration_play
+    label: Exploration play
+    description: Look for, compare or notice features without collecting them.
+    boundary: Use when observation and discovery are the main purpose.
+
+  - id: imaginative_play
+    label: Imaginative play
+    description: Act out an invented role or situation through play.
+    boundary: Use when pretend play drives the rules, not just the title.
+
+  - id: ball_play
+    label: Ball play
+    description: Roll, pass, catch or control an appropriate ball.
+    boundary: Declare the ball and any target requirements in each activity.
+
+  - id: racket_play
+    label: Racket play
+    description: Control or exchange an object using a racket or bat.
+    boundary: Declare all equipment; a court subtype does not supply it.
+
+  - id: wheeled_play
+    label: Wheeled play
+    description: Practise controlled movement using specified wheeled equipment.
+    boundary: Cycling and skating need separate activities with equipment and skill requirements.
+
+# One primary activity_type per activity. The mechanic describes how its game works.
+core_mechanics:
+  - imitate
+  - balance
+  - find
+  - compare
+  - sequence
+  - pretend
+  - pass
+  - aim
+  - control
