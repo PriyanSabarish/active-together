@@ -116,6 +116,118 @@
     },
     {
       "schema_version": "0.1.0",
+      "activity_id": "choose_your_route",
+      "version": 1,
+      "title": "Choose Your Route",
+      "summary": "Plan a short route inside a checked area and guide a partner along it.",
+      "activity_type": "movement_play",
+      "core_mechanic": "sequence",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a small, level, clear area with space for a few slow forward steps.",
+        "The entire route stays visible and away from traffic, obstacles and moving equipment."
+      ],
+      "setup": [
+        "Agree a nearby starting position and a nearby finishing position.",
+        "Choose turns only where there is clear space; no signs, lines or markers are required.",
+        "Walk together, pause before changing direction and stop whenever wanted."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Choose a nearby destination and walk there with an adult.",
+          "steps": [
+            {
+              "step_id": "pick_destination",
+              "instruction": "Point to a nearby clear spot for us to visit.",
+              "parent_prompt": "The adult confirms it is inside the checked area."
+            },
+            {
+              "step_id": "walk_together",
+              "instruction": "Walk beside me to our chosen spot.",
+              "parent_prompt": "Take a few slow forward steps and stop together."
+            },
+            {
+              "step_id": "choose_return",
+              "instruction": "Point to our starting spot and walk back with me.",
+              "parent_prompt": "Turn while stopped, then walk forward rather than backwards."
+            }
+          ],
+          "ending": "Stop together at the starting position and finish."
+        },
+        "8-10": {
+          "challenge": "Plan a short route with one stopping point.",
+          "steps": [
+            {
+              "step_id": "plan_stop",
+              "instruction": "Choose one clear stopping point before our finish.",
+              "parent_prompt": "Check that both short sections stay inside the agreed area."
+            },
+            {
+              "step_id": "guide_route",
+              "instruction": "Guide us to the stop and then the finish.",
+              "parent_prompt": "Pause together before any direction change."
+            },
+            {
+              "step_id": "revise_route",
+              "instruction": "Choose a different stop and compare the two routes.",
+              "parent_prompt": "Confirm the new point with the adult before walking."
+            }
+          ],
+          "ending": "Return together to the start and name one route difference."
+        },
+        "11-12": {
+          "challenge": "Explain and improve a route for a partner to follow.",
+          "steps": [
+            {
+              "step_id": "design_route",
+              "instruction": "Plan a short route with two clear stopping points.",
+              "parent_prompt": "Confirm all points and turns within the checked area."
+            },
+            {
+              "step_id": "give_directions",
+              "instruction": "Give one direction at a time while we walk together.",
+              "parent_prompt": "Wait at each stopping point before the next instruction."
+            },
+            {
+              "step_id": "improve_direction",
+              "instruction": "Reword one direction to make the route clearer.",
+              "parent_prompt": "Try that short section together without increasing speed or distance."
+            }
+          ],
+          "ending": "Walk back together and explain which direction became clearer."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one nearby destination with no intermediate stop."
+        ],
+        "extend": [
+          "Swap who plans the route within the same checked area."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Remain together and use slow forward walking; turn only after stopping.",
+        "Do not add obstacles, road crossings, hidden destinations or a race.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
       "activity_id": "colour_hunt",
       "version": 1,
       "title": "Colour Hunt",
@@ -466,6 +578,229 @@
     },
     {
       "schema_version": "0.1.0",
+      "activity_id": "invisible_orchestra",
+      "version": 1,
+      "title": "Invisible Orchestra",
+      "summary": "Invent silent instruments and coordinate gentle playing movements as a pair.",
+      "activity_type": "imaginative_play",
+      "core_mechanic": "pretend",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks enough clear space for comfortable hand and arm movements."
+      ],
+      "setup": [
+        "Choose imaginary instruments; no real instrument or loud sound is required.",
+        "Agree a visible start signal and a rest signal.",
+        "Keep movements small, stay in place and stop whenever wanted."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Mime one imaginary instrument and pause with a partner.",
+          "steps": [
+            {
+              "step_id": "invent_instrument",
+              "instruction": "Show me how you play an imaginary drum.",
+              "parent_prompt": "Use small gentle movements in the air without hitting anything."
+            },
+            {
+              "step_id": "play_together",
+              "instruction": "Play our silent instruments together.",
+              "parent_prompt": "Follow the child's comfortable pace; no loud sound is needed."
+            },
+            {
+              "step_id": "rest_signal",
+              "instruction": "Let your instrument rest when I show our signal.",
+              "parent_prompt": "Demonstrate a gradual comfortable pause."
+            }
+          ],
+          "ending": "Give the rest signal and relax your hands."
+        },
+        "8-10": {
+          "challenge": "Give two imaginary instruments distinct movement patterns.",
+          "steps": [
+            {
+              "step_id": "choose_instruments",
+              "instruction": "Choose two silent instruments with different playing movements.",
+              "parent_prompt": "Keep the movements comfortable and within each person's space."
+            },
+            {
+              "step_id": "take_turns",
+              "instruction": "Alternate between our two instrument movements.",
+              "parent_prompt": "Use agreed signals so nobody needs to guess which comes next."
+            },
+            {
+              "step_id": "combine_patterns",
+              "instruction": "Choose an order for us to play the movements together.",
+              "parent_prompt": "Keep the sequence short and allow a pause between changes."
+            }
+          ],
+          "ending": "Finish the short sequence and let both instruments rest."
+        },
+        "11-12": {
+          "challenge": "Arrange and revise a short imaginary performance.",
+          "steps": [
+            {
+              "step_id": "arrange_parts",
+              "instruction": "Assign each of us a silent instrument and a movement pattern.",
+              "parent_prompt": "Make both parts possible with small on-the-spot actions."
+            },
+            {
+              "step_id": "conduct_parts",
+              "instruction": "Guide the order of our parts using agreed signals.",
+              "parent_prompt": "Use a slow pace and a clear rest signal."
+            },
+            {
+              "step_id": "revise_arrangement",
+              "instruction": "Change one part so our performance is easier to coordinate.",
+              "parent_prompt": "Try the revised order without scoring rhythm or precision."
+            }
+          ],
+          "ending": "Use the rest signal to end the performance."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one instrument movement and let the adult lead the signals."
+        ],
+        "extend": [
+          "Swap the conductor role while keeping the same instruments and signals."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Do not hit objects, other people or the body to make sounds.",
+        "No real instruments, loud calls or vigorous swinging movements are required.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "listen_and_point",
+      "version": 1,
+      "title": "Listen and Point",
+      "summary": "Notice sounds from a checked position and describe where they seem to come from.",
+      "activity_type": "exploration_play",
+      "core_mechanic": "find",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a permitted observation area away from traffic and active play.",
+        "The activity can use quiet sounds made by the adult if surroundings are quiet."
+      ],
+      "setup": [
+        "Stay together with eyes open and listen without leaving the checked area.",
+        "Point only from the current position; do not follow a sound to its source.",
+        "If listening is uncomfortable, describe visible movement instead or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Notice one quiet sound and point towards its apparent direction.",
+          "steps": [
+            {
+              "step_id": "notice_sound",
+              "instruction": "Listen with me for one quiet sound.",
+              "parent_prompt": "If needed, make a gentle finger tap where the child can see you."
+            },
+            {
+              "step_id": "point_direction",
+              "instruction": "Point to where you think the sound comes from.",
+              "parent_prompt": "Accept the child's guess without checking by approaching anything."
+            },
+            {
+              "step_id": "choose_sound",
+              "instruction": "Choose a sound for us to notice together.",
+              "parent_prompt": "Offer another quiet tap if no environmental sound is available."
+            }
+          ],
+          "ending": "Name or describe the chosen sound and finish listening."
+        },
+        "8-10": {
+          "challenge": "Compare two sounds while remaining in the checked area.",
+          "steps": [
+            {
+              "step_id": "find_two",
+              "instruction": "Notice two sounds or listen to two taps I make.",
+              "parent_prompt": "Use quiet adult-made sounds if the setting offers none."
+            },
+            {
+              "step_id": "compare_sounds",
+              "instruction": "Describe one difference between the two sounds.",
+              "parent_prompt": "Invite descriptions such as longer or shorter without requiring exact identification."
+            },
+            {
+              "step_id": "share_clue",
+              "instruction": "Give me a clue about which sound you chose.",
+              "parent_prompt": "Guess together from the same position."
+            }
+          ],
+          "ending": "Reveal the chosen sound and finish."
+        },
+        "11-12": {
+          "challenge": "Create a simple description of the sounds around a checked position.",
+          "steps": [
+            {
+              "step_id": "choose_descriptions",
+              "instruction": "Choose how to describe two sounds you notice.",
+              "parent_prompt": "Offer apparent direction or length; no sound source needs to be verified."
+            },
+            {
+              "step_id": "describe_positions",
+              "instruction": "Use gestures to show where the sounds seem to come from.",
+              "parent_prompt": "Stay in place with eyes open and do not follow the sounds."
+            },
+            {
+              "step_id": "compare_views",
+              "instruction": "Ask how I heard the sounds and compare our descriptions.",
+              "parent_prompt": "Different impressions are acceptable; use adult-made sounds if needed."
+            }
+          ],
+          "ending": "Choose one shared observation and finish listening."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one quiet visible tap made by the adult."
+        ],
+        "extend": [
+          "Repeat from the same position and notice whether the sounds have changed."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Do not close eyes, follow sounds, approach animals or approach strangers.",
+        "Avoid loud sounds and stop if listening is uncomfortable.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
       "activity_id": "notice_the_change",
       "version": 1,
       "title": "Notice the Change",
@@ -570,6 +905,231 @@
         "The adult must keep the child in sight throughout each turn.",
         "Change only comfortable hand or arm positions; do not require contact or props.",
         "Story wording must preserve the observation and comparison tasks."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "opposite_actions",
+      "version": 1,
+      "title": "Opposite Actions",
+      "summary": "Use agreed pairs of gentle actions to respond with the opposite movement.",
+      "activity_type": "movement_play",
+      "core_mechanic": "control",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks clear space for small arm movements while both feet stay grounded."
+      ],
+      "setup": [
+        "Agree a simple pair such as arms apart and arms close.",
+        "Demonstrate both actions before trying the opposite rule.",
+        "Allow a demonstration, a pause or a skipped turn whenever wanted."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Respond with the other action from one familiar pair.",
+          "steps": [
+            {
+              "step_id": "learn_pair",
+              "instruction": "Show arms apart, then bring them close.",
+              "parent_prompt": "Demonstrate within a comfortable range with both feet grounded."
+            },
+            {
+              "step_id": "try_opposite",
+              "instruction": "When my arms open, bring yours close.",
+              "parent_prompt": "Show the expected response slowly; this is not a speed test."
+            },
+            {
+              "step_id": "swap_turns",
+              "instruction": "Choose one arm position for me to answer.",
+              "parent_prompt": "Respond with the other agreed position."
+            }
+          ],
+          "ending": "Show both agreed positions together and finish."
+        },
+        "8-10": {
+          "challenge": "Apply the opposite rule while taking turns choosing actions.",
+          "steps": [
+            {
+              "step_id": "agree_pair",
+              "instruction": "Choose two different gentle arm positions for our pair.",
+              "parent_prompt": "Use positions that fit the space and feel comfortable."
+            },
+            {
+              "step_id": "answer_partner",
+              "instruction": "Show the other position when I show one.",
+              "parent_prompt": "Pause to think or ask for the pair to be demonstrated again."
+            },
+            {
+              "step_id": "lead_rule",
+              "instruction": "Lead three turns using either position from our pair.",
+              "parent_prompt": "Keep each turn separate with time for the partner to respond."
+            }
+          ],
+          "ending": "Relax your arms and explain the pair you used."
+        },
+        "11-12": {
+          "challenge": "Explain and adapt an opposite-action rule for a partner.",
+          "steps": [
+            {
+              "step_id": "design_pairs",
+              "instruction": "Choose two pairs of comfortable hand or arm positions.",
+              "parent_prompt": "Demonstrate the pairs with the adult before adding a rule."
+            },
+            {
+              "step_id": "name_pair",
+              "instruction": "Name a pair, show one position and ask for its opposite.",
+              "parent_prompt": "Keep the pair named aloud so the partner need not guess which rule applies."
+            },
+            {
+              "step_id": "simplify_rule",
+              "instruction": "Change the rule if it is difficult to follow.",
+              "parent_prompt": "Use one pair or a demonstration rather than adding speed."
+            }
+          ],
+          "ending": "Try the agreed simpler rule once, then finish."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one pair and demonstrate the response on every turn."
+        ],
+        "extend": [
+          "Swap who chooses the agreed pair for another round."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Keep both feet on the ground and use comfortable arm or hand positions.",
+        "Do not introduce punishment, elimination or timed responses.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "partner_ball_carry",
+      "version": 1,
+      "title": "Partner Ball Carry",
+      "summary": "Support a soft ball together and coordinate a few slow steps as a pair.",
+      "activity_type": "ball_play",
+      "core_mechanic": "control",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [
+          "A soft ball large enough for the child and adult to support together."
+        ],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a small, clear, level area for a few slow forward steps together.",
+        "Both participants can support the ball comfortably without gripping each other."
+      ],
+      "setup": [
+        "Agree a comfortable position beside each other and try supporting the ball while still.",
+        "The adult supports most of the weight and can catch or lower the ball.",
+        "If the ball drops, stop and wait; either person can pause or finish."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Support the ball together and coordinate one gentle step.",
+          "steps": [
+            {
+              "step_id": "support_together",
+              "instruction": "Help me support our soft ball.",
+              "parent_prompt": "Use comfortable hand positions and avoid touching or gripping the child."
+            },
+            {
+              "step_id": "take_step",
+              "instruction": "Take one slow step forward beside me.",
+              "parent_prompt": "The adult guides the pace within the checked space."
+            },
+            {
+              "step_id": "pause_together",
+              "instruction": "Stop with me and hold the ball still.",
+              "parent_prompt": "Allow the child to release their hands whenever wanted."
+            }
+          ],
+          "ending": "Let the adult take the ball and return to rest."
+        },
+        "8-10": {
+          "challenge": "Agree and use a shared signal for moving and pausing.",
+          "steps": [
+            {
+              "step_id": "agree_signal",
+              "instruction": "Choose a word that tells us to take a step.",
+              "parent_prompt": "Practise while the adult securely supports the ball."
+            },
+            {
+              "step_id": "coordinate_steps",
+              "instruction": "Use our signal for a few slow steps together.",
+              "parent_prompt": "Walk forwards beside each other and stop between signals."
+            },
+            {
+              "step_id": "improve_signal",
+              "instruction": "Choose how to make our next shared step easier.",
+              "parent_prompt": "Try a smaller step or a longer pause, not a greater distance."
+            }
+          ],
+          "ending": "Pause together and let the adult take the ball."
+        },
+        "11-12": {
+          "challenge": "Plan and adapt a short cooperative carry.",
+          "steps": [
+            {
+              "step_id": "plan_carry",
+              "instruction": "Agree nearby start and finish positions and a shared pace.",
+              "parent_prompt": "The adult checks the short route and comfortable shared support."
+            },
+            {
+              "step_id": "try_carry",
+              "instruction": "Guide us through a few slow steps with the ball.",
+              "parent_prompt": "Use agreed signals and remain beside each other."
+            },
+            {
+              "step_id": "adapt_carry",
+              "instruction": "Change the signals or step size to improve coordination.",
+              "parent_prompt": "Try the adjustment within the same checked area; success is not scored."
+            }
+          ],
+          "ending": "Let the adult take the ball and describe one helpful adjustment."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Support the ball together while staying still."
+        ],
+        "extend": [
+          "Swap who gives the stepping signals for another short carry."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Do not lift the ball overhead or add racing, balancing tricks or body contact.",
+        "If the ball drops, stop rather than chasing; the adult retrieves it when appropriate.",
+        "Future story wording must preserve the tasks, requirements and constraints."
       ],
       "safety_reference": "schema/safety_constraints.yaml",
       "review": {
@@ -689,6 +1249,791 @@
         "If the ball leaves the checked area, the child waits with the activity paused.",
         "Do not assume nets, hoops, painted lines, markers or supplied equipment.",
         "Keep the rolling and position-change rules when adding story wording."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "rhythm_steps",
+      "version": 1,
+      "title": "Rhythm Steps",
+      "summary": "Match comfortable stepping to a short rhythm and build a pattern together.",
+      "activity_type": "movement_play",
+      "core_mechanic": "sequence",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a clear, level area with room to step on the spot."
+      ],
+      "setup": [
+        "Agree to use gentle marching or side steps within the checked area.",
+        "Use a quiet spoken rhythm; no music device is needed.",
+        "Either person can pause, simplify the pattern or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Match one gentle step to each spoken beat.",
+          "steps": [
+            {
+              "step_id": "match_beats",
+              "instruction": "Take one gentle marching step for each beat I say.",
+              "parent_prompt": "Say a slow, even beat and demonstrate on the spot."
+            },
+            {
+              "step_id": "pause_beat",
+              "instruction": "Stand still when we leave a quiet gap.",
+              "parent_prompt": "Keep the pause predictable and let the child watch your demonstration."
+            },
+            {
+              "step_id": "choose_rhythm",
+              "instruction": "Choose a short rhythm for our steps.",
+              "parent_prompt": "Offer two gentle beats and a pause if the child wants an idea."
+            }
+          ],
+          "ending": "Finish your short rhythm together and return to rest."
+        },
+        "8-10": {
+          "challenge": "Repeat a short stepping rhythm containing a pause.",
+          "steps": [
+            {
+              "step_id": "learn_pattern",
+              "instruction": "Try two gentle steps, a pause, then two more steps.",
+              "parent_prompt": "Speak the pattern slowly while both people stay in place."
+            },
+            {
+              "step_id": "change_pause",
+              "instruction": "Choose where to put a pause in the pattern.",
+              "parent_prompt": "Let the child test the change without increasing speed."
+            },
+            {
+              "step_id": "share_pattern",
+              "instruction": "Lead your rhythm while we step together.",
+              "parent_prompt": "Help with the spoken beat if remembering it is difficult."
+            }
+          ],
+          "ending": "Repeat the chosen rhythm once, then stop."
+        },
+        "11-12": {
+          "challenge": "Design a rhythm and adjust its pauses for a partner.",
+          "steps": [
+            {
+              "step_id": "design_rhythm",
+              "instruction": "Arrange gentle steps and pauses into a short rhythm.",
+              "parent_prompt": "Agree a slow pace and enough room before starting."
+            },
+            {
+              "step_id": "test_rhythm",
+              "instruction": "Teach the rhythm and try it with me.",
+              "parent_prompt": "Use spoken beats rather than a speed or memory score."
+            },
+            {
+              "step_id": "adapt_rhythm",
+              "instruction": "Change one pause to make the rhythm easier to follow.",
+              "parent_prompt": "Try the revised rhythm and discuss the change."
+            }
+          ],
+          "ending": "Finish the revised rhythm and relax together."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "March gently in place to one repeated spoken beat."
+        ],
+        "extend": [
+          "Take another turn designing a short rhythm at the same gentle pace."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Keep steps small and controlled; do not add jumping or speed targets.",
+        "Use quiet spoken beats rather than loud calls.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "robot_instructions",
+      "version": 1,
+      "title": "Robot Instructions",
+      "summary": "Give a pretend robot a short sequence of gentle movements and improve the instructions.",
+      "activity_type": "imaginative_play",
+      "core_mechanic": "sequence",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks clear, level space for small movements on the spot."
+      ],
+      "setup": [
+        "Agree that the adult or child can play a pretend robot.",
+        "Choose permitted actions such as an arm movement, marching in place or resting.",
+        "A stop request overrides the pretend rules immediately."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Give a pretend robot one clear movement instruction.",
+          "steps": [
+            {
+              "step_id": "choose_action",
+              "instruction": "Tell my robot arms to open or close.",
+              "parent_prompt": "Demonstrate a comfortable range with both feet grounded."
+            },
+            {
+              "step_id": "watch_robot",
+              "instruction": "Watch me try your instruction.",
+              "parent_prompt": "Respond slowly and ask for a demonstration if the instruction is unclear."
+            },
+            {
+              "step_id": "change_role",
+              "instruction": "Try being the robot while I give one instruction.",
+              "parent_prompt": "Use only the already agreed gentle actions."
+            }
+          ],
+          "ending": "Give the robot a rest instruction and finish the pretend game."
+        },
+        "8-10": {
+          "challenge": "Plan and test a two-instruction sequence for a robot.",
+          "steps": [
+            {
+              "step_id": "plan_commands",
+              "instruction": "Choose two gentle robot actions in an order.",
+              "parent_prompt": "Confirm that both actions fit the space."
+            },
+            {
+              "step_id": "run_commands",
+              "instruction": "Give one command at a time while I act it out.",
+              "parent_prompt": "Pause between commands so both people can check the sequence."
+            },
+            {
+              "step_id": "repair_command",
+              "instruction": "Change one instruction that was hard to understand.",
+              "parent_prompt": "Replay the two actions slowly using the clearer wording."
+            }
+          ],
+          "ending": "Tell the robot to rest and describe the clearer command."
+        },
+        "11-12": {
+          "challenge": "Design and revise a short instruction sequence.",
+          "steps": [
+            {
+              "step_id": "design_sequence",
+              "instruction": "Plan three agreed robot actions and explain their order.",
+              "parent_prompt": "Keep every action on the spot with controlled movements."
+            },
+            {
+              "step_id": "test_sequence",
+              "instruction": "Guide the robot through your commands one at a time.",
+              "parent_prompt": "Follow the instructions as understood; clarify without inventing risky actions."
+            },
+            {
+              "step_id": "debug_sequence",
+              "instruction": "Change the order or wording to improve the sequence.",
+              "parent_prompt": "Try the revised plan with no speed or performance score."
+            }
+          ],
+          "ending": "Finish the sequence with a rest and name the improvement."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one command and show the movement at the same time."
+        ],
+        "extend": [
+          "Swap robot and guide for another short sequence of agreed actions."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Pretend commands cannot require contact, unsafe movement or ignoring a stop request.",
+        "Do not add travelling routes, obstacles, jumps or speed challenges.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "roll_to_target",
+      "version": 1,
+      "title": "Roll to Target",
+      "summary": "Roll a soft ball towards a family-supplied target and adjust direction or distance.",
+      "activity_type": "ball_play",
+      "core_mechanic": "aim",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [
+          "A soft ball suitable for rolling.",
+          "A large cloth target placed flat by the adult, outside walking routes."
+        ],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a level rolling area where a ball cannot enter traffic or active play.",
+        "The cloth can lie flat and all walking remains clear of it."
+      ],
+      "setup": [
+        "Place the cloth at a short comfortable rolling distance.",
+        "Agree to roll along the ground and wait for the ball to stop.",
+        "The child waits if the ball leaves the checked area; the game can pause or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Roll towards a clear nearby target and try again from the same place.",
+          "steps": [
+            {
+              "step_id": "notice_target",
+              "instruction": "Point to our cloth target.",
+              "parent_prompt": "Confirm that the target is family-supplied and lies away from feet."
+            },
+            {
+              "step_id": "try_roll",
+              "instruction": "Roll the ball gently towards the cloth.",
+              "parent_prompt": "Demonstrate from nearby without requiring the ball to hit the target."
+            },
+            {
+              "step_id": "try_again",
+              "instruction": "Choose whether to try again or move closer with me.",
+              "parent_prompt": "Hold the stopped ball before repositioning."
+            }
+          ],
+          "ending": "Stop the ball and collect the supplied equipment with the adult."
+        },
+        "8-10": {
+          "challenge": "Compare two rolling directions and choose an adjustment.",
+          "steps": [
+            {
+              "step_id": "first_roll",
+              "instruction": "Try one gentle roll towards the cloth.",
+              "parent_prompt": "Wait for the ball to stop; do not chase it."
+            },
+            {
+              "step_id": "choose_adjustment",
+              "instruction": "Choose how to change your next rolling direction.",
+              "parent_prompt": "Discuss the result without counting hits or misses."
+            },
+            {
+              "step_id": "test_adjustment",
+              "instruction": "Try your adjustment from the same position.",
+              "parent_prompt": "Use the same gentle force and a short comfortable distance."
+            }
+          ],
+          "ending": "Stop the ball and explain what you adjusted."
+        },
+        "11-12": {
+          "challenge": "Plan and compare a direction or distance adjustment.",
+          "steps": [
+            {
+              "step_id": "plan_roll",
+              "instruction": "Choose a nearby rolling position and explain your aim.",
+              "parent_prompt": "The adult checks that the entire roll remains in the agreed area."
+            },
+            {
+              "step_id": "observe_roll",
+              "instruction": "Try a gentle roll and describe where it stopped.",
+              "parent_prompt": "Retrieve only after the ball stops and remain clear of the cloth."
+            },
+            {
+              "step_id": "revise_plan",
+              "instruction": "Change direction or distance and compare your next roll.",
+              "parent_prompt": "Hold the ball while repositioning and avoid speed or accuracy scoring."
+            }
+          ],
+          "ending": "Stop the ball, name one observation and collect the equipment."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Move closer to the cloth with the stopped ball held."
+        ],
+        "extend": [
+          "Take another planning turn with the same target inside the checked area."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Use ground rolls only; do not add kicking, throwing, striking or scoring targets.",
+        "Do not step on the cloth or chase a ball beyond the checked area.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "silent_scene",
+      "version": 1,
+      "title": "Silent Scene",
+      "summary": "Mime a familiar everyday action and help a partner understand the scene.",
+      "activity_type": "imaginative_play",
+      "core_mechanic": "pretend",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks clear, level space for small on-the-spot actions."
+      ],
+      "setup": [
+        "Agree familiar pretend actions that need no props, such as opening a book.",
+        "Keep imaginary objects light and all movements comfortable.",
+        "Guessing is optional; either person can reveal the action, pause or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Show a familiar pretend action and recognise a partner's action.",
+          "steps": [
+            {
+              "step_id": "choose_scene",
+              "instruction": "Show me how you open an imaginary book.",
+              "parent_prompt": "Mime the action gently; no real object is held."
+            },
+            {
+              "step_id": "watch_scene",
+              "instruction": "Watch my action and tell me what it could be.",
+              "parent_prompt": "Choose another agreed familiar action and accept different interpretations."
+            },
+            {
+              "step_id": "show_choice",
+              "instruction": "Choose a pretend action for me to recognise.",
+              "parent_prompt": "Offer two familiar choices if the child wants help."
+            }
+          ],
+          "ending": "Reveal the final action and relax your arms."
+        },
+        "8-10": {
+          "challenge": "Combine two familiar actions into a short scene.",
+          "steps": [
+            {
+              "step_id": "plan_scene",
+              "instruction": "Choose two everyday actions that belong in one scene.",
+              "parent_prompt": "Agree small on-the-spot movements without props."
+            },
+            {
+              "step_id": "act_scene",
+              "instruction": "Show the actions in order while I watch.",
+              "parent_prompt": "Give the child time; recognising the scene is not scored."
+            },
+            {
+              "step_id": "add_clue",
+              "instruction": "Change one gesture to help explain your scene.",
+              "parent_prompt": "The child can also describe the idea aloud if preferred."
+            }
+          ],
+          "ending": "Reveal the scene and name the helpful gesture."
+        },
+        "11-12": {
+          "challenge": "Design a scene and revise its gestures after a partner's interpretation.",
+          "steps": [
+            {
+              "step_id": "design_scene",
+              "instruction": "Plan a short scene using three agreed everyday actions.",
+              "parent_prompt": "Confirm that the scene needs no real objects, travel or contact."
+            },
+            {
+              "step_id": "show_scene",
+              "instruction": "Act out your scene and ask what I understood.",
+              "parent_prompt": "Allow the partner to interpret it without a correct-answer target."
+            },
+            {
+              "step_id": "revise_scene",
+              "instruction": "Adjust one gesture to make your intended meaning clearer.",
+              "parent_prompt": "Repeat just the adjusted part and compare interpretations."
+            }
+          ],
+          "ending": "Describe the intended scene and finish together."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Name the action first and mime it together."
+        ],
+        "extend": [
+          "Swap who creates a scene using the same agreed movement limits."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Mime only familiar gentle actions without contact or real props.",
+        "Do not mime hazardous challenges that encourage jumping, climbing or leaving the area.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "sort_and_step",
+      "version": 1,
+      "title": "Sort and Step",
+      "summary": "Sort familiar picture cards by a chosen rule and move between nearby groups.",
+      "activity_type": "exploration_play",
+      "core_mechanic": "sort",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [
+          "At least four large familiar picture cards brought by the family."
+        ],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a clear, level area for two nearby card groups and forward steps.",
+        "Cards can be placed securely without creating a slip or trip hazard."
+      ],
+      "setup": [
+        "Choose a few family-supplied cards with pictures the child recognises.",
+        "Place groups beside the walking space, not under anyone's feet.",
+        "Pause or stop whenever wanted; the adult handles cards if preferred."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Use one simple rule to place familiar pictures into two groups.",
+          "steps": [
+            {
+              "step_id": "agree_rule",
+              "instruction": "Choose pictures of animals and pictures of other things.",
+              "parent_prompt": "Use suitable cards brought by the family; demonstrate the two groups."
+            },
+            {
+              "step_id": "place_card",
+              "instruction": "Point to the group where this card belongs.",
+              "parent_prompt": "The adult places the card and walks beside the child to that group."
+            },
+            {
+              "step_id": "choose_next",
+              "instruction": "Choose another card and show me its group.",
+              "parent_prompt": "Use a few slow forward steps between the checked positions."
+            }
+          ],
+          "ending": "Look at the two groups together, then collect the supplied cards."
+        },
+        "8-10": {
+          "challenge": "Explain a sorting rule and apply it to unfamiliar choices.",
+          "steps": [
+            {
+              "step_id": "choose_rule",
+              "instruction": "Choose a rule for making two groups from our cards.",
+              "parent_prompt": "Help choose a rule that fits the actual supplied pictures."
+            },
+            {
+              "step_id": "sort_choices",
+              "instruction": "Decide where each card goes and walk with me to its group.",
+              "parent_prompt": "Keep cards beside the walking space and turn only while stopped."
+            },
+            {
+              "step_id": "explain_choice",
+              "instruction": "Explain a card that could fit more than one group.",
+              "parent_prompt": "Allow either choice when the child explains their reasoning."
+            }
+          ],
+          "ending": "Name the rule and collect the supplied cards together."
+        },
+        "11-12": {
+          "challenge": "Compare two sorting rules for the same set of pictures.",
+          "steps": [
+            {
+              "step_id": "first_rule",
+              "instruction": "Create two groups using a rule of your choice.",
+              "parent_prompt": "Agree a rule that uses only the supplied pictures."
+            },
+            {
+              "step_id": "change_rule",
+              "instruction": "Choose a different rule and reorganise the same cards.",
+              "parent_prompt": "Use the same nearby group positions and slow forward walking."
+            },
+            {
+              "step_id": "compare_groups",
+              "instruction": "Explain which cards changed groups and why.",
+              "parent_prompt": "Focus on reasoning rather than a score or a single correct grouping."
+            }
+          ],
+          "ending": "Compare one change, then collect all supplied cards."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use two cards and let the adult place them while the child points."
+        ],
+        "extend": [
+          "Try another rule using the same cards and checked group positions."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Use only supplied cards; do not collect found objects or disturb plants.",
+        "Keep cards outside the walking space and do not step on them.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "step_and_pause",
+      "version": 1,
+      "title": "Step and Pause",
+      "summary": "Practise starting and stopping gentle movement using agreed signals.",
+      "activity_type": "movement_play",
+      "core_mechanic": "control",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks level space for comfortable marching on the spot."
+      ],
+      "setup": [
+        "Agree that 'move' means gentle marching and 'pause' means a comfortable stop.",
+        "Practise both signals before taking turns leading.",
+        "Allow time to respond; pausing or stopping the game is always allowed."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Recognise a spoken movement signal and pause comfortably.",
+          "steps": [
+            {
+              "step_id": "try_move",
+              "instruction": "March gently when I say move.",
+              "parent_prompt": "Start slowly on the spot and show the action."
+            },
+            {
+              "step_id": "try_pause",
+              "instruction": "Stop comfortably when I say pause.",
+              "parent_prompt": "Give the child time to settle; no sudden freeze is required."
+            },
+            {
+              "step_id": "give_signal",
+              "instruction": "Tell me when to move and when to pause.",
+              "parent_prompt": "Follow the child's signal at the same gentle pace."
+            }
+          ],
+          "ending": "Use the pause signal together and finish."
+        },
+        "8-10": {
+          "challenge": "Use spoken and visible signals without changing the pace.",
+          "steps": [
+            {
+              "step_id": "agree_gesture",
+              "instruction": "Choose a hand gesture that means pause.",
+              "parent_prompt": "Demonstrate a clear gesture without requiring touching."
+            },
+            {
+              "step_id": "watch_signal",
+              "instruction": "March gently and pause when you see our gesture.",
+              "parent_prompt": "Stay in the child's view and keep plenty of time between signals."
+            },
+            {
+              "step_id": "swap_signaller",
+              "instruction": "Give the gesture while I practise pausing.",
+              "parent_prompt": "Invite the child to check whether the signal was clear."
+            }
+          ],
+          "ending": "Show the final pause signal and relax."
+        },
+        "11-12": {
+          "challenge": "Design and improve clear movement signals for a partner.",
+          "steps": [
+            {
+              "step_id": "design_signals",
+              "instruction": "Agree one signal for moving and another for pausing.",
+              "parent_prompt": "Keep the movement gentle and the signals distinct."
+            },
+            {
+              "step_id": "test_signals",
+              "instruction": "Use your signals to guide our movement on the spot.",
+              "parent_prompt": "Allow thinking time and remain facing each other."
+            },
+            {
+              "step_id": "improve_signal",
+              "instruction": "Adjust a signal if it was hard to recognise.",
+              "parent_prompt": "Repeat a short trial to compare clarity rather than response speed."
+            }
+          ],
+          "ending": "Use the agreed pause signal to finish."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use spoken signals and demonstrate each response."
+        ],
+        "extend": [
+          "Swap who gives the signals for another gentle round."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Keep movement gentle and on the spot; do not add sudden stops while running.",
+        "Do not use elimination, speed scoring or penalties for a missed signal.",
+        "Future story wording must preserve the tasks, requirements and constraints."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "viewpoint_switch",
+      "version": 1,
+      "title": "Viewpoint Switch",
+      "summary": "Compare how a visible feature looks from two nearby checked positions.",
+      "activity_type": "exploration_play",
+      "core_mechanic": "compare",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Explain the game, participate and keep the child within the checked area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks two nearby, clear, level observation positions.",
+        "A visible feature can be observed from both positions without touching or approaching hazards."
+      ],
+      "setup": [
+        "Choose a feature actually visible from the checked area.",
+        "Agree the short forward-walking route between the two positions.",
+        "If there is no suitable second position, compare from one position or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Look at one visible feature from two positions beside an adult.",
+          "steps": [
+            {
+              "step_id": "choose_view",
+              "instruction": "Point to something we can see from here.",
+              "parent_prompt": "Help choose a feature that does not require approaching animals or people."
+            },
+            {
+              "step_id": "change_position",
+              "instruction": "Walk beside me to our other checked spot.",
+              "parent_prompt": "Use a few slow steps with the adult."
+            },
+            {
+              "step_id": "look_again",
+              "instruction": "Point to the same thing from this spot.",
+              "parent_prompt": "Ask what the child notices without requiring a technical explanation."
+            }
+          ],
+          "ending": "Choose a favourite view and finish the observation."
+        },
+        "8-10": {
+          "challenge": "Compare one visible feature from two nearby positions.",
+          "steps": [
+            {
+              "step_id": "notice_detail",
+              "instruction": "Describe one detail you can see from here.",
+              "parent_prompt": "Use an existing feature without handling anything."
+            },
+            {
+              "step_id": "try_view",
+              "instruction": "Walk with me to our second spot and look again.",
+              "parent_prompt": "Stay on the agreed clear route."
+            },
+            {
+              "step_id": "compare_detail",
+              "instruction": "Explain what looks different or stays the same.",
+              "parent_prompt": "Accept that nothing may change noticeably; either result is useful."
+            }
+          ],
+          "ending": "Name one comparison together and finish."
+        },
+        "11-12": {
+          "challenge": "Make and check a prediction about a change in viewpoint.",
+          "steps": [
+            {
+              "step_id": "predict_view",
+              "instruction": "Predict how our chosen feature might look from the other spot.",
+              "parent_prompt": "Focus on visible shape or what may become hidden from view."
+            },
+            {
+              "step_id": "check_prediction",
+              "instruction": "Walk with me to the checked spot and look again.",
+              "parent_prompt": "No leaning, climbing or leaving the permitted area is needed."
+            },
+            {
+              "step_id": "explain_result",
+              "instruction": "Compare your prediction with what you can actually see.",
+              "parent_prompt": "A prediction can be unchanged or incorrect without being scored."
+            }
+          ],
+          "ending": "Share one observation and finish at the checked position."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Stay at one position and let the adult describe the comparison."
+        ],
+        "extend": [
+          "Swap who makes a prediction about the same two checked viewpoints."
+        ]
+      },
+      "constraints": [
+        "Keep the child in the adult's sight and allow pausing or stopping at any time.",
+        "Use only checked ground-level viewpoints; do not climb or lean over edges.",
+        "Do not require any particular landmark or facility to be present.",
+        "Future story wording must preserve the tasks, requirements and constraints."
       ],
       "safety_reference": "schema/safety_constraints.yaml",
       "review": {

@@ -3,8 +3,8 @@
 ## Activity library foundation v0.1
 
 For the new reusable activity library, start with [activities/README.md](activities/README.md).
-Its taxonomy, schema and six candidates are available for team review. The initial
-target is 18 activity families, with 3 integration examples and then 6 pilot activities.
+Its taxonomy, schema and 18 activity drafts are available for team review, following
+the initial 3 integration examples and 6-activity pilot.
 
     taxonomy/      controlled activity types and proposed subtype mappings
     activities/    one activity family per YAML file, with age variants
@@ -21,6 +21,9 @@ a loader and JSON export; the application is not connected yet. Teammates can
 start with [activities/INTEGRATION.md](activities/INTEGRATION.md).
 Module 3 adds the six-activity pilot and [human review checklist](activities/REVIEW_CHECKLIST.md).
 Human approval remains pending; all current activities are development drafts.
+Module 4 adds [coverage reporting](activities/COVERAGE.md) and separate
+[20/40/60-minute planning estimates](planning/README.md). These estimates are not
+measured or approved timings; the existing activity schema and API remain unchanged.
 
 ## Existing combo and mission library
 

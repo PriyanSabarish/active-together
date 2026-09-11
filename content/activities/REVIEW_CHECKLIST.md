@@ -1,11 +1,11 @@
-# Pilot activity review
+# Activity library review
 
-The pilot now contains six draft activities and eighteen age variants. Structure
+The library now contains eighteen draft activities and fifty-four age variants. Structure
 checks and development export are ready. Independent human review and application
 integration are still pending. Only reviewed content may enter the live activity
 library. This checklist applies to activities/, not the older mission templates.
 
-## Review queue
+## Priority review queue: original six-activity pilot
 
 Review the YAML file with the matching activity ID under `_candidates/`. Record
 the outcome for each age band before deciding whether to approve the whole file.
@@ -19,10 +19,27 @@ the outcome for each age band before deciding whether to approve the whole file.
 | notice_the_change | Remember and compare small pose changes | Pending | Pending | Pending | Unassigned | Pending |
 | pass_and_move | Roll a soft ball and adjust partner positions | Pending | Pending | Pending | Unassigned | Pending |
 
-The first pilot covers movement_play (2), exploration_play (2), imaginative_play
-(1) and ball_play (1). Five activities require no equipment; pass_and_move requires
-a soft ball. Racket and wheeled activities are deferred. These counts describe
-content variety, not verified location coverage. All six files have author Jiabin.
+## Expansion review queue: twelve additional activities
+
+| Activity ID | Main difference from the other games | 5-7 | 8-10 | 11-12 | Reviewer | Decision / notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| rhythm_steps | Follow spoken rhythms with gentle steps and pauses | Pending | Pending | Pending | Unassigned | Pending |
+| opposite_actions | Respond with an agreed opposite arm position | Pending | Pending | Pending | Unassigned | Pending |
+| choose_your_route | Choose and explain a short checked walking route | Pending | Pending | Pending | Unassigned | Pending |
+| step_and_pause | Practise agreed start and pause signals | Pending | Pending | Pending | Unassigned | Pending |
+| listen_and_point | Identify sounds without following their source | Pending | Pending | Pending | Unassigned | Pending |
+| viewpoint_switch | Compare a feature from two nearby positions | Pending | Pending | Pending | Unassigned | Pending |
+| sort_and_step | Group supplied picture cards using changing rules | Pending | Pending | Pending | Unassigned | Pending |
+| robot_instructions | Give and repair pretend robot instructions | Pending | Pending | Pending | Unassigned | Pending |
+| invisible_orchestra | Conduct and play imaginary silent instruments | Pending | Pending | Pending | Unassigned | Pending |
+| silent_scene | Communicate a familiar activity through gestures | Pending | Pending | Pending | Unassigned | Pending |
+| roll_to_target | Aim a soft ball towards a supplied flat target | Pending | Pending | Pending | Unassigned | Pending |
+| partner_ball_carry | Coordinate gentle steps while supporting a ball together | Pending | Pending | Pending | Unassigned | Pending |
+
+The full library covers movement_play (6), exploration_play (5), imaginative_play
+(4) and ball_play (3). Fourteen activities require no equipment. Racket and wheeled
+activities are deferred. These counts describe content variety, not verified
+location coverage. All eighteen files have author Jiabin. See [COVERAGE.md](COVERAGE.md).
 
 ## Read and try each age variant
 
@@ -54,6 +71,8 @@ of its activity ID. If one band is not ready, revise it or omit that band and re
 the remaining complete record. Never substitute another age at runtime.
 If pilot age coverage is deliberately reduced, update the documented counts and
 the pilot-count expectations in `../tests/test_activity_library.py` accordingly.
+Also update the matching age keys or activity version in
+`../planning/duration_profiles.yaml`; the planner rejects stale references.
 
 If changes are needed, keep the file in `_candidates/` with draft status and a null
 reviewer. Record the requested changes in this table or the pull request. A later
@@ -65,6 +84,8 @@ After review, run from the repository root:
 python content/tools/validate_activity_templates.py --preview
 python content/tools/validate_activity_templates.py
 python content/tools/export_activity_templates.py --preview --output content/examples/activities.preview.json
+python content/tools/report_activity_coverage.py --output content/activities/COVERAGE.md
+python content/tools/plan_combo_preview.py --duration 40 --age-band 8-10 --activity-id follow_the_leader --activity-id colour_hunt --activity-id pass_and_move --output content/examples/combo.preview.json
 python -m unittest discover -s content/tests -v
 ```
 
@@ -82,5 +103,7 @@ means no activity has been approved yet. Do not fill it with draft content.
 - [ ] Consolidated AI usage statement added before final handoff.
 
 This queue is intentionally unapproved. No reviewer, walkthrough or deployment
-result has been filled in on the team's behalf. Timing and recommendation rules
-remain later work; a validated activity library alone is not a complete deployment.
+result has been filled in on the team's behalf. Module 4 provides separate draft
+timing estimates, not measured durations or production recommendation rules.
+Record timing observations separately using the [planning guide](../planning/README.md).
+A validated activity library alone is not a complete deployment.

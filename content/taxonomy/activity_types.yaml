@@ -35,6 +35,7 @@ activity_types:
 
 # One primary activity_type per activity. The mechanic describes how its game works.
 core_mechanics:
+  - sort
   - imitate
   - balance
   - find

@@ -53,12 +53,15 @@ class ActivityLibraryTests(unittest.TestCase):
         )
 
     def test_samples_and_generated_preview_agree(self):
-        """Keep the checked-in JSON synchronized with the six pilot activities."""
+        """Keep the checked-in JSON synchronized with the eighteen activity drafts."""
         payload = build_export(preview=True)
-        expected_ids = ["balance_shapes", "colour_hunt", "follow_the_leader",
-                        "imaginary_delivery", "notice_the_change", "pass_and_move"]
+        expected_ids = ["balance_shapes", "choose_your_route", "colour_hunt", "follow_the_leader",
+                        "imaginary_delivery", "invisible_orchestra", "listen_and_point",
+                        "notice_the_change", "opposite_actions", "partner_ball_carry", "pass_and_move",
+                        "rhythm_steps", "robot_instructions", "roll_to_target", "silent_scene",
+                        "sort_and_step", "step_and_pause", "viewpoint_switch"]
         self.assertEqual([item["activity_id"] for item in payload["activities"]], expected_ids)
-        self.assertEqual(sum(len(item["age_variants"]) for item in payload["activities"]), 18)
+        self.assertEqual(sum(len(item["age_variants"]) for item in payload["activities"]), 54)
         exported = json.loads((CONTENT_DIR / "examples/activities.preview.json").read_text(encoding="utf-8"))
         self.assertEqual(payload, exported)
         self.assertTrue(all(item["review"]["author"] == "Jiabin" for item in payload["activities"]))
@@ -155,7 +158,8 @@ class ActivityLibraryTests(unittest.TestCase):
         """Select exactly the requested type and age without flattening the data."""
         activities = load_preview_activities()
         selected = select_activities(activities, "ball_play", "8-10")
-        self.assertEqual([item["activity_id"] for item in selected], ["pass_and_move"])
+        self.assertEqual([item["activity_id"] for item in selected],
+                         ["partner_ball_carry", "pass_and_move", "roll_to_target"])
         self.assertEqual(len(selected[0]["age_variants"]), 3)
         self.assertEqual(select_activities(activities, "unknown"), [])
         with self.assertRaises(ValueError):
@@ -185,14 +189,14 @@ class ActivityLibraryTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
         self.assertEqual(payload["mode"], "development_preview")
-        self.assertEqual(len(payload["activities"]), 1)
+        self.assertEqual(len(payload["activities"]), 3)
         output = self.content / "export.json"
         result = self.run_cli("export_activity_templates.py", "--preview", "--output", str(output))
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(len(json.loads(output.read_text(encoding="utf-8"))["activities"]), 6)
+        self.assertEqual(len(json.loads(output.read_text(encoding="utf-8"))["activities"]), 18)
         result = self.run_cli("validate_activity_templates.py", "--preview")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("6 activities, 18 age variants", result.stdout)
+        self.assertIn("18 activities, 54 age variants", result.stdout)
 
     def test_different_step_counts_survive_export(self):
         """Preserve complete variants rather than truncating all activities to three steps."""

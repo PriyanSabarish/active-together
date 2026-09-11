@@ -1,10 +1,10 @@
 # Activity library foundation
 
-Modules 1-3 deliver a content contract, source-grounded taxonomy mapping,
-six activity drafts, a loader, JSON export and a human review checklist. Start integration
-with [INTEGRATION.md](INTEGRATION.md). Target 18 distinct
-activity families, first reaching 6 usable pilot activities; deploy only the
-subset that has passed human review and integration checks.
+Modules 1-4 deliver a content contract, source-grounded taxonomy mapping,
+18 activity drafts, a loader, JSON export, coverage report and a human review checklist.
+Start integration with [INTEGRATION.md](INTEGRATION.md). The initial six-activity
+pilot remains the first review priority. Deploy only the subset that has passed
+human review and integration checks.
 
 ## Start here
 
@@ -17,7 +17,9 @@ subset that has passed human review and integration checks.
 - `_candidates/balance_shapes.yaml`: grounded balance and controlled transitions.
 - `_candidates/notice_the_change.yaml`: observation and memory of pose changes.
 - `_candidates/imaginary_delivery.yaml`: pretend play, including a four-step age variant.
-- `../examples/activities.preview.json`: generated sample containing all six drafts.
+- `../examples/activities.preview.json`: generated sample containing all 18 drafts.
+- `COVERAGE.md`: generated counts by activity type, age and proposed subtype mapping.
+- `../planning/README.md`: separate draft duration profiles and combo preview instructions.
 - `REVIEW_CHECKLIST.md`: per-activity review queue and deployment handoff checks.
 - `source_inventory.md`: exact dataset version, counts and branch differences.
 - `reviewed/`: approved activity files only; currently empty of activities.
@@ -122,9 +124,10 @@ checks `.yml` files. All selected files are validated before filtering or export
 ## Duration and future stories
 
 No duration, weather, preference, photo verification or AI service fields are
-part of v0.1. A later version will distinguish each activity's estimated duration
-from the combo's 3-4 total-duration choices. No timing is inferred from step count;
-the number of choices and timing values remain to be agreed and tried in practice.
+part of the activity v0.1 contract. Module 4 keeps unmeasured duration estimates
+in `../planning/duration_profiles.yaml`, keyed by activity ID, version and age.
+Combo budgets are 20/40/60 minutes. Preview planning reports unused time or
+over-budget combinations instead of changing the authored core steps.
 
 For Iteration 3, a combo can reference 2-3 activities by ID, version and age band.
 Story wording may supply an introduction, transitions and an ending, while keeping

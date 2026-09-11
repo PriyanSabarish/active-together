@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: listen_and_point
+version: 1
+title: "Listen and Point"
+summary: "Notice sounds from a checked position and describe where they seem to come from."
+activity_type: exploration_play
+core_mechanic: find
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks a permitted observation area away from traffic and active play."
+  - "The activity can use quiet sounds made by the adult if surroundings are quiet."
+setup:
+  - "Stay together with eyes open and listen without leaving the checked area."
+  - "Point only from the current position; do not follow a sound to its source."
+  - "If listening is uncomfortable, describe visible movement instead or stop."
+age_variants:
+  "5-7":
+    challenge: "Notice one quiet sound and point towards its apparent direction."
+    steps:
+      - step_id: notice_sound
+        instruction: "Listen with me for one quiet sound."
+        parent_prompt: "If needed, make a gentle finger tap where the child can see you."
+      - step_id: point_direction
+        instruction: "Point to where you think the sound comes from."
+        parent_prompt: "Accept the child's guess without checking by approaching anything."
+      - step_id: choose_sound
+        instruction: "Choose a sound for us to notice together."
+        parent_prompt: "Offer another quiet tap if no environmental sound is available."
+    ending: "Name or describe the chosen sound and finish listening."
+  "8-10":
+    challenge: "Compare two sounds while remaining in the checked area."
+    steps:
+      - step_id: find_two
+        instruction: "Notice two sounds or listen to two taps I make."
+        parent_prompt: "Use quiet adult-made sounds if the setting offers none."
+      - step_id: compare_sounds
+        instruction: "Describe one difference between the two sounds."
+        parent_prompt: "Invite descriptions such as longer or shorter without requiring exact identification."
+      - step_id: share_clue
+        instruction: "Give me a clue about which sound you chose."
+        parent_prompt: "Guess together from the same position."
+    ending: "Reveal the chosen sound and finish."
+  "11-12":
+    challenge: "Create a simple description of the sounds around a checked position."
+    steps:
+      - step_id: choose_descriptions
+        instruction: "Choose how to describe two sounds you notice."
+        parent_prompt: "Offer apparent direction or length; no sound source needs to be verified."
+      - step_id: describe_positions
+        instruction: "Use gestures to show where the sounds seem to come from."
+        parent_prompt: "Stay in place with eyes open and do not follow the sounds."
+      - step_id: compare_views
+        instruction: "Ask how I heard the sounds and compare our descriptions."
+        parent_prompt: "Different impressions are acceptable; use adult-made sounds if needed."
+    ending: "Choose one shared observation and finish listening."
+adaptations:
+  simplify:
+    - "Use one quiet visible tap made by the adult."
+  extend:
+    - "Repeat from the same position and notice whether the sounds have changed."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Do not close eyes, follow sounds, approach animals or approach strangers."
+  - "Avoid loud sounds and stop if listening is uncomfortable."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

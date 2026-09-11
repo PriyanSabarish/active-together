@@ -1,6 +1,6 @@
 # Activity samples for teammate integration
 
-The module 3 pilot supplies six draft activities and eighteen age variants. You can use them
+The module 4 library supplies 18 draft activities and 54 age variants. You can use them
 now to debug reading, filtering, cards, steps and an explicit group of activities.
 No Groq key, database, backend server or network request is needed to load them.
 Production deployment of this content still needs independent human review.
@@ -16,7 +16,7 @@ python content/tools/validate_activity_templates.py --preview
 python content/tools/export_activity_templates.py --preview --output content/examples/activities.preview.json
 ```
 
-Expected validation: `Valid development preview: 6 activities, 18 age variants.`
+Expected validation: `Valid development preview: 18 activities, 54 age variants.`
 The generated file is included with the samples, so frontend teammates
 can read it directly without installing Python. Regenerate it whenever sample
 YAML changes; it is a development fixture, not a second authoring source.
@@ -30,6 +30,11 @@ The export command replaces the requested JSON file only after validation passes
 | `imaginary_delivery` | `imaginative_play` | None | 5-7, 8-10, 11-12 |
 | `notice_the_change` | `exploration_play` | None | 5-7, 8-10, 11-12 |
 | `pass_and_move` | `ball_play` | Soft ball for rolling | 5-7, 8-10, 11-12 |
+
+The table above identifies the original six pilot examples. The preview also
+contains twelve expansion drafts; see [COVERAGE.md](COVERAGE.md) for current counts
+and [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md) for their names and review queue.
+Type and age filtering can now return more matches; do not hard-code result counts.
 
 Each variant has a challenge, ordered steps and an ending. Most have three steps;
 Imaginary Delivery for 11-12 has four. Consumers must handle any positive step count.
@@ -65,7 +70,7 @@ schema version `0.1.0`. The full format is:
 ```
 
 The example above shows the envelope only; the supplied preview file contains
-six complete records. Records are sorted by `activity_id` for reproducible
+18 complete records. Records are sorted by `activity_id` for reproducible
 exports. This ordering is not a recommendation ranking.
 
 ## Python integration
@@ -163,9 +168,11 @@ or actual reviewer identity. Those remain team review responsibilities.
 ## Current scope
 
 Teammates can begin content/UI integration after this module is pushed to the
-shared branch. Module 3's content and technical checks are ready; independent
+shared branch. Module 4's content and technical checks are ready; independent
 human review is pending in [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md).
-Duration selection, place matching, preferences, weather, verification, runtime
-API integration and AI stories are not implemented by this package. All six
+Separate [duration planning](../planning/README.md) now provides a development
+timetable for chosen IDs, with unmeasured estimates and explicit unused-time states.
+Place matching, preferences, weather, verification, production timed recommendation,
+runtime API integration and AI stories are not implemented by this package. All 18
 authors are recorded as Jiabin; the consolidated AI usage statement remains to
 be written before final handoff.

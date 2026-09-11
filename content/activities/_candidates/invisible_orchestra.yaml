@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: invisible_orchestra
+version: 1
+title: "Invisible Orchestra"
+summary: "Invent silent instruments and coordinate gentle playing movements as a pair."
+activity_type: imaginative_play
+core_mechanic: pretend
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks enough clear space for comfortable hand and arm movements."
+setup:
+  - "Choose imaginary instruments; no real instrument or loud sound is required."
+  - "Agree a visible start signal and a rest signal."
+  - "Keep movements small, stay in place and stop whenever wanted."
+age_variants:
+  "5-7":
+    challenge: "Mime one imaginary instrument and pause with a partner."
+    steps:
+      - step_id: invent_instrument
+        instruction: "Show me how you play an imaginary drum."
+        parent_prompt: "Use small gentle movements in the air without hitting anything."
+      - step_id: play_together
+        instruction: "Play our silent instruments together."
+        parent_prompt: "Follow the child's comfortable pace; no loud sound is needed."
+      - step_id: rest_signal
+        instruction: "Let your instrument rest when I show our signal."
+        parent_prompt: "Demonstrate a gradual comfortable pause."
+    ending: "Give the rest signal and relax your hands."
+  "8-10":
+    challenge: "Give two imaginary instruments distinct movement patterns."
+    steps:
+      - step_id: choose_instruments
+        instruction: "Choose two silent instruments with different playing movements."
+        parent_prompt: "Keep the movements comfortable and within each person's space."
+      - step_id: take_turns
+        instruction: "Alternate between our two instrument movements."
+        parent_prompt: "Use agreed signals so nobody needs to guess which comes next."
+      - step_id: combine_patterns
+        instruction: "Choose an order for us to play the movements together."
+        parent_prompt: "Keep the sequence short and allow a pause between changes."
+    ending: "Finish the short sequence and let both instruments rest."
+  "11-12":
+    challenge: "Arrange and revise a short imaginary performance."
+    steps:
+      - step_id: arrange_parts
+        instruction: "Assign each of us a silent instrument and a movement pattern."
+        parent_prompt: "Make both parts possible with small on-the-spot actions."
+      - step_id: conduct_parts
+        instruction: "Guide the order of our parts using agreed signals."
+        parent_prompt: "Use a slow pace and a clear rest signal."
+      - step_id: revise_arrangement
+        instruction: "Change one part so our performance is easier to coordinate."
+        parent_prompt: "Try the revised order without scoring rhythm or precision."
+    ending: "Use the rest signal to end the performance."
+adaptations:
+  simplify:
+    - "Use one instrument movement and let the adult lead the signals."
+  extend:
+    - "Swap the conductor role while keeping the same instruments and signals."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Do not hit objects, other people or the body to make sounds."
+  - "No real instruments, loud calls or vigorous swinging movements are required."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft
