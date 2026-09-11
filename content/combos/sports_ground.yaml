@@ -1,0 +1,55 @@
+# Base combos for sports_ground. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: sports_ground_20
+  category: sports_ground
+  duration_bucket: 20
+  label: Quick oval run
+  travel_excluded: true
+  blocks:
+  - name: Movement game on the oval
+    minutes: 15
+    note: Open space; no equipment assumed
+  - name: Stretch and finish
+    minutes: 5
+    note: null
+- combo_id: sports_ground_40
+  category: sports_ground
+  duration_bucket: 40
+  label: Oval session
+  travel_excluded: true
+  blocks:
+  - name: Warm-up lap
+    minutes: 5
+    note: null
+  - name: Movement game on the oval
+    minutes: 20
+    note: null
+  - name: Rest and drink break
+    minutes: 5
+    note: null
+  - name: Cool-down lap
+    minutes: 10
+    note: null
+- combo_id: sports_ground_60
+  category: sports_ground
+  duration_bucket: 60
+  label: Long oval session
+  travel_excluded: true
+  blocks:
+  - name: Warm-up lap
+    minutes: 5
+    note: null
+  - name: Movement game on the oval
+    minutes: 20
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Second game or free run
+    minutes: 20
+    note: null
+  - name: Cool-down lap
+    minutes: 10
+    note: null

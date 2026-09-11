@@ -1,0 +1,146 @@
+# Mission templates - cycling_track. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: cycle_ride_and_spot
+  title: Ride and spot
+  category: cycling_track
+  duration_bucket: 20
+  weather_tags:
+  - dry
+  site_requirements:
+  - path
+  equipment:
+  - bicycle
+  - helmet
+  mechanic: find
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Ride to the next big tree and wait for me.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Get off and find a leaf.
+        verify_mode: photo
+        prompt_id: p_leaf
+        variable: true
+      - sequence: 3
+        prompt_text: Ride back slowly, watching the path.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: cycle_path_patrol
+  title: Path patrol
+  category: cycling_track
+  duration_bucket: 40
+  weather_tags:
+  - dry
+  site_requirements:
+  - path
+  equipment:
+  - bicycle
+  - helmet
+  mechanic: count
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Ride out along the path until I say stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Get off and find a bench or seat.
+        verify_mode: photo
+        prompt_id: p_bench
+        variable: true
+      - sequence: 3
+        prompt_text: Count how many bridges or corners you passed.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and try to spot one thing you missed.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Tell me the fastest part of the path.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: cycle_route_planner
+  title: Route planner
+  category: cycling_track
+  duration_bucket: 60
+  weather_tags:
+  - dry
+  site_requirements:
+  - path
+  equipment:
+  - bicycle
+  - helmet
+  mechanic: sequence
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Ride out along the path and set your own pace.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Stop where the path changes surface.
+        verify_mode: photo
+        prompt_id: p_path
+        variable: true
+      - sequence: 3
+        prompt_text: Get off and do fifteen star jumps.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a fence or barrier along the path.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 5
+        prompt_text: Ride to the turnaround point I mark.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride back and time yourself against the way out.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Tell me which direction felt easier and why.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

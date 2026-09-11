@@ -1,0 +1,54 @@
+# Frozen schema for a mission template FAMILY.
+# One family covers up to 9 cells: 3 age bands x 3 duration buckets.
+# Change only by pull request, with both the checker and the drafter updated in the same commit.
+
+template_id:        str        # unique, snake_case, stable
+title:              str        # family name; a band may override it
+category:           str        # activity category code, or "any" for bare-site families
+duration_bucket:    int        # 20 | 40 | 60 - the LONGEST bucket this family covers
+weather_tags:       list[str]  # any | dry | wet | windy | hot | cold | overcast
+site_requirements:  list[str]  # bare_site | grass | trees | path | open_space |
+                               # play_equipment | water_adjacent | seating
+equipment:          list[str]  # everyday items only; empty list preferred
+mechanic:           str        # find | move | count | imagine | sequence
+
+bands:                         # at least one; three is the target
+  "5-7":
+    title:          str|null   # overrides the family title for this band
+    steps:
+      - sequence:   int
+        prompt_text: str       # one instruction, completable after hearing it once
+        verify_mode: enum      # "photo" | "self"
+        prompt_id:  str|null   # required when verify_mode is photo
+        variable:   bool       # true - the runtime model rewrites wording
+  "8-10":  { ... same shape ... }
+  "11-12": { ... same shape ... }
+
+safety_tags:        list[str]  # always ["inherited"]
+review:
+  author:           str
+  reviewed_by:      str|null
+  status:           enum       # "draft" | "reviewed"
+
+# How duration works
+#   duration_bucket 60 means 7 steps. The 40-minute mission is the first 5 of those steps,
+#   the 20-minute mission is the first 3. Nothing extra is authored.
+#   duration_bucket 40 means 5 steps and covers the 40 and 20 buckets only.
+#   duration_bucket 20 means 3 steps and covers the 20 bucket only.
+#   Steps must therefore be ordered so that any prefix is a complete mission.
+#
+# How bands work
+#   The three bands share a structure and differ in difficulty, not vocabulary.
+#   5-7    one simple physical instruction, under 12 words
+#   8-10   adds a count, a comparison, or a second attempt
+#   11-12  adds planning, self-measurement, or a decision the child makes
+#
+# Rules the checker enforces
+#   - every band has exactly STEPS_FOR[duration_bucket] steps
+#   - all bands have the same step count
+#   - 5-7 wording is under 12 words per step
+#   - any prompt_id appears in prompts/vocabulary.yaml with status "kept"
+#   - no step is a greeting, wave, cheer or other filler
+#   - no step names a site feature the source data cannot verify
+#   - no two families share a step shape
+#   - bands do not differ only by wording

@@ -1,0 +1,144 @@
+# Mission templates - playground. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: play_animal_moves
+  title: Animal moves
+  category: playground
+  duration_bucket: 20
+  weather_tags:
+  - any
+  site_requirements:
+  - play_equipment
+  - grass
+  equipment: []
+  mechanic: move
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Hop like a frog to the nearest post.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find something you can swing or slide on.
+        verify_mode: photo
+        prompt_id: p_play_equipment
+        variable: true
+      - sequence: 3
+        prompt_text: Walk backwards to me, slowly.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: play_equipment_challenge
+  title: Equipment challenge
+  category: playground
+  duration_bucket: 40
+  weather_tags:
+  - dry
+  site_requirements:
+  - play_equipment
+  - grass
+  equipment: []
+  mechanic: count
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Find the tallest piece of equipment here.
+        verify_mode: photo
+        prompt_id: p_play_equipment
+        variable: true
+      - sequence: 2
+        prompt_text: Count how many different things there are to play on.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Find something at the playground that is blue.
+        verify_mode: photo
+        prompt_id: p_blue
+        variable: true
+      - sequence: 4
+        prompt_text: Do ten star jumps on the grass.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Show me your favourite piece and say why.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: play_designer
+  title: Playground designer
+  category: playground
+  duration_bucket: 60
+  weather_tags:
+  - any
+  site_requirements:
+  - play_equipment
+  - grass
+  - seating
+  equipment: []
+  mechanic: imagine
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk a full lap of the playground.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find the piece of equipment that gets used the most.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Find a fence or boundary and follow it with your eyes.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 4
+        prompt_text: Do twenty star jumps on the open grass.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Find a seat and sit on it for ten seconds.
+        verify_mode: photo
+        prompt_id: p_bench
+        variable: true
+      - sequence: 6
+        prompt_text: Design one new thing this playground needs. Describe it.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Walk the lap again, faster than the first time.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

@@ -1,0 +1,147 @@
+# Mission templates - park_and_garden. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: park_shadow_detective
+  title: Shadow detective
+  category: park_and_garden
+  duration_bucket: 20
+  weather_tags:
+  - dry
+  site_requirements:
+  - grass
+  - trees
+  - open_space
+  equipment: []
+  mechanic: find
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Stand on your own shadow.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a leaf and hold it up.
+        verify_mode: photo
+        prompt_id: p_leaf
+        variable: true
+      - sequence: 3
+        prompt_text: Race your shadow to a tree.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: park_colour_hunt
+  title: Colour hunt
+  category: park_and_garden
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - grass
+  - open_space
+  - seating
+  equipment: []
+  mechanic: find
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Find something red and hold it up.
+        verify_mode: photo
+        prompt_id: p_red
+        variable: true
+      - sequence: 2
+        prompt_text: Find something yellow.
+        verify_mode: photo
+        prompt_id: p_yellow
+        variable: true
+      - sequence: 3
+        prompt_text: Find something round.
+        verify_mode: photo
+        prompt_id: p_round
+        variable: true
+      - sequence: 4
+        prompt_text: Find somewhere you could sit down.
+        verify_mode: photo
+        prompt_id: p_bench
+        variable: true
+      - sequence: 5
+        prompt_text: Tell me which colour you saw the most of.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: park_map_makers
+  title: Map makers
+  category: park_and_garden
+  duration_bucket: 60
+  weather_tags:
+  - dry
+  site_requirements:
+  - grass
+  - trees
+  - open_space
+  - seating
+  equipment: []
+  mechanic: imagine
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk to the far edge of the grass and back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a tree you could describe to someone who isn't here.
+        verify_mode: photo
+        prompt_id: p_tree_trunk
+        variable: true
+      - sequence: 3
+        prompt_text: Count how many benches you can see from where you stand.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a flower and look at it closely.
+        verify_mode: photo
+        prompt_id: p_flower
+        variable: true
+      - sequence: 5
+        prompt_text: Pick a landmark and pace out how many steps away it is.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Find the shadiest spot in the park.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Describe the park to me as if I had never seen it.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

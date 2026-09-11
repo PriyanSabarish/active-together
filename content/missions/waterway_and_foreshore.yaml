@@ -1,0 +1,144 @@
+# Mission templates - waterway_and_foreshore. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: water_watchers
+  title: Water watchers
+  category: waterway_and_foreshore
+  duration_bucket: 20
+  weather_tags:
+  - dry
+  site_requirements:
+  - path
+  - water_adjacent
+  equipment: []
+  mechanic: find
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk on the path and point to the water.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a stone on the path.
+        verify_mode: photo
+        prompt_id: p_stone
+        variable: true
+      - sequence: 3
+        prompt_text: Sit with me and watch the water for one minute.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: shore_spotters
+  title: Shore spotters
+  category: waterway_and_foreshore
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - path
+  - water_adjacent
+  - seating
+  equipment: []
+  mechanic: find
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Find a bench or seat along the path.
+        verify_mode: photo
+        prompt_id: p_bench
+        variable: true
+      - sequence: 2
+        prompt_text: Find something blue that is not the water.
+        verify_mode: photo
+        prompt_id: p_blue
+        variable: true
+      - sequence: 3
+        prompt_text: Stop and listen. Tell me what the water sounds like.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a cloud and tell me what shape it is.
+        verify_mode: photo
+        prompt_id: p_cloud
+        variable: true
+      - sequence: 5
+        prompt_text: Name three things you saw beside the path.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: waterside_survey
+  title: Waterside survey
+  category: waterway_and_foreshore
+  duration_bucket: 60
+  weather_tags:
+  - any
+  site_requirements:
+  - path
+  - water_adjacent
+  equipment: []
+  mechanic: count
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk the path beside the water and set the pace.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find where the path comes closest to the water.
+        verify_mode: photo
+        prompt_id: p_path
+        variable: true
+      - sequence: 3
+        prompt_text: Count how many birds you can see without moving.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a fence or railing along the path.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 5
+        prompt_text: Stop and listen for thirty seconds.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Walk back and find one thing you missed.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Describe how the water looks today in one sentence.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

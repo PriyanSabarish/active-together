@@ -1,0 +1,16 @@
+# Frozen schema for a base combo. One combo per category per duration bucket.
+
+combo_id:           str        # unique, snake_case
+category:           str
+duration_bucket:    int        # 20 | 40 | 60
+label:              str        # shown on the card, e.g. "Walk and explore"
+travel_excluded:    bool       # always true - blocks are on-site minutes only
+blocks:
+  - name:           str        # shown to the parent
+    minutes:        int        # soft, never a countdown
+    note:           str|null   # one short line
+
+# Rules the validator enforces:
+#   - sum(block.minutes) == duration_bucket
+#   - between 2 and 5 blocks
+#   - no block claims a facility the source data cannot verify

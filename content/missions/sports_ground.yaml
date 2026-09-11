@@ -1,0 +1,143 @@
+# Mission templates - sports_ground. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: oval_run_and_freeze
+  title: Run and freeze
+  category: sports_ground
+  duration_bucket: 20
+  weather_tags:
+  - dry
+  site_requirements:
+  - open_space
+  - grass
+  equipment: []
+  mechanic: move
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Run to the middle of the oval and freeze.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a line on the ground and stand on it.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Walk back to me on your toes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: oval_circuit
+  title: Oval circuit
+  category: sports_ground
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - open_space
+  - grass
+  equipment: []
+  mechanic: count
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Run from one side of the oval to the other.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Count your steps walking back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Find a fence around the oval.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 4
+        prompt_text: Do five big jumps in a row.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Tell me which was harder, running or jumping.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: oval_distance_challenge
+  title: Distance challenge
+  category: sports_ground
+  duration_bucket: 60
+  weather_tags:
+  - dry
+  site_requirements:
+  - open_space
+  - grass
+  equipment: []
+  mechanic: count
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk one full lap of the oval.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Now jog the same lap and see if it feels shorter.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Find the goal posts or the centre of the ground.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Do twenty star jumps.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Find a stone on the ground.
+        verify_mode: photo
+        prompt_id: p_stone
+        variable: true
+      - sequence: 6
+        prompt_text: Pace out how many steps across the middle.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Cool down with a slow lap and tell me your best bit.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

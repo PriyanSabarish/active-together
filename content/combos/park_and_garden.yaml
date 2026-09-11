@@ -1,0 +1,58 @@
+# Base combos for park_and_garden. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: park_and_garden_20
+  category: park_and_garden
+  duration_bucket: 20
+  label: Quick park loop
+  travel_excluded: true
+  blocks:
+  - name: Walk the edge of the park
+    minutes: 8
+    note: Set the pace the child sets
+  - name: Free play on the grass
+    minutes: 10
+    note: null
+  - name: Sit and pick a favourite thing you saw
+    minutes: 2
+    note: null
+- combo_id: park_and_garden_40
+  category: park_and_garden
+  duration_bucket: 40
+  label: Walk and explore
+  travel_excluded: true
+  blocks:
+  - name: Discovery walk on the green
+    minutes: 15
+    note: Slow, looking rather than covering ground
+  - name: Rest and snack break
+    minutes: 5
+    note: Bring your own; nothing is sold here
+  - name: Open-grass play
+    minutes: 15
+    note: null
+  - name: Wind-down lap
+    minutes: 5
+    note: null
+- combo_id: park_and_garden_60
+  category: park_and_garden
+  duration_bucket: 60
+  label: Long explore
+  travel_excluded: true
+  blocks:
+  - name: Warm-up walk
+    minutes: 10
+    note: null
+  - name: Discovery walk on the green
+    minutes: 20
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Open-grass play
+    minutes: 20
+    note: null
+  - name: Wind-down lap
+    minutes: 5
+    note: null

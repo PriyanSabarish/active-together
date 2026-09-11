@@ -1,0 +1,55 @@
+# Base combos for walking_track. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: walking_track_20
+  category: walking_track
+  duration_bucket: 20
+  label: Short track walk
+  travel_excluded: true
+  blocks:
+  - name: Out-and-back along the track
+    minutes: 16
+    note: Turn around at the halfway point
+  - name: Rest at the turn
+    minutes: 4
+    note: null
+- combo_id: walking_track_40
+  category: walking_track
+  duration_bucket: 40
+  label: Track walk and look
+  travel_excluded: true
+  blocks:
+  - name: Walk out along the track
+    minutes: 15
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Looking game on the way back
+    minutes: 15
+    note: null
+  - name: Finish and stretch
+    minutes: 5
+    note: null
+- combo_id: walking_track_60
+  category: walking_track
+  duration_bucket: 60
+  label: Long track walk
+  travel_excluded: true
+  blocks:
+  - name: Walk out along the track
+    minutes: 20
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Looking game
+    minutes: 15
+    note: null
+  - name: Walk back
+    minutes: 15
+    note: null
+  - name: Finish and stretch
+    minutes: 5
+    note: null

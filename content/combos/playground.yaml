@@ -1,0 +1,55 @@
+# Base combos for playground. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: playground_20
+  category: playground
+  duration_bucket: 20
+  label: Short playground stop
+  travel_excluded: true
+  blocks:
+  - name: Free play on the equipment
+    minutes: 15
+    note: null
+  - name: Cool-down walk around the edge
+    minutes: 5
+    note: null
+- combo_id: playground_40
+  category: playground
+  duration_bucket: 40
+  label: Playground session
+  travel_excluded: true
+  blocks:
+  - name: Free play on the equipment
+    minutes: 20
+    note: null
+  - name: Rest and drink break
+    minutes: 5
+    note: null
+  - name: Ground game away from the equipment
+    minutes: 10
+    note: Keeps it interesting when the equipment palls
+  - name: Cool-down walk
+    minutes: 5
+    note: null
+- combo_id: playground_60
+  category: playground
+  duration_bucket: 60
+  label: Long playground session
+  travel_excluded: true
+  blocks:
+  - name: Free play on the equipment
+    minutes: 20
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Ground game on the grass
+    minutes: 15
+    note: null
+  - name: Second play round
+    minutes: 15
+    note: null
+  - name: Cool-down walk
+    minutes: 5
+    note: null

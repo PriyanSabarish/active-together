@@ -1,0 +1,142 @@
+# Mission templates - walking_track. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: track_look_and_find
+  title: Look and find
+  category: walking_track
+  duration_bucket: 20
+  weather_tags:
+  - dry
+  site_requirements:
+  - path
+  equipment: []
+  mechanic: find
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk with me and find a stick on the ground.
+        verify_mode: photo
+        prompt_id: p_stick
+        variable: true
+      - sequence: 2
+        prompt_text: Point to something taller than you.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Walk back and count out loud to twenty.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: track_spotters
+  title: Track spotters
+  category: walking_track
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - path
+  - trees
+  equipment: []
+  mechanic: find
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Find a leaf you like the shape of.
+        verify_mode: photo
+        prompt_id: p_leaf
+        variable: true
+      - sequence: 2
+        prompt_text: Find a flower beside the track.
+        verify_mode: photo
+        prompt_id: p_flower
+        variable: true
+      - sequence: 3
+        prompt_text: Stop and listen for ten seconds. Tell me what you heard.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find where the track turns or splits.
+        verify_mode: photo
+        prompt_id: p_path
+        variable: true
+      - sequence: 5
+        prompt_text: Name three things you saw on the way out.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: track_recorder
+  title: Trail recorder
+  category: walking_track
+  duration_bucket: 60
+  weather_tags:
+  - any
+  site_requirements:
+  - path
+  - trees
+  equipment: []
+  mechanic: sequence
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Walk out along the track and set the pace.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a tree trunk wider than your arms can reach.
+        verify_mode: photo
+        prompt_id: p_tree_trunk
+        variable: true
+      - sequence: 3
+        prompt_text: Stop and listen for thirty seconds. Name every sound.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a stone with an unusual shape.
+        verify_mode: photo
+        prompt_id: p_stone
+        variable: true
+      - sequence: 5
+        prompt_text: Turn around and walk back the way we came.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Find something on the way back you missed going out.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Describe the walk in five words.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
