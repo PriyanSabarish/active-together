@@ -1,8 +1,8 @@
 # Activity library foundation
 
-Module 1 delivers a proposed content contract, source-grounded taxonomy mapping
-and one complete activity example. The team can review the data shape before
-module 2 supplies three examples, a loader and JSON export. Target 18 distinct
+Modules 1 and 2 deliver a content contract, source-grounded taxonomy mapping,
+three complete activity examples, a loader and JSON export. Start integration
+with [INTEGRATION.md](INTEGRATION.md). Target 18 distinct
 activity families, first reaching 6 usable pilot activities; deploy only the
 subset that has passed human review and integration checks.
 
@@ -12,6 +12,9 @@ subset that has passed human review and integration checks.
 - `../taxonomy/subtype_activity_mapping.yaml`: all 16 retained subtype combinations.
 - `../schema/activity_template.schema.yaml`: executable JSON Schema written in YAML.
 - `_candidates/follow_the_leader.yaml`: one activity with three age variants.
+- `_candidates/colour_hunt.yaml`: observation play with three age variants.
+- `_candidates/pass_and_move.yaml`: ball play with three age variants and required equipment.
+- `../examples/activities.preview.json`: generated sample containing all three drafts.
 - `source_inventory.md`: exact dataset version, counts and branch differences.
 - `reviewed/`: approved activity files only; currently empty of activities.
 
@@ -67,14 +70,16 @@ are valid; requirements, setup, constraints and steps must contain actual text.
 
 Array order is execution order. Do not add a second sequence number to maintain.
 Step IDs are unique within each age variant. Unsupported age bands are omitted;
-the future selector must not substitute another age band. Older variants change
+the selector does not substitute another age band. Older variants change
 the task, not just vocabulary. These bands are provisional content adaptations,
 not evidence of developmental suitability.
 
 The YAML schema checks field shapes, required values and reviewer presence.
-Cross-file ID membership, duplicate IDs, reviewer independence and genuine age
-differences require additional checks or human review. A full authoring validator
-is a later module. Existing `schema/check_drafts.py` is for missions only.
+The shared loader also checks type/mechanic membership, duplicate activity and
+step IDs, filenames and review status. It rejects matching author/reviewer names
+after normalising case and whitespace; people must verify reviewer independence.
+Meaningful age differences, suitability and safety still require human review.
+Existing `schema/check_drafts.py` is for missions only.
 
 ## Location mapping boundary
 
@@ -90,23 +95,25 @@ Names enriched from council sources must not be used to infer extra facilities.
 
 ## Handoff to the application
 
-Module 2 will load YAML and return ordinary JSON-compatible values, preserving
-the field names above. The proposed export envelope is:
+Module 2 loads YAML and returns ordinary JSON-compatible values, preserving
+the field names above. The export envelope includes an explicit mode:
 
 ```json
 {
   "schema_version": "0.1.0",
+  "mode": "reviewed",
   "activities": []
 }
 ```
 
 Each item in `activities` will be a complete record matching the activity schema.
 The initial reviewed export is empty because no activity has human approval yet.
-An explicit development-only preview may expose drafts for interface testing;
-it must not be used by the production loading path. This is a file/data contract,
-not a new API endpoint. Future loading is limited to `reviewed/*.yaml` and must
-fail closed on invalid records or missing review; candidate files are never a
-production fallback.
+The explicit development preview includes drafts and labels the envelope
+`mode: development_preview`. Production consumers must require `mode: reviewed`.
+This is a file/data contract, not a new API endpoint. Default loading reads only
+`reviewed/` and rejects invalid records or missing review; candidate files are
+never a production fallback. Files use `.yaml` by convention; the loader also
+checks `.yml` files. All selected files are validated before filtering or export.
 
 ## Duration and future stories
 

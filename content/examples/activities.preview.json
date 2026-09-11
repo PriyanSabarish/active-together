@@ -1,0 +1,355 @@
+{
+  "schema_version": "0.1.0",
+  "mode": "development_preview",
+  "activities": [
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "colour_hunt",
+      "version": 1,
+      "title": "Colour Hunt",
+      "summary": "Look for visible colours together and take turns choosing what to notice.",
+      "activity_type": "exploration_play",
+      "core_mechanic": "find",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Help choose visible colours and accompany the child within the agreed area."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a permitted observation area away from traffic and active sport.",
+        "Colours can be observed without touching objects or entering planting beds."
+      ],
+      "setup": [
+        "Agree on a small area where the adult and child will stay together.",
+        "Look around together and choose a colour that is actually visible.",
+        "Explain that pointing or describing is enough; nothing needs to be collected.",
+        "Either person can pause or stop, and an unavailable colour can be changed."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Notice one visible colour and take a turn choosing another.",
+          "steps": [
+            {
+              "step_id": "find_one",
+              "instruction": "Point to something with our chosen colour.",
+              "parent_prompt": "Choose a visible colour together and offer help locating it."
+            },
+            {
+              "step_id": "notice_another",
+              "instruction": "Point to a different colour you can see.",
+              "parent_prompt": "Look from the same place or walk together within the agreed area."
+            },
+            {
+              "step_id": "child_chooses",
+              "instruction": "Choose a colour for me to find.",
+              "parent_prompt": "Let the child point out their choice if naming colours is difficult."
+            }
+          ],
+          "ending": "Point to one favourite colour together, then finish the search."
+        },
+        "8-10": {
+          "challenge": "Compare two visible colours and use a clue to guide a partner.",
+          "steps": [
+            {
+              "step_id": "find_pair",
+              "instruction": "Find two things with colours you can compare.",
+              "parent_prompt": "Stay together and use visible objects without handling them."
+            },
+            {
+              "step_id": "compare_pair",
+              "instruction": "Describe one colour difference between your two choices.",
+              "parent_prompt": "Accept the child's description; there is no correct shade to identify."
+            },
+            {
+              "step_id": "give_clue",
+              "instruction": "Give me a colour clue for one thing you found.",
+              "parent_prompt": "Take a turn guessing from the checked area; let the child point if needed."
+            }
+          ],
+          "ending": "Reveal the object from the clue and finish the search together."
+        },
+        "11-12": {
+          "challenge": "Create a colour comparison rule and adjust it to what is visible.",
+          "steps": [
+            {
+              "step_id": "choose_rule",
+              "instruction": "Choose a rule for comparing colours you can see.",
+              "parent_prompt": "Offer examples such as similar shades or a strong contrast; use the child's own descriptions."
+            },
+            {
+              "step_id": "apply_rule",
+              "instruction": "Find two visible examples and explain how they fit your rule.",
+              "parent_prompt": "Remain together; if examples are unavailable, invite a change to the rule."
+            },
+            {
+              "step_id": "swap_searcher",
+              "instruction": "Teach me your rule and help me find another example.",
+              "parent_prompt": "Ask for a clue and search within the same area, adapting the rule if needed."
+            }
+          ],
+          "ending": "Name one observation the rule helped you make, then finish."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Point together instead of naming or comparing colours.",
+          "Use a visible shape instead of colour if that is easier to distinguish."
+        ],
+        "extend": [
+          "Swap who chooses the visible colour or comparison rule for another round.",
+          "Describe each observation as an imaginary clue without collecting anything."
+        ]
+      },
+      "constraints": [
+        "Stay together within the checked area; a clue must never require searching beyond it.",
+        "Observe without picking, collecting, tasting or touching unknown objects.",
+        "Do not approach animals or strangers to inspect their colours.",
+        "Do not assume any particular plant, landmark or colour will be present.",
+        "Keep the observation tasks and ending when adding story wording."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "follow_the_leader",
+      "version": 1,
+      "title": "Follow the Leader",
+      "summary": "Take turns inventing and copying a short pattern of movements together.",
+      "activity_type": "movement_play",
+      "core_mechanic": "imitate",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Demonstrate, copy the child and help keep movements controlled."
+      },
+      "equipment": {
+        "required": [],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a clear, level area with room to move without contact.",
+        "The area is outside traffic, wheeled routes and play equipment landing areas."
+      ],
+      "setup": [
+        "Stand facing each other with enough space to stretch arms without touching.",
+        "Agree to use gentle movements such as marching, arm circles or side steps.",
+        "Explain that either person can pause, change a movement or stop."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Copy one movement at a time and take a turn leading.",
+          "steps": [
+            {
+              "step_id": "copy_one",
+              "instruction": "Copy my slow marching steps.",
+              "parent_prompt": "March gently on the spot; let the child watch before joining."
+            },
+            {
+              "step_id": "change_one",
+              "instruction": "Copy my small arm circles.",
+              "parent_prompt": "Stop marching first, then demonstrate a comfortable arm circle."
+            },
+            {
+              "step_id": "child_leads",
+              "instruction": "Choose a gentle movement for me to copy.",
+              "parent_prompt": "Offer the two demonstrated movements if the child wants help choosing."
+            }
+          ],
+          "ending": "Choose one favourite movement and do it together, then stop."
+        },
+        "8-10": {
+          "challenge": "Remember a two-movement pattern and notice a change in its order.",
+          "steps": [
+            {
+              "step_id": "copy_pair",
+              "instruction": "Copy four marching steps, then two small arm circles.",
+              "parent_prompt": "Demonstrate the whole pattern slowly, then repeat it together."
+            },
+            {
+              "step_id": "change_order",
+              "instruction": "Put the arm circles first and try the pattern again.",
+              "parent_prompt": "Let the child organise the two movements; offer a demonstration if wanted."
+            },
+            {
+              "step_id": "child_leads",
+              "instruction": "Choose two gentle movements and teach me your pattern.",
+              "parent_prompt": "Follow the child's pattern without scoring memory or counting errors."
+            }
+          ],
+          "ending": "Perform the child's two-movement pattern together once, then stop."
+        },
+        "11-12": {
+          "challenge": "Design, teach and adapt a three-movement pattern for a partner.",
+          "steps": [
+            {
+              "step_id": "design_pattern",
+              "instruction": "Choose three gentle movements and arrange them into a pattern.",
+              "parent_prompt": "Agree which movements fit the space; let the child decide their order."
+            },
+            {
+              "step_id": "teach_pattern",
+              "instruction": "Teach me your pattern one movement at a time.",
+              "parent_prompt": "Copy each movement, then ask the child to lead the combined pattern."
+            },
+            {
+              "step_id": "adapt_pattern",
+              "instruction": "Change one part so the pattern is easier to copy.",
+              "parent_prompt": "Invite a change to order, repetition or movement size, then try it together."
+            }
+          ],
+          "ending": "Perform the adapted pattern together once and name the change, then stop."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Use one comfortable movement at a time and copy it together.",
+          "Use small arm movements while staying in place if preferred."
+        ],
+        "extend": [
+          "Swap leaders for another round using movements already agreed with the adult.",
+          "Give the same movements an imaginary character without adding new actions."
+        ]
+      },
+      "constraints": [
+        "Keep movements gentle, within the checked area and in the adult's sight.",
+        "Do not add climbing, backward travel, chasing, contact or speed competitions.",
+        "Do not require equipment, landmarks or surfaces absent from the requirements.",
+        "Keep the listed tasks and each age variant's ending when adding story wording."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    },
+    {
+      "schema_version": "0.1.0",
+      "activity_id": "pass_and_move",
+      "version": 1,
+      "title": "Pass and Move",
+      "summary": "Roll a soft ball to a partner, then change position together for the next pass.",
+      "activity_type": "ball_play",
+      "core_mechanic": "pass",
+      "participation": {
+        "minimum_children": 1,
+        "minimum_adults": 1,
+        "adult_role": "Roll the ball gently, agree each position and retrieve loose balls only when appropriate."
+      },
+      "equipment": {
+        "required": [
+          "A soft ball suitable for rolling between the child and adult."
+        ],
+        "optional": []
+      },
+      "requirements": [
+        "An adult checks a level, clear area where a ball can roll without entering traffic or active play.",
+        "There is room for the pair to change position without contacting other people.",
+        "The family brings the ball; the location dataset does not establish equipment availability."
+      ],
+      "setup": [
+        "Face each other a short, comfortable rolling distance apart.",
+        "Agree to roll along the ground and stop the ball before changing position.",
+        "Agree that the child will wait if the ball leaves the checked area.",
+        "Either person can pause, move closer or end the game at any point."
+      ],
+      "age_variants": {
+        "5-7": {
+          "challenge": "Stop and return a gentle roll, then move to an agreed position.",
+          "steps": [
+            {
+              "step_id": "receive_roll",
+              "instruction": "Stop the ball I roll towards you.",
+              "parent_prompt": "Roll gently from nearby and let the child choose a comfortable way to stop it."
+            },
+            {
+              "step_id": "return_roll",
+              "instruction": "Roll the ball back towards me.",
+              "parent_prompt": "Stay close and make the receiving position easy to see."
+            },
+            {
+              "step_id": "change_position",
+              "instruction": "Hold the ball while we each take one sideways step.",
+              "parent_prompt": "Check room first, move together, then stop and exchange another gentle roll."
+            }
+          ],
+          "ending": "Stop the ball after one final exchange and finish together."
+        },
+        "8-10": {
+          "challenge": "Compare two rolling distances and choose one that helps the pair cooperate.",
+          "steps": [
+            {
+              "step_id": "try_near",
+              "instruction": "Exchange two gentle rolls from our starting positions.",
+              "parent_prompt": "Stop the ball between turns and count exchanges together without scoring."
+            },
+            {
+              "step_id": "try_distance",
+              "instruction": "Hold the ball while we choose a second rolling distance.",
+              "parent_prompt": "Agree a small change within the checked area, stop moving, then exchange two rolls."
+            },
+            {
+              "step_id": "choose_distance",
+              "instruction": "Choose which distance made the ball easier to control.",
+              "parent_prompt": "Move to the chosen positions while holding the ball, then try another exchange."
+            }
+          ],
+          "ending": "Stop the ball and describe which distance worked for you both."
+        },
+        "11-12": {
+          "challenge": "Plan and improve a short pattern of positions for cooperative rolling.",
+          "steps": [
+            {
+              "step_id": "plan_positions",
+              "instruction": "Choose two nearby positions for our rolling pattern.",
+              "parent_prompt": "Agree positions within the checked area; no markers or field lines are needed."
+            },
+            {
+              "step_id": "try_pattern",
+              "instruction": "Guide us through one exchange at each position.",
+              "parent_prompt": "Hold the ball during every position change and roll only when both people are still."
+            },
+            {
+              "step_id": "improve_pattern",
+              "instruction": "Change one position to make the next exchange easier to control.",
+              "parent_prompt": "Discuss the change, move while holding the ball and repeat the adjusted pattern."
+            }
+          ],
+          "ending": "Stop the ball after the adjusted pattern and name the change together."
+        }
+      },
+      "adaptations": {
+        "simplify": [
+          "Stay in one position and shorten the distance between partners.",
+          "Stop each roll with help from the adult before taking another turn."
+        ],
+        "extend": [
+          "Swap who chooses the positions while keeping the same checked area and rolling rules.",
+          "Treat the same gentle rolls as delivering an imaginary parcel."
+        ]
+      },
+      "constraints": [
+        "Roll on the ground; do not add throwing, kicking, striking or speed targets.",
+        "Stop and hold the ball before changing position; do not chase a moving ball.",
+        "If the ball leaves the checked area, the child waits with the activity paused.",
+        "Do not assume nets, hoops, painted lines, markers or supplied equipment.",
+        "Keep the rolling and position-change rules when adding story wording."
+      ],
+      "safety_reference": "schema/safety_constraints.yaml",
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      }
+    }
+  ]
+}
