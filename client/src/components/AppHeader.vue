@@ -6,15 +6,17 @@
           <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <svg class="logo-pin" width="26" height="32" viewBox="0 0 100 126" aria-hidden="true">
-        <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="#2E8540" />
-        <circle cx="50" cy="34" r="12" fill="#F49B1B" />
-        <path d="M28 54 Q50 70 72 54" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
-        <path d="M32 78 Q50 92 68 78" fill="none" stroke="#7CBE7A" stroke-width="10" stroke-linecap="round" />
-      </svg>
-      <span class="app-name"><b class="w-active">Active</b> <b class="w-together">Together</b><b class="w-dot">.</b></span>
+      <RouterLink to="/today" class="brand-link" aria-label="Go to Today">
+        <svg class="logo-pin" width="26" height="32" viewBox="0 0 100 126" aria-hidden="true">
+          <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="#2E8540" />
+          <circle cx="50" cy="34" r="12" fill="#F49B1B" />
+          <path d="M28 54 Q50 70 72 54" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
+          <path d="M32 78 Q50 92 68 78" fill="none" stroke="#7CBE7A" stroke-width="10" stroke-linecap="round" />
+        </svg>
+        <span class="app-name"><b class="w-active">Active</b> <b class="w-together">Together</b><b class="w-dot">.</b></span>
+      </RouterLink>
     </div>
-    <div class="stepper" aria-label="Progress">
+    <div v-if="!plain" class="stepper" aria-label="Progress">
       <span v-for="i in 3" :key="i" :class="{ on: i <= step }" />
     </div>
   </div>
@@ -22,12 +24,24 @@
 
 <script setup>
 defineProps({
-  step: { type: Number, required: true },
-  back: { type: Boolean, default: false }
+  step: { type: Number, default: 0 },
+  back: { type: Boolean, default: false },
+  // Tab-root screens (Today, Plan, Insights, Prefs) show just the logo bar,
+  // no funnel step dots.
+  plain: { type: Boolean, default: false }
 })
 </script>
 
 <style scoped>
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
 .logo-pin { flex-shrink: 0; }
 
 .app-name b { font-weight: 700; }

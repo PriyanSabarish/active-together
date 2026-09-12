@@ -9,6 +9,7 @@
           </div>
         </transition>
       </router-view>
+      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding" />
       <!-- Sits on top of the first screen and dims it; the app stays visible behind. -->
       <OnboardingModal v-if="showOnboarding" @done="finishOnboarding" />
     </template>
@@ -16,10 +17,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
+import TabShell from './components/TabShell.vue'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
@@ -70,12 +72,17 @@ const ORDER = ['location', 'time', 'results', 'detail']
 const router = useRouter()
 const transitionName = ref('slide-left')
 
+const currentTab = computed(() => router.currentRoute.value.meta.tab ?? '')
+const showTabBar = computed(() => !!currentTab.value && !router.currentRoute.value.meta.hideTabBar)
+
 watch(
   () => router.currentRoute.value,
   (to, from) => {
     if (!from?.name) return
+    const toIdx = ORDER.indexOf(to.name)
+    const fromIdx = ORDER.indexOf(from.name)
     transitionName.value =
-      ORDER.indexOf(to.name) >= ORDER.indexOf(from.name) ? 'slide-left' : 'slide-right'
+      toIdx === -1 || fromIdx === -1 || toIdx >= fromIdx ? 'slide-left' : 'slide-right'
   }
 )
 </script>
