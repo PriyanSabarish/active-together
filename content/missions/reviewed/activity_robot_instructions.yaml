@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_colour_hunt
-    title: "Colour Hunt"
+  - template_id: activity_robot_instructions
+    title: "Robot Instructions"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: find
+    mechanic: sequence
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, point to a colour you can see."
+            prompt_text: "Beside me, pretend to be a robot moving one arm."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Point to another colour from the same spot."
+            prompt_text: "Follow my slow arm-up command gently."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose a visible colour and help me find it."
+            prompt_text: "Give me an arm-down command and check my robot response."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Point to two things sharing a colour."
+            prompt_text: "Choose two comfortable robot arm commands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show me one colour difference between them."
+            prompt_text: "Lead those commands and finish with arms comfortably lowered."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose a colour clue for something nearby."
+            prompt_text: "Change one command to make a smaller movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Reveal your choice and compare our colour descriptions."
+            prompt_text: "Teach me the smaller movement and try it together."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Find two visible colours beside your adult."
+            prompt_text: "Agree three gentle robot arm commands with your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe one difference between your two choices."
+            prompt_text: "Follow a short command sequence while keeping your feet grounded."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Give your adult a colour clue, then reveal your choice."
+            prompt_text: "Lead your own sequence and check whether each command was clear."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Find two examples of a similar shade."
+            prompt_text: "Choose one command that could mean two different movements."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the examples and explain what makes them similar."
+            prompt_text: "Replace it with clearer words and test the revised instruction."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult choose a different colour clue."
+            prompt_text: "Ask your adult to reorder two agreed commands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Solve the clue together and describe the colour you found."
+            prompt_text: "Follow the new sequence and describe what changed."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a rule for comparing colours visible beside your adult."
+            prompt_text: "Define three precise commands for comfortable grounded robot movements."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Find two examples that fit your comparison rule."
+            prompt_text: "Say each command aloud in the order you want it performed."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Teach your rule, then compare your adult's choice with yours."
+            prompt_text: "Test it with your adult and identify one ambiguous instruction."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change the rule to explore a different colour relationship."
+            prompt_text: "Revise that instruction without adding a new movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Apply the new rule and explain how the results differ."
+            prompt_text: "Run the revised sequence and compare how clearly it works."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Create a short colour clue using your preferred rule."
+            prompt_text: "Design a shorter command sequence with the same final arm position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Test the clue with your adult and explain any ambiguity."
+            prompt_text: "Test your shorter sequence and explain which command was unnecessary."
             verify_mode: self
             prompt_id: null
             variable: true

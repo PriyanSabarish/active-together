@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_choose_your_route
-    title: "Choose Your Route"
+  - template_id: activity_silent_scene
+    title: "Silent Scene"
     category: any
     duration_bucket: 60
-    weather_tags: [dry]
+    weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: sequence
+    mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "With me, choose a nearby spot in our checked area."
+            prompt_text: "Beside me, pretend to brush your hair with empty hands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Walk slowly beside me to that spot."
+            prompt_text: "Watch me copy your gentle brushing movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose another checked spot and walk there together."
+            prompt_text: "Choose another grooming gesture and help me guess it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Pick a nearby stopping spot we can both reach easily."
+            prompt_text: "Pretend to put on an imaginary hat."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Walk there beside me and settle both feet."
+            prompt_text: "Show a different hat shape and let me copy."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose the shortest checked walk we have tried."
+            prompt_text: "Choose one of our pretend actions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Walk it together and point to where we started."
+            prompt_text: "Show its clearest gesture and reveal your choice."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose two nearby stopping positions your adult has checked."
+            prompt_text: "Choose a familiar everyday action to mime beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Walk forwards together through your chosen positions."
+            prompt_text: "Perform it using small gestures and no real props."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Explain your route and walk together to a comfortable stopping place."
+            prompt_text: "Reveal the action and discuss which gesture made it clear."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Reverse the visiting order without walking backwards."
+            prompt_text: "Choose two familiar actions that can follow each other."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Try that order together and compare the two routes."
+            prompt_text: "Mime the pair and explain the order to your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult choose a shorter route in the checked area."
+            prompt_text: "Let your adult suggest a different imaginary object."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Follow it together and describe which stop was removed."
+            prompt_text: "Adapt the mime and compare how the gestures change."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Plan a short route using three nearby adult-checked positions."
+            prompt_text: "Choose a familiar everyday task with a clear beginning and ending."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Explain the visiting order and walk it beside your adult."
+            prompt_text: "Mime its sequence using comfortable gestures and no real props."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Identify one unnecessary movement and finish at a checked position."
+            prompt_text: "Ask your adult to describe it and identify an unclear gesture."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Revise the visiting order to make the route simpler."
+            prompt_text: "Refine that gesture while keeping the same task."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Test the revision together and explain the difference."
+            prompt_text: "Perform the revised scene and compare the interpretations."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Design a second route using fewer stopping positions."
+            prompt_text: "Create a shorter mime preserving the task's essential actions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Walk the shorter route and compare how easily it can be explained."
+            prompt_text: "Test the shorter version and explain which gestures were necessary."
             verify_mode: self
             prompt_id: null
             variable: true

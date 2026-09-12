@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_notice_the_change
-    title: "Notice the Change"
+  - template_id: activity_rhythm_steps
+    title: "Rhythm Steps"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: find
+    mechanic: sequence
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Facing me, look at my comfortable hand shape."
+            prompt_text: "Beside me, march gently to my slow counting."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Watch me change one finger position."
+            prompt_text: "Pause your feet when my counting pauses."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Point to the change and show the original shape."
+            prompt_text: "Choose a slow count and lead our gentle marching."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Choose a hand shape for me to watch."
+            prompt_text: "Copy two gentle steps followed by a pause."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Change one finger and help me find the difference."
+            prompt_text: "Lead that short rhythm and finish with feet still."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Copy my hand shape with your own hand."
+            prompt_text: "Make a different rhythm using slow steps and pauses."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Change one part and describe our different shapes."
+            prompt_text: "Teach me your rhythm and finish standing comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Observe two comfortable hand positions shown by your adult."
+            prompt_text: "March on the spot to your adult's slow spoken rhythm."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Watch one position change while the other stays the same."
+            prompt_text: "Repeat it with a clear pause between groups of steps."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Identify the change and explain what stayed unchanged."
+            prompt_text: "Lead a short rhythm of your own, then stand still."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Show your adult a two-part hand pose."
+            prompt_text: "Change where the pause falls without increasing speed."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Change one part and compare your adult's observation with yours."
+            prompt_text: "Try both rhythms and describe how their pauses differ."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose a smaller visible change in the same pose."
+            prompt_text: "Let your adult copy a rhythm you speak."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Reveal the change and explain which detail helped identify it."
+            prompt_text: "Adjust one unclear cue and try the rhythm together."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose two visible features of your adult's comfortable hand pose."
+            prompt_text: "Design a gentle stepping rhythm with two different pause positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Observe a change and distinguish it from the unchanged feature."
+            prompt_text: "Teach the rhythm using spoken cues beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Explain the evidence for your answer and recreate the original pose."
+            prompt_text: "Test the cues together and finish with a deliberate pause."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Design a pose with one easily described variable."
+            prompt_text: "Keep the pace slow while changing one part of the pattern."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Change that variable and test whether your adult identifies it."
+            prompt_text: "Compare how the changed pause affects coordination."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Make the change subtler without concealing your hands."
+            prompt_text: "Create a simpler spoken version of your preferred rhythm."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Compare the observations and explain which description was most precise."
+            prompt_text: "Teach that version and explain which cue became clearer."
             verify_mode: self
             prompt_id: null
             variable: true

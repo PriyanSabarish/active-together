@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_invisible_orchestra
-    title: "Invisible Orchestra"
+  - template_id: activity_choose_your_route
+    title: "Choose Your Route"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: imagine
+    mechanic: sequence
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, pretend to play a tiny silent drum."
+            prompt_text: "With me, choose a nearby spot in our checked area."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Copy my slow pretend drumming without touching anything."
+            prompt_text: "Walk slowly beside me to that spot."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead your own silent rhythm and finish with hands still."
+            prompt_text: "Choose another checked spot and walk there together."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Pretend to play a different silent instrument."
+            prompt_text: "Pick a nearby stopping spot we can both reach easily."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show its gentle movements and let me guess."
+            prompt_text: "Walk there beside me and settle both feet."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose a hand movement that means finish."
+            prompt_text: "Choose the shortest checked walk we have tried."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Conduct my silent playing and end with our chosen movement."
+            prompt_text: "Walk it together and point to where we started."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose an imaginary instrument to play silently beside your adult."
+            prompt_text: "Choose two nearby stopping positions your adult has checked."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Show a short gentle playing pattern without touching anything."
+            prompt_text: "Walk forwards together through your chosen positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Let your adult copy it and identify one clear movement."
+            prompt_text: "Explain your route and walk together to a comfortable stopping place."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Agree a small conducting gesture for longer pauses."
+            prompt_text: "Reverse the visiting order without walking backwards."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Conduct your adult's silent pattern and compare the pauses."
+            prompt_text: "Try that order together and compare the two routes."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Swap imaginary instruments while keeping movements comfortable."
+            prompt_text: "Let your adult choose a shorter route in the checked area."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Perform the changed pattern and explain how the gestures differ."
+            prompt_text: "Follow it together and describe which stop was removed."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Invent a silent instrument with a distinctive comfortable playing gesture."
+            prompt_text: "Plan a short route using three nearby adult-checked positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Teach your adult a short pattern using that gesture."
+            prompt_text: "Explain the visiting order and walk it beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare your interpretations and refine one unclear movement."
+            prompt_text: "Identify one unnecessary movement and finish at a checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Define conducting gestures for starting, pausing and finishing."
+            prompt_text: "Revise the visiting order to make the route simpler."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Conduct a complete silent phrase using your agreed gestures."
+            prompt_text: "Test the revision together and explain the difference."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Change the instrument while retaining the same conducting rules."
+            prompt_text: "Design a second route using fewer stopping positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Perform the new phrase and explain what remained consistent."
+            prompt_text: "Walk the shorter route and compare how easily it can be explained."
             verify_mode: self
             prompt_id: null
             variable: true

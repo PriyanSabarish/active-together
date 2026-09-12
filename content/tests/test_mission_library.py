@@ -85,6 +85,18 @@ class MissionLibraryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             load_mission_families(True, self.content)
 
+    def test_reviewed_export_contains_the_approved_migration(self):
+        """Verify the completed eighteen-family review handoff and removal of draft copies."""
+        payload = build_export()
+        ids = {item["template_id"] for item in payload["templates"]}
+        self.assertEqual(len(ids), 18)
+        self.assertEqual(ids, {item["template_id"] for item in self.families})
+        self.assertEqual(payload["mode"], "reviewed")
+        for family in payload["templates"]:
+            self.assertEqual(family["review"]["status"], "reviewed")
+            self.assertEqual(family["review"]["reviewed_by"], "lychen")
+            self.assertFalse((CONTENT_DIR / "missions/_candidates" / (family["template_id"] + ".yaml")).exists())
+
     def test_promotion_requires_an_independent_reviewer(self):
         """Exercise approved loading with an explicitly fictional test reviewer."""
         self.seed["review"] = {"author": "Jiabin", "reviewed_by": " JIABIN ", "status": "reviewed"}
@@ -226,13 +238,14 @@ class MissionLibraryTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout), expected)
         self.assertEqual(json.loads((CONTENT_DIR / "examples/mission.preview.json").read_text(encoding="utf-8")), expected)
         self.assertEqual(json.loads((CONTENT_DIR / "examples/mission_families.preview.json").read_text(encoding="utf-8")), build_export(True))
+        self.assertEqual(json.loads((CONTENT_DIR / "examples/mission_families.reviewed.json").read_text(encoding="utf-8")), build_export())
 
     def test_invalid_export_preserves_existing_output(self):
         """A failed lookup must not erase a previously generated artifact."""
         output = self.content / "existing.json"
         output.write_text("keep this", encoding="utf-8")
         result = subprocess.run([sys.executable, str(CONTENT_DIR / "tools/export_mission_templates.py"),
-                                 "--template-id", "activity_colour_hunt", "--age-band", "5-7", "--duration", "20",
+                                 "--template-id", "activity_missing_test_fixture", "--age-band", "5-7", "--duration", "20",
                                  "--output", str(output)], cwd=self.content, capture_output=True, text=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(output.read_text(encoding="utf-8"), "keep this")

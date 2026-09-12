@@ -2,10 +2,12 @@
 
 ## Current integration path: migrated mission families
 
-The 18 activity ideas now have mission-family drafts matching Priyan's Step fields
+The 18 activity ideas now have mission families matching Priyan's Step fields
 and 20/40/60-minute prefix rule. Start with [the migration handoff](missions/MIGRATION.md).
 Run `python content/tools/validate_mission_templates.py --preview` from the repository root.
 This checks the migrated collection, including the actual nine safety rules.
+All eighteen migrated families are reviewed by lychen, as confirmed by Jiabin.
+Timing is still unmeasured; photo vocabulary and runtime integration remain separate work.
 The original activity files and independent-duration planner below are retained
 as earlier authoring references, not a second current integration contract.
 

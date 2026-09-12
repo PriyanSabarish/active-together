@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_rhythm_steps
-    title: "Rhythm Steps"
+  - template_id: activity_sort_and_step
+    title: "Sort and Step"
     category: any
     duration_bucket: 60
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: sequence
+    mechanic: count
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, march gently to my slow counting."
+            prompt_text: "Beside me, name an animal and a vehicle."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Pause your feet when my counting pauses."
+            prompt_text: "Show low hands for animals, high hands for vehicles."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose a slow count and lead our gentle marching."
+            prompt_text: "Sort my two spoken names using those hand positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Copy two gentle steps followed by a pause."
+            prompt_text: "Give me an animal name for low hands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Lead that short rhythm and finish with feet still."
+            prompt_text: "Give me a vehicle name and check my high hands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Make a different rhythm using slow steps and pauses."
+            prompt_text: "Choose which group means one gentle marching step."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Teach me your rhythm and finish standing comfortably."
+            prompt_text: "Sort two spoken names using our chosen movements."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "March on the spot to your adult's slow spoken rhythm."
+            prompt_text: "Choose four familiar spoken names with your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Repeat it with a clear pause between groups of steps."
+            prompt_text: "Agree two groups and a comfortable hand position for each."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead a short rhythm of your own, then stand still."
+            prompt_text: "Sort the four names and explain one choice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change where the pause falls without increasing speed."
+            prompt_text: "Choose a different grouping rule for the same names."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Try both rhythms and describe how their pauses differ."
+            prompt_text: "Sort them again and compare where one name belongs."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult copy a rhythm you speak."
+            prompt_text: "Assign one gentle on-the-spot movement to each group."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Adjust one unclear cue and try the rhythm together."
+            prompt_text: "Take turns sorting spoken names with the agreed movements."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Design a gentle stepping rhythm with two different pause positions."
+            prompt_text: "Choose four familiar spoken objects and define two clear groups."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Teach the rhythm using spoken cues beside your adult."
+            prompt_text: "Assign a comfortable hand position to each group."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Test the cues together and finish with a deliberate pause."
+            prompt_text: "Classify the objects and explain one borderline choice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Keep the pace slow while changing one part of the pattern."
+            prompt_text: "Change the grouping rule without changing the four objects."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare how the changed pause affects coordination."
+            prompt_text: "Classify them again and explain which assignments changed."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Create a simpler spoken version of your preferred rhythm."
+            prompt_text: "Define a simple grounded movement for each revised group."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Teach that version and explain which cue became clearer."
+            prompt_text: "Test your adult's classifications and clarify one ambiguous rule."
             verify_mode: self
             prompt_id: null
             variable: true
