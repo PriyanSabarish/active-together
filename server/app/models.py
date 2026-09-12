@@ -123,3 +123,36 @@ class SearchRequest:
     radius_km: int
     timestamp: str
     duration_min: int
+
+
+# Iteration 2 — shapes crossing the wire between Backend A and Backend B (missions)
+# Backend A's /missions and /verify-step endpoints pass these through unchanged;
+# Backend B is the only side that constructs or interprets them.
+
+
+class VerifyMode(str, Enum):
+    PHOTO = "photo"
+    SELF = "self"
+
+
+class AgeBand(str, Enum):
+    BAND_5_7 = "5-7"
+    BAND_8_10 = "8-10"
+    BAND_11_12 = "11-12"
+
+
+class Step(BaseModel):
+    sequence: int
+    prompt_text: str
+    verify_mode: VerifyMode
+    prompt_id: Optional[str] = None
+
+
+class Mission(BaseModel):
+    mission_id: str
+    template_id: str
+    title: str
+    age_band: AgeBand
+    estimated_minutes: int
+    equipment: list[str] = Field(default_factory=list)
+    steps: list[Step]

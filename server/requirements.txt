@@ -10,3 +10,4 @@ geoalchemy2>=0.15.0
 aiolimiter>=1.1.0
 async-lru>=2.0.4
 tenacity>=8.0.0
+pyyaml>=6.0
