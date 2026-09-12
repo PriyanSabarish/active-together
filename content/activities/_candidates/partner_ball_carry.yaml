@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: partner_ball_carry
+version: 1
+title: "Partner Ball Carry"
+summary: "Support a soft ball together and coordinate a few slow steps as a pair."
+activity_type: ball_play
+core_mechanic: control
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: ["A soft ball large enough for the child and adult to support together."]
+  optional: []
+requirements:
+  - "An adult checks a small, clear, level area for a few slow forward steps together."
+  - "Both participants can support the ball comfortably without gripping each other."
+setup:
+  - "Agree a comfortable position beside each other and try supporting the ball while still."
+  - "The adult supports most of the weight and can catch or lower the ball."
+  - "If the ball drops, stop and wait; either person can pause or finish."
+age_variants:
+  "5-7":
+    challenge: "Support the ball together and coordinate one gentle step."
+    steps:
+      - step_id: support_together
+        instruction: "Help me support our soft ball."
+        parent_prompt: "Use comfortable hand positions and avoid touching or gripping the child."
+      - step_id: take_step
+        instruction: "Take one slow step forward beside me."
+        parent_prompt: "The adult guides the pace within the checked space."
+      - step_id: pause_together
+        instruction: "Stop with me and hold the ball still."
+        parent_prompt: "Allow the child to release their hands whenever wanted."
+    ending: "Let the adult take the ball and return to rest."
+  "8-10":
+    challenge: "Agree and use a shared signal for moving and pausing."
+    steps:
+      - step_id: agree_signal
+        instruction: "Choose a word that tells us to take a step."
+        parent_prompt: "Practise while the adult securely supports the ball."
+      - step_id: coordinate_steps
+        instruction: "Use our signal for a few slow steps together."
+        parent_prompt: "Walk forwards beside each other and stop between signals."
+      - step_id: improve_signal
+        instruction: "Choose how to make our next shared step easier."
+        parent_prompt: "Try a smaller step or a longer pause, not a greater distance."
+    ending: "Pause together and let the adult take the ball."
+  "11-12":
+    challenge: "Plan and adapt a short cooperative carry."
+    steps:
+      - step_id: plan_carry
+        instruction: "Agree nearby start and finish positions and a shared pace."
+        parent_prompt: "The adult checks the short route and comfortable shared support."
+      - step_id: try_carry
+        instruction: "Guide us through a few slow steps with the ball."
+        parent_prompt: "Use agreed signals and remain beside each other."
+      - step_id: adapt_carry
+        instruction: "Change the signals or step size to improve coordination."
+        parent_prompt: "Try the adjustment within the same checked area; success is not scored."
+    ending: "Let the adult take the ball and describe one helpful adjustment."
+adaptations:
+  simplify:
+    - "Support the ball together while staying still."
+  extend:
+    - "Swap who gives the stepping signals for another short carry."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Do not lift the ball overhead or add racing, balancing tricks or body contact."
+  - "If the ball drops, stop rather than chasing; the adult retrieves it when appropriate."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

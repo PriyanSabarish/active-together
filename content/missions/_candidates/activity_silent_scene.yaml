@@ -1,0 +1,127 @@
+# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+templates:
+  - template_id: activity_silent_scene
+    title: "Silent Scene"
+    category: any
+    duration_bucket: 60
+    weather_tags: [any]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: imagine
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Beside me, pretend to brush your hair with empty hands."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Watch me copy your gentle brushing movement."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Choose another grooming gesture and help me guess it."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Pretend to put on an imaginary hat."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Show a different hat shape and let me copy."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Choose one of our pretend actions."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Show its clearest gesture and reveal your choice."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Choose a familiar everyday action to mime beside your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Perform it using small gestures and no real props."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Reveal the action and discuss which gesture made it clear."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Choose two familiar actions that can follow each other."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Mime the pair and explain the order to your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Let your adult suggest a different imaginary object."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Adapt the mime and compare how the gestures change."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Choose a familiar everyday task with a clear beginning and ending."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Mime its sequence using comfortable gestures and no real props."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Ask your adult to describe it and identify an unclear gesture."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Refine that gesture while keeping the same task."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Perform the revised scene and compare the interpretations."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Create a shorter mime preserving the task's essential actions."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Test the shorter version and explain which gestures were necessary."
+            verify_mode: self
+            prompt_id: null
+            variable: true

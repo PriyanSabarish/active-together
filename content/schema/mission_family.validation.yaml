@@ -1,0 +1,82 @@
+# Executable companion to Priyan's descriptive mission_template.schema.yaml.
+# Adds no fields to the family or Step contract.
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Mission template family validation
+type: object
+additionalProperties: false
+required: [template_id, title, category, duration_bucket, weather_tags, site_requirements, equipment, mechanic, bands, safety_tags, review]
+properties:
+  template_id: { $ref: '#/$defs/id' }
+  title: { $ref: '#/$defs/text' }
+  category:
+    enum: [any, court, park_and_garden, picnic_day_use, playground, skate_bmx, sports_ground, trail_access]
+  duration_bucket: { type: integer, enum: [20, 40, 60] }
+  weather_tags:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items: { enum: [any, dry, wet, windy, hot, cold, overcast] }
+  site_requirements:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items: { enum: [bare_site, grass, trees, path, open_space, play_equipment, water_adjacent, seating] }
+  equipment:
+    type: array
+    uniqueItems: true
+    items: { enum: [bicycle, helmet, ball, chalk, water bottle] }
+  mechanic: { enum: [find, move, count, imagine, sequence] }
+  safety_tags:
+    const: [inherited]
+  bands:
+    type: object
+    minProperties: 1
+    propertyNames: { enum: ['5-7', '8-10', '11-12'] }
+    additionalProperties:
+      type: object
+      additionalProperties: false
+      required: [title, steps]
+      properties:
+        title:
+          anyOf:
+            - { $ref: '#/$defs/text' }
+            - { type: 'null' }
+        steps:
+          type: array
+          minItems: 3
+          maxItems: 7
+          items: { $ref: '#/$defs/step' }
+  review:
+    type: object
+    additionalProperties: false
+    required: [author, reviewed_by, status]
+    properties:
+      author: { $ref: '#/$defs/text' }
+      reviewed_by:
+        anyOf:
+          - { $ref: '#/$defs/text' }
+          - { type: 'null' }
+      status: { enum: [draft, reviewed] }
+$defs:
+  text: { type: string, minLength: 1, pattern: '\S' }
+  id: { type: string, pattern: '^[a-z][a-z0-9]*(_[a-z0-9]+)*$' }
+  step:
+    type: object
+    additionalProperties: false
+    required: [sequence, prompt_text, verify_mode, prompt_id, variable]
+    properties:
+      sequence: { type: integer, minimum: 1, maximum: 7 }
+      prompt_text: { $ref: '#/$defs/text' }
+      verify_mode: { enum: [photo, self] }
+      prompt_id:
+        anyOf:
+          - { $ref: '#/$defs/id' }
+          - { type: 'null' }
+      variable: { const: true }
+    allOf:
+      - if:
+          properties: { verify_mode: { const: photo } }
+        then:
+          properties: { prompt_id: { $ref: '#/$defs/id' } }
+        else:
+          properties: { prompt_id: { type: 'null' } }

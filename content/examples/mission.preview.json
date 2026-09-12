@@ -1,0 +1,48 @@
+{
+  "contract_version": "1.0.0",
+  "mode": "development_preview",
+  "duration_basis": "backend_step_count_contract_not_measured",
+  "preference_binding_status": "unbound",
+  "warnings": [],
+  "mission": {
+    "mission_id": "preview_activity_colour_hunt_5-7_20",
+    "template_id": "activity_colour_hunt",
+    "title": "Colour Hunt",
+    "age_band": "5-7",
+    "estimated_minutes": 20,
+    "equipment": [],
+    "steps": [
+      {
+        "sequence": 1,
+        "prompt_text": "Beside me, point to a colour you can see.",
+        "verify_mode": "self",
+        "prompt_id": null
+      },
+      {
+        "sequence": 2,
+        "prompt_text": "Point to another colour from the same spot.",
+        "verify_mode": "self",
+        "prompt_id": null
+      },
+      {
+        "sequence": 3,
+        "prompt_text": "Choose a visible colour and help me find it.",
+        "verify_mode": "self",
+        "prompt_id": null
+      }
+    ]
+  },
+  "content_binding": {
+    "template_id": "activity_colour_hunt",
+    "source_activity_id": "colour_hunt",
+    "activity_type": "exploration_play",
+    "eligible_place_categories": [
+      "park_and_garden",
+      "picnic_day_use",
+      "playground",
+      "trail_access"
+    ],
+    "preference_codes": [],
+    "parent_briefing": "Observe from an adult-checked area. Point without handling objects; choose only visible colours. Change the colour or use shapes if needed. Stay together; stop or skip freely."
+  }
+}

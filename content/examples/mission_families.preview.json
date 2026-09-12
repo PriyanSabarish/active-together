@@ -1,0 +1,3620 @@
+{
+  "contract_version": "1.0.0",
+  "mode": "development_preview",
+  "duration_basis": "backend_step_count_contract_not_measured",
+  "preference_binding_status": "unbound",
+  "warnings": [],
+  "templates": [
+    {
+      "template_id": "activity_balance_shapes",
+      "title": "Balance Shapes",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, plant both feet and stretch your arms gently.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Make a small star shape with both feet grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose your favourite grounded shape and show it again.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change only your arms to make a new shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Copy my arm shape, then lower your arms comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Make your favourite shape a little smaller.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Show me your smaller shape with both feet grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose two grounded body shapes beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Move slowly between them while keeping both feet grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Repeat your preferred transition and explain what feels comfortable.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change one arm position in your first shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare both versions, then settle into a comfortable stance.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult suggest a smaller arm movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try the adjustment and describe how the transition changes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Plan three comfortable shapes with both feet continuously grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Test slow transitions without twisting your knees or reaching far.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Select the clearest transition and demonstrate it to your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change one arm position to simplify that transition.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare the original and revised movements while staying grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a shorter sequence using the most comfortable shapes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach your sequence and explain one choice that improved control.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_choose_your_route",
+      "title": "Choose Your Route",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "sequence",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "With me, choose a nearby spot in our checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Walk slowly beside me to that spot.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose another checked spot and walk there together.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Pick a nearby stopping spot we can both reach easily.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Walk there beside me and settle both feet.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose the shortest checked walk we have tried.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Walk it together and point to where we started.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose two nearby stopping positions your adult has checked.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Walk forwards together through your chosen positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Explain your route and walk together to a comfortable stopping place.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Reverse the visiting order without walking backwards.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Try that order together and compare the two routes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult choose a shorter route in the checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Follow it together and describe which stop was removed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Plan a short route using three nearby adult-checked positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Explain the visiting order and walk it beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Identify one unnecessary movement and finish at a checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Revise the visiting order to make the route simpler.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Test the revision together and explain the difference.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a second route using fewer stopping positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Walk the shorter route and compare how easily it can be explained.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_colour_hunt",
+      "title": "Colour Hunt",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "find",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, point to a colour you can see.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Point to another colour from the same spot.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose a visible colour and help me find it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Point to two things sharing a colour.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Show me one colour difference between them.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a colour clue for something nearby.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Reveal your choice and compare our colour descriptions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Find two visible colours beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Describe one difference between your two choices.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Give your adult a colour clue, then reveal your choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Find two examples of a similar shade.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare the examples and explain what makes them similar.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult choose a different colour clue.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Solve the clue together and describe the colour you found.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a rule for comparing colours visible beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Find two examples that fit your comparison rule.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Teach your rule, then compare your adult's choice with yours.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change the rule to explore a different colour relationship.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Apply the new rule and explain how the results differ.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Create a short colour clue using your preferred rule.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test the clue with your adult and explain any ambiguity.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_follow_the_leader",
+      "title": "Follow the Leader",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "In our checked space, copy my slow marching steps.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Copy my small arm circles while staying still.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose a gentle movement for me to copy.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Copy my march followed by one arm circle.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Lead those two movements, then return to standing.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a smaller version of one movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach me your smaller movement, then stand comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside your adult, copy a gentle two-movement pattern.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Repeat the pattern with a pause between movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead your own two-movement pattern, then return to standing.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change the order of your two movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Teach the changed pattern and finish standing comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult change one part of the pattern.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Notice the change and copy the new pattern gently.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Plan a short grounded movement pattern in your adult-checked space.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Teach your adult the pattern using clear movement cues.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Try your adult's suggested adjustment, then return to standing.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change one transition to make the pattern easier to follow.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Test both versions together and describe the clearer transition.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a simpler version with fewer movement changes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach the simpler version and compare how it feels.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_imaginary_delivery",
+      "title": "Imaginary Delivery",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "imagine",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, pretend your empty hands hold a tiny parcel.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Show me how you would hold it gently.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Pretend to give it to me and describe its contents.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Imagine another parcel with a different shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Show its shape and pretend to hand it over.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a funny imaginary parcel for me to copy.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Demonstrate its delivery and compare our pretend parcels.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Invent a parcel and a nearby destination your adult checks.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Walk beside your adult while pretending to carry the parcel.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Mime handing it over and explain what made it unusual.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Imagine its contents change without adding any real weight.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Demonstrate the changed delivery while staying in the checked space.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult suggest a new imaginary recipient.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Mime a delivery to that pretend recipient and explain your choices.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Invent a parcel with one unusual imaginary handling requirement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Plan a short delivery within positions your adult has checked.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Perform it beside your adult and explain the handling choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change the imaginary requirement without adding real obstacles or weight.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Adapt your delivery and compare it with the first version.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Ask your adult to suggest a different pretend purpose.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Perform a revised handover and explain how the purpose changed it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_invisible_orchestra",
+      "title": "Invisible Orchestra",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "imagine",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, pretend to play a tiny silent drum.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Copy my slow pretend drumming without touching anything.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead your own silent rhythm and finish with hands still.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Pretend to play a different silent instrument.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Show its gentle movements and let me guess.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a hand movement that means finish.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Conduct my silent playing and end with our chosen movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose an imaginary instrument to play silently beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Show a short gentle playing pattern without touching anything.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Let your adult copy it and identify one clear movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Agree a small conducting gesture for longer pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Conduct your adult's silent pattern and compare the pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Swap imaginary instruments while keeping movements comfortable.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Perform the changed pattern and explain how the gestures differ.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Invent a silent instrument with a distinctive comfortable playing gesture.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Teach your adult a short pattern using that gesture.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Compare your interpretations and refine one unclear movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Define conducting gestures for starting, pausing and finishing.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Conduct a complete silent phrase using your agreed gestures.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Change the instrument while retaining the same conducting rules.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Perform the new phrase and explain what remained consistent.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_listen_and_point",
+      "title": "Listen and Point",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "find",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, listen with your eyes open for one sound.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Point towards the sound while staying beside me.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Describe the sound or copy its rhythm softly.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Listen as I make a soft finger tap.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Point towards my hand and copy the tapping rhythm.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose one quiet tapping rhythm for me.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Tap it softly and compare our rhythms.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Listen beside your adult with your eyes open.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Describe two features of one sound without moving towards it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Compare your description with your adult's observation.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Listen to two soft tapping patterns your adult makes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Identify one difference and reproduce your preferred pattern quietly.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Make a quiet pattern with a deliberate pause.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Ask your adult to describe the pause and compare your answers.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a sound to describe while staying beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Separate what you heard from guesses about its source.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Compare observations and identify one detail you both heard.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Ask your adult for two quiet tapping patterns.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Define a rhythm rule that distinguishes the patterns.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Make a third soft pattern following your rule.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test your adult's interpretation and explain any ambiguity.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_notice_the_change",
+      "title": "Notice the Change",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "find",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Facing me, look at my comfortable hand shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Watch me change one finger position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Point to the change and show the original shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose a hand shape for me to watch.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Change one finger and help me find the difference.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Copy my hand shape with your own hand.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Change one part and describe our different shapes.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Observe two comfortable hand positions shown by your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Watch one position change while the other stays the same.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Identify the change and explain what stayed unchanged.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Show your adult a two-part hand pose.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Change one part and compare your adult's observation with yours.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a smaller visible change in the same pose.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Reveal the change and explain which detail helped identify it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose two visible features of your adult's comfortable hand pose.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Observe a change and distinguish it from the unchanged feature.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Explain the evidence for your answer and recreate the original pose.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Design a pose with one easily described variable.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Change that variable and test whether your adult identifies it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Make the change subtler without concealing your hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Compare the observations and explain which description was most precise.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_opposite_actions",
+      "title": "Opposite Actions",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, agree that low arms answer high arms.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Watch my high arms and hold yours low.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Show me low arms and check my high-arm answer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Agree that narrow arms answer comfortably wide arms.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Take turns showing one position and answering its opposite.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose your favourite opposite pair.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Use that pair once each, then lower your arms.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Agree two opposite arm pairs with your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Respond to one demonstrated position using its agreed opposite.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead a position and explain your adult's opposite response.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Combine two slow demonstrations with a pause between them.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Answer the sequence and identify the opposite pair used each time.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Change one pair while leaving the other unchanged.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test the new rule together without speeding up.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Define two clear opposite arm pairs beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Test each pair and identify any ambiguous position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Refine the unclear definition and demonstrate the revised pair.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Build a short sequence using your agreed pairs and pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Have your adult answer it and discuss any unclear cues.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Change one rule while preserving the other agreed pair.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Explain the change and test both rules at a comfortable pace.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_partner_ball_carry",
+      "title": "Partner Ball Carry",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, help support our soft ball comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Take one tiny forward step with me.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Pause together and let me hold the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose a word that means one gentle step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Support the ball, try our step, then release it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a word that means pause.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try one shared step and pause with me holding it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Support a soft ball beside your adult in the checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Agree a cue and take one small forward step together.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Pause and let your adult hold the ball while discussing coordination.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose a clearer cue or a smaller step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Test the adjustment together and finish with the adult holding it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Swap who gives the cue for another small shared step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try it once and explain which cue was easier to follow.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Plan a short shared carry beside your adult in the checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Use agreed cues while the adult supports most of the ball's weight.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Pause, let the adult hold it and evaluate one coordination choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change either your cue or your step size, not both.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Test the change over a short carry and release to the adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a simpler cue sequence for the same short movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try it together and explain the improvement with the ball held.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_pass_and_move",
+      "title": "Pass and Move",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Face me in our checked space with our soft ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Roll the ball gently towards my waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Stop my gentle return roll and hold the ball still.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Let me hold the ball while we move slightly closer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Roll once each from here and stop the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose our closer position or our first checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Roll once each there and finish holding the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Face your adult with a soft ball in the checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Roll it gently towards their waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Receive the return roll and describe what helped you stop it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "While the adult holds the ball, agree slightly closer positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Move together, roll once each and compare the shorter distance.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose one gentle rolling adjustment without increasing force.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try the adjustment together and finish with the ball stopped.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Agree comfortable rolling positions in an adult-checked level area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Roll a soft ball to your adult and receive the return.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Identify one adjustment that made the exchange easier to control.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Pause with the ball held and agree a shorter rolling distance.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Move together, test the exchange and compare control at both distances.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose a simple cue for when the receiver is ready.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test the cue over another exchange and finish holding the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_rhythm_steps",
+      "title": "Rhythm Steps",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "sequence",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, march gently to my slow counting.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Pause your feet when my counting pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose a slow count and lead our gentle marching.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Copy two gentle steps followed by a pause.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Lead that short rhythm and finish with feet still.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Make a different rhythm using slow steps and pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach me your rhythm and finish standing comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "March on the spot to your adult's slow spoken rhythm.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Repeat it with a clear pause between groups of steps.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead a short rhythm of your own, then stand still.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change where the pause falls without increasing speed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Try both rhythms and describe how their pauses differ.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult copy a rhythm you speak.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Adjust one unclear cue and try the rhythm together.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Design a gentle stepping rhythm with two different pause positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Teach the rhythm using spoken cues beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Test the cues together and finish with a deliberate pause.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Keep the pace slow while changing one part of the pattern.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare how the changed pause affects coordination.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Create a simpler spoken version of your preferred rhythm.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach that version and explain which cue became clearer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_robot_instructions",
+      "title": "Robot Instructions",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "sequence",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, pretend to be a robot moving one arm.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Follow my slow arm-up command gently.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Give me an arm-down command and check my robot response.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose two comfortable robot arm commands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Lead those commands and finish with arms comfortably lowered.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Change one command to make a smaller movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach me the smaller movement and try it together.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Agree three gentle robot arm commands with your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Follow a short command sequence while keeping your feet grounded.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead your own sequence and check whether each command was clear.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose one command that could mean two different movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Replace it with clearer words and test the revised instruction.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Ask your adult to reorder two agreed commands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Follow the new sequence and describe what changed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Define three precise commands for comfortable grounded robot movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Say each command aloud in the order you want it performed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Test it with your adult and identify one ambiguous instruction.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Revise that instruction without adding a new movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Run the revised sequence and compare how clearly it works.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a shorter command sequence with the same final arm position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test your shorter sequence and explain which command was unnecessary.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_roll_to_target",
+      "title": "Roll to Target",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Face me with our soft ball in the checked space.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Roll gently towards my waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Watch me stop it and describe where it rolled.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Let me return the ball to your waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Roll towards my hands again using a gentler push.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose the gentle push you found easiest.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Roll once more and let me stop the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Aim our soft ball towards your adult's stationary waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Roll gently and observe where the adult stops the ball.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Describe one change that could make your next roll easier.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Try that change from the same checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare the two rolls without scoring or increasing force.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Ask your adult to move their hands slightly closer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Try the shorter roll and explain how your push changed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a gentle rolling approach towards your adult's waiting hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Test it with a soft ball in the checked level area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Explain the difference between your intended and observed roll.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Adjust one part of your rolling action without increasing force.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Test the adjustment and compare its effect on direction.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Ask your adult to set their waiting hands slightly closer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Adapt your push for the shorter roll and explain the adjustment.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_silent_scene",
+      "title": "Silent Scene",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "imagine",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, pretend to brush your hair with empty hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Watch me copy your gentle brushing movement.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Choose another grooming gesture and help me guess it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Pretend to put on an imaginary hat.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Show a different hat shape and let me copy.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose one of our pretend actions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Show its clearest gesture and reveal your choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a familiar everyday action to mime beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Perform it using small gestures and no real props.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Reveal the action and discuss which gesture made it clear.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose two familiar actions that can follow each other.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Mime the pair and explain the order to your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult suggest a different imaginary object.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Adapt the mime and compare how the gestures change.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a familiar everyday task with a clear beginning and ending.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Mime its sequence using comfortable gestures and no real props.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Ask your adult to describe it and identify an unclear gesture.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Refine that gesture while keeping the same task.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Perform the revised scene and compare the interpretations.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Create a shorter mime preserving the task's essential actions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test the shorter version and explain which gestures were necessary.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_sort_and_step",
+      "title": "Sort and Step",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "count",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, name an animal and a vehicle.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Show low hands for animals, high hands for vehicles.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Sort my two spoken names using those hand positions.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Give me an animal name for low hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Give me a vehicle name and check my high hands.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose which group means one gentle marching step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Sort two spoken names using our chosen movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose four familiar spoken names with your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Agree two groups and a comfortable hand position for each.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Sort the four names and explain one choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose a different grouping rule for the same names.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Sort them again and compare where one name belongs.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Assign one gentle on-the-spot movement to each group.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Take turns sorting spoken names with the agreed movements.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose four familiar spoken objects and define two clear groups.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Assign a comfortable hand position to each group.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Classify the objects and explain one borderline choice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change the grouping rule without changing the four objects.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Classify them again and explain which assignments changed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Define a simple grounded movement for each revised group.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Test your adult's classifications and clarify one ambiguous rule.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_step_and_pause",
+      "title": "Step and Pause",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "dry"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "move",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, agree that go means one gentle forward step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Take one small step when I say go.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Pause on our stop word and settle both feet.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Choose when to say go for our next small step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Say stop and check that we are standing comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Use a quiet voice for our agreed words.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Guide one gentle step and a comfortable pause.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Agree clear start and pause words with your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Use them for two small forward steps with pauses.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Lead the same short sequence and finish standing comfortably.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change the length of the pause, not the stepping speed.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Try both pause lengths and choose the easier one.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Let your adult give the cues in a softer voice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Explain whether the cues stayed clear and repeat one gentle step.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Plan clear cues for a few small steps in your checked area.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Test the cues beside your adult without increasing pace.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Refine one unclear cue and finish in a comfortable stance.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Change only the pause spacing in your short sequence.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare both versions and identify which is easier to follow.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Design a simpler cue sequence for the same checked space.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Teach it to your adult and explain the simplification.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "template_id": "activity_viewpoint_switch",
+      "title": "Viewpoint Switch",
+      "category": "any",
+      "duration_bucket": 60,
+      "weather_tags": [
+        "any"
+      ],
+      "site_requirements": [
+        "bare_site",
+        "open_space"
+      ],
+      "equipment": [],
+      "mechanic": "find",
+      "safety_tags": [
+        "inherited"
+      ],
+      "review": {
+        "author": "Jiabin",
+        "reviewed_by": null,
+        "status": "draft"
+      },
+      "bands": {
+        "5-7": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Beside me, choose something we can see without touching.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Point to one shape you notice.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Describe that shape to me from our standing spot.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Walk with me to another nearby checked standing spot.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Look again and tell me what seems different.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose which checked spot gave your clearest view.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Return there together and point out your chosen shape.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "8-10": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Choose a visible feature beside your adult without touching it.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Describe its outline from your current checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Compare your description with your adult's view from beside you.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Walk together to a second nearby checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Identify one changed detail and one detail that stayed the same.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose which position best shows your selected detail.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Return there together and explain why the detail is clearer.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        },
+        "11-12": {
+          "title": null,
+          "steps": [
+            {
+              "sequence": 1,
+              "prompt_text": "Predict how a visible feature might look from another checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 2,
+              "prompt_text": "Describe its current outline while standing beside your adult.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 3,
+              "prompt_text": "Explain which part of your prediction can be compared visually.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 4,
+              "prompt_text": "Walk forwards together to the second nearby checked position.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 5,
+              "prompt_text": "Compare the new view with your prediction and explain a difference.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 6,
+              "prompt_text": "Choose the viewpoint that best supports one specific observation.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            },
+            {
+              "sequence": 7,
+              "prompt_text": "Return together and explain what the comparison cannot establish.",
+              "verify_mode": "self",
+              "prompt_id": null,
+              "variable": true
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "content_bindings": [
+    {
+      "template_id": "activity_balance_shapes",
+      "source_activity_id": "balance_shapes",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Adult checks a clear level standing area. Keep both feet grounded, knees comfortable and arms clear of others. No raised surfaces, one-leg challenges or eyes-closed balancing. Stay beside the adult and pause freely."
+    },
+    {
+      "template_id": "activity_choose_your_route",
+      "source_activity_id": "choose_your_route",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Adult confirms each nearby position in a small clear level area before walking. Walk forward together, never send the child ahead. No roads, obstacles, supplied markers or named facilities are needed. Any route can be shortened or skipped."
+    },
+    {
+      "template_id": "activity_colour_hunt",
+      "source_activity_id": "colour_hunt",
+      "activity_type": "exploration_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "trail_access"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Observe from an adult-checked area. Point without handling objects; choose only visible colours. Change the colour or use shapes if needed. Stay together; stop or skip freely."
+    },
+    {
+      "template_id": "activity_follow_the_leader",
+      "source_activity_id": "follow_the_leader",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "An adult checks clear, level space away from traffic and moving equipment. Stay together with room between bodies. Use gentle grounded movements; avoid speed, jumping and body contact. Stop or simplify freely."
+    },
+    {
+      "template_id": "activity_imaginary_delivery",
+      "source_activity_id": "imaginary_delivery",
+      "activity_type": "imaginative_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Everything carried and delivered is imaginary. Adult checks any nearby standing positions and walks beside the child. No real parcels, obstacles, strangers or distant destinations. Stay in the same small checked space."
+    },
+    {
+      "template_id": "activity_invisible_orchestra",
+      "source_activity_id": "invisible_orchestra",
+      "activity_type": "imaginative_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Use silent imaginary instruments only. Keep gestures small and feet grounded, with adult-checked arm clearance. Never strike real objects or other people. Stop or simplify freely."
+    },
+    {
+      "template_id": "activity_listen_and_point",
+      "source_activity_id": "listen_and_point",
+      "activity_type": "exploration_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "trail_access"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Stay beside the adult with eyes open and listen from the same checked spot. Never follow sounds. Adult may make a soft finger tap if no useful sound is available. No loud noises or approaching unknown sources."
+    },
+    {
+      "template_id": "activity_notice_the_change",
+      "source_activity_id": "notice_the_change",
+      "activity_type": "exploration_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "trail_access"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Remain facing the adult with eyes open; the child always stays visible. Use comfortable arm or hand poses, never hide or move around structures. Observe without touching."
+    },
+    {
+      "template_id": "activity_opposite_actions",
+      "source_activity_id": "opposite_actions",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Use agreed opposite arm positions, not ambiguous travel directions. Adult checks arm clearance. Keep feet grounded and movements comfortable. No rapid commands or scoring."
+    },
+    {
+      "template_id": "activity_partner_ball_carry",
+      "source_activity_id": "partner_ball_carry",
+      "activity_type": "ball_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Family supplies a soft ball large enough for shared support. Adult supports most of its weight. Adult checks a short clear level forward route; remain side by side with no gripping each other. Child may release the ball or pause freely. Stop if dropped; adult retrieves it."
+    },
+    {
+      "template_id": "activity_pass_and_move",
+      "source_activity_id": "pass_and_move",
+      "activity_type": "ball_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Family supplies a soft ball. Adult checks a clear level rolling area away from traffic and other users. Roll only, stop before changing positions, and walk forward together to nearby positions. Adult retrieves a stray ball; no chasing, throwing or kicking."
+    },
+    {
+      "template_id": "activity_rhythm_steps",
+      "source_activity_id": "rhythm_steps",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Adult checks clear level space. Use gentle marching on the spot and spoken rhythms, never speed or loud sounds. Both remain beside each other and can stop or simplify at any point."
+    },
+    {
+      "template_id": "activity_robot_instructions",
+      "source_activity_id": "robot_instructions",
+      "activity_type": "imaginative_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Pretend robot movements are gentle and grounded in an adult-checked space. No real machines, speed, backward travel or obstacles. Either person may ignore a command and stop; unclear commands are discussed rather than obeyed."
+    },
+    {
+      "template_id": "activity_roll_to_target",
+      "source_activity_id": "roll_to_target",
+      "activity_type": "ball_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "This migration replaces the cloth target with the adult's stationary waiting hands. Family supplies a soft ball. Adult checks a clear level rolling space and stops the ball. No other targets, throwing, kicking or chasing; adult retrieves any stray ball."
+    },
+    {
+      "template_id": "activity_silent_scene",
+      "source_activity_id": "silent_scene",
+      "activity_type": "imaginative_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Mime familiar everyday actions beside the adult in checked standing space. All objects are imaginary; use small gestures without travel, body contact or loud sounds. No dangerous action scenarios."
+    },
+    {
+      "template_id": "activity_sort_and_step",
+      "source_activity_id": "sort_and_step",
+      "activity_type": "exploration_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "trail_access"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "This migration replaces supplied picture cards with spoken familiar object names, so equipment is empty. Adult checks standing space. Use comfortable hand positions; any marching stays on the spot. No collecting, labels on the ground or real props."
+    },
+    {
+      "template_id": "activity_step_and_pause",
+      "source_activity_id": "step_and_pause",
+      "activity_type": "movement_play",
+      "eligible_place_categories": [
+        "court",
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "sports_ground"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Adult checks a small level area and agrees start and pause words. Take small forward steps together, never race or make sudden stops. Pause words always override movement cues."
+    },
+    {
+      "template_id": "activity_viewpoint_switch",
+      "source_activity_id": "viewpoint_switch",
+      "activity_type": "exploration_play",
+      "eligible_place_categories": [
+        "park_and_garden",
+        "picnic_day_use",
+        "playground",
+        "trail_access"
+      ],
+      "preference_codes": [],
+      "parent_briefing": "Adult checks two nearby standing positions before any move. Choose an existing visible feature without touching it. Walk forwards together between positions, eyes open. Do not assume a named object or facility exists."
+    }
+  ]
+}

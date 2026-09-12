@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: opposite_actions
+version: 1
+title: "Opposite Actions"
+summary: "Use agreed pairs of gentle actions to respond with the opposite movement."
+activity_type: movement_play
+core_mechanic: control
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks clear space for small arm movements while both feet stay grounded."
+setup:
+  - "Agree a simple pair such as arms apart and arms close."
+  - "Demonstrate both actions before trying the opposite rule."
+  - "Allow a demonstration, a pause or a skipped turn whenever wanted."
+age_variants:
+  "5-7":
+    challenge: "Respond with the other action from one familiar pair."
+    steps:
+      - step_id: learn_pair
+        instruction: "Show arms apart, then bring them close."
+        parent_prompt: "Demonstrate within a comfortable range with both feet grounded."
+      - step_id: try_opposite
+        instruction: "When my arms open, bring yours close."
+        parent_prompt: "Show the expected response slowly; this is not a speed test."
+      - step_id: swap_turns
+        instruction: "Choose one arm position for me to answer."
+        parent_prompt: "Respond with the other agreed position."
+    ending: "Show both agreed positions together and finish."
+  "8-10":
+    challenge: "Apply the opposite rule while taking turns choosing actions."
+    steps:
+      - step_id: agree_pair
+        instruction: "Choose two different gentle arm positions for our pair."
+        parent_prompt: "Use positions that fit the space and feel comfortable."
+      - step_id: answer_partner
+        instruction: "Show the other position when I show one."
+        parent_prompt: "Pause to think or ask for the pair to be demonstrated again."
+      - step_id: lead_rule
+        instruction: "Lead three turns using either position from our pair."
+        parent_prompt: "Keep each turn separate with time for the partner to respond."
+    ending: "Relax your arms and explain the pair you used."
+  "11-12":
+    challenge: "Explain and adapt an opposite-action rule for a partner."
+    steps:
+      - step_id: design_pairs
+        instruction: "Choose two pairs of comfortable hand or arm positions."
+        parent_prompt: "Demonstrate the pairs with the adult before adding a rule."
+      - step_id: name_pair
+        instruction: "Name a pair, show one position and ask for its opposite."
+        parent_prompt: "Keep the pair named aloud so the partner need not guess which rule applies."
+      - step_id: simplify_rule
+        instruction: "Change the rule if it is difficult to follow."
+        parent_prompt: "Use one pair or a demonstration rather than adding speed."
+    ending: "Try the agreed simpler rule once, then finish."
+adaptations:
+  simplify:
+    - "Use one pair and demonstrate the response on every turn."
+  extend:
+    - "Swap who chooses the agreed pair for another round."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Keep both feet on the ground and use comfortable arm or hand positions."
+  - "Do not introduce punishment, elimination or timed responses."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

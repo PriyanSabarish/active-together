@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: roll_to_target
+version: 1
+title: "Roll to Target"
+summary: "Roll a soft ball towards a family-supplied target and adjust direction or distance."
+activity_type: ball_play
+core_mechanic: aim
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: ["A soft ball suitable for rolling.","A large cloth target placed flat by the adult, outside walking routes."]
+  optional: []
+requirements:
+  - "An adult checks a level rolling area where a ball cannot enter traffic or active play."
+  - "The cloth can lie flat and all walking remains clear of it."
+setup:
+  - "Place the cloth at a short comfortable rolling distance."
+  - "Agree to roll along the ground and wait for the ball to stop."
+  - "The child waits if the ball leaves the checked area; the game can pause or stop."
+age_variants:
+  "5-7":
+    challenge: "Roll towards a clear nearby target and try again from the same place."
+    steps:
+      - step_id: notice_target
+        instruction: "Point to our cloth target."
+        parent_prompt: "Confirm that the target is family-supplied and lies away from feet."
+      - step_id: try_roll
+        instruction: "Roll the ball gently towards the cloth."
+        parent_prompt: "Demonstrate from nearby without requiring the ball to hit the target."
+      - step_id: try_again
+        instruction: "Choose whether to try again or move closer with me."
+        parent_prompt: "Hold the stopped ball before repositioning."
+    ending: "Stop the ball and collect the supplied equipment with the adult."
+  "8-10":
+    challenge: "Compare two rolling directions and choose an adjustment."
+    steps:
+      - step_id: first_roll
+        instruction: "Try one gentle roll towards the cloth."
+        parent_prompt: "Wait for the ball to stop; do not chase it."
+      - step_id: choose_adjustment
+        instruction: "Choose how to change your next rolling direction."
+        parent_prompt: "Discuss the result without counting hits or misses."
+      - step_id: test_adjustment
+        instruction: "Try your adjustment from the same position."
+        parent_prompt: "Use the same gentle force and a short comfortable distance."
+    ending: "Stop the ball and explain what you adjusted."
+  "11-12":
+    challenge: "Plan and compare a direction or distance adjustment."
+    steps:
+      - step_id: plan_roll
+        instruction: "Choose a nearby rolling position and explain your aim."
+        parent_prompt: "The adult checks that the entire roll remains in the agreed area."
+      - step_id: observe_roll
+        instruction: "Try a gentle roll and describe where it stopped."
+        parent_prompt: "Retrieve only after the ball stops and remain clear of the cloth."
+      - step_id: revise_plan
+        instruction: "Change direction or distance and compare your next roll."
+        parent_prompt: "Hold the ball while repositioning and avoid speed or accuracy scoring."
+    ending: "Stop the ball, name one observation and collect the equipment."
+adaptations:
+  simplify:
+    - "Move closer to the cloth with the stopped ball held."
+  extend:
+    - "Take another planning turn with the same target inside the checked area."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Use ground rolls only; do not add kicking, throwing, striking or scoring targets."
+  - "Do not step on the cloth or chase a ball beyond the checked area."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

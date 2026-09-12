@@ -1,0 +1,127 @@
+# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+templates:
+  - template_id: activity_rhythm_steps
+    title: "Rhythm Steps"
+    category: any
+    duration_bucket: 60
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: sequence
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Beside me, march gently to my slow counting."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Pause your feet when my counting pauses."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Choose a slow count and lead our gentle marching."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Copy two gentle steps followed by a pause."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Lead that short rhythm and finish with feet still."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Make a different rhythm using slow steps and pauses."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Teach me your rhythm and finish standing comfortably."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "March on the spot to your adult's slow spoken rhythm."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Repeat it with a clear pause between groups of steps."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Lead a short rhythm of your own, then stand still."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Change where the pause falls without increasing speed."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Try both rhythms and describe how their pauses differ."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Let your adult copy a rhythm you speak."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Adjust one unclear cue and try the rhythm together."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Design a gentle stepping rhythm with two different pause positions."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Teach the rhythm using spoken cues beside your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Test the cues together and finish with a deliberate pause."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Keep the pace slow while changing one part of the pattern."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Compare how the changed pause affects coordination."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Create a simpler spoken version of your preferred rhythm."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Teach that version and explain which cue became clearer."
+            verify_mode: self
+            prompt_id: null
+            variable: true

@@ -1,0 +1,127 @@
+# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+templates:
+  - template_id: activity_roll_to_target
+    title: "Roll to Target"
+    category: any
+    duration_bucket: 60
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: [ball]
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Face me with our soft ball in the checked space."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Roll gently towards my waiting hands."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Watch me stop it and describe where it rolled."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Let me return the ball to your waiting hands."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Roll towards my hands again using a gentler push."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Choose the gentle push you found easiest."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Roll once more and let me stop the ball."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Aim our soft ball towards your adult's stationary waiting hands."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Roll gently and observe where the adult stops the ball."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Describe one change that could make your next roll easier."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Try that change from the same checked position."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Compare the two rolls without scoring or increasing force."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Ask your adult to move their hands slightly closer."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Try the shorter roll and explain how your push changed."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Choose a gentle rolling approach towards your adult's waiting hands."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Test it with a soft ball in the checked level area."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Explain the difference between your intended and observed roll."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Adjust one part of your rolling action without increasing force."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Test the adjustment and compare its effect on direction."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Ask your adult to set their waiting hands slightly closer."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Adapt your push for the shorter roll and explain the adjustment."
+            verify_mode: self
+            prompt_id: null
+            variable: true

@@ -1,0 +1,31 @@
+# Content-side bindings, not additions to Priyan's Mission or Step API.
+$schema: https://json-schema.org/draft/2020-12/schema
+type: object
+additionalProperties: false
+required: [version, preference_binding_status, templates]
+properties:
+  version: { const: 1 }
+  preference_binding_status: { enum: [unbound, bound] }
+  templates:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [template_id, source_activity_id, activity_type, eligible_place_categories, preference_codes, parent_briefing]
+      properties:
+        template_id: { $ref: '#/$defs/id' }
+        source_activity_id: { $ref: '#/$defs/id' }
+        activity_type: { $ref: '#/$defs/id' }
+        eligible_place_categories:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: { enum: [court, park_and_garden, picnic_day_use, playground, skate_bmx, sports_ground, trail_access] }
+        preference_codes:
+          type: array
+          uniqueItems: true
+          items: { $ref: '#/$defs/id' }
+        parent_briefing: { type: string, minLength: 1, pattern: '\S' }
+$defs:
+  id: { type: string, pattern: '^[a-z][a-z0-9]*(_[a-z0-9]+)*$' }

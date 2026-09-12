@@ -1,0 +1,113 @@
+# Draft content bindings. Category lists are shortlists, not verified site suitability.
+# No client preference vocabulary was found; do not invent its codes.
+version: 1
+preference_binding_status: unbound
+templates:
+  - template_id: activity_balance_shapes
+    source_activity_id: balance_shapes
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Adult checks a clear level standing area. Keep both feet grounded, knees comfortable and arms clear of others. No raised surfaces, one-leg challenges or eyes-closed balancing. Stay beside the adult and pause freely."
+  - template_id: activity_choose_your_route
+    source_activity_id: choose_your_route
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Adult confirms each nearby position in a small clear level area before walking. Walk forward together, never send the child ahead. No roads, obstacles, supplied markers or named facilities are needed. Any route can be shortened or skipped."
+  - template_id: activity_colour_hunt
+    source_activity_id: colour_hunt
+    activity_type: exploration_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, trail_access]
+    preference_codes: []
+    parent_briefing: "Observe from an adult-checked area. Point without handling objects; choose only visible colours. Change the colour or use shapes if needed. Stay together; stop or skip freely."
+  - template_id: activity_follow_the_leader
+    source_activity_id: follow_the_leader
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "An adult checks clear, level space away from traffic and moving equipment. Stay together with room between bodies. Use gentle grounded movements; avoid speed, jumping and body contact. Stop or simplify freely."
+  - template_id: activity_imaginary_delivery
+    source_activity_id: imaginary_delivery
+    activity_type: imaginative_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Everything carried and delivered is imaginary. Adult checks any nearby standing positions and walks beside the child. No real parcels, obstacles, strangers or distant destinations. Stay in the same small checked space."
+  - template_id: activity_invisible_orchestra
+    source_activity_id: invisible_orchestra
+    activity_type: imaginative_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Use silent imaginary instruments only. Keep gestures small and feet grounded, with adult-checked arm clearance. Never strike real objects or other people. Stop or simplify freely."
+  - template_id: activity_listen_and_point
+    source_activity_id: listen_and_point
+    activity_type: exploration_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, trail_access]
+    preference_codes: []
+    parent_briefing: "Stay beside the adult with eyes open and listen from the same checked spot. Never follow sounds. Adult may make a soft finger tap if no useful sound is available. No loud noises or approaching unknown sources."
+  - template_id: activity_notice_the_change
+    source_activity_id: notice_the_change
+    activity_type: exploration_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, trail_access]
+    preference_codes: []
+    parent_briefing: "Remain facing the adult with eyes open; the child always stays visible. Use comfortable arm or hand poses, never hide or move around structures. Observe without touching."
+  - template_id: activity_opposite_actions
+    source_activity_id: opposite_actions
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Use agreed opposite arm positions, not ambiguous travel directions. Adult checks arm clearance. Keep feet grounded and movements comfortable. No rapid commands or scoring."
+  - template_id: activity_partner_ball_carry
+    source_activity_id: partner_ball_carry
+    activity_type: ball_play
+    eligible_place_categories: [court, park_and_garden, sports_ground]
+    preference_codes: []
+    parent_briefing: "Family supplies a soft ball large enough for shared support. Adult supports most of its weight. Adult checks a short clear level forward route; remain side by side with no gripping each other. Child may release the ball or pause freely. Stop if dropped; adult retrieves it."
+  - template_id: activity_pass_and_move
+    source_activity_id: pass_and_move
+    activity_type: ball_play
+    eligible_place_categories: [court, park_and_garden, sports_ground]
+    preference_codes: []
+    parent_briefing: "Family supplies a soft ball. Adult checks a clear level rolling area away from traffic and other users. Roll only, stop before changing positions, and walk forward together to nearby positions. Adult retrieves a stray ball; no chasing, throwing or kicking."
+  - template_id: activity_rhythm_steps
+    source_activity_id: rhythm_steps
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Adult checks clear level space. Use gentle marching on the spot and spoken rhythms, never speed or loud sounds. Both remain beside each other and can stop or simplify at any point."
+  - template_id: activity_robot_instructions
+    source_activity_id: robot_instructions
+    activity_type: imaginative_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Pretend robot movements are gentle and grounded in an adult-checked space. No real machines, speed, backward travel or obstacles. Either person may ignore a command and stop; unclear commands are discussed rather than obeyed."
+  - template_id: activity_roll_to_target
+    source_activity_id: roll_to_target
+    activity_type: ball_play
+    eligible_place_categories: [court, park_and_garden, sports_ground]
+    preference_codes: []
+    parent_briefing: "This migration replaces the cloth target with the adult's stationary waiting hands. Family supplies a soft ball. Adult checks a clear level rolling space and stops the ball. No other targets, throwing, kicking or chasing; adult retrieves any stray ball."
+  - template_id: activity_silent_scene
+    source_activity_id: silent_scene
+    activity_type: imaginative_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Mime familiar everyday actions beside the adult in checked standing space. All objects are imaginary; use small gestures without travel, body contact or loud sounds. No dangerous action scenarios."
+  - template_id: activity_sort_and_step
+    source_activity_id: sort_and_step
+    activity_type: exploration_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, trail_access]
+    preference_codes: []
+    parent_briefing: "This migration replaces supplied picture cards with spoken familiar object names, so equipment is empty. Adult checks standing space. Use comfortable hand positions; any marching stays on the spot. No collecting, labels on the ground or real props."
+  - template_id: activity_step_and_pause
+    source_activity_id: step_and_pause
+    activity_type: movement_play
+    eligible_place_categories: [court, park_and_garden, picnic_day_use, playground, sports_ground]
+    preference_codes: []
+    parent_briefing: "Adult checks a small level area and agrees start and pause words. Take small forward steps together, never race or make sudden stops. Pause words always override movement cues."
+  - template_id: activity_viewpoint_switch
+    source_activity_id: viewpoint_switch
+    activity_type: exploration_play
+    eligible_place_categories: [park_and_garden, picnic_day_use, playground, trail_access]
+    preference_codes: []
+    parent_briefing: "Adult checks two nearby standing positions before any move. Choose an existing visible feature without touching it. Walk forwards together between positions, eyes open. Do not assume a named object or facility exists."

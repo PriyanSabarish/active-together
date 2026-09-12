@@ -129,6 +129,14 @@ a dud, and we can always draft more.
 
 ---
 
+## Migrated activity families
+
+For the 18 `activity_*.yaml` mission families, use [the current review queue](missions/REVIEW_CHECKLIST.md)
+and `python tools/validate_mission_templates.py --preview` from `content/`.
+Approved migrated families stay one per file in `missions/reviewed/`; the category-file
+promotion workflow above applies to the older batches. The broad checker below
+dispatches migrated families to the shared new checks and still reports older-batch issues.
+
 ## Running the checker
 
 Before and after you edit:

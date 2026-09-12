@@ -1,0 +1,127 @@
+# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+templates:
+  - template_id: activity_balance_shapes
+    title: "Balance Shapes"
+    category: any
+    duration_bucket: 60
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Beside me, plant both feet and stretch your arms gently."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Make a small star shape with both feet grounded."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Choose your favourite grounded shape and show it again."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Change only your arms to make a new shape."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Copy my arm shape, then lower your arms comfortably."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Make your favourite shape a little smaller."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Show me your smaller shape with both feet grounded."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Choose two grounded body shapes beside your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Move slowly between them while keeping both feet grounded."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Repeat your preferred transition and explain what feels comfortable."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Change one arm position in your first shape."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Compare both versions, then settle into a comfortable stance."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Let your adult suggest a smaller arm movement."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Try the adjustment and describe how the transition changes."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Plan three comfortable shapes with both feet continuously grounded."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Test slow transitions without twisting your knees or reaching far."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Select the clearest transition and demonstrate it to your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Change one arm position to simplify that transition."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Compare the original and revised movements while staying grounded."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Design a shorter sequence using the most comfortable shapes."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Teach your sequence and explain one choice that improved control."
+            verify_mode: self
+            prompt_id: null
+            variable: true

@@ -1,0 +1,127 @@
+# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+templates:
+  - template_id: activity_opposite_actions
+    title: "Opposite Actions"
+    category: any
+    duration_bucket: 60
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Beside me, agree that low arms answer high arms."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Watch my high arms and hold yours low."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Show me low arms and check my high-arm answer."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Agree that narrow arms answer comfortably wide arms."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Take turns showing one position and answering its opposite."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Choose your favourite opposite pair."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Use that pair once each, then lower your arms."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Agree two opposite arm pairs with your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Respond to one demonstrated position using its agreed opposite."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Lead a position and explain your adult's opposite response."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Combine two slow demonstrations with a pause between them."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Answer the sequence and identify the opposite pair used each time."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Change one pair while leaving the other unchanged."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Test the new rule together without speeding up."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Define two clear opposite arm pairs beside your adult."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Test each pair and identify any ambiguous position."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Refine the unclear definition and demonstrate the revised pair."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Build a short sequence using your agreed pairs and pauses."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Have your adult answer it and discuss any unclear cues."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 6
+            prompt_text: "Change one rule while preserving the other agreed pair."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 7
+            prompt_text: "Explain the change and test both rules at a comfortable pace."
+            verify_mode: self
+            prompt_id: null
+            variable: true

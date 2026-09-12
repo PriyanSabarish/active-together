@@ -1,5 +1,41 @@
 # Content library
 
+## Current integration path: migrated mission families
+
+The 18 activity ideas now have mission-family drafts matching Priyan's Step fields
+and 20/40/60-minute prefix rule. Start with [the migration handoff](missions/MIGRATION.md).
+Run `python content/tools/validate_mission_templates.py --preview` from the repository root.
+This checks the migrated collection, including the actual nine safety rules.
+The original activity files and independent-duration planner below are retained
+as earlier authoring references, not a second current integration contract.
+
+## Activity library foundation v0.1
+
+For the new reusable activity library, start with [activities/README.md](activities/README.md).
+Its taxonomy, schema and 18 activity drafts are available for team review, following
+the initial 3 integration examples and 6-activity pilot.
+
+    taxonomy/      controlled activity types and proposed subtype mappings
+    activities/    one activity family per YAML file, with age variants
+    schema/activity_template.schema.yaml    activity JSON Schema, written in YAML
+    tools/inspect_location_taxonomy.py      read-only source inventory
+    tools/activity_library.py               shared loader and field checks
+    tools/validate_activity_templates.py    command-line activity checks
+    tools/export_activity_templates.py      reviewed or explicit preview JSON
+    examples/activities.preview.json        generated development sample
+
+This is a separate content contract from the existing mission format below.
+The existing mission tools do not load or validate activities/. Module 2 provides
+a loader and JSON export; the application is not connected yet. Teammates can
+start with [activities/INTEGRATION.md](activities/INTEGRATION.md).
+Module 3 adds the six-activity pilot and [human review checklist](activities/REVIEW_CHECKLIST.md).
+Human approval remains pending; all current activities are development drafts.
+Module 4 adds [coverage reporting](activities/COVERAGE.md) and separate
+[20/40/60-minute planning estimates](planning/README.md). These estimates are not
+measured or approved timings; the existing activity schema and API remain unchanged.
+
+## Existing combo and mission library
+
 Hand-reviewed source of truth for what a family is asked to do. Read this before editing anything here.
 
 ## What is in here

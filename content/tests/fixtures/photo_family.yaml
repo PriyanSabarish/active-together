@@ -1,0 +1,19 @@
+# TEST ONLY. p_red is not measured in the real vocabulary.
+# Tests supply a separate fixture vocabulary with status kept, never edit real status.
+template_id: fixture_photo_family
+title: Photo interface fixture
+category: any
+duration_bucket: 20
+weather_tags: [any]
+site_requirements: [bare_site, open_space]
+equipment: []
+mechanic: find
+safety_tags: [inherited]
+review: {author: Fixture author, reviewed_by: null, status: draft}
+bands:
+  '5-7':
+    title: null
+    steps:
+      - {sequence: 1, prompt_text: 'Beside your adult, point to something red without touching it.', verify_mode: photo, prompt_id: p_red, variable: true}
+      - {sequence: 2, prompt_text: 'Describe its colour from the same checked spot.', verify_mode: self, prompt_id: null, variable: true}
+      - {sequence: 3, prompt_text: 'Compare its colour with another visible colour.', verify_mode: self, prompt_id: null, variable: true}

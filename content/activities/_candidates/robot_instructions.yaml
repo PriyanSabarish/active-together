@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: robot_instructions
+version: 1
+title: "Robot Instructions"
+summary: "Give a pretend robot a short sequence of gentle movements and improve the instructions."
+activity_type: imaginative_play
+core_mechanic: sequence
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks clear, level space for small movements on the spot."
+setup:
+  - "Agree that the adult or child can play a pretend robot."
+  - "Choose permitted actions such as an arm movement, marching in place or resting."
+  - "A stop request overrides the pretend rules immediately."
+age_variants:
+  "5-7":
+    challenge: "Give a pretend robot one clear movement instruction."
+    steps:
+      - step_id: choose_action
+        instruction: "Tell my robot arms to open or close."
+        parent_prompt: "Demonstrate a comfortable range with both feet grounded."
+      - step_id: watch_robot
+        instruction: "Watch me try your instruction."
+        parent_prompt: "Respond slowly and ask for a demonstration if the instruction is unclear."
+      - step_id: change_role
+        instruction: "Try being the robot while I give one instruction."
+        parent_prompt: "Use only the already agreed gentle actions."
+    ending: "Give the robot a rest instruction and finish the pretend game."
+  "8-10":
+    challenge: "Plan and test a two-instruction sequence for a robot."
+    steps:
+      - step_id: plan_commands
+        instruction: "Choose two gentle robot actions in an order."
+        parent_prompt: "Confirm that both actions fit the space."
+      - step_id: run_commands
+        instruction: "Give one command at a time while I act it out."
+        parent_prompt: "Pause between commands so both people can check the sequence."
+      - step_id: repair_command
+        instruction: "Change one instruction that was hard to understand."
+        parent_prompt: "Replay the two actions slowly using the clearer wording."
+    ending: "Tell the robot to rest and describe the clearer command."
+  "11-12":
+    challenge: "Design and revise a short instruction sequence."
+    steps:
+      - step_id: design_sequence
+        instruction: "Plan three agreed robot actions and explain their order."
+        parent_prompt: "Keep every action on the spot with controlled movements."
+      - step_id: test_sequence
+        instruction: "Guide the robot through your commands one at a time."
+        parent_prompt: "Follow the instructions as understood; clarify without inventing risky actions."
+      - step_id: debug_sequence
+        instruction: "Change the order or wording to improve the sequence."
+        parent_prompt: "Try the revised plan with no speed or performance score."
+    ending: "Finish the sequence with a rest and name the improvement."
+adaptations:
+  simplify:
+    - "Use one command and show the movement at the same time."
+  extend:
+    - "Swap robot and guide for another short sequence of agreed actions."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Pretend commands cannot require contact, unsafe movement or ignoring a stop request."
+  - "Do not add travelling routes, obstacles, jumps or speed challenges."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft
