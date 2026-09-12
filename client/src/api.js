@@ -29,7 +29,8 @@ async function request(path, init = {}) {
       ...init,
       headers: { Accept: 'application/json', 'Content-Type': 'application/json', ...(init.headers ?? {}) }
     })
-  } catch {
+  } catch (error) {
+    if (error?.name === 'AbortError') throw error
     throw new ApiError('Could not reach the Active Together service. Check your connection and try again.', 0)
   }
 
@@ -67,4 +68,11 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
 export function getContext({ latitude, longitude }) {
   const qs = new URLSearchParams({ lat: String(latitude), lon: String(longitude) })
   return request(`/data/context?${qs}`)
+}
+
+// GET /locations/autocomplete?q=&limit=
+// returns Vicmap addresses restricted to the three pilot LGAs.
+export function searchAddresses(query, { signal } = {}) {
+  const qs = new URLSearchParams({ q: query, limit: '5' })
+  return request(`/locations/autocomplete?${qs}`, { signal })
 }

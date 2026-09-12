@@ -2,7 +2,7 @@
 // error mapping; supports AC-1.1.2 payload contract and AC-3.1.4 messaging).
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { postRecommendations, getContext, ApiError } from '../../client/src/api'
+import { postRecommendations, getContext, searchAddresses, ApiError } from '../../client/src/api'
 
 function jsonResponse(body, status = 200) {
   return {
@@ -38,6 +38,12 @@ describe('POST /recommendations request contract (AC-1.1.2)', () => {
     fetch.mockResolvedValue(jsonResponse({ available: true }))
     await getContext({ latitude: -37.9, longitude: 145.1 })
     expect(fetch.mock.calls[0][0]).toMatch(/\/data\/context\?lat=-37\.9&lon=145\.1$/)
+  })
+
+  it('encodes address autocomplete query parameters', async () => {
+    fetch.mockResolvedValue(jsonResponse({ suggestions: [] }))
+    await searchAddresses('1 Centre Road')
+    expect(fetch.mock.calls[0][0]).toMatch(/\/locations\/autocomplete\?q=1\+Centre\+Road&limit=5$/)
   })
 })
 

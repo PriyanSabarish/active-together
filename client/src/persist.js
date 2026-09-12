@@ -8,7 +8,7 @@ import { SUBURBS } from './store'
 
 export const STORAGE_KEY = 'at-search-v1'
 
-const PERSISTED = ['suburb', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin']
+const PERSISTED = ['suburb', 'selectedAddress', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin']
 const RADII = [3, 5, 10]
 
 function isCoords(v) {
@@ -21,6 +21,16 @@ export function sanitise(saved) {
   if (!saved || typeof saved !== 'object') return {}
   const out = {}
   if (SUBURBS.includes(saved.suburb)) out.suburb = saved.suburb
+  if (isCoords(saved.selectedAddress) && typeof saved.selectedAddress.label === 'string') {
+    out.selectedAddress = {
+      id: String(saved.selectedAddress.id ?? ''),
+      label: saved.selectedAddress.label.slice(0, 200),
+      latitude: saved.selectedAddress.latitude,
+      longitude: saved.selectedAddress.longitude,
+      suburb: String(saved.selectedAddress.suburb ?? '').slice(0, 100),
+      postcode: String(saved.selectedAddress.postcode ?? '').slice(0, 4)
+    }
+  }
   if (isCoords(saved.myLocation)) out.myLocation = { latitude: saved.myLocation.latitude, longitude: saved.myLocation.longitude }
   if (saved.useMyLocation === true && out.myLocation) out.useMyLocation = true
   if (RADII.includes(saved.radiusKm)) out.radiusKm = saved.radiusKm

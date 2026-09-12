@@ -26,21 +26,26 @@
       <input
         v-model="query"
         type="text"
-        placeholder="Enter a suburb, e.g. Carlton"
+        placeholder="Enter a street address or suburb"
         @focus="open = true"
         @input="onInput"
       />
       <button v-if="query" class="clear-btn" aria-label="Clear" @click="clearQuery">×</button>
     </div>
-    <div v-if="open && suggestions.length" class="suggest-list">
-      <button v-for="s in suggestions" :key="s" class="suggest-item" @click="pickSuburb(s)">
+    <div v-if="open && (searching || suggestions.length || searchMessage)" class="suggest-list">
+      <p v-if="searching" class="suggest-status">Searching addresses…</p>
+      <button v-for="s in suggestions" :key="s.id" class="suggest-item" @click="pickAddress(s)">
         <svg width="10" height="14" viewBox="0 0 14 20">
           <path d="M1 7 C1 3.5 3.7 1 7 1 C10.3 1 13 3.5 13 7 C13 11 7 19 7 19 C7 19 1 11 1 7 Z" fill="#B4B2A9" />
         </svg>
-        {{ s }}, VIC
+        {{ s.label }}
       </button>
+      <p v-if="!searching && searchMessage" class="suggest-status">{{ searchMessage }}</p>
     </div>
   </div>
+  <p class="address-attribution">
+    Address data © State of Victoria, <a href="https://www.land.vic.gov.au/maps-and-spatial/spatial-data/vicmap-catalogue/vicmap-address" target="_blank" rel="noopener">CC BY 4.0</a>
+  </p>
 
   <p class="recent-label">Recent</p>
   <div class="recent-chips">
@@ -71,51 +76,83 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import PlaceMap from '../components/PlaceMap.vue'
-import { useSearchStore, SUBURBS } from '../store'
+import { searchAddresses } from '../api'
+import { useSearchStore } from '../store'
 
 const store = useSearchStore()
 const router = useRouter()
 
-const query = ref(store.suburb)
+const query = ref(store.selectedAddress?.label || store.suburb)
 const open = ref(false)
 const locating = ref(false)
 const locationError = ref('')
-
-const suggestions = computed(() => {
-  const q = query.value.trim().toLowerCase()
-  if (!q) return []
-  return SUBURBS.filter((s) => s.toLowerCase().startsWith(q) && s !== query.value).slice(0, 5)
-})
+const suggestions = ref([])
+const searching = ref(false)
+const searchMessage = ref('')
+let searchTimer = null
+let searchController = null
+let searchSeq = 0
 
 const ready = computed(() => store.hasLocation)
 
-const pointLabel = computed(() =>
-  store.useMyLocation ? 'your location' : store.suburb ? store.suburb : 'your point'
-)
-
-function matchSuburb(text) {
-  const t = text.trim().toLowerCase()
-  return SUBURBS.find((s) => s.toLowerCase() === t) ?? ''
-}
+const pointLabel = computed(() => store.locationLabel)
 
 function onInput() {
   store.useMyLocation = false
-  store.suburb = matchSuburb(query.value)
+  store.suburb = ''
+  store.selectedAddress = null
+  suggestions.value = []
+  searchMessage.value = ''
   open.value = true
+  clearTimeout(searchTimer)
+  searchController?.abort()
+  searchSeq += 1
+  const text = query.value.trim()
+  if (text.length < 3) return
+  searchTimer = setTimeout(() => runAddressSearch(text), 300)
+}
+
+async function runAddressSearch(text) {
+  const seq = ++searchSeq
+  searchController = new AbortController()
+  searching.value = true
+  try {
+    const data = await searchAddresses(text, { signal: searchController.signal })
+    if (seq !== searchSeq) return
+    suggestions.value = data.suggestions ?? []
+    searchMessage.value = suggestions.value.length ? '' : 'No matching address in the pilot areas.'
+  } catch (error) {
+    if (seq === searchSeq && error?.name !== 'AbortError') searchMessage.value = 'Address search is temporarily unavailable.'
+  } finally {
+    if (seq === searchSeq) searching.value = false
+  }
 }
 
 function clearQuery() {
   query.value = ''
   store.suburb = ''
+  store.selectedAddress = null
+  suggestions.value = []
+  searchMessage.value = ''
+  searchSeq += 1
+  searchController?.abort()
 }
 
-function pickSuburb(s) {
-  query.value = s
-  store.suburb = s
+function pickAddress(address) {
+  query.value = address.label
+  store.setAddress(address)
+  locationError.value = ''
+  open.value = false
+}
+
+function pickSuburb(suburb) {
+  query.value = suburb
+  store.suburb = suburb
+  store.selectedAddress = null
   store.useMyLocation = false
   locationError.value = ''
   open.value = false
@@ -125,7 +162,7 @@ function pickMyLocation() {
   if (locating.value) return
   locationError.value = ''
   if (!('geolocation' in navigator)) {
-    locationError.value = 'Location is not available in this browser. Enter a suburb instead.'
+    locationError.value = 'Location is not available in this browser. Enter an address instead.'
     return
   }
   locating.value = true
@@ -141,12 +178,17 @@ function pickMyLocation() {
       store.useMyLocation = false
       locationError.value =
         err.code === err.PERMISSION_DENIED
-          ? 'Location permission was denied. Enter a suburb instead.'
-          : 'We could not get your location. Enter a suburb instead.'
+          ? 'Location permission was denied. Enter an address instead.'
+          : 'We could not get your location. Enter an address instead.'
     },
-    { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   )
 }
+
+onBeforeUnmount(() => {
+  clearTimeout(searchTimer)
+  searchController?.abort()
+})
 
 function next() {
   if (store.suburb) store.rememberSuburb(store.suburb)
@@ -268,6 +310,21 @@ function next() {
 }
 
 .suggest-item:hover { background: var(--paper); }
+
+.suggest-status {
+  padding: 12px 15px;
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.address-attribution {
+  margin: 6px 2px 0;
+  font-size: 9.5px;
+  color: var(--ink-5);
+}
+
+.address-attribution a { color: inherit; }
 
 .recent-label {
   font-size: 11.5px;

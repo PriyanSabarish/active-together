@@ -1,9 +1,12 @@
+import httpx
+
 from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.data.database import get_db
+from app.data.addresses import autocomplete_addresses
 from app.data.places import fetch_candidate_places
 from app.data.weather import fetch_weather_context
 from app.models import Context, Place, RecommendationRequest
@@ -48,6 +51,20 @@ async def get_context(
     lon: float = Query(..., ge=-180, le=180),
 ):
     return await fetch_weather_context(lat=lat, lon=lon)
+
+
+@app.get("/locations/autocomplete")
+async def address_autocomplete(
+    q: str = Query(..., min_length=3, max_length=100),
+    limit: int = Query(5, ge=1, le=10),
+):
+    try:
+        return {"suggestions": await autocomplete_addresses(q, limit)}
+    except (httpx.HTTPError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Address search is temporarily unavailable.",
+        )
 
 
 @app.post("/recommendations")

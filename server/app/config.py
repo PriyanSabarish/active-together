@@ -1,10 +1,14 @@
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).with_name(".env"),
+        extra="ignore",
+    )
 
     app_name: str = "Active Together API"
     environment: Literal["local", "staging", "production"] = "local"
@@ -16,7 +20,9 @@ class Settings(BaseSettings):
     open_meteo_timeout_seconds: float = 5.0
 
     # WeatherAPI.com — required, no default, coming from env var WEATHERAPI_KEY
-    weatherapi_key: str
+    # Optional for local development; weather.py degrades to unavailable when
+    # the key is absent, while places and address search continue to work.
+    weatherapi_key: str = ""
     weatherapi_url: str = "https://api.weatherapi.com/v1/forecast.json"
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
