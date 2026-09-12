@@ -1,5 +1,14 @@
 # Content library
 
+## Current integration path: migrated mission families
+
+The 18 activity ideas now have mission-family drafts matching Priyan's Step fields
+and 20/40/60-minute prefix rule. Start with [the migration handoff](missions/MIGRATION.md).
+Run `python content/tools/validate_mission_templates.py --preview` from the repository root.
+This checks the migrated collection, including the actual nine safety rules.
+The original activity files and independent-duration planner below are retained
+as earlier authoring references, not a second current integration contract.
+
 ## Activity library foundation v0.1
 
 For the new reusable activity library, start with [activities/README.md](activities/README.md).

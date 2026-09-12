@@ -1,5 +1,9 @@
 # Activity samples for teammate integration
 
+Superseded integration path: use [missions/MIGRATION.md](../missions/MIGRATION.md)
+and the mission preview exports for Priyan's backend contract. The instructions
+below remain only for reproducing the earlier activity-format examples.
+
 The module 4 library supplies 18 draft activities and 54 age variants. You can use them
 now to debug reading, filtering, cards, steps and an explicit group of activities.
 No Groq key, database, backend server or network request is needed to load them.

@@ -8,6 +8,12 @@ so a human reviewer spends their time on judgement rather than on counting steps
 Errors must be fixed. Warnings are expected while things are drafts.
 """
 import glob, sys, yaml
+from pathlib import Path
+
+# Migrated families use the shared checks, including measured photo vocabulary.
+# Keep the older mission batches on their original checks for comparison.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from content.tools.mission_library import load_mission_families
 
 STEPS_FOR = {20: 3, 40: 5, 60: 7}
 BANDS = ["5-7", "8-10", "11-12"]
@@ -25,6 +31,14 @@ weak_prompts = {p["id"] for p in vocab["prompts"] if p.get("expect") == "weak"}
 
 errors, warnings = [], []
 
+try:
+    migrated, migrated_warnings = load_mission_families(preview=True)
+    warnings.extend(migrated_warnings)
+    warnings.extend(t["template_id"] + ": draft - not shippable"
+                    for t in migrated if t["review"]["status"] != "reviewed")
+except ValueError as error:
+    errors.append("Migrated mission collection: " + str(error))
+
 
 def load_templates(path):
     data = yaml.safe_load(open(path, encoding="utf-8"))
@@ -41,6 +55,8 @@ seen_shapes = {}
 paths = sorted(glob.glob("missions/*.yaml")) + sorted(glob.glob("missions/_candidates/*.yaml"))
 
 for path in paths:
+    if Path(path).stem.startswith("activity_"):
+        continue  # Already checked by the migration loader above.
     for t in load_templates(path):
         tid = t.get("template_id", f"<no id in {path}>")
 

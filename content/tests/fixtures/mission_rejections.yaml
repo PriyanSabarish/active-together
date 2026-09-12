@@ -1,0 +1,11 @@
+# Test inputs only. These instructions must never enter the content library.
+cases:
+  - {rule_id: no_climbing, prompt_text: 'Climb the tree.'}
+  - {rule_id: no_water_entry, prompt_text: 'Wade into the water.'}
+  - {rule_id: stay_in_sight, prompt_text: 'Go around the back alone.'}
+  - {rule_id: no_road_crossing, prompt_text: 'Cross the road to continue.'}
+  - {rule_id: no_animals_or_strangers, prompt_text: 'Pat the dog.'}
+  - {rule_id: no_handling_hazards, prompt_text: 'Pick up the rubbish.'}
+  - {rule_id: no_tasting, prompt_text: 'Taste the leaf.'}
+  - {rule_id: no_digging, prompt_text: 'Lift the log.'}
+  - {rule_id: no_dark_or_enclosed_areas, prompt_text: 'Go into the tunnel.'}

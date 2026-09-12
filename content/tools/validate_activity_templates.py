@@ -18,6 +18,7 @@ def main():
         mode = "development preview" if args.preview else "reviewed"
         print(f"Valid {mode}: {len(activities)} activities, {variant_count} age variants.")
         print("Structure checks do not replace human content review.")
+        print("Legacy authoring format: use validate_mission_templates.py for the migrated contract and safety checks.")
     except (ValueError, SchemaError) as error:
         parser.exit(1, f"Activity validation failed: {error}\n")
 

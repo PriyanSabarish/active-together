@@ -1,5 +1,9 @@
 # Activity library review
 
+Migration notice: review the new [mission-family queue](../missions/REVIEW_CHECKLIST.md)
+for deployment. This original queue is retained as authoring history. Do not mark
+both source activities and migrated missions approved from one review.
+
 The library now contains eighteen draft activities and fifty-four age variants. Structure
 checks and development export are ready. Independent human review and application
 integration are still pending. Only reviewed content may enter the live activity

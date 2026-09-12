@@ -1,5 +1,10 @@
 # Activity library foundation
 
+Integration notice: these files are retained as original authoring references.
+Use the [migrated mission families](../missions/MIGRATION.md) for the agreed backend
+format, verification hooks and safety checks. Do not promote both representations.
+The module history below describes the earlier activity contract.
+
 Modules 1-4 deliver a content contract, source-grounded taxonomy mapping,
 18 activity drafts, a loader, JSON export, coverage report and a human review checklist.
 Start integration with [INTEGRATION.md](INTEGRATION.md). The initial six-activity

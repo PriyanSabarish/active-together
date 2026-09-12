@@ -1,5 +1,10 @@
 # Duration planning for the activity library
 
+Historical planning experiment: the current handoff follows Priyan's 3/5/7-step
+mission contract; see [the migration guide](../missions/MIGRATION.md). Do not combine
+this planner's optional rounds with the migrated mission prefixes. Its unmeasured
+timing estimates are not evidence for the new 20/40/60-minute labels.
+
 The team chose 20, 40 and 60 minutes as combo budgets. Module 4 keeps the existing
 activity schema and export unchanged and adds a separate draft timing configuration.
 No location ranking, weather, preference or production recommendation code is changed.
