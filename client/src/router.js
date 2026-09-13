@@ -6,7 +6,8 @@ import DetailView from './views/DetailView.vue'
 import TodayView from './views/TodayView.vue'
 import PlanView from './views/PlanView.vue'
 import InsightsView from './views/InsightsView.vue'
-import PrefsView from './views/PrefsView.vue'
+import PreferencesView from './views/PreferencesView.vue'
+import AgeBandView from './views/AgeBandView.vue'
 
 // meta.tab drives which bottom-tab is highlighted (see TabShell.vue); routes
 // without a tab, or with meta.hideTabBar, render without the tab bar.
@@ -22,6 +23,7 @@ export default createRouter({
     { path: '/today', name: 'today', component: TodayView, meta: { tab: 'today' } },
     { path: '/plan', name: 'plan', component: PlanView, meta: { tab: 'plan' } },
     { path: '/insights', name: 'insights', component: InsightsView, meta: { tab: 'insights' } },
-    { path: '/prefs', name: 'prefs', component: PrefsView, meta: { tab: 'prefs' } }
+    { path: '/prefs', name: 'prefs', component: PreferencesView, meta: { tab: 'prefs' } },
+    { path: '/prefs/age-band', name: 'age-band', component: AgeBandView, meta: { tab: 'prefs' } }
   ]
 })
