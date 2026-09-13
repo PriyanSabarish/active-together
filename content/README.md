@@ -1,5 +1,8 @@
 # Content library
 
+See [AI_USAGE.md](AI_USAGE.md) for the activity template content AI usage statement,
+including human review responsibilities and validation limitations.
+
 ## Current integration path: migrated mission families
 
 The 18 activity ideas now have mission families matching Priyan's Step fields
