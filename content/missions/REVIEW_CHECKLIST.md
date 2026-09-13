@@ -1,35 +1,37 @@
 # Migrated mission review queue
 
-Author: Jiabin. All 18 families remain draft and all review cells are pending.
-Review the migrated YAML, not only the original activity idea. Nothing below is
-an assertion that an adult walkthrough, child test or timing measurement happened.
+Author: Jiabin. All eighteen migrated families are reviewed by lychen, as confirmed
+by Jiabin. Review the migrated YAML, not only the original activity idea.
+Separate band/prefix observations were not supplied with the
+approval and have not been invented here. No adult walkthrough, child test or
+timing measurement is claimed by this status update.
 
-## Review order
+## Review status
 
-Start with Colour Hunt and Follow the Leader, then the other four pilot ideas:
-Balance Shapes, Imaginary Delivery, Notice the Change and Pass and Move.
-Continue with the remaining twelve after those demonstrate the full handoff.
+Colour Hunt and Follow the Leader were approved first. Jiabin subsequently
+confirmed lychen's review of the remaining sixteen families. All eighteen are
+now in `missions/reviewed/`. Keep the checklist below for future revisions.
 
 | Template ID | 5-7 prefixes 3/5/7 | 8-10 prefixes 3/5/7 | 11-12 prefixes 3/5/7 | Reviewer | Decision / notes |
 | --- | --- | --- | --- | --- | --- |
-| activity_balance_shapes | Pending | Pending | Pending | Unassigned | Pending |
-| activity_choose_your_route | Pending | Pending | Pending | Unassigned | Pending |
-| activity_colour_hunt | Pending | Pending | Pending | Unassigned | Pending |
-| activity_follow_the_leader | Pending | Pending | Pending | Unassigned | Pending |
-| activity_imaginary_delivery | Pending | Pending | Pending | Unassigned | Pending |
-| activity_invisible_orchestra | Pending | Pending | Pending | Unassigned | Pending |
-| activity_listen_and_point | Pending | Pending | Pending | Unassigned | Pending |
-| activity_notice_the_change | Pending | Pending | Pending | Unassigned | Pending |
-| activity_opposite_actions | Pending | Pending | Pending | Unassigned | Pending |
-| activity_partner_ball_carry | Pending | Pending | Pending | Unassigned | Pending |
-| activity_pass_and_move | Pending | Pending | Pending | Unassigned | Pending |
-| activity_rhythm_steps | Pending | Pending | Pending | Unassigned | Pending |
-| activity_robot_instructions | Pending | Pending | Pending | Unassigned | Pending |
-| activity_roll_to_target | Pending | Pending | Pending | Unassigned | Pending |
-| activity_silent_scene | Pending | Pending | Pending | Unassigned | Pending |
-| activity_sort_and_step | Pending | Pending | Pending | Unassigned | Pending |
-| activity_step_and_pause | Pending | Pending | Pending | Unassigned | Pending |
-| activity_viewpoint_switch | Pending | Pending | Pending | Unassigned | Pending |
+| activity_balance_shapes | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_choose_your_route | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_colour_hunt | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_follow_the_leader | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_imaginary_delivery | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_invisible_orchestra | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_listen_and_point | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_notice_the_change | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_opposite_actions | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_partner_ball_carry | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_pass_and_move | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_rhythm_steps | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_robot_instructions | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_roll_to_target | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_silent_scene | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_sort_and_step | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_step_and_pause | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
+| activity_viewpoint_switch | Not separately recorded | Not separately recorded | Not separately recorded | lychen | Family reviewed; approval reported by Jiabin |
 
 ## Check each band and each stopping point
 
@@ -58,8 +60,8 @@ second copy. Do not promote the original `activities/` representation as well.
 If reviewed content changes later, return it to draft and re-review; record the
 change in its Git commit/PR because Priyan's family contract has no version field.
 
-Regenerate both mission preview exports and run the commands in
-[MIGRATION.md](MIGRATION.md). Reviewed output stays empty until promotion.
+Regenerate the reviewed export and both mission preview exports using the commands
+in [MIGRATION.md](MIGRATION.md). Reviewed output now contains all eighteen families.
 Before deployment, also verify parent briefing display, source and generated
 Mission validation, context handling, photo/manual failure paths and offline use.
 The consolidated AI usage statement remains a final team handoff task.

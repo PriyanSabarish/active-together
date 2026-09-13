@@ -1,6 +1,6 @@
 {
   "contract_version": "1.0.0",
-  "mode": "development_preview",
+  "mode": "reviewed",
   "duration_basis": "backend_step_count_contract_not_measured",
   "preference_binding_status": "unbound",
   "warnings": [],

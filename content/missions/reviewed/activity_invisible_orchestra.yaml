@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_opposite_actions
-    title: "Opposite Actions"
+  - template_id: activity_invisible_orchestra
+    title: "Invisible Orchestra"
     category: any
     duration_bucket: 60
-    weather_tags: [dry]
+    weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: move
+    mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, agree that low arms answer high arms."
+            prompt_text: "Beside me, pretend to play a tiny silent drum."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Watch my high arms and hold yours low."
+            prompt_text: "Copy my slow pretend drumming without touching anything."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Show me low arms and check my high-arm answer."
+            prompt_text: "Lead your own silent rhythm and finish with hands still."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Agree that narrow arms answer comfortably wide arms."
+            prompt_text: "Pretend to play a different silent instrument."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Take turns showing one position and answering its opposite."
+            prompt_text: "Show its gentle movements and let me guess."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose your favourite opposite pair."
+            prompt_text: "Choose a hand movement that means finish."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Use that pair once each, then lower your arms."
+            prompt_text: "Conduct my silent playing and end with our chosen movement."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Agree two opposite arm pairs with your adult."
+            prompt_text: "Choose an imaginary instrument to play silently beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Respond to one demonstrated position using its agreed opposite."
+            prompt_text: "Show a short gentle playing pattern without touching anything."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead a position and explain your adult's opposite response."
+            prompt_text: "Let your adult copy it and identify one clear movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Combine two slow demonstrations with a pause between them."
+            prompt_text: "Agree a small conducting gesture for longer pauses."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Answer the sequence and identify the opposite pair used each time."
+            prompt_text: "Conduct your adult's silent pattern and compare the pauses."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Change one pair while leaving the other unchanged."
+            prompt_text: "Swap imaginary instruments while keeping movements comfortable."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Test the new rule together without speeding up."
+            prompt_text: "Perform the changed pattern and explain how the gestures differ."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Define two clear opposite arm pairs beside your adult."
+            prompt_text: "Invent a silent instrument with a distinctive comfortable playing gesture."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Test each pair and identify any ambiguous position."
+            prompt_text: "Teach your adult a short pattern using that gesture."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Refine the unclear definition and demonstrate the revised pair."
+            prompt_text: "Compare your interpretations and refine one unclear movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Build a short sequence using your agreed pairs and pauses."
+            prompt_text: "Define conducting gestures for starting, pausing and finishing."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Have your adult answer it and discuss any unclear cues."
+            prompt_text: "Conduct a complete silent phrase using your agreed gestures."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Change one rule while preserving the other agreed pair."
+            prompt_text: "Change the instrument while retaining the same conducting rules."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Explain the change and test both rules at a comfortable pace."
+            prompt_text: "Perform the new phrase and explain what remained consistent."
             verify_mode: self
             prompt_id: null
             variable: true

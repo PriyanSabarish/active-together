@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_balance_shapes
-    title: "Balance Shapes"
+  - template_id: activity_viewpoint_switch
+    title: "Viewpoint Switch"
     category: any
     duration_bucket: 60
-    weather_tags: [dry]
+    weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: move
+    mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, plant both feet and stretch your arms gently."
+            prompt_text: "Beside me, choose something we can see without touching."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Make a small star shape with both feet grounded."
+            prompt_text: "Point to one shape you notice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose your favourite grounded shape and show it again."
+            prompt_text: "Describe that shape to me from our standing spot."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change only your arms to make a new shape."
+            prompt_text: "Walk with me to another nearby checked standing spot."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Copy my arm shape, then lower your arms comfortably."
+            prompt_text: "Look again and tell me what seems different."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Make your favourite shape a little smaller."
+            prompt_text: "Choose which checked spot gave your clearest view."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Show me your smaller shape with both feet grounded."
+            prompt_text: "Return there together and point out your chosen shape."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose two grounded body shapes beside your adult."
+            prompt_text: "Choose a visible feature beside your adult without touching it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Move slowly between them while keeping both feet grounded."
+            prompt_text: "Describe its outline from your current checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Repeat your preferred transition and explain what feels comfortable."
+            prompt_text: "Compare your description with your adult's view from beside you."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change one arm position in your first shape."
+            prompt_text: "Walk together to a second nearby checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare both versions, then settle into a comfortable stance."
+            prompt_text: "Identify one changed detail and one detail that stayed the same."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult suggest a smaller arm movement."
+            prompt_text: "Choose which position best shows your selected detail."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Try the adjustment and describe how the transition changes."
+            prompt_text: "Return there together and explain why the detail is clearer."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Plan three comfortable shapes with both feet continuously grounded."
+            prompt_text: "Predict how a visible feature might look from another checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Test slow transitions without twisting your knees or reaching far."
+            prompt_text: "Describe its current outline while standing beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Select the clearest transition and demonstrate it to your adult."
+            prompt_text: "Explain which part of your prediction can be compared visually."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change one arm position to simplify that transition."
+            prompt_text: "Walk forwards together to the second nearby checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the original and revised movements while staying grounded."
+            prompt_text: "Compare the new view with your prediction and explain a difference."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Design a shorter sequence using the most comfortable shapes."
+            prompt_text: "Choose the viewpoint that best supports one specific observation."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Teach your sequence and explain one choice that improved control."
+            prompt_text: "Return together and explain what the comparison cannot establish."
             verify_mode: self
             prompt_id: null
             variable: true

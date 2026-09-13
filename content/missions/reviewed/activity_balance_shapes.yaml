@@ -1,7 +1,7 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_step_and_pause
-    title: "Step and Pause"
+  - template_id: activity_balance_shapes
+    title: "Balance Shapes"
     category: any
     duration_bucket: 60
     weather_tags: [dry]
@@ -9,43 +9,43 @@ templates:
     equipment: []
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, agree that go means one gentle forward step."
+            prompt_text: "Beside me, plant both feet and stretch your arms gently."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Take one small step when I say go."
+            prompt_text: "Make a small star shape with both feet grounded."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Pause on our stop word and settle both feet."
+            prompt_text: "Choose your favourite grounded shape and show it again."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Choose when to say go for our next small step."
+            prompt_text: "Change only your arms to make a new shape."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Say stop and check that we are standing comfortably."
+            prompt_text: "Copy my arm shape, then lower your arms comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Use a quiet voice for our agreed words."
+            prompt_text: "Make your favourite shape a little smaller."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Guide one gentle step and a comfortable pause."
+            prompt_text: "Show me your smaller shape with both feet grounded."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Agree clear start and pause words with your adult."
+            prompt_text: "Choose two grounded body shapes beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Use them for two small forward steps with pauses."
+            prompt_text: "Move slowly between them while keeping both feet grounded."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead the same short sequence and finish standing comfortably."
+            prompt_text: "Repeat your preferred transition and explain what feels comfortable."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change the length of the pause, not the stepping speed."
+            prompt_text: "Change one arm position in your first shape."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Try both pause lengths and choose the easier one."
+            prompt_text: "Compare both versions, then settle into a comfortable stance."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult give the cues in a softer voice."
+            prompt_text: "Let your adult suggest a smaller arm movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Explain whether the cues stayed clear and repeat one gentle step."
+            prompt_text: "Try the adjustment and describe how the transition changes."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Plan clear cues for a few small steps in your checked area."
+            prompt_text: "Plan three comfortable shapes with both feet continuously grounded."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Test the cues beside your adult without increasing pace."
+            prompt_text: "Test slow transitions without twisting your knees or reaching far."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Refine one unclear cue and finish in a comfortable stance."
+            prompt_text: "Select the clearest transition and demonstrate it to your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change only the pause spacing in your short sequence."
+            prompt_text: "Change one arm position to simplify that transition."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare both versions and identify which is easier to follow."
+            prompt_text: "Compare the original and revised movements while staying grounded."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Design a simpler cue sequence for the same checked space."
+            prompt_text: "Design a shorter sequence using the most comfortable shapes."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Teach it to your adult and explain the simplification."
+            prompt_text: "Teach your sequence and explain one choice that improved control."
             verify_mode: self
             prompt_id: null
             variable: true

@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_listen_and_point
-    title: "Listen and Point"
+  - template_id: activity_follow_the_leader
+    title: "Follow the Leader"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: find
+    mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, listen with your eyes open for one sound."
+            prompt_text: "In our checked space, copy my slow marching steps."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Point towards the sound while staying beside me."
+            prompt_text: "Copy my small arm circles while staying still."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Describe the sound or copy its rhythm softly."
+            prompt_text: "Choose a gentle movement for me to copy."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Listen as I make a soft finger tap."
+            prompt_text: "Copy my march followed by one arm circle."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Point towards my hand and copy the tapping rhythm."
+            prompt_text: "Lead those two movements, then return to standing."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose one quiet tapping rhythm for me."
+            prompt_text: "Choose a smaller version of one movement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Tap it softly and compare our rhythms."
+            prompt_text: "Teach me your smaller movement, then stand comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Listen beside your adult with your eyes open."
+            prompt_text: "Beside your adult, copy a gentle two-movement pattern."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe two features of one sound without moving towards it."
+            prompt_text: "Repeat the pattern with a pause between movements."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare your description with your adult's observation."
+            prompt_text: "Lead your own two-movement pattern, then return to standing."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Listen to two soft tapping patterns your adult makes."
+            prompt_text: "Change the order of your two movements."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Identify one difference and reproduce your preferred pattern quietly."
+            prompt_text: "Teach the changed pattern and finish standing comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Make a quiet pattern with a deliberate pause."
+            prompt_text: "Let your adult change one part of the pattern."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Ask your adult to describe the pause and compare your answers."
+            prompt_text: "Notice the change and copy the new pattern gently."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a sound to describe while staying beside your adult."
+            prompt_text: "Plan a short grounded movement pattern in your adult-checked space."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Separate what you heard from guesses about its source."
+            prompt_text: "Teach your adult the pattern using clear movement cues."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare observations and identify one detail you both heard."
+            prompt_text: "Try your adult's suggested adjustment, then return to standing."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Ask your adult for two quiet tapping patterns."
+            prompt_text: "Change one transition to make the pattern easier to follow."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Define a rhythm rule that distinguishes the patterns."
+            prompt_text: "Test both versions together and describe the clearer transition."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Make a third soft pattern following your rule."
+            prompt_text: "Design a simpler version with fewer movement changes."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Test your adult's interpretation and explain any ambiguity."
+            prompt_text: "Teach the simpler version and compare how it feels."
             verify_mode: self
             prompt_id: null
             variable: true

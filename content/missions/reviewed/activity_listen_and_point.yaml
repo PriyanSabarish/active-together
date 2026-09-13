@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_robot_instructions
-    title: "Robot Instructions"
+  - template_id: activity_listen_and_point
+    title: "Listen and Point"
     category: any
     duration_bucket: 60
-    weather_tags: [dry]
+    weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: sequence
+    mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, pretend to be a robot moving one arm."
+            prompt_text: "Beside me, listen with your eyes open for one sound."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Follow my slow arm-up command gently."
+            prompt_text: "Point towards the sound while staying beside me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Give me an arm-down command and check my robot response."
+            prompt_text: "Describe the sound or copy its rhythm softly."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Choose two comfortable robot arm commands."
+            prompt_text: "Listen as I make a soft finger tap."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Lead those commands and finish with arms comfortably lowered."
+            prompt_text: "Point towards my hand and copy the tapping rhythm."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Change one command to make a smaller movement."
+            prompt_text: "Choose one quiet tapping rhythm for me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Teach me the smaller movement and try it together."
+            prompt_text: "Tap it softly and compare our rhythms."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Agree three gentle robot arm commands with your adult."
+            prompt_text: "Listen beside your adult with your eyes open."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Follow a short command sequence while keeping your feet grounded."
+            prompt_text: "Describe two features of one sound without moving towards it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead your own sequence and check whether each command was clear."
+            prompt_text: "Compare your description with your adult's observation."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Choose one command that could mean two different movements."
+            prompt_text: "Listen to two soft tapping patterns your adult makes."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Replace it with clearer words and test the revised instruction."
+            prompt_text: "Identify one difference and reproduce your preferred pattern quietly."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Ask your adult to reorder two agreed commands."
+            prompt_text: "Make a quiet pattern with a deliberate pause."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Follow the new sequence and describe what changed."
+            prompt_text: "Ask your adult to describe the pause and compare your answers."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Define three precise commands for comfortable grounded robot movements."
+            prompt_text: "Choose a sound to describe while staying beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Say each command aloud in the order you want it performed."
+            prompt_text: "Separate what you heard from guesses about its source."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Test it with your adult and identify one ambiguous instruction."
+            prompt_text: "Compare observations and identify one detail you both heard."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Revise that instruction without adding a new movement."
+            prompt_text: "Ask your adult for two quiet tapping patterns."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Run the revised sequence and compare how clearly it works."
+            prompt_text: "Define a rhythm rule that distinguishes the patterns."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Design a shorter command sequence with the same final arm position."
+            prompt_text: "Make a third soft pattern following your rule."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Test your shorter sequence and explain which command was unnecessary."
+            prompt_text: "Test your adult's interpretation and explain any ambiguity."
             verify_mode: self
             prompt_id: null
             variable: true

@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_imaginary_delivery
-    title: "Imaginary Delivery"
+  - template_id: activity_pass_and_move
+    title: "Pass and Move"
     category: any
     duration_bucket: 60
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
-    equipment: []
-    mechanic: imagine
+    equipment: [ball]
+    mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, pretend your empty hands hold a tiny parcel."
+            prompt_text: "Face me in our checked space with our soft ball."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Show me how you would hold it gently."
+            prompt_text: "Roll the ball gently towards my waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Pretend to give it to me and describe its contents."
+            prompt_text: "Stop my gentle return roll and hold the ball still."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Imagine another parcel with a different shape."
+            prompt_text: "Let me hold the ball while we move slightly closer."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show its shape and pretend to hand it over."
+            prompt_text: "Roll once each from here and stop the ball."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose a funny imaginary parcel for me to copy."
+            prompt_text: "Choose our closer position or our first checked position."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Demonstrate its delivery and compare our pretend parcels."
+            prompt_text: "Roll once each there and finish holding the ball."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Invent a parcel and a nearby destination your adult checks."
+            prompt_text: "Face your adult with a soft ball in the checked area."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Walk beside your adult while pretending to carry the parcel."
+            prompt_text: "Roll it gently towards their waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Mime handing it over and explain what made it unusual."
+            prompt_text: "Receive the return roll and describe what helped you stop it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Imagine its contents change without adding any real weight."
+            prompt_text: "While the adult holds the ball, agree slightly closer positions."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Demonstrate the changed delivery while staying in the checked space."
+            prompt_text: "Move together, roll once each and compare the shorter distance."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult suggest a new imaginary recipient."
+            prompt_text: "Choose one gentle rolling adjustment without increasing force."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Mime a delivery to that pretend recipient and explain your choices."
+            prompt_text: "Try the adjustment together and finish with the ball stopped."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Invent a parcel with one unusual imaginary handling requirement."
+            prompt_text: "Agree comfortable rolling positions in an adult-checked level area."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Plan a short delivery within positions your adult has checked."
+            prompt_text: "Roll a soft ball to your adult and receive the return."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Perform it beside your adult and explain the handling choice."
+            prompt_text: "Identify one adjustment that made the exchange easier to control."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change the imaginary requirement without adding real obstacles or weight."
+            prompt_text: "Pause with the ball held and agree a shorter rolling distance."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Adapt your delivery and compare it with the first version."
+            prompt_text: "Move together, test the exchange and compare control at both distances."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Ask your adult to suggest a different pretend purpose."
+            prompt_text: "Choose a simple cue for when the receiver is ready."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Perform a revised handover and explain how the purpose changed it."
+            prompt_text: "Test the cue over another exchange and finish holding the ball."
             verify_mode: self
             prompt_id: null
             variable: true

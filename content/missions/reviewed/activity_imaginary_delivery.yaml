@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_silent_scene
-    title: "Silent Scene"
+  - template_id: activity_imaginary_delivery
+    title: "Imaginary Delivery"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, pretend to brush your hair with empty hands."
+            prompt_text: "Beside me, pretend your empty hands hold a tiny parcel."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Watch me copy your gentle brushing movement."
+            prompt_text: "Show me how you would hold it gently."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose another grooming gesture and help me guess it."
+            prompt_text: "Pretend to give it to me and describe its contents."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Pretend to put on an imaginary hat."
+            prompt_text: "Imagine another parcel with a different shape."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show a different hat shape and let me copy."
+            prompt_text: "Show its shape and pretend to hand it over."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose one of our pretend actions."
+            prompt_text: "Choose a funny imaginary parcel for me to copy."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Show its clearest gesture and reveal your choice."
+            prompt_text: "Demonstrate its delivery and compare our pretend parcels."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a familiar everyday action to mime beside your adult."
+            prompt_text: "Invent a parcel and a nearby destination your adult checks."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Perform it using small gestures and no real props."
+            prompt_text: "Walk beside your adult while pretending to carry the parcel."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Reveal the action and discuss which gesture made it clear."
+            prompt_text: "Mime handing it over and explain what made it unusual."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Choose two familiar actions that can follow each other."
+            prompt_text: "Imagine its contents change without adding any real weight."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Mime the pair and explain the order to your adult."
+            prompt_text: "Demonstrate the changed delivery while staying in the checked space."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Let your adult suggest a different imaginary object."
+            prompt_text: "Let your adult suggest a new imaginary recipient."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Adapt the mime and compare how the gestures change."
+            prompt_text: "Mime a delivery to that pretend recipient and explain your choices."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a familiar everyday task with a clear beginning and ending."
+            prompt_text: "Invent a parcel with one unusual imaginary handling requirement."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Mime its sequence using comfortable gestures and no real props."
+            prompt_text: "Plan a short delivery within positions your adult has checked."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Ask your adult to describe it and identify an unclear gesture."
+            prompt_text: "Perform it beside your adult and explain the handling choice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Refine that gesture while keeping the same task."
+            prompt_text: "Change the imaginary requirement without adding real obstacles or weight."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Perform the revised scene and compare the interpretations."
+            prompt_text: "Adapt your delivery and compare it with the first version."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Create a shorter mime preserving the task's essential actions."
+            prompt_text: "Ask your adult to suggest a different pretend purpose."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Test the shorter version and explain which gestures were necessary."
+            prompt_text: "Perform a revised handover and explain how the purpose changed it."
             verify_mode: self
             prompt_id: null
             variable: true

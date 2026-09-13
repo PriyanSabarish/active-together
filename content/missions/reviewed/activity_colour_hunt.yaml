@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_roll_to_target
-    title: "Roll to Target"
+  - template_id: activity_colour_hunt
+    title: "Colour Hunt"
     category: any
     duration_bucket: 60
-    weather_tags: [dry]
+    weather_tags: [any]
     site_requirements: [bare_site, open_space]
-    equipment: [ball]
-    mechanic: move
+    equipment: []
+    mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Face me with our soft ball in the checked space."
+            prompt_text: "Beside me, point to a colour you can see."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Roll gently towards my waiting hands."
+            prompt_text: "Point to another colour from the same spot."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Watch me stop it and describe where it rolled."
+            prompt_text: "Choose a visible colour and help me find it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Let me return the ball to your waiting hands."
+            prompt_text: "Point to two things sharing a colour."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Roll towards my hands again using a gentler push."
+            prompt_text: "Show me one colour difference between them."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose the gentle push you found easiest."
+            prompt_text: "Choose a colour clue for something nearby."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Roll once more and let me stop the ball."
+            prompt_text: "Reveal your choice and compare our colour descriptions."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Aim our soft ball towards your adult's stationary waiting hands."
+            prompt_text: "Find two visible colours beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Roll gently and observe where the adult stops the ball."
+            prompt_text: "Describe one difference between your two choices."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Describe one change that could make your next roll easier."
+            prompt_text: "Give your adult a colour clue, then reveal your choice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Try that change from the same checked position."
+            prompt_text: "Find two examples of a similar shade."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the two rolls without scoring or increasing force."
+            prompt_text: "Compare the examples and explain what makes them similar."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Ask your adult to move their hands slightly closer."
+            prompt_text: "Let your adult choose a different colour clue."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Try the shorter roll and explain how your push changed."
+            prompt_text: "Solve the clue together and describe the colour you found."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a gentle rolling approach towards your adult's waiting hands."
+            prompt_text: "Choose a rule for comparing colours visible beside your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Test it with a soft ball in the checked level area."
+            prompt_text: "Find two examples that fit your comparison rule."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Explain the difference between your intended and observed roll."
+            prompt_text: "Teach your rule, then compare your adult's choice with yours."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Adjust one part of your rolling action without increasing force."
+            prompt_text: "Change the rule to explore a different colour relationship."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Test the adjustment and compare its effect on direction."
+            prompt_text: "Apply the new rule and explain how the results differ."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Ask your adult to set their waiting hands slightly closer."
+            prompt_text: "Create a short colour clue using your preferred rule."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Adapt your push for the shorter roll and explain the adjustment."
+            prompt_text: "Test the clue with your adult and explain any ambiguity."
             verify_mode: self
             prompt_id: null
             variable: true

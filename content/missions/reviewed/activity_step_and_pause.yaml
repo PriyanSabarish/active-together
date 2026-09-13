@@ -1,51 +1,51 @@
-# Migrated draft by Jiabin. No human review or timing measurement is claimed.
+# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
 templates:
-  - template_id: activity_viewpoint_switch
-    title: "Viewpoint Switch"
+  - template_id: activity_step_and_pause
+    title: "Step and Pause"
     category: any
     duration_bucket: 60
-    weather_tags: [any]
+    weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
-    mechanic: find
+    mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, choose something we can see without touching."
+            prompt_text: "Beside me, agree that go means one gentle forward step."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Point to one shape you notice."
+            prompt_text: "Take one small step when I say go."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Describe that shape to me from our standing spot."
+            prompt_text: "Pause on our stop word and settle both feet."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk with me to another nearby checked standing spot."
+            prompt_text: "Choose when to say go for our next small step."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Look again and tell me what seems different."
+            prompt_text: "Say stop and check that we are standing comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose which checked spot gave your clearest view."
+            prompt_text: "Use a quiet voice for our agreed words."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Return there together and point out your chosen shape."
+            prompt_text: "Guide one gentle step and a comfortable pause."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +53,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a visible feature beside your adult without touching it."
+            prompt_text: "Agree clear start and pause words with your adult."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe its outline from your current checked position."
+            prompt_text: "Use them for two small forward steps with pauses."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare your description with your adult's view from beside you."
+            prompt_text: "Lead the same short sequence and finish standing comfortably."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk together to a second nearby checked position."
+            prompt_text: "Change the length of the pause, not the stepping speed."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Identify one changed detail and one detail that stayed the same."
+            prompt_text: "Try both pause lengths and choose the easier one."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose which position best shows your selected detail."
+            prompt_text: "Let your adult give the cues in a softer voice."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Return there together and explain why the detail is clearer."
+            prompt_text: "Explain whether the cues stayed clear and repeat one gentle step."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +91,37 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Predict how a visible feature might look from another checked position."
+            prompt_text: "Plan clear cues for a few small steps in your checked area."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe its current outline while standing beside your adult."
+            prompt_text: "Test the cues beside your adult without increasing pace."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Explain which part of your prediction can be compared visually."
+            prompt_text: "Refine one unclear cue and finish in a comfortable stance."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk forwards together to the second nearby checked position."
+            prompt_text: "Change only the pause spacing in your short sequence."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the new view with your prediction and explain a difference."
+            prompt_text: "Compare both versions and identify which is easier to follow."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 6
-            prompt_text: "Choose the viewpoint that best supports one specific observation."
+            prompt_text: "Design a simpler cue sequence for the same checked space."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 7
-            prompt_text: "Return together and explain what the comparison cannot establish."
+            prompt_text: "Teach it to your adult and explain the simplification."
             verify_mode: self
             prompt_id: null
             variable: true

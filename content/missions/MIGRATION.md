@@ -1,20 +1,25 @@
 # Mission family integration handoff
 
-Author: Jiabin. Status: development drafts; no independent approval or timing
-measurement is claimed. This handoff follows the supplied Iteration 2 Backend
+Author: Jiabin. Status: all eighteen families reviewed by lychen (confirmed by Jiabin);
+timings remain unmeasured. This handoff follows the supplied Iteration 2 Backend
 Tasks document: B18 family shape, B29 prefix construction and the Mission/Step
 wire fields. It does not implement Backend A endpoints or deploy Backend B.
 
 ## Use these files
 
-- `missions/_candidates/activity_*.yaml`: 18 current migration drafts, one family
-  per file under a `templates` list. Every family has three bands and seven steps.
+- `missions/reviewed/activity_*.yaml`: all 18 reviewed migrated families, one per file.
+  Each file uses a `templates` list; every family has three bands and seven steps.
+- `missions/_candidates/`: reserved for new or revised drafts; currently contains
+  no migrated `activity_*.yaml` files. Older unrelated drafts are unchanged.
 - `schema/mission_family.validation.yaml`: executable validation companion to
   Priyan's unchanged descriptive `mission_template.schema.yaml`.
 - `taxonomy/mission_context_bindings.yaml`: content type, candidate place categories,
   unbound preference codes and essential parent briefings, separate from the family.
 - `tools/mission_library.py`: family loading, `build_mission` and final-step checks.
-- `examples/mission_families.preview.json`: all 18 drafts and content bindings.
+- `examples/mission_families.reviewed.json`: reviewed-mode export of all 18 families
+  and content bindings. Review does not certify timing or complete runtime integration.
+- `examples/mission_families.preview.json`: development-mode export, currently with
+  the same 18 reviewed families; future drafts may appear only in this mode.
 - `examples/mission.preview.json`: a 20-minute, 5-7 Colour Hunt wire-shape sample
   inside a clearly marked development envelope.
 
@@ -32,13 +37,15 @@ From the repository root, with Python 3.10+:
 python -m pip install -r content/requirements.txt
 python content/tools/validate_mission_templates.py --preview
 python content/tools/validate_mission_templates.py
+python content/tools/export_mission_templates.py --output content/examples/mission_families.reviewed.json
 python content/tools/export_mission_templates.py --preview --output content/examples/mission_families.preview.json
 python content/tools/export_mission_templates.py --preview --template-id activity_colour_hunt --age-band 5-7 --duration 20 --output content/examples/mission.preview.json
 python -m unittest discover -s content/tests -v
 ```
 
 Current preview: 18 families, 54 age variants, 162 age/bucket combinations.
-Current reviewed collection: zero. Without `--preview`, the exporter never returns
+Current reviewed collection: 18 families, 54 age variants, 162 age/bucket combinations.
+Without `--preview`, the exporter never returns
 drafts and an unavailable requested template produces an error, not a substitute.
 
 After independent review, move the approved family from `_candidates/` into
