@@ -21,13 +21,14 @@
     <div class="week-row">
       <div>
         <p class="stat-value">{{ thisWeekCount }}</p>
-        <p class="stat-label">activities this week</p>
+        <p class="stat-label">{{ thisWeekCount === 1 ? 'activity' : 'activities' }} this week</p>
       </div>
       <button class="link-btn" @click="$router.push('/insights')">View week</button>
     </div>
 
     <p class="section-label" style="margin-top: 20px">Daniel's most recent feedback</p>
-    <div class="note-card">{{ lastFeedback.emoji }} {{ lastFeedback.label }} — {{ lastFeedback.when }}</div>
+    <div v-if="lastFeedback" class="note-card">{{ lastFeedback.emoji }} {{ lastFeedback.label }} — {{ lastFeedback.when }}</div>
+    <div v-else class="note-card">No missions completed yet.</div>
   </div>
 </template>
 
@@ -36,19 +37,24 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { useMissionStore } from '../missionStore'
+import { useHistoryStore, feedbackEmoji, feedbackLabel, relativeDayLabel } from '../historyStore'
 
 const router = useRouter()
 const missionStore = useMissionStore()
+const historyStore = useHistoryStore()
 
 // "Recommended for today" has no real ranking yet (that's a later phase) —
 // just offer the first mock candidate so the card has something to show.
 const todayMission = computed(() => missionStore.candidates[0])
 const reason = "Matches Daniel's preference and hasn't been used in the last 5 outings."
 
-// This-week count and last feedback are mock until F20/F21 write real
-// completion records back to a history store.
-const thisWeekCount = 3
-const lastFeedback = { emoji: '🙂', label: 'Fun', when: 'Yesterday' }
+// F21 — real counts and feedback, once F19/F20 have written any records.
+const thisWeekCount = computed(() => historyStore.thisWeekCount)
+const lastFeedback = computed(() => {
+  const r = historyStore.mostRecent
+  if (!r || !r.feedback) return null
+  return { emoji: feedbackEmoji(r.feedback), label: feedbackLabel(r.feedback), when: relativeDayLabel(r.date) }
+})
 
 function start() {
   missionStore.chooseMission(todayMission.value.id)

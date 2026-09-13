@@ -18,6 +18,7 @@ export const MOCK_MISSIONS = [
     id: 'bark-detective',
     title: 'Bark Detective',
     placeName: 'Fawkner Park',
+    category: 'playground', // CATEGORY_META key (store.js) — groups F22's activity mix
     ageBand: '6-8',
     durationMin: 20,
     equipment: 'None — everyday clothes and shoes only.',
@@ -32,6 +33,7 @@ export const MOCK_MISSIONS = [
     id: 'shadow-tag',
     title: 'Shadow Tag',
     placeName: 'Princes Park Reserve',
+    category: 'sports_ground',
     ageBand: '6-8',
     durationMin: 15,
     equipment: 'None — works best in direct sun.',
@@ -45,6 +47,7 @@ export const MOCK_MISSIONS = [
     id: 'cloud-spotting',
     title: 'Cloud Spotting',
     placeName: 'Royal Park Trail',
+    category: 'trail_access',
     ageBand: '6-8',
     durationMin: 15,
     equipment: 'None.',
