@@ -8,12 +8,14 @@ import PlanView from './views/PlanView.vue'
 import InsightsView from './views/InsightsView.vue'
 import PrefsView from './views/PrefsView.vue'
 
-// meta.tab drives which bottom-tab is highlighted (see TabBar.vue); routes
+// meta.tab drives which bottom-tab is highlighted (see TabShell.vue); routes
 // without a tab, or with meta.hideTabBar, render without the tab bar.
+// Location keeps the tab bar too — hiding it here was a dead end with no way
+// to reach another tab.
 export default createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'location', component: LocationView, meta: { tab: 'discover', hideTabBar: true } },
+    { path: '/', name: 'location', component: LocationView, meta: { tab: 'discover' } },
     { path: '/time', name: 'time', component: TimeView, meta: { tab: 'discover' } },
     { path: '/results', name: 'results', component: ResultsView, meta: { tab: 'discover' } },
     { path: '/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'discover' } },

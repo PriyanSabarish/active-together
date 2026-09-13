@@ -16,8 +16,10 @@
         <span class="app-name"><b class="w-active">Active</b> <b class="w-together">Together</b><b class="w-dot">.</b></span>
       </RouterLink>
     </div>
-    <div v-if="!plain" class="stepper" aria-label="Progress">
-      <span v-for="i in 3" :key="i" :class="{ on: i <= step }" />
+    <div v-if="!plain" class="progress-track" aria-label="Progress">
+      <div v-for="i in total" :key="i" class="seg">
+        <span :style="{ width: i <= step ? '100%' : '0%' }" />
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +27,7 @@
 <script setup>
 defineProps({
   step: { type: Number, default: 0 },
+  total: { type: Number, default: 3 },
   back: { type: Boolean, default: false },
   // Tab-root screens (Today, Plan, Insights, Prefs) show just the logo bar,
   // no funnel step dots.
@@ -43,6 +46,8 @@ defineProps({
 }
 
 .logo-pin { flex-shrink: 0; }
+
+.progress-track { margin-bottom: 28px; }
 
 .app-name b { font-weight: 700; }
 .w-active { color: #2E8540; }

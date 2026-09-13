@@ -100,6 +100,10 @@
         </div>
         <ConditionBadge :badge="place.badge" />
       </div>
+      <div class="mission-line">
+        <span class="badge mission">{{ missionFor(place).steps }}-step mission</span>
+      </div>
+      <p class="mission-blurb">"{{ missionFor(place).title }}" — {{ missionFor(place).blurb }}</p>
       <hr class="card-divider" />
       <p class="reason">{{ place.reason }}</p>
       <p class="duration-line">
@@ -140,6 +144,21 @@ const router = useRouter()
 
 // Landing here directly (e.g. page refresh) still runs the search.
 if (!store.loading && store.status === 'idle') store.fetchRecommendations()
+
+// Mock mission per place until F14 (mission store) lands — deterministic by
+// place id so the badge doesn't change between re-renders.
+const MOCK_MISSIONS = [
+  { steps: 3, title: 'Bark Detective', blurb: 'find, feel and compare three kinds of tree bark.' },
+  { steps: 2, title: 'Shadow Tag', blurb: "chase and copy each other's shadow shapes." },
+  { steps: 2, title: 'Cloud Spotting', blurb: 'name the shapes you find in the clouds.' },
+  { steps: 3, title: 'Colour Hunt', blurb: 'find one thing in five different colours.' }
+]
+
+function missionFor(place) {
+  let hash = 0
+  for (const ch of String(place.id)) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0
+  return MOCK_MISSIONS[hash % MOCK_MISSIONS.length]
+}
 
 const nextRadius = computed(() => (store.radiusKm === 3 ? 5 : 10))
 
@@ -211,6 +230,14 @@ function openById(id) {
   font-size: 11.5px;
   color: var(--ink-3);
   margin-top: 3px;
+}
+
+.mission-line { margin-top: 10px; }
+
+.mission-blurb {
+  font-size: 12px;
+  color: var(--ink-2);
+  margin-top: 6px;
 }
 
 .card-divider {

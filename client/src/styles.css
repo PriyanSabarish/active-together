@@ -88,21 +88,6 @@ body {
   font-weight: 500;
 }
 
-.stepper {
-  display: flex;
-  gap: 9px;
-  margin-bottom: 28px;
-}
-
-.stepper span {
-  flex: 1;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--line-2);
-}
-
-.stepper span.on { background: var(--green); }
-
 h1 {
   font-size: 19px;
   font-weight: 500;
@@ -208,9 +193,8 @@ h1 {
   line-height: 1.5;
 }
 
-/* Multi-step progress meter (mission run/overview). Unlike .stepper (on/off
-   only, used by the location→time→results→detail funnel), each segment can
-   be partially filled to show a step that's in progress. */
+/* Multi-step progress meter. Used on/off (funnel header) or with a segment
+   partially filled (mission run/overview, to show a step in progress). */
 .progress-track {
   display: flex;
   gap: 6px;
