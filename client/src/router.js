@@ -4,7 +4,9 @@ import TimeView from './views/TimeView.vue'
 import ResultsView from './views/ResultsView.vue'
 import DetailView from './views/DetailView.vue'
 import TodayView from './views/TodayView.vue'
-import PlanView from './views/PlanView.vue'
+import MissionPreviewView from './views/MissionPreviewView.vue'
+import PickMissionView from './views/PickMissionView.vue'
+import MissionRunView from './views/MissionRunView.vue'
 import InsightsView from './views/InsightsView.vue'
 import PreferencesView from './views/PreferencesView.vue'
 import AgeBandView from './views/AgeBandView.vue'
@@ -21,7 +23,9 @@ export default createRouter({
     { path: '/results', name: 'results', component: ResultsView, meta: { tab: 'discover' } },
     { path: '/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'discover' } },
     { path: '/today', name: 'today', component: TodayView, meta: { tab: 'today' } },
-    { path: '/plan', name: 'plan', component: PlanView, meta: { tab: 'plan' } },
+    { path: '/plan', name: 'plan', component: MissionPreviewView, meta: { tab: 'plan' } },
+    { path: '/plan/pick', name: 'pick-mission', component: PickMissionView, meta: { tab: 'plan' } },
+    { path: '/plan/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'plan' } },
     { path: '/insights', name: 'insights', component: InsightsView, meta: { tab: 'insights' } },
     { path: '/prefs', name: 'prefs', component: PreferencesView, meta: { tab: 'prefs' } },
     { path: '/prefs/age-band', name: 'age-band', component: AgeBandView, meta: { tab: 'prefs' } }
