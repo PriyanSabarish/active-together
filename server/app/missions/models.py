@@ -119,3 +119,12 @@ class MissionTemplate(BaseModel):
         if not self.bands:
             raise ValueError("a template family must define at least one band")
         return self
+
+
+class ValidationResult(BaseModel):
+    """Result shape shared by validate_schema (B21) and validate_mission
+    (B22, the safety validator) — see section 1.2 of the task doc."""
+
+    ok: bool
+    failures: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
