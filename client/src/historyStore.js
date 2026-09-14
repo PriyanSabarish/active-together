@@ -9,7 +9,7 @@ import { defineStore } from 'pinia'
 // ("Insights persistence") with no owner yet — not decided here.
 // ---------------------------------------------------------------------------
 
-function mondayOf(date) {
+export function mondayOf(date) {
   const d = new Date(date)
   const day = d.getDay() // 0 = Sunday
   const diff = (day === 0 ? -6 : 1) - day
@@ -40,6 +40,17 @@ export function feedbackLabel(id) {
   return FEEDBACK_OPTIONS.find((f) => f.id === id)?.label ?? ''
 }
 
+const FEEDBACK_QUOTES = {
+  fun: 'That was fun!',
+  boring: 'That was boring.',
+  too_hard: 'That was too hard.',
+  too_easy: 'That was too easy.'
+}
+
+export function feedbackQuote(id) {
+  return FEEDBACK_QUOTES[id] ?? ''
+}
+
 export function relativeDayLabel(dateStr) {
   const d = new Date(dateStr)
   const startOfDay = (x) => { const c = new Date(x); c.setHours(0, 0, 0, 0); return c }
@@ -51,7 +62,8 @@ export function relativeDayLabel(dateStr) {
 
 export const useHistoryStore = defineStore('history', {
   state: () => ({
-    records: [] // newest first: { id, date, time, placeName, category, missionTitle, durationMin, photoStepsCount, totalSteps, feedback }
+    records: [], // newest first: { id, date, time, placeName, category, missionTitle, durationMin, photoStepsCount, totalSteps, feedback }
+    _recordSeq: 0 // disambiguates ids when two records land in the same millisecond
   }),
   getters: {
     thisWeekCount(state) {
@@ -73,11 +85,28 @@ export const useHistoryStore = defineStore('history', {
         map[r.date].push(r)
       }
       return map
+    },
+    // { category, count }[] for this week's records — drives the activity-mix
+    // bar (F22). Only categories actually logged this week are included.
+    categoryMixThisWeek(state) {
+      const weekStart = mondayOf(new Date())
+      const counts = {}
+      for (const r of state.records) {
+        if (!inWeek(new Date(r.date), weekStart)) continue
+        counts[r.category] = (counts[r.category] ?? 0) + 1
+      }
+      return Object.entries(counts).map(([category, count]) => ({ category, count }))
     }
   },
   actions: {
     addRecord(record) {
-      this.records.unshift({ id: `rec-${Date.now()}`, ...record })
+      // Date.now() alone can collide when two records are added in the same
+      // millisecond (seen in tests) — a counter keeps ids unique.
+      this._recordSeq += 1
+      this.records.unshift({ id: `rec-${Date.now()}-${this._recordSeq}`, ...record })
+    },
+    removeRecord(id) {
+      this.records = this.records.filter((r) => r.id !== id)
     }
   }
 })
