@@ -15,6 +15,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.models import (
+    ActivityCategory,
     Combo,
     Context,
     Place,
@@ -26,16 +27,16 @@ from app.recommendation.duration import match_bucket
 from app.recommendation.eligibility import MIN_CONFIDENCE, filter_eligible
 from app.recommendation.explanation import build_explanation
 from app.recommendation.ordering import order_candidates
+from app.recommendation.preferences import filter_by_preference
 from app.recommendation.tier import assess
 
 # Story 3.1: the zero-result message suggests a larger radius, a different
 # time, or reviewing preferences.
 #
-# Preference filtering is Epic 4, iteration 2. Until it exists there is no
-# preferences screen for a parent to review, so suggesting it would be dead
-# advice. The suggestion is written and gated rather than omitted, so
-# iteration 2 turns it on by flipping one flag.
-PREFERENCES_AVAILABLE = False
+# Preference filtering is Epic 4, iteration 2 (B28). Now that
+# filter_by_preference exists and recommend() applies it, the suggestion is
+# no longer dead advice.
+PREFERENCES_AVAILABLE = True
 
 SUGGEST_RADIUS = "Try a larger search radius."
 SUGGEST_TIME = "Try a different time."
@@ -100,6 +101,7 @@ def recommend(
     radius_km: int | None = None,
     timestamp: str | None = None,
     min_confidence: float = MIN_CONFIDENCE,
+    excluded_categories: tuple[ActivityCategory, ...] = (),
 ) -> Recommendation:
     bucket = match_bucket(duration_min)
     tier, summary = assess(context)
@@ -110,6 +112,7 @@ def recommend(
         duration_min=duration_min,
         min_confidence=min_confidence,
     )
+    eligible = filter_by_preference(eligible, excluded_categories)
     ordered = order_candidates(eligible, tier)
 
     if not ordered:
