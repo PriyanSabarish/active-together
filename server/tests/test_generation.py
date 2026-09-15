@@ -164,6 +164,33 @@ def test_returns_empty_list_when_nothing_matches():
     assert missions == []
 
 
+def test_logs_library_direct_source_when_no_model_client(caplog):
+    template = _template()
+    with caplog.at_level("INFO"):
+        generate_missions([template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20)
+    assert any("produced by library-direct" in r.message for r in caplog.records)
+
+
+def test_logs_model_client_class_name_on_successful_generation(caplog):
+    template = _template()
+    client = FixtureModelClient(default_text=_rewrite_json({1: "a.", 2: "b.", 3: "c."}))
+    with caplog.at_level("INFO"):
+        generate_missions(
+            [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20, model_client=client,
+        )
+    assert any("produced by FixtureModelClient" in r.message for r in caplog.records)
+
+
+def test_logs_library_direct_when_generation_falls_back(caplog):
+    template = _template()
+    client = FixtureModelClient(default_text=None)
+    with caplog.at_level("INFO"):
+        generate_missions(
+            [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20, model_client=client,
+        )
+    assert any("produced by library-direct" in r.message for r in caplog.records)
+
+
 def test_preferences_and_recent_ids_still_apply():
     template = _template(category="playground")
     missions = generate_missions(

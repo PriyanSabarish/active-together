@@ -174,13 +174,22 @@ def generate_missions(
         library_mission = build_mission(template, age_band, duration_bucket)
 
         mission = library_mission
+        source = "library-direct"
         if model_client is not None:
             generated = _try_generate(template, library_mission, place, context, age_band, model_client)
-            mission = generated if generated is not None else library_mission
+            if generated is not None:
+                mission = generated
+                source = type(model_client).__name__
 
         if not validate_mission(mission, template).ok:
             continue
 
+        # B42: which client produced this mission, cheap now and the first
+        # question asked when mission quality shifts after a provider swap.
+        logger.info(
+            "mission %s for template '%s' produced by %s",
+            mission.mission_id, template.template_id, source,
+        )
         missions.append(mission)
 
     return missions
