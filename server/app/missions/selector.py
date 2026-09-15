@@ -1,11 +1,15 @@
 """
-select_templates (B20) — the first filter stage inside generate_missions.
+select_templates (B20, B33) — the first filter stage inside generate_missions.
 
-Six hard pass/fail dimensions: category, weather tag, age band, bucket,
-preference exclusion, recent history. No ranking and no relaxation here —
-if excluding every preferred-away category or every recently-served
-template empties the result, that's B28's relaxation rule and B33's
-recency weighting to handle, not this function's.
+Four hard pass/fail dimensions — category, weather tag, age band, bucket —
+that never relax: a template either fits the request or it doesn't. Two
+soft exclusion dimensions, applied on top and each relaxing independently
+back to its own input if it would empty the result: preference exclusion
+(a category the family wants to avoid) and recent-history exclusion (B33
+— don't serve the same template twice in a row). Getting nothing because
+the family has played through the whole eligible library recently is a
+worse experience than an occasional repeat, so recency loses to "return
+something" exactly the way preference already does.
 
 templates is accepted as a plain argument (not loaded internally) so this
 stays testable with fixtures, matching every other pure function in
@@ -39,16 +43,24 @@ def select_templates(
     excluded_ids = frozenset(recent_template_ids)
     applicable_tags = classify_weather_tags(context)
 
-    return [
+    eligible = [
         template
         for template in templates
         if _matches_category(template, place)
         and _matches_weather(template, applicable_tags)
         and age_band in template.bands
         and template.duration_bucket >= duration_bucket
-        and template.category not in excluded_categories
-        and template.template_id not in excluded_ids
     ]
+
+    after_preferences = [t for t in eligible if t.category not in excluded_categories]
+    if not after_preferences:
+        after_preferences = eligible
+
+    after_recent = [t for t in after_preferences if t.template_id not in excluded_ids]
+    if not after_recent:
+        after_recent = after_preferences
+
+    return after_recent
 
 
 def _matches_category(template: MissionTemplate, place: Place) -> bool:

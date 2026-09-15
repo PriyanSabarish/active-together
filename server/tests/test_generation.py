@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 
 from app.missions.generation import generate_missions
+from app.missions.instrumentation import RejectionStats
 from app.missions.models import Band, MissionTemplate, Review, TemplateStep
 from app.model_client import FixtureModelClient
 from app.models import AgeBand
@@ -131,7 +132,7 @@ class TitleAwareModelClient:
         return _rewrite_json({1: "Rewritten one.", 2: "Rewritten two.", 3: "Rewritten three."})
 
 
-def test_unsafe_generated_text_is_rejected_and_moves_to_next_template():
+def test_unsafe_generated_text_is_rejected_and_a_different_template_is_tried_first():
     unsafe = _template(template_id="fx_unsafe", title="Unsafe template")
     safe = _template(template_id="fx_safe", title="Safe template")
 
@@ -139,9 +140,114 @@ def test_unsafe_generated_text_is_rejected_and_moves_to_next_template():
         [unsafe, safe], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
         model_client=TitleAwareModelClient(),
     )
-    template_ids = [m.template_id for m in missions]
-    assert "fx_unsafe" not in template_ids
-    assert "fx_safe" in template_ids
+    # both appear: fx_safe from its own generation, fx_unsafe recovered by
+    # B30's retry with its original (safe) library wording — never with
+    # the rejected "climb the tree" text.
+    by_template = {m.template_id: m for m in missions}
+    assert set(by_template) == {"fx_unsafe", "fx_safe"}
+    assert by_template["fx_unsafe"].steps[0].prompt_text == "Hop to the fence."
+    assert all("climb" not in s.prompt_text.lower() for s in by_template["fx_unsafe"].steps)
+
+
+#  B30: rejection-path exhaustion
+
+
+def test_generated_rejection_recovers_with_library_direct_wording():
+    unsafe = _template(template_id="fx_unsafe", title="Unsafe template")
+
+    missions = generate_missions(
+        [unsafe], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=TitleAwareModelClient(),
+    )
+    assert len(missions) == 1
+    assert missions[0].template_id == "fx_unsafe"
+    assert missions[0].steps[0].prompt_text == "Hop to the fence."
+
+
+def test_library_direct_rejection_is_not_retried_and_is_dropped():
+    # No model_client at all, so the *library-direct* text is what gets
+    # rejected — retrying identical input would just fail identically,
+    # so this candidate must not reappear.
+    unsafe = _template(bands={
+        AgeBand.BAND_5_7: Band(title=None, steps=[
+            _step(1, "Cross the road to the other side."), _step(2), _step(3),
+        ])
+    })
+
+    missions = generate_missions([unsafe], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20)
+    assert missions == []
+
+
+def test_returns_empty_list_when_every_candidate_is_exhausted():
+    # Both the generated AND the library-direct wording are unsafe, so
+    # neither the first pass nor B30's retry pass can recover this one.
+    def _unsafe_bands():
+        return {AgeBand.BAND_5_7: Band(title=None, steps=[
+            _step(1, "Cross the road to the other side."), _step(2), _step(3),
+        ])}
+
+    unsafe_one = _template(template_id="fx_unsafe_1", title="Unsafe template", bands=_unsafe_bands())
+    unsafe_two = _template(template_id="fx_unsafe_2", title="Unsafe template", bands=_unsafe_bands())
+
+    class AlwaysUnsafeModelClient:
+        def generate_text(self, prompt, max_tokens, timeout_s):
+            return _rewrite_json({1: "Climb the tree over there.", 2: "Wave both arms.", 3: "Walk backwards."})
+
+    missions = generate_missions(
+        [unsafe_one, unsafe_two], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=AlwaysUnsafeModelClient(),
+    )
+    assert missions == []
+
+
+#  B35: rejection-rate instrumentation
+
+
+def test_stats_records_a_successful_generation_attempt():
+    template = _template()
+    client = FixtureModelClient(default_text=_rewrite_json({1: "a.", 2: "b.", 3: "c."}))
+    stats = RejectionStats()
+
+    generate_missions(
+        [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=client, stats=stats,
+    )
+    assert stats.generation_attempts == 1
+    assert stats.generation_rejections == 0
+
+
+def test_stats_records_a_rejected_generation_by_constraint():
+    unsafe = _template(title="Unsafe template")
+    client = TitleAwareModelClient()
+    stats = RejectionStats()
+
+    generate_missions(
+        [unsafe], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=client, stats=stats,
+    )
+    assert stats.generation_attempts == 1
+    assert stats.generation_rejections == 1
+    assert stats.by_constraint == {"no_climbing": 1}
+
+
+def test_stats_do_not_count_pure_library_direct_calls():
+    template = _template()
+    stats = RejectionStats()
+
+    generate_missions([template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20, stats=stats)
+    assert stats.generation_attempts == 0
+
+
+def test_stats_do_not_count_generation_that_fell_back_to_library_direct():
+    template = _template()
+    client = FixtureModelClient(default_text=None)  # generation fails, falls back
+    stats = RejectionStats()
+
+    generate_missions(
+        [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=client, stats=stats,
+    )
+    assert stats.generation_attempts == 0
 
 
 def test_caps_at_max_missions():
@@ -192,15 +298,19 @@ def test_logs_library_direct_when_generation_falls_back(caplog):
 
 
 def test_preferences_and_recent_ids_still_apply():
-    template = _template(category="playground")
-    missions = generate_missions(
-        [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
-        preferences=["playground"],
-    )
-    assert missions == []
+    # Two eligible candidates so exclusion has something to exclude
+    # without B33/select_templates' own relaxation rule masking it.
+    excluded = _template(template_id="fx_excluded", category="playground")
+    other = _template(template_id="fx_other", category="any")
 
     missions = generate_missions(
-        [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
-        recent_template_ids=["fx_gen_test"],
+        [excluded, other], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        preferences=["playground"],
     )
-    assert missions == []
+    assert [m.template_id for m in missions] == ["fx_other"]
+
+    missions = generate_missions(
+        [excluded, other], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        recent_template_ids=["fx_excluded"],
+    )
+    assert [m.template_id for m in missions] == ["fx_other"]

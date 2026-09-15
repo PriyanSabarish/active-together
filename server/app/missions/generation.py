@@ -1,9 +1,8 @@
 """
-generate_missions (B23) — the top-level function A19 calls.
+generate_missions (B23, B30, B35) — the top-level function A19 calls.
 
 Selection, generation, validation and fallback all happen inside; this
-always returns whatever missions it can produce (0 to MAX_MISSIONS), never
-raises, and never needs a model running to be tested.
+never raises and never needs a model running to be tested.
 
 Per candidate template (up to MAX_MISSIONS of them):
   1. Skip it if it fails the schema validator (B21) — malformed content
@@ -13,21 +12,31 @@ Per candidate template (up to MAX_MISSIONS of them):
   3. If a model_client is given, try rewriting the *variable* steps (see
      the schema's `variable` flag) through it. No response, a timeout, or
      a response that doesn't parse against GENERATION_RESPONSE_SCHEMA all
-     fall back to the library-direct wording for that candidate — "retry
-     with a different template" (the doc's phrase) means a *different*
-     template only kicks in once the current one's own library-direct
-     fallback also fails.
+     fall back to the library-direct wording for that candidate.
   4. Run the result — generated or library-direct — through the safety
-     validator (B22). Reject it and move to the next candidate if it
-     fails; nothing rejected is ever returned.
+     validator (B22).
+
+Rejection-path exhaustion (B30): if the *generated* rewrite is what got
+rejected, the candidate isn't discarded outright — its original,
+human-reviewed wording might still be safe, so it's retried once with
+pure library-direct text in a second pass, after every candidate has had
+a first attempt. A candidate whose library-direct text is itself rejected
+is not retried (retrying identical input would just fail identically) and
+is dropped for good. If nothing survives either pass, this returns an
+empty list — that is the defined behaviour, not an accident, and it's
+what Backend A's A25 degrades gracefully around at the API layer.
 
 model_client is expected to already be configured with
 GENERATION_RESPONSE_SCHEMA if it's a GeminiModelClient (B41) — this
 function only calls generate_text, it doesn't configure the client.
 FixtureModelClient doesn't care since it just returns canned text.
 
-What happens when every candidate is rejected is B30's job, not this
-function's — this may return fewer than MAX_MISSIONS, including zero.
+Pass a RejectionStats (B35) to count how often generated content gets
+rejected, and by which safety constraint — evidence the validator is
+doing work, not just an assertion that it does. Library-direct rejections
+aren't counted; those would mean the reviewed content itself is unsafe,
+which is a content bug, not something the validator catching Gemini
+proves.
 """
 
 from __future__ import annotations
@@ -37,6 +46,7 @@ import logging
 from typing import Iterable
 
 from app.missions.builder import build_mission
+from app.missions.instrumentation import RejectionStats
 from app.missions.models import MissionTemplate
 from app.missions.safety import validate_mission
 from app.missions.schema_validator import validate_schema
@@ -157,12 +167,18 @@ def generate_missions(
     recent_template_ids: Iterable[str] = (),
     model_client: ModelClient | None = None,
     max_missions: int = MAX_MISSIONS,
+    stats: RejectionStats | None = None,
 ) -> list[Mission]:
     candidates = select_templates(
         templates, place, context, age_band, duration_bucket, preferences, recent_template_ids,
     )
 
     missions: list[Mission] = []
+    # B30: a candidate whose *generated* rewrite gets rejected isn't
+    # necessarily unusable — its original, human-reviewed wording might
+    # still be safe. Retry those once with pure library-direct text before
+    # giving up on them, rather than discarding on first rejection.
+    retry_with_library_direct: list[MissionTemplate] = []
 
     for template in candidates:
         if len(missions) >= max_missions:
@@ -181,15 +197,37 @@ def generate_missions(
                 mission = generated
                 source = type(model_client).__name__
 
-        if not validate_mission(mission, template).ok:
+        result = validate_mission(mission, template)
+        if stats is not None:
+            stats.record(result, was_generated=source != "library-direct")
+
+        if not result.ok:
+            if source != "library-direct":
+                retry_with_library_direct.append(template)
             continue
 
-        # B42: which client produced this mission, cheap now and the first
-        # question asked when mission quality shifts after a provider swap.
-        logger.info(
-            "mission %s for template '%s' produced by %s",
-            mission.mission_id, template.template_id, source,
-        )
-        missions.append(mission)
+        _log_and_append(missions, mission, template, source)
+
+    for template in retry_with_library_direct:
+        if len(missions) >= max_missions:
+            break
+
+        library_mission = build_mission(template, age_band, duration_bucket)
+        if not validate_mission(library_mission, template).ok:
+            continue
+
+        _log_and_append(missions, library_mission, template, "library-direct (after generated rejection)")
 
     return missions
+
+
+def _log_and_append(
+    missions: list[Mission], mission: Mission, template: MissionTemplate, source: str,
+) -> None:
+    # B42: which client produced this mission, cheap now and the first
+    # question asked when mission quality shifts after a provider swap.
+    logger.info(
+        "mission %s for template '%s' produced by %s",
+        mission.mission_id, template.template_id, source,
+    )
+    missions.append(mission)
