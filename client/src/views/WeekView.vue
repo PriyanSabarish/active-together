@@ -21,7 +21,7 @@
         class="row as-btn"
         :class="{ empty: !day.record }"
         :disabled="!day.record"
-        @click="router.push(`/insights/${day.date}`)"
+        @click="router.push(`/week/${day.date}`)"
       >
         <span class="row-key">{{ day.label }}</span>
         <span class="row-main">

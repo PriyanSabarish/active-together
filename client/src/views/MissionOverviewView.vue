@@ -3,7 +3,7 @@
     <AppHeader />
 
     <div class="scroll-area">
-      <button class="pill crumb" @click="router.push('/plan/run')">‹ Back to the task</button>
+      <button class="pill crumb" @click="router.push('/play/run')">‹ Back to the task</button>
       <h1 class="mission-name" style="margin-top: 14px">{{ mission.title }}</h1>
       <p class="subtitle">{{ doneCount }} of {{ missionStore.totalSteps }} steps done · about {{ minsLeft }} min left</p>
 
@@ -35,16 +35,16 @@
 
     <div class="btn-row">
       <button class="btn btn-secondary" @click="skip">Skip this step</button>
-      <button class="btn btn-primary" @click="router.push('/plan/run')">Back to step {{ missionStore.stepIndex + 1 }}</button>
+      <button class="btn btn-primary" @click="router.push('/play/run')">Back to step {{ missionStore.stepIndex + 1 }}</button>
     </div>
   </template>
 
   <template v-else>
     <AppHeader />
     <div class="scroll-area placeholder">
-      <p class="eyebrow-accent">Plan</p>
+      <p class="eyebrow-accent">Play</p>
       <h1>No mission running</h1>
-      <p class="subtitle">Start one from Today or Plan first.</p>
+      <p class="subtitle">Start one from Play first.</p>
     </div>
   </template>
 </template>
@@ -68,7 +68,7 @@ const minsLeft = computed(() => {
 
 function skip() {
   missionStore.advanceStep()
-  if (missionStore.status === 'done') router.push('/plan/finished')
+  if (missionStore.status === 'done') router.push('/play/finished')
 }
 </script>
 

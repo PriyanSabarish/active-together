@@ -3,37 +3,49 @@ import LocationView from './views/LocationView.vue'
 import TimeView from './views/TimeView.vue'
 import ResultsView from './views/ResultsView.vue'
 import DetailView from './views/DetailView.vue'
-import TodayView from './views/TodayView.vue'
+import PlayView from './views/PlayView.vue'
 import MissionPreviewView from './views/MissionPreviewView.vue'
 import PickMissionView from './views/PickMissionView.vue'
 import MissionRunView from './views/MissionRunView.vue'
 import MissionOverviewView from './views/MissionOverviewView.vue'
 import MissionFinishedView from './views/MissionFinishedView.vue'
-import InsightsView from './views/InsightsView.vue'
+import WeekView from './views/WeekView.vue'
 import DayDetailView from './views/DayDetailView.vue'
-import PreferencesView from './views/PreferencesView.vue'
+import YouView from './views/YouView.vue'
 import AgeBandView from './views/AgeBandView.vue'
 
-// meta.tab drives which bottom-tab is highlighted (see TabShell.vue); routes
-// without a tab, or with meta.hideTabBar, render without the tab bar.
-// Location keeps the tab bar too — hiding it here was a dead end with no way
-// to reach another tab.
+// Four tabs, as in the prototype: Start (where/how far/how long → places),
+// Play (today's mission and everything while it runs), Week (what happened,
+// device-local), You (preferences, device-local). meta.tab picks the active
+// tab in TabShell; meta.dark switches the shell to the dark mission screen.
 export default createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'location', component: LocationView, meta: { tab: 'discover' } },
-    { path: '/time', name: 'time', component: TimeView, meta: { tab: 'discover' } },
-    { path: '/results', name: 'results', component: ResultsView, meta: { tab: 'discover' } },
-    { path: '/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'discover' } },
-    { path: '/today', name: 'today', component: TodayView, meta: { tab: 'today' } },
-    { path: '/plan', name: 'plan', component: MissionPreviewView, meta: { tab: 'plan' } },
-    { path: '/plan/pick', name: 'pick-mission', component: PickMissionView, meta: { tab: 'plan' } },
-    { path: '/plan/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'plan', dark: true } },
-    { path: '/plan/overview', name: 'mission-overview', component: MissionOverviewView, meta: { tab: 'plan' } },
-    { path: '/plan/finished', name: 'mission-finished', component: MissionFinishedView, meta: { tab: 'plan' } },
-    { path: '/insights', name: 'insights', component: InsightsView, meta: { tab: 'insights' } },
-    { path: '/insights/:date', name: 'day-detail', component: DayDetailView, props: true, meta: { tab: 'insights' } },
-    { path: '/prefs', name: 'prefs', component: PreferencesView, meta: { tab: 'prefs' } },
-    { path: '/prefs/age-band', name: 'age-band', component: AgeBandView, meta: { tab: 'prefs' } }
+    // Start
+    { path: '/', name: 'location', component: LocationView, meta: { tab: 'start' } },
+    { path: '/time', name: 'time', component: TimeView, meta: { tab: 'start' } },
+    { path: '/results', name: 'results', component: ResultsView, meta: { tab: 'start' } },
+    { path: '/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'start' } },
+    // Play
+    { path: '/play', name: 'play', component: PlayView, meta: { tab: 'play' } },
+    { path: '/play/preview', name: 'mission-preview', component: MissionPreviewView, meta: { tab: 'play' } },
+    { path: '/play/pick', name: 'pick-mission', component: PickMissionView, meta: { tab: 'play' } },
+    { path: '/play/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'play', dark: true } },
+    { path: '/play/overview', name: 'mission-overview', component: MissionOverviewView, meta: { tab: 'play' } },
+    { path: '/play/finished', name: 'mission-finished', component: MissionFinishedView, meta: { tab: 'play' } },
+    // Week
+    { path: '/week', name: 'week', component: WeekView, meta: { tab: 'week' } },
+    { path: '/week/:date', name: 'day-detail', component: DayDetailView, props: true, meta: { tab: 'week' } },
+    // You
+    { path: '/you', name: 'you', component: YouView, meta: { tab: 'you' } },
+    { path: '/you/age-band', name: 'age-band', component: AgeBandView, meta: { tab: 'you' } },
+    // Old five-tab paths, kept so bookmarks and the onboarding flag still land somewhere.
+    { path: '/today', redirect: '/play' },
+    { path: '/plan', redirect: '/play/preview' },
+    { path: '/plan/:rest(.*)', redirect: (to) => `/play/${to.params.rest}` },
+    { path: '/insights', redirect: '/week' },
+    { path: '/insights/:date', redirect: (to) => `/week/${to.params.date}` },
+    { path: '/prefs', redirect: '/you' },
+    { path: '/prefs/age-band', redirect: '/you/age-band' }
   ]
 })

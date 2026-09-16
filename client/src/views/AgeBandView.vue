@@ -2,7 +2,7 @@
   <AppHeader />
 
   <div class="scroll-area">
-    <button class="pill crumb" @click="router.push('/prefs')">‹ Preferences</button>
+    <button class="pill crumb" @click="router.push('/you')">‹ Preferences</button>
     <h1 style="margin-top: 14px">How old is Daniel?</h1>
     <p class="subtitle">Stored as a band only, never a date of birth.</p>
 
@@ -37,7 +37,7 @@ const selectedBand = computed(() => AGE_BANDS.find((b) => b.id === selected.valu
 
 function save() {
   prefs.setAgeBand(selected.value)
-  router.push('/prefs')
+  router.push('/you')
 }
 </script>
 

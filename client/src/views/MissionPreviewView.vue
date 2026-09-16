@@ -3,7 +3,7 @@
     <AppHeader />
 
     <div class="scroll-area">
-      <button class="pill crumb" @click="router.push('/today')">‹ Today</button>
+      <button class="pill crumb" @click="router.push('/play')">‹ Play</button>
       <div class="head-row" style="margin-top: 14px">
         <div>
           <h1 class="mission-name">{{ mission.title }}</h1>
@@ -30,7 +30,7 @@
 
       <p class="switch-link">
         Not the right fit?
-        <button class="link-btn" @click="router.push('/plan/pick')">Let Daniel choose instead</button>
+        <button class="link-btn" @click="router.push('/play/pick')">Let Daniel choose instead</button>
       </p>
     </div>
 
@@ -40,10 +40,13 @@
   <template v-else>
     <AppHeader />
     <div class="scroll-area placeholder">
-      <p class="eyebrow-accent">Plan</p>
+      <p class="eyebrow-accent">Play</p>
       <h1>No mission chosen yet</h1>
-      <p class="subtitle">Pick one from Today, or choose one yourself.</p>
-      <button class="btn btn-outline" style="margin-top: 16px" @click="router.push('/plan/pick')">Pick a mission</button>
+      <p class="subtitle">Take today’s pick on Play, or let Daniel choose one.</p>
+      <div class="btn-row" style="width: 100%">
+        <button class="btn btn-secondary" @click="router.push('/play')">Play</button>
+        <button class="btn btn-primary" @click="router.push('/play/pick')">Pick a mission</button>
+      </div>
     </div>
   </template>
 </template>
@@ -60,7 +63,7 @@ const mission = computed(() => missionStore.active)
 
 function start() {
   missionStore.startMission()
-  router.push('/plan/run')
+  router.push('/play/run')
 }
 </script>
 

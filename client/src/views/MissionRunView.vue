@@ -31,17 +31,17 @@
       <button class="btn skip-btn" @click="advance">Skip this one</button>
       <p class="offline-note">Downloaded before you left — the steps work with no signal.</p>
 
-      <button class="link-btn" @click="router.push('/plan/overview')">Full overview</button>
+      <button class="link-btn" @click="router.push('/play/overview')">Full overview</button>
     </div>
   </template>
 
   <template v-else>
     <AppHeader />
     <div class="scroll-area placeholder">
-      <p class="eyebrow-accent">Plan</p>
+      <p class="eyebrow-accent">Play</p>
       <h1>No mission running</h1>
-      <p class="subtitle">Start one from Today, or preview and start it here.</p>
-      <button class="btn btn-outline" style="margin-top: 16px" @click="router.push('/plan')">Go to Plan</button>
+      <p class="subtitle">Pick a mission on Play, then start it from the preview.</p>
+      <button class="btn btn-outline" style="margin-top: 16px" @click="router.push('/play/preview')">Go to Play</button>
     </div>
   </template>
 </template>
@@ -60,7 +60,7 @@ const isLast = computed(() => missionStore.stepIndex === missionStore.totalSteps
 
 function advance() {
   missionStore.advanceStep()
-  if (missionStore.status === 'done') router.push('/plan/finished')
+  if (missionStore.status === 'done') router.push('/play/finished')
 }
 </script>
 

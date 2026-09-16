@@ -23,7 +23,7 @@
     </div>
 
     <h2 class="sect">Age band</h2>
-    <button class="info-card as-btn" @click="router.push('/prefs/age-band')">
+    <button class="info-card as-btn" @click="router.push('/you/age-band')">
       <span class="info-title">{{ prefs.ageBandInfo.label }}</span>
       <span class="info-body">{{ prefs.ageBandInfo.note }}</span>
       <span class="change-link">Change ›</span>

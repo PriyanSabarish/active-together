@@ -37,7 +37,7 @@
   <template v-else>
     <AppHeader />
     <div class="scroll-area placeholder">
-      <p class="eyebrow-accent">Plan</p>
+      <p class="eyebrow-accent">Play</p>
       <h1>No mission to finish</h1>
       <p class="subtitle">Finish a running mission first.</p>
     </div>
@@ -79,7 +79,7 @@ function finish() {
   })
   // Reset only after the route has actually changed, so this screen doesn't
   // flash its "no mission" fallback while the navigation is still in flight.
-  router.push('/insights').then(() => missionStore.resetMission())
+  router.push('/week').then(() => missionStore.resetMission())
 }
 </script>
 

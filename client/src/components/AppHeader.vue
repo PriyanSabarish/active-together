@@ -6,7 +6,7 @@
           <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <RouterLink to="/today" class="brand-link" aria-label="Go to Today">
+      <RouterLink to="/play" class="brand-link" aria-label="Go to Play">
         <svg class="logo-pin" width="26" height="32" viewBox="0 0 100 126" aria-hidden="true">
           <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" class="pin-body" />
           <circle cx="50" cy="34" r="12" class="pin-eye" />

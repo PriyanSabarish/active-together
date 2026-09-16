@@ -68,7 +68,7 @@
 
     <div class="btn-row" style="margin-top: 14px">
       <button class="btn btn-secondary" @click="getDirections">Directions</button>
-      <button class="btn btn-primary" @click="$router.push('/plan/pick')">Pick a mission <span class="btn-arrow">→</span></button>
+      <button class="btn btn-primary" @click="$router.push('/play/pick')">Pick a mission <span class="btn-arrow">→</span></button>
     </div>
   </template>
 

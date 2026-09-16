@@ -296,7 +296,7 @@ h2 {
 }
 
 /* ---------- bottom tab navigation ----------
-   Shell-level nav for the 5-tab structure (Today/Discover/Plan/Insights/Prefs). */
+   Shell-level nav for the four tabs (Start / Play / Week / You). */
 .tab-bar {
   display: flex;
   background: var(--paper);

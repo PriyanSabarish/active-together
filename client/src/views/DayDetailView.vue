@@ -2,7 +2,7 @@
   <AppHeader />
 
   <div class="scroll-area">
-    <button class="pill crumb" @click="router.push('/insights')">‹ This week</button>
+    <button class="pill crumb" @click="router.push('/week')">‹ This week</button>
     <h1 class="day-name" style="margin-top: 14px">{{ dayName }}</h1>
 
     <template v-if="records.length">

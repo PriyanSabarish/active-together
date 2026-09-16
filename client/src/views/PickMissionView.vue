@@ -40,7 +40,7 @@ function confirm() {
   if (!selectedId.value) return
   missionStore.chooseMission(selectedId.value)
   missionStore.startMission()
-  router.push('/plan/run')
+  router.push('/play/run')
 }
 </script>
 
