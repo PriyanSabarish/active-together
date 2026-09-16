@@ -4,7 +4,7 @@
     <div class="onb-bar">
       <span class="onb-brand">
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="8" cy="8" r="8" fill="#3B6D11" />
+          <circle cx="8" cy="8" r="8" fill="var(--green)" />
           <circle cx="8" cy="8" r="3" fill="#FFFFFF" />
         </svg>
         Active Together.
@@ -97,7 +97,7 @@ const Tree = (x, y, s = 1) =>
   ])
 
 const Pill = (cx, cy, text, w) => [
-  h('rect', { x: cx - w / 2, y: cy - 18, width: w, height: 36, rx: 18, fill: '#3B6D11' }),
+  h('rect', { x: cx - w / 2, y: cy - 18, width: w, height: 36, rx: 18, fill: 'var(--green)' }),
   h('text', { x: cx, y: cy + 5, 'text-anchor': 'middle', fill: '#FFFFFF', 'font-size': 14, 'font-weight': 700, 'font-family': 'inherit' }, text)
 ]
 
@@ -111,9 +111,9 @@ const ArtClock = () =>
     h('circle', { cx: 165, cy: 170, r: 78, fill: '#FBF7EA' }),
     h('circle', { cx: 165, cy: 170, r: 66, fill: '#FFFFFF' }),
     h('path', { d: 'M165 170 L165 104 A66 66 0 0 1 222 137 Z', fill: '#F5A94B' }),
-    h('line', { x1: 165, y1: 170, x2: 165, y2: 118, stroke: '#3B6D11', 'stroke-width': 5, 'stroke-linecap': 'round' }),
-    h('line', { x1: 165, y1: 170, x2: 210, y2: 145, stroke: '#3B6D11', 'stroke-width': 4, 'stroke-linecap': 'round' }),
-    h('circle', { cx: 165, cy: 170, r: 4, fill: '#3B6D11' }),
+    h('line', { x1: 165, y1: 170, x2: 165, y2: 118, stroke: 'var(--green)', 'stroke-width': 5, 'stroke-linecap': 'round' }),
+    h('line', { x1: 165, y1: 170, x2: 210, y2: 145, stroke: 'var(--green)', 'stroke-width': 4, 'stroke-linecap': 'round' }),
+    h('circle', { cx: 165, cy: 170, r: 4, fill: 'var(--green)' }),
     ...[104, 236].map((y) => h('circle', { cx: 165, cy: y, r: 3, fill: '#D24D3A' })),
     ...[99, 231].map((x) => h('circle', { cx: x, cy: 170, r: 3, fill: '#D24D3A' })),
     h('circle', { cx: 150, cy: 168, r: 2.5, fill: '#2C2C2A' }),
@@ -176,7 +176,7 @@ const ArtFlags = () =>
     ...Sun(278, 40, 14),
     h('path', { d: 'M0 130 Q165 100 330 120 L330 320 L0 320 Z', fill: '#8BC262' }),
     Flag(66, 130, '#E8604C', 1, 70),
-    Flag(128, 110, '#3B6D11', 2, 90),
+    Flag(128, 110, 'var(--green)', 2, 90),
     Flag(190, 140, '#F5A94B', 3, 60),
     h('ellipse', { cx: 112, cy: 300, rx: 40, ry: 8, fill: 'rgba(0,0,0,0.12)' }),
     h('path', { d: 'M78 260 q-12 -10 4 -18', stroke: '#7DB35A', 'stroke-width': 9, 'stroke-linecap': 'round' }),
@@ -359,7 +359,7 @@ function finish() {
   max-width: 390px;
   max-height: 100%;
   height: min(100%, 720px);
-  background: #FBF9F2;
+  background: var(--paper);
   border-radius: 24px;
   box-shadow: 0 24px 60px rgba(23, 51, 42, 0.35);
   display: flex;

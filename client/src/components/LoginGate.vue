@@ -2,10 +2,10 @@
   <div class="gate">
     <div class="gate-card" role="dialog" aria-labelledby="gate-title">
       <svg class="gate-logo" width="40" height="50" viewBox="0 0 100 126" aria-hidden="true">
-        <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="#2E8540" />
-        <circle cx="50" cy="34" r="12" fill="#F49B1B" />
-        <path d="M28 54 Q50 70 72 54" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
-        <path d="M32 78 Q50 92 68 78" fill="none" stroke="#7CBE7A" stroke-width="10" stroke-linecap="round" />
+        <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="var(--green)" />
+        <circle cx="50" cy="34" r="12" fill="var(--accent)" />
+        <path d="M28 54 Q50 70 72 54" fill="none" stroke="var(--paper)" stroke-width="10" stroke-linecap="round" />
+        <path d="M32 78 Q50 92 68 78" fill="none" stroke="#9FCC86" stroke-width="10" stroke-linecap="round" />
       </svg>
       <h1 id="gate-title" class="gate-title">Sign in</h1>
       <p class="gate-sub">Active Together is in a private pilot. Enter the admin account to continue.</p>
@@ -64,19 +64,20 @@ function submit() {
 .gate-card {
   width: 100%;
   max-width: 360px;
-  background: #FFFFFF;
-  border: 1px solid var(--line-2);
-  border-radius: 16px;
+  background: var(--card);
+  border-radius: var(--radius-card);
   padding: 28px 24px;
-  box-shadow: 0 12px 32px rgba(44, 44, 42, 0.08);
+  box-shadow: var(--shadow-raised);
   text-align: center;
 }
 
 .gate-logo { margin-bottom: 8px; }
 
 .gate-title {
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: 24px;
   font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 .gate-sub {
@@ -97,8 +98,9 @@ function submit() {
 .gate-input {
   width: 100%;
   height: 44px;
-  border: 1px solid var(--line-3);
-  border-radius: 10px;
+  border: none;
+  box-shadow: inset 0 0 0 1.5px var(--line-3);
+  border-radius: var(--radius-field);
   padding: 0 14px;
   font-size: 14px;
   font-family: inherit;
@@ -106,7 +108,7 @@ function submit() {
   outline: none;
 }
 
-.gate-input:focus { border-color: var(--green); }
+.gate-input:focus { box-shadow: inset 0 0 0 2px var(--green); }
 
 .gate-error {
   margin-top: 12px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="phone">
+  <div class="phone" :class="{ dark: isDark }">
     <LoginGate v-if="!authed" @authenticated="signIn" />
     <template v-else>
       <router-view v-slot="{ Component, route }">
@@ -73,6 +73,7 @@ const router = useRouter()
 const transitionName = ref('slide-left')
 
 const currentTab = computed(() => router.currentRoute.value.meta.tab ?? '')
+const isDark = computed(() => !!router.currentRoute.value.meta.dark)
 const showTabBar = computed(() => !!currentTab.value && !router.currentRoute.value.meta.hideTabBar)
 
 watch(

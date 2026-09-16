@@ -28,7 +28,7 @@ export default createRouter({
     { path: '/today', name: 'today', component: TodayView, meta: { tab: 'today' } },
     { path: '/plan', name: 'plan', component: MissionPreviewView, meta: { tab: 'plan' } },
     { path: '/plan/pick', name: 'pick-mission', component: PickMissionView, meta: { tab: 'plan' } },
-    { path: '/plan/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'plan' } },
+    { path: '/plan/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'plan', dark: true } },
     { path: '/plan/overview', name: 'mission-overview', component: MissionOverviewView, meta: { tab: 'plan' } },
     { path: '/plan/finished', name: 'mission-finished', component: MissionFinishedView, meta: { tab: 'plan' } },
     { path: '/insights', name: 'insights', component: InsightsView, meta: { tab: 'insights' } },

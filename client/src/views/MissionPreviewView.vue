@@ -1,17 +1,10 @@
 <template>
   <template v-if="mission">
-    <div class="app-bar">
-      <button class="back-btn" aria-label="Back to Today" @click="router.push('/today')">
-        <svg width="18" height="24" viewBox="0 0 18 24">
-          <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <span class="page-title">Mission preview</span>
-      <span class="spacer" />
-    </div>
+    <AppHeader />
 
     <div class="scroll-area">
-      <div class="head-row">
+      <button class="pill crumb" @click="router.push('/today')">‹ Today</button>
+      <div class="head-row" style="margin-top: 14px">
         <div>
           <h1 class="mission-name">{{ mission.title }}</h1>
           <p class="subtitle">{{ mission.placeName }} · {{ mission.steps.length }} steps · about {{ mission.durationMin }} min</p>
@@ -29,10 +22,10 @@
         </div>
       </article>
 
-      <p class="section-eyebrow" style="margin-top: 20px">Equipment</p>
+      <p class="eyebrow-accent" style="margin-top: 20px">Equipment</p>
       <p class="body-text">{{ mission.equipment }}</p>
 
-      <p class="section-eyebrow" style="margin-top: 20px">Why this mission</p>
+      <p class="eyebrow-accent" style="margin-top: 20px">Why this mission</p>
       <p class="body-text">{{ mission.whyThisMission }}</p>
 
       <p class="switch-link">
@@ -41,17 +34,16 @@
       </p>
     </div>
 
-    <hr class="divider" style="margin-bottom: 16px" />
-    <button class="btn btn-primary" style="width: 100%" @click="start">Start mission</button>
+    <button class="btn btn-primary" style="width: 100%; margin-top: 14px" @click="start">Start mission</button>
   </template>
 
   <template v-else>
-    <AppHeader plain />
+    <AppHeader />
     <div class="scroll-area placeholder">
-      <p class="section-eyebrow">Plan</p>
+      <p class="eyebrow-accent">Plan</p>
       <h1>No mission chosen yet</h1>
       <p class="subtitle">Pick one from Today, or choose one yourself.</p>
-      <button class="btn btn-secondary" style="margin-top: 16px" @click="router.push('/plan/pick')">Pick a mission</button>
+      <button class="btn btn-outline" style="margin-top: 16px" @click="router.push('/plan/pick')">Pick a mission</button>
     </div>
   </template>
 </template>
@@ -77,7 +69,7 @@ function start() {
   flex: 1;
   text-align: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink-3);
 }
 
@@ -90,12 +82,13 @@ function start() {
   gap: 12px;
 }
 
-.mission-name { color: var(--green-dark); }
+.mission-name { color: var(--ink); }
 
 .step-card {
   margin-top: 12px;
-  border: 1px solid var(--line-2);
-  border-radius: 12px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   padding: 14px 16px;
   display: flex;
   align-items: center;
@@ -103,11 +96,12 @@ function start() {
 }
 
 .step-num {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
+  font-family: var(--font-display);
   border-radius: 50%;
   background: var(--green);
-  color: #FFFFFF;
+  color: var(--paper);
   font-size: 13px;
   font-weight: 600;
   display: flex;
@@ -133,7 +127,7 @@ function start() {
   border: none;
   color: var(--green-dark);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   padding: 0;

@@ -57,7 +57,7 @@ export function relativeDayLabel(dateStr) {
   const days = Math.round((startOfDay(new Date()) - startOfDay(d)) / 86400000)
   if (days === 0) return 'Today'
   if (days === 1) return 'Yesterday'
-  return d.toLocaleDateString(undefined, { weekday: 'long' })
+  return d.toLocaleDateString('en-AU', { weekday: 'long' })
 }
 
 export const useHistoryStore = defineStore('history', {

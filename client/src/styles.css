@@ -1,27 +1,47 @@
+/* Design tokens — palette, type and surfaces follow the Canvas prototype
+   (Bricolage Grotesque headings, DM Sans body, paper page with white cards). */
 :root {
-  --green: #3B6D11;
-  --green-dark: #27500A;
-  --green-light: #EAF3DE;
-  --green-mid: #639922;
-  --amber: #854F0B;
-  --amber-light: #FAEEDA;
-  --orange: #BA7517;
-  --ink: #2C2C2A;
-  --ink-2: #444441;
-  --ink-3: #5F5E5A;
-  --ink-4: #888780;
-  --ink-5: #B4B2A9;
-  --line: #EDEBE4;
-  --line-2: #E3E1DA;
-  --line-3: #D3D1C7;
-  --paper: #F1EFE8;
+  --green: #2F6B36;
+  --green-dark: #1F5127;
+  --green-light: #EAF3E1;
+  --green-mid: #4E8F52;
+  --amber: #8A4E11;
+  --amber-light: rgba(232, 145, 58, 0.2);
+  --orange: #E8913A;
+  --accent: #E8913A;
+  --ink: #1E2A1F;
+  --ink-2: rgba(30, 42, 31, 0.75);
+  --ink-3: rgba(30, 42, 31, 0.6);
+  --ink-4: rgba(30, 42, 31, 0.45);
+  --ink-5: rgba(30, 42, 31, 0.3);
+  --line: rgba(30, 42, 31, 0.08);
+  --line-2: rgba(30, 42, 31, 0.12);
+  --line-3: rgba(30, 42, 31, 0.16);
+  --paper: #F2F1EC;
+  --card: #FFFFFF;
+  --tint: rgba(30, 42, 31, 0.06);
+  --dark: #1E2A1F;
+  --danger: #B23A2E;
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'DM Sans', -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-card: 18px;
+  --radius-btn: 17px;
+  --radius-field: 15px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 3px rgba(30, 42, 31, 0.08);
+  --shadow-raised: 0 10px 24px rgba(30, 42, 31, 0.1);
+  --shadow-primary: 0 8px 20px rgba(47, 107, 54, 0.28);
+  --shadow-selected: 0 5px 14px rgba(47, 107, 54, 0.26);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif;
-  background: #FFFFFF;
+  font-family: var(--font-body);
+  background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
@@ -36,7 +56,7 @@ body {
 .phone {
   width: 100%;
   height: 100%;
-  background: #FFFFFF;
+  background: var(--paper);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -84,23 +104,36 @@ body {
 }
 
 .app-name {
+  font-family: var(--font-display);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 h1 {
-  font-size: 19px;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.7px;
   margin-bottom: 6px;
 }
 
+h2 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
 .subtitle {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.45;
   color: var(--ink-3);
 }
 
 .section-label {
-  font-size: 11.5px;
+  font-size: 13.5px;
+  font-weight: 600;
   color: var(--ink-3);
   margin-bottom: 10px;
 }
@@ -112,27 +145,35 @@ h1 {
 }
 
 .btn {
-  border-radius: 10px;
-  font-size: 14.5px;
+  border-radius: var(--radius-btn);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
   cursor: pointer;
-  height: 50px;
+  height: 56px;
+  padding: 0 22px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 9px;
   font-family: inherit;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
+
+.btn:active { transform: scale(0.985); }
 
 .btn-primary {
   background: var(--green);
-  color: var(--green-light);
+  color: var(--paper);
   border: none;
-  font-weight: 500;
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-secondary {
-  background: #FFFFFF;
+  background: var(--card);
   color: var(--ink-2);
-  border: 1px solid var(--line-3);
+  border: none;
+  box-shadow: var(--shadow-card);
 }
 
 .btn-row {
@@ -148,27 +189,35 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  height: 22px;
-  padding: 0 10px;
-  border-radius: 11px;
-  font-size: 10px;
+  height: 24px;
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
-.badge.good { background: var(--green-light); color: var(--green-dark); }
+.badge.good { background: rgba(47, 107, 54, 0.14); color: var(--green); }
 .badge.warn { background: var(--amber-light); color: var(--amber); }
-.badge.muted { background: var(--paper); color: var(--ink-3); }
+.badge.muted { background: var(--tint); color: var(--ink-3); }
 /* "N-step mission" pill on discover cards and mission screens */
-.badge.mission { background: var(--amber-light); color: var(--amber); font-weight: 600; }
+.badge.mission { background: var(--amber-light); color: var(--amber); }
+
+/* White card on the paper page — the base surface for lists and panels. */
+.card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
 
 /* ---------- mission & record screens ---------- */
 
 .section-eyebrow {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--green-dark);
+  color: var(--green);
   margin-bottom: 8px;
 }
 
@@ -176,19 +225,20 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-field);
   background: var(--green-light);
   color: var(--green-dark);
   padding: 12px 14px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
 }
 
 .note-card {
-  border-radius: 10px;
-  background: var(--paper);
-  padding: 12px 16px;
-  font-size: 11.5px;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 14px 16px;
+  font-size: 13px;
   color: var(--ink-3);
   line-height: 1.5;
 }
@@ -216,7 +266,7 @@ h1 {
   background: var(--green);
 }
 
-.progress-track .seg.active > span { background: var(--green-mid); }
+.progress-track .seg.active > span { background: var(--accent); }
 
 /* 2x2 selectable grid, e.g. mission-finished feedback (Fun/Boring/Too hard/Too easy) */
 .choice-grid {
@@ -227,28 +277,30 @@ h1 {
 
 .choice-option {
   height: 64px;
-  border-radius: 10px;
-  border: 1px solid var(--line-3);
-  background: #FFFFFF;
-  color: var(--ink-2);
-  font-size: 13.5px;
+  border-radius: var(--radius-field);
+  border: none;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1.5px var(--line-3);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
   font-family: inherit;
   cursor: pointer;
+  transition: all 0.18s ease;
 }
 
 .choice-option.selected {
-  border-color: var(--green);
-  background: var(--green-light);
-  color: var(--green-dark);
-  font-weight: 600;
+  background: var(--green);
+  color: var(--paper);
+  box-shadow: 0 8px 18px rgba(47, 107, 54, 0.22);
 }
 
 /* ---------- bottom tab navigation ----------
-   Shell-level nav for the 5-tab structure (Today/Discover/Plan/Insights/Prefs).
-   Styles only for now — wired into App.vue once the tab routes exist. */
+   Shell-level nav for the 5-tab structure (Today/Discover/Plan/Insights/Prefs). */
 .tab-bar {
   display: flex;
-  border-top: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: inset 0 1px 0 var(--line-2);
   margin: 0 -24px;
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
   flex-shrink: 0;
@@ -267,7 +319,178 @@ h1 {
   cursor: pointer;
   padding: 4px 0;
   text-decoration: none;
+  transition: color 0.16s ease, transform 0.16s ease;
 }
 
-.tab-item.active { color: var(--green); }
-.tab-item .tab-label { font-size: 10px; }
+.tab-item.active { color: var(--green); transform: scale(1.06); }
+.tab-item .tab-label { font-size: 10.5px; font-weight: 600; }
+
+/* ---------- canvas layout primitives ---------- */
+
+.eyebrow-accent {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.btn-primary:disabled {
+  background: var(--line);
+  color: rgba(30, 42, 31, 0.35);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--dark);
+  border: none;
+  box-shadow: 0 8px 20px rgba(232, 145, 58, 0.28);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink-2);
+  border: none;
+  box-shadow: inset 0 0 0 1.5px var(--line-3);
+}
+
+.btn-arrow { font-size: 18px; line-height: 1; opacity: 0.85; }
+
+/* Two-up stat tiles (Week screen) */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-tile {
+  border-radius: var(--radius-card);
+  padding: 16px 18px;
+  background: var(--tint);
+  color: var(--ink);
+}
+
+.stat-tile.primary {
+  background: var(--green);
+  color: var(--paper);
+  box-shadow: var(--shadow-primary);
+}
+
+.stat-tile .stat-num {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.stat-tile .stat-sub { font-size: 12.5px; margin-top: 8px; opacity: 0.75; }
+
+/* 2x2 fact tiles (place detail) */
+.fact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.fact-tile {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 13px 14px;
+}
+
+.fact-tile .fact-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.fact-tile .fact-value {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.fact-tile .fact-note { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+/* Rounded pill chips (suburbs, back crumb) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.pill.on { background: var(--green); color: var(--paper); box-shadow: var(--shadow-selected); }
+.pill.crumb { background: var(--tint); box-shadow: none; color: var(--ink-3); height: 30px; font-size: 12.5px; }
+
+/* Chunky three-way selector (distance, mode) */
+.seg-row { display: flex; gap: 8px; }
+
+.seg-btn {
+  flex: 1;
+  height: 54px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--ink-2);
+  font-size: 15.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.seg-btn.on { background: var(--green); color: var(--paper); box-shadow: var(--shadow-selected); }
+
+/* Row list inside a card (Week log, You prefs) */
+.row-list .row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 2px;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+}
+
+.row-list .row:last-child { border-bottom: none; }
+.row-list .row-key { width: 38px; font-size: 13px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
+.row-list .row-main { flex: 1; min-width: 0; }
+.row-list .row-end { font-size: 14px; font-weight: 600; color: var(--ink-3); }
+
+/* ---------- dark screen (mission run) ---------- */
+
+.phone.dark {
+  background: var(--dark);
+  color: var(--paper);
+}
+
+.phone.dark .tab-bar { background: #162017; box-shadow: inset 0 1px 0 rgba(242, 241, 236, 0.12); }
+.phone.dark .tab-item { color: rgba(242, 241, 236, 0.45); }
+.phone.dark .tab-item.active { color: var(--accent); }
+.phone.dark .subtitle { color: rgba(242, 241, 236, 0.6); }
+.phone.dark .back-btn { color: var(--paper); }

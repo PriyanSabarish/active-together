@@ -1,7 +1,7 @@
 <template>
-  <AppHeader plain />
+  <AppHeader />
   <div class="scroll-area">
-    <p class="section-eyebrow">Today</p>
+    <p class="eyebrow-accent">Today</p>
     <h1>Ready when you are</h1>
     <p class="subtitle">{{ reason }}</p>
 
@@ -11,22 +11,27 @@
           <p class="mission-title">{{ todayMission.title }}</p>
           <p class="mission-meta">{{ todayMission.placeName }} · about {{ todayMission.durationMin }} min</p>
         </div>
-        <span class="badge mission">{{ todayMission.steps.length }}-step mission</span>
+        <span class="badge mission">{{ todayMission.steps.length }}-task mission</span>
       </div>
-      <button class="btn btn-primary start-btn" @click="start">Start mission</button>
+      <div class="mission-block">
+        <p class="mission-step"><b>First up:</b> {{ todayMission.steps[0].title }}</p>
+        <p class="mission-equip">{{ todayMission.equipment }}</p>
+      </div>
+      <button class="btn btn-primary start-btn" @click="start">See the mission <span class="btn-arrow">→</span></button>
     </article>
 
-    <hr class="divider" />
-
-    <div class="week-row">
-      <div>
-        <p class="stat-value">{{ thisWeekCount }}</p>
-        <p class="stat-label">{{ thisWeekCount === 1 ? 'activity' : 'activities' }} this week</p>
+    <div class="stat-grid" style="margin-top: 18px">
+      <button class="stat-tile primary as-btn" @click="$router.push('/insights')">
+        <p class="stat-num">{{ thisWeekCount }}</p>
+        <p class="stat-sub">{{ thisWeekCount === 1 ? 'outing' : 'outings' }} this week</p>
+      </button>
+      <div class="stat-tile">
+        <p class="stat-num">{{ lastWeekCount }}</p>
+        <p class="stat-sub">last week</p>
       </div>
-      <button class="link-btn" @click="$router.push('/insights')">View week</button>
     </div>
 
-    <p class="section-label" style="margin-top: 20px">Daniel's most recent feedback</p>
+    <p class="section-label" style="margin-top: 22px">Daniel's most recent feedback</p>
     <div v-if="lastFeedback" class="note-card">{{ lastFeedback.emoji }} {{ lastFeedback.label }} — {{ lastFeedback.when }}</div>
     <div v-else class="note-card">No missions completed yet.</div>
   </div>
@@ -50,6 +55,7 @@ const reason = "Matches Daniel's preference and hasn't been used in the last 5 o
 
 // F21 — real counts and feedback, once F19/F20 have written any records.
 const thisWeekCount = computed(() => historyStore.thisWeekCount)
+const lastWeekCount = computed(() => historyStore.lastWeekCount)
 const lastFeedback = computed(() => {
   const r = historyStore.mostRecent
   if (!r || !r.feedback) return null
@@ -65,39 +71,28 @@ function start() {
 <style scoped>
 .mission-card {
   margin-top: 18px;
-  border: 1px solid var(--line-2);
-  border-radius: 14px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   padding: 16px;
 }
 
-.mission-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+.mission-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.mission-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -0.2px; }
+.mission-meta { font-size: 13px; color: var(--ink-3); margin-top: 3px; }
+
+.mission-block {
+  margin-top: 12px;
+  background: var(--paper);
+  border-radius: 13px;
+  padding: 11px 13px;
 }
 
-.mission-title { font-size: 15px; font-weight: 500; }
-.mission-meta { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; }
+.mission-step { font-size: 13.5px; color: var(--ink-2); line-height: 1.45; }
+.mission-step b { color: var(--ink); }
+.mission-equip { font-size: 12.5px; color: var(--ink-4); margin-top: 4px; }
 
-.start-btn { width: 100%; margin-top: 16px; }
+.start-btn { width: 100%; margin-top: 14px; }
 
-.week-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.stat-value { font-size: 22px; font-weight: 600; color: var(--green-dark); }
-.stat-label { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
-
-.link-btn {
-  background: none;
-  border: none;
-  color: var(--green-dark);
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-}
+.as-btn { border: none; text-align: left; font-family: inherit; cursor: pointer; }
 </style>
