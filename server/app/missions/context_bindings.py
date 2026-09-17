@@ -22,9 +22,9 @@ from pathlib import Path
 
 import yaml
 
-from app.missions.loader import REPO_ROOT
+from app.missions.loader import SERVER_ROOT
 
-DEFAULT_BINDINGS_PATH = REPO_ROOT / "content" / "taxonomy" / "mission_context_bindings.yaml"
+DEFAULT_BINDINGS_PATH = SERVER_ROOT / "content" / "taxonomy" / "mission_context_bindings.yaml"
 
 
 def load_eligible_categories(path: Path = DEFAULT_BINDINGS_PATH) -> dict[str, list[str]]:
