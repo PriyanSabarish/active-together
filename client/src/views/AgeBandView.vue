@@ -24,6 +24,9 @@
 </template>
 
 <script setup>
+// Age band picker. Stored as a band only, never a date of birth. The three
+// bands are defined once in preferencesStore.js.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

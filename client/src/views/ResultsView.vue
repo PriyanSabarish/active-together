@@ -16,7 +16,7 @@
       <button class="pill adjust-btn" @click="openAdjust">Adjust</button>
     </div>
 
-    <!-- loading -->
+    <!-- loading: three skeleton cards while /recommendations is in flight -->
     <template v-if="store.loading">
       <div v-for="i in 3" :key="i" class="skeleton-card">
         <div class="sk-row">
@@ -67,7 +67,7 @@
       </div>
     </template>
 
-    <!-- results -->
+    <!-- results: map with a pin per place, then one card per place -->
     <template v-else>
       <PlaceMap
         class="results-map"
@@ -97,6 +97,7 @@
         </div>
         <p v-if="justAdjusted" class="updated-tag">Updated to fit new window</p>
 
+        <!-- Mission preview block. Mock until the missions endpoint is wired (see MOCK_MISSIONS). -->
         <div class="mission-block">
           <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
           <p class="mission-blurb"><b>"{{ missionFor(place).title }}"</b> — {{ missionFor(place).blurb }}</p>
@@ -115,7 +116,7 @@
     </template>
   </div>
 
-  <!-- Adjust sheet -->
+  <!-- Adjust sheet: bottom sheet over the list; z-index sits above Leaflet panes. -->
   <div v-if="adjusting" class="sheet-backdrop" @click.self="adjusting = false">
     <div class="sheet" role="dialog" aria-label="Adjust search">
       <h2>Adjust search</h2>
@@ -146,6 +147,12 @@
 </template>
 
 <script setup>
+// Top options for the current window (place + radius + duration). Reads
+// store.results from POST /recommendations. Handles loading, error,
+// out-of-pilot-area and zero-result states. The Adjust sheet changes radius
+// and duration in place and refetches; location changes still go through the
+// setup form via the crumb.
+
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

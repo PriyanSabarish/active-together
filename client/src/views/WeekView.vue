@@ -23,6 +23,7 @@
       </div>
     </div>
 
+    <!-- Mon-Sun log. Days without a record stay visible but muted (a quiet day, not an error). -->
     <div class="row-list log">
       <button
         v-for="day in weekDays"
@@ -61,6 +62,11 @@
 </template>
 
 <script setup>
+// Week tab: this week vs last week, a Mon-Sun log and the activity mix. All
+// data is device-local (historyStore); demo records are seeded at boot unless
+// switched off on You. With no records at all it shows a "never used" state,
+// distinct from a quiet day inside a real week.
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
@@ -78,6 +84,8 @@ function isoDate(d) {
   return d.toISOString().slice(0, 10)
 }
 
+// One row per weekday from this week's Monday, joined to the first record of
+// that date (the day detail screen shows any others).
 const weekDays = computed(() => {
   const monday = mondayOf(new Date())
   return DAY_LABELS.map((label, i) => {

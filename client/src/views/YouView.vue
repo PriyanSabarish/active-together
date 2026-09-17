@@ -4,6 +4,7 @@
     <h1>What does Daniel like?</h1>
     <p class="subtitle">Optional. Drag a slider to change it any time.</p>
 
+    <!-- One card per backend category; the tag mirrors the slider value in three bands. -->
     <div v-for="(meta, key) in CATEGORY_META" :key="key" class="pref-card">
       <div class="pref-top">
         <span class="glyph">{{ meta.label.charAt(0) }}</span>
@@ -50,6 +51,10 @@
 </template>
 
 <script setup>
+// You tab: per-category preference sliders, age band, coverage and privacy
+// notes, the demo-data switch and a way to replay the intro. Preferences are
+// device-local and, in this iteration, not yet read by the recommender.
+
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { CATEGORY_META } from '../store'
@@ -60,6 +65,7 @@ import { ref } from 'vue'
 const router = useRouter()
 const prefs = usePreferencesStore()
 
+// 0-100 affinity -> three-band label, matching the prototype's tags.
 function degreeLabel(v) {
   if (v >= 67) return 'Likes'
   if (v >= 34) return 'No preference'

@@ -26,6 +26,10 @@
 </template>
 
 <script setup>
+// Private-pilot gate. A single admin account checked client-side; the flag
+// lives in sessionStorage so a refresh keeps you in and closing the tab signs
+// you out. Not a security boundary — it only keeps casual visitors out.
+
 import { ref } from 'vue'
 
 // Local-only gate for the pilot demo. Credentials are checked in the browser;

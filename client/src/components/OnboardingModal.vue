@@ -16,6 +16,7 @@
         <button class="onb-skip" type="button" @click="finish">Skip</button>
       </div>
 
+      <!-- Mini preview card: a static sketch of the screen each slide talks about. -->
       <div class="onb-mini" aria-hidden="true">
         <template v-if="slide.key === 'start'">
           <p class="mini-eyebrow">Location</p>
@@ -52,6 +53,7 @@
     >
       <div class="onb-track" :style="trackStyle">
         <section v-for="(s, i) in SLIDES" :key="s.key" class="onb-slide" :aria-hidden="i !== index">
+          <!-- Mascot pin; smiles with closed eyes on the last slide. -->
           <span class="mascot" :class="{ happy: i === SLIDES.length - 1 }">
             <svg width="72" height="88" viewBox="0 0 100 126" aria-hidden="true">
               <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="var(--green)" />
@@ -82,6 +84,13 @@
 </template>
 
 <script setup>
+// First-run walkthrough, full screen over Start. Four slides with the Canvas
+// copy, a shared landscape hero and a per-slide mini preview card. Emits
+// 'done' with 'setup' (last slide's button, goes into the location form) or
+// 'skip' (just reveals Start). Swipe handling below supports mouse, pen and
+// touch; touch uses non-passive listeners so a horizontal swipe can cancel
+// page scroll.
+
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const emit = defineEmits(['done'])

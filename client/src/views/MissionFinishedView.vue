@@ -7,6 +7,7 @@
       <h1>Mission finished.</h1>
       <p class="subtitle">Ask Daniel. Skipping is fine.</p>
 
+      <!-- One-tap feedback from the child; tapping again clears it. Skipping is fine. -->
       <div class="choice-grid" style="margin-top: 18px">
         <button
           v-for="opt in FEEDBACK_OPTIONS"
@@ -19,6 +20,7 @@
         </button>
       </div>
 
+      <!-- What will be written to the Week log, shown before it happens. -->
       <div class="saved-card">
         <p class="eyebrow-accent">Saved automatically</p>
         <p class="saved-line">{{ dateLabel }} · {{ mission.placeName }} · {{ mission.title.toLowerCase() }} · {{ mission.durationMin }} min</p>
@@ -45,6 +47,10 @@
 </template>
 
 <script setup>
+// Shown once the last step is done. Optional one-tap feedback from the child,
+// then a record is written to the history store (device-local) and the app
+// goes to Week. Photo capture is not wired yet.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

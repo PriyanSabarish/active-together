@@ -52,6 +52,10 @@
 </template>
 
 <script setup>
+// Full mission before anything starts: every step, equipment and the reason
+// it was suggested. This is the only place a mission can be started from —
+// Pick and Play both route here first.
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

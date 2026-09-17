@@ -69,6 +69,7 @@
       </article>
     </template>
 
+    <!-- Week counts, device-local; the green tile opens the Week tab. -->
     <div class="stat-grid" style="margin-top: 18px">
       <button class="stat-tile primary as-btn" @click="router.push('/week')">
         <p class="stat-num">{{ thisWeekCount }}</p>
@@ -87,6 +88,13 @@
 </template>
 
 <script setup>
+// Play tab root. Shows one of three cards depending on missionStore.status:
+//   not chosen  -> today's recommended mission (first mock candidate for now)
+//   chosen      -> "Ready to go", into the preview
+//   in progress -> resume card with progress
+// Plus week stats and the most recent feedback. Also surfaces the one-time
+// "ended early" notice after an abandoned mission.
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

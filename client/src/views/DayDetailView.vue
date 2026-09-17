@@ -41,6 +41,9 @@
 </template>
 
 <script setup>
+// One day's records from the Week log, with the child's feedback quoted for
+// context (never scored). Records can be deleted here; editing is not wired.
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

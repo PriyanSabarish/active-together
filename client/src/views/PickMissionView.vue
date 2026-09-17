@@ -26,6 +26,9 @@
 </template>
 
 <script setup>
+// "Daniel chooses": the parent reads the candidates out, the child picks.
+// Selection only — confirming goes to the preview, never straight to run.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

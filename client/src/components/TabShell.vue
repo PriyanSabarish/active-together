@@ -31,6 +31,9 @@
 </template>
 
 <script setup>
+// Bottom tab bar: Start / Play / Week / You. Purely presentational; App.vue
+// passes the active tab key from route.meta.tab.
+
 defineProps({
   // Active tab key, from route.meta.tab: 'start' | 'play' | 'week' | 'you'
   tab: { type: String, default: '' }

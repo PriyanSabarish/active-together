@@ -16,6 +16,7 @@
         <span v-for="(state, i) in missionStore.stepStates" :key="i" class="run-seg" :class="state" />
       </div>
 
+      <!-- Full task list, toggled from the counter; done steps are struck through. -->
       <div v-if="showAll" class="all-tasks">
         <div v-for="(step, i) in mission.steps" :key="i" class="task-row" :class="missionStore.stepStates[i]">
           <span class="task-num">{{ missionStore.stepStates[i] === 'done' ? '✓' : i + 1 }}</span>
@@ -23,6 +24,7 @@
         </div>
       </div>
 
+      <!-- The one task to read out. Large type on purpose: the phone stays with the parent. -->
       <div class="step-card">
         <h1 class="step-big">{{ missionStore.currentStep.title }}</h1>
         <p class="step-hint">{{ isLast ? 'Last one. Then head back.' : 'Read it out. No rush.' }}</p>
@@ -35,6 +37,7 @@
       <button class="link-btn" @click="router.push('/play/overview')">Full overview</button>
     </div>
 
+    <!-- Abandon confirm. Ending here never writes a history record (AC-8.1.4). -->
     <div v-if="confirming" class="sheet-backdrop" @click.self="confirming = false">
       <div class="sheet" role="dialog" aria-label="End this mission">
         <h2>End this mission now?</h2>
@@ -59,6 +62,11 @@
 </template>
 
 <script setup>
+// Mission in progress, on the dark shell (route.meta.dark). One task at a
+// time in large type; Done and Skip both advance (nothing is a fail). The
+// task counter toggles the full list. "Abandon mission" opens a confirm
+// sheet and, if confirmed, ends the mission without logging it as complete.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

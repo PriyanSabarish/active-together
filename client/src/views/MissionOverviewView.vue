@@ -50,6 +50,10 @@
 </template>
 
 <script setup>
+// Read-only overview of the running mission: every step with its state
+// (done / active / todo) derived from missionStore.stepStates, and a way to
+// skip the current step from here.
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'

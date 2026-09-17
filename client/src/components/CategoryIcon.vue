@@ -20,6 +20,10 @@
 </template>
 
 <script setup>
+// Category glyph for a place card. Three shapes cover the seven backend
+// categories (see CATEGORY_META in store.js). Strokes use currentColor so the
+// parent sets the colour.
+
 import { computed } from 'vue'
 import { CATEGORY_META, categoryLabel } from '../store'
 

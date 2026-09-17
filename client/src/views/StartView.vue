@@ -15,6 +15,10 @@
 </template>
 
 <script setup>
+// Start tab root. First run shows a single setup card that routes into the
+// location form; once setup has been completed (store.setupDone, persisted)
+// it redirects straight to the results so a parent never redoes the steps.
+
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { useSearchStore } from '../store'

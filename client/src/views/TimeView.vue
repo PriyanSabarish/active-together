@@ -1,5 +1,6 @@
 <template>
   <AppHeader back />
+  <!-- Setup step 2: on-site minutes, matched plan bucket, and the live forecast. -->
 
   <div class="scroll-area">
     <h1>How long have you got?</h1>
@@ -10,6 +11,7 @@
         <span class="time-label">On-site time</span>
         <span class="time-value duration-value">{{ store.durationMin }} min</span>
       </div>
+      <!-- --fill drives the coloured part of the track (see .duration in <style>). -->
       <input
         v-model.number="store.durationMin"
         type="range"
@@ -72,6 +74,11 @@
 </template>
 
 <script setup>
+// Setup step 2 — how long have you got. On-site minutes (20-120) are mapped
+// by the store to the backend's 20/40/60 plan buckets. Also shows the live
+// forecast for the chosen point from /data/context. "See what fits" marks
+// setup as done and fires the recommendations request.
+
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
@@ -90,6 +97,7 @@ const rainPct = computed(() =>
   wx.value?.precip_prob == null ? null : Math.round(wx.value.precip_prob * 100)
 )
 
+// Headline: temperature and rain chance, whichever readings exist.
 const weatherMain = computed(() => {
   const parts = []
   if (wx.value?.temp_c != null) parts.push(`${Math.round(wx.value.temp_c)}°C`)
@@ -97,6 +105,7 @@ const weatherMain = computed(() => {
   return parts.length ? parts.join(', ') : 'Conditions available'
 })
 
+// Secondary line: UV, gusts and PM2.5, again only what the backend returned.
 const weatherSub = computed(() => {
   const parts = []
   if (wx.value?.uv_index != null) parts.push(`UV ${wx.value.uv_index}`)

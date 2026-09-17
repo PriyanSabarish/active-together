@@ -17,6 +17,13 @@
 </template>
 
 <script setup>
+// App shell. Order of layers, bottom to top: the routed screen, the four-tab
+// bar, the first-run walkthrough. Two flags gate what shows:
+//   - authed (sessionStorage): the private-pilot admin gate, per browser tab
+//   - onboarded (localStorage): walkthrough seen once per device
+// route.meta.tab picks the active tab; route.meta.dark switches the whole
+// shell to the dark mission-run look (background, header, tab bar).
+
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'

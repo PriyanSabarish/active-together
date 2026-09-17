@@ -11,6 +11,7 @@
         <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
       </p>
 
+      <!-- Four fact tiles, all from the current /data/context reading plus distance. -->
       <div class="fact-grid">
         <div class="fact-tile">
           <p class="fact-label">☂ Weather</p>
@@ -84,6 +85,11 @@
 </template>
 
 <script setup>
+// One place in full: four fact tiles (weather, UV, air, walking time), the
+// map, why it appears, conditions and what to expect. Facts come from the
+// same /data/context payload the Time screen uses; the walking estimate is a
+// pace over straight-line distance. Directions hand off to Google Maps.
+
 import { computed } from 'vue'
 import AppHeader from '../components/AppHeader.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
@@ -98,6 +104,7 @@ const place = computed(() => store.place(props.id))
 // storage but results are not, so run the search again and let `place` resolve.
 if (!place.value && !store.loading && store.status === 'idle') store.fetchRecommendations()
 
+// WHO UV index bands, used for the tile note.
 function uvNote(uv) {
   if (uv == null) return 'No reading'
   if (uv < 3) return 'Low'
@@ -106,6 +113,7 @@ function uvNote(uv) {
   return 'Very high'
 }
 
+// Rough PM2.5 bands for a parent-facing label; not an official AQI.
 function airLabel(pm) {
   if (pm == null) return ['—', 'No reading']
   if (pm <= 12) return ['Good', 'No warnings']

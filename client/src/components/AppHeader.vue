@@ -16,6 +16,7 @@
         <span class="app-name"><b class="w-active">Active</b> <b class="w-together">Together</b><b class="w-dot">.</b></span>
       </RouterLink>
       <span class="grow" />
+      <!-- Right slot: defaults to the weather pill, screens can override. -->
       <slot name="right">
         <span v-if="weatherPill" class="wx-pill">{{ weatherPill }}</span>
       </slot>
@@ -29,6 +30,10 @@
 </template>
 
 <script setup>
+// Top bar shared by every screen: logo (links to Play), optional back arrow,
+// and a weather pill on the right once /data/context has returned for the
+// current starting point. Funnel step dots are opt-in via `plain=false`.
+
 import { computed } from 'vue'
 import { useSearchStore } from '../store'
 

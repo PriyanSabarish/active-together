@@ -1,5 +1,6 @@
 <template>
   <AppHeader />
+  <!-- Setup step 1: pick a starting point (device location or a pilot suburb) and a radius. -->
 
   <div class="scroll-area">
     <h1>Where are you starting?</h1>
@@ -21,6 +22,7 @@
         <span class="loc-chev">›</span>
       </button>
 
+      <!-- Free-text suburb entry; matches against the pilot list only (no geocoder yet). -->
       <div class="search-row">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
           <circle cx="7" cy="7" r="4.5" /><path d="M10.5 10.5 14 14" />
@@ -40,6 +42,7 @@
       </div>
     </div>
 
+    <!-- Quick picks: recent suburbs first, topped up from the pilot list. -->
     <div class="chips">
       <button
         v-for="r in quickPicks"
@@ -65,6 +68,7 @@
       </button>
     </div>
 
+    <!-- Radius preview around the chosen point. -->
     <PlaceMap class="map-preview" :center="store.coords" :radius-km="store.radiusKm" height="150px" />
     <p class="map-caption">{{ store.radiusKm }} km radius around {{ pointLabel }}</p>
   </div>
@@ -76,6 +80,11 @@
 </template>
 
 <script setup>
+// Setup step 1 — where are you starting. Either the browser's geolocation
+// (nothing stored) or a pilot-area suburb typed or picked from the chips.
+// Suburb -> coordinates is resolved client-side from SUBURB_COORDS because
+// the backend only accepts lat/lon. Radius (3/5/10 km) is chosen here too.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
@@ -90,6 +99,7 @@ const open = ref(false)
 const locating = ref(false)
 const locationError = ref('')
 
+// Prefix matches from the pilot suburb list, excluding an exact match already typed.
 const suggestions = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (!q) return []
@@ -135,6 +145,8 @@ function pickSuburb(s) {
   open.value = false
 }
 
+// Geolocation is requested only on tap, never on load; coordinates stay in
+// memory (and in the persisted search inputs), no reverse geocoding.
 function pickMyLocation() {
   if (locating.value) return
   locationError.value = ''
