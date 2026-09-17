@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { postRecommendations, getContext } from './api'
+import { usePreferencesStore } from './preferencesStore'
 
 // ---------------------------------------------------------------------------
 // Places, weather and ranking all come from the backend now:
@@ -283,11 +284,13 @@ export const useSearchStore = defineStore('search', {
       this.message = ''
       this.error = ''
       try {
+        const preferencesStore = usePreferencesStore()
         const data = await postRecommendations({
           latitude: coords.latitude,
           longitude: coords.longitude,
           radiusKm: this.radiusKm,
-          durationMin: this.durationMin
+          durationMin: this.durationMin,
+          excludedCategories: preferencesStore.excludedCategories
         })
         if (seq !== this._requestSeq) return // a newer search superseded this one
         const ctx = { radiusKm: this.radiusKm }
