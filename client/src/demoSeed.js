@@ -19,7 +19,26 @@ const rec = (date, time, placeName, category, missionTitle, durationMin, feedbac
   date, time, placeName, category, missionTitle, durationMin, feedback, photoStepsCount, totalSteps
 })
 
+export const DEMO_KEY = 'at-demo-data'
+
+export function demoEnabled() {
+  try {
+    return localStorage.getItem(DEMO_KEY) !== 'off'
+  } catch {
+    return true
+  }
+}
+
+export function setDemoEnabled(on) {
+  try {
+    localStorage.setItem(DEMO_KEY, on ? 'on' : 'off')
+  } catch {
+    /* storage unavailable */
+  }
+}
+
 export function seedDemoData() {
+  if (!demoEnabled()) return
   const history = useHistoryStore()
   const prefs = usePreferencesStore()
 

@@ -1,6 +1,15 @@
 <template>
   <AppHeader />
-  <div class="scroll-area">
+  <div class="scroll-area" :class="{ centred: neverUsed }">
+    <!-- Gap 3 — never used, as opposed to one quiet day inside a real week. -->
+    <template v-if="neverUsed">
+      <span class="empty-glyph">–</span>
+      <h1>No activity yet</h1>
+      <p class="subtitle">Once Daniel finishes his first mission, you'll see patterns here — by day and activity type.</p>
+      <button class="btn btn-primary cta" @click="router.push('/play')">Find a mission <span class="btn-arrow">→</span></button>
+    </template>
+
+    <template v-else>
     <h1>This week</h1>
 
     <div class="stat-grid">
@@ -47,6 +56,7 @@
       </div>
     </template>
     <p v-else class="body-text">No activity logged this week yet.</p>
+    </template>
   </div>
 </template>
 
@@ -59,6 +69,8 @@ import { categoryLabel } from '../store'
 
 const router = useRouter()
 const historyStore = useHistoryStore()
+
+const neverUsed = computed(() => historyStore.records.length === 0)
 
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -103,6 +115,34 @@ const mix = computed(() => {
 
 <style scoped>
 h1 { margin-bottom: 18px; }
+
+.centred {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 28px;
+}
+
+.centred h1 { margin-bottom: 6px; }
+
+.empty-glyph {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--ink-4);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.cta { width: 100%; margin-top: 22px; }
 
 .log { margin-top: 18px; border-top: 1px solid var(--line-2); }
 

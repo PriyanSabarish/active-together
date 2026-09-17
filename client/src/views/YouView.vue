@@ -39,6 +39,12 @@
       <p class="info-body">Nothing to sign up for. Preferences and your week stay on this phone.</p>
     </div>
 
+    <button class="info-card as-btn" style="margin-top: 10px" @click="toggleDemo">
+      <span class="info-title">Demo data</span>
+      <span class="info-body">{{ demoOn ? 'Week and You show sample outings and preferences.' : 'Off — Week starts empty until a mission is finished.' }}</span>
+      <span class="change-link">{{ demoOn ? 'Turn off' : 'Turn on' }}</span>
+    </button>
+
     <button class="btn btn-outline replay" @click="replayIntro">Replay the intro</button>
   </div>
 </template>
@@ -48,6 +54,8 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { CATEGORY_META } from '../store'
 import { usePreferencesStore } from '../preferencesStore'
+import { demoEnabled, setDemoEnabled } from '../demoSeed'
+import { ref } from 'vue'
 
 const router = useRouter()
 const prefs = usePreferencesStore()
@@ -62,6 +70,14 @@ function degreeClass(v) {
   if (v >= 67) return 'likes'
   if (v >= 34) return 'neutral'
   return 'nope'
+}
+
+const demoOn = ref(demoEnabled())
+
+// Demo data is seeded at boot, so flipping it reloads the app.
+function toggleDemo() {
+  setDemoEnabled(!demoOn.value)
+  window.location.assign('/week')
 }
 
 // The walkthrough is gated on a localStorage flag in App.vue; clearing it and
