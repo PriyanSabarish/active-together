@@ -1,16 +1,9 @@
 <template>
-  <div class="app-bar">
-    <button class="back-btn" aria-label="Back to preferences" @click="router.push('/prefs')">
-      <svg width="18" height="24" viewBox="0 0 18 24">
-        <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </button>
-    <span class="page-title">Age band</span>
-    <span class="spacer" />
-  </div>
+  <AppHeader />
 
   <div class="scroll-area">
-    <h1>How old is Daniel?</h1>
+    <button class="pill crumb" @click="router.push('/you')">‹ Preferences</button>
+    <h1 style="margin-top: 14px">How old is Daniel?</h1>
     <p class="subtitle">Stored as a band only, never a date of birth.</p>
 
     <button
@@ -27,13 +20,16 @@
     <div class="note-card">{{ selectedBand.note }}</div>
   </div>
 
-  <hr class="divider" style="margin-bottom: 16px" />
-  <button class="btn btn-primary" style="width: 100%" @click="save">Save age band</button>
+  <button class="btn btn-primary" style="width: 100%; margin-top: 14px" @click="save">Save age band</button>
 </template>
 
 <script setup>
+// Age band picker. Stored as a band only, never a date of birth. The three
+// bands are defined once in preferencesStore.js.
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import AppHeader from '../components/AppHeader.vue'
 import { AGE_BANDS, usePreferencesStore } from '../preferencesStore'
 
 const router = useRouter()
@@ -44,7 +40,7 @@ const selectedBand = computed(() => AGE_BANDS.find((b) => b.id === selected.valu
 
 function save() {
   prefs.setAgeBand(selected.value)
-  router.push('/prefs')
+  router.push('/you')
 }
 </script>
 
@@ -53,7 +49,7 @@ function save() {
   flex: 1;
   text-align: center;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink-3);
 }
 
@@ -62,9 +58,10 @@ function save() {
 .band-row {
   width: 100%;
   height: 52px;
-  border: 1px solid var(--line-3);
-  border-radius: 10px;
-  background: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
   color: var(--ink);
   display: flex;
   align-items: center;
@@ -77,9 +74,10 @@ function save() {
 }
 
 .band-row.on {
-  background: var(--green-light);
-  border-color: var(--green);
-  font-weight: 500;
+  background: var(--green);
+  color: var(--paper);
+  box-shadow: var(--shadow-selected);
+  font-weight: 600;
 }
 
 .check {
@@ -91,8 +89,8 @@ function save() {
 }
 
 .check.on {
-  border-color: var(--green);
-  background: var(--green);
+  border-color: var(--paper);
+  background: var(--paper);
   position: relative;
 }
 
@@ -103,7 +101,7 @@ function save() {
   top: 2px;
   width: 5px;
   height: 9px;
-  border: solid #FFFFFF;
+  border: solid var(--green);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }

@@ -19,7 +19,7 @@ export const MOCK_MISSIONS = [
     title: 'Bark Detective',
     placeName: 'Fawkner Park',
     category: 'playground', // CATEGORY_META key (store.js) — groups F22's activity mix
-    ageBand: '6-8',
+    ageBand: '8-10',
     durationMin: 20,
     equipment: 'None — everyday clothes and shoes only.',
     whyThisMission: "Matches Daniel's \"playground play\" preference and hasn't been used in the last 5 outings.",
@@ -34,7 +34,7 @@ export const MOCK_MISSIONS = [
     title: 'Shadow Tag',
     placeName: 'Princes Park Reserve',
     category: 'sports_ground',
-    ageBand: '6-8',
+    ageBand: '8-10',
     durationMin: 15,
     equipment: 'None — works best in direct sun.',
     whyThisMission: "A quick, active pick for a sporting ground with no equipment on hand.",
@@ -48,7 +48,7 @@ export const MOCK_MISSIONS = [
     title: 'Cloud Spotting',
     placeName: 'Royal Park Trail',
     category: 'trail_access',
-    ageBand: '6-8',
+    ageBand: '8-10',
     durationMin: 15,
     equipment: 'None.',
     whyThisMission: 'A calm option for a windier day, along a trail with open sky.',
@@ -64,7 +64,10 @@ export const useMissionStore = defineStore('mission', {
     candidates: MOCK_MISSIONS, // options offered by Pick-a-mission (F16)
     active: null, // the chosen Mission object, or null before one is picked
     stepIndex: 0, // index of the step currently in progress within active.steps
-    status: 'not_started' // 'not_started' | 'in_progress' | 'done'
+    status: 'not_started', // 'not_started' | 'in_progress' | 'done'
+    // Set when a parent ends a mission early (AC-8.1.4): it is never written to
+    // history as complete. Play shows it once, then clears it.
+    lastAbandoned: null // { title, placeName, doneCount, totalSteps } | null
   }),
   getters: {
     totalSteps(state) {
@@ -107,6 +110,21 @@ export const useMissionStore = defineStore('mission', {
       } else {
         this.status = 'done'
       }
+    },
+    // Gap 5 — end a running mission without logging it as complete. Steps
+    // already done are kept on the notice so the parent sees they counted.
+    abandonMission() {
+      if (!this.active || this.status !== 'in_progress') return
+      this.lastAbandoned = {
+        title: this.active.title,
+        placeName: this.active.placeName,
+        doneCount: this.stepIndex,
+        totalSteps: this.active.steps.length
+      }
+      this.resetMission()
+    },
+    clearAbandoned() {
+      this.lastAbandoned = null
     },
     resetMission() {
       this.active = null

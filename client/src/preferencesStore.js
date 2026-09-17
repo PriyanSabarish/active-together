@@ -10,8 +10,8 @@ import { CATEGORY_META } from './store'
 
 export const AGE_BANDS = [
   { id: '5-7', label: '5–7 years', note: 'Missions assume no independent reading at all.' },
-  { id: '6-8', label: '6–8 years', note: 'Missions assume some reading and basic independence.' },
-  { id: '9-12', label: '9–12 years', note: 'Missions can assume independent reading and more autonomy.' }
+  { id: '8-10', label: '8–10 years', note: 'Missions assume some reading and basic independence.' },
+  { id: '11-12', label: '11–12 years', note: 'Missions can assume independent reading and more autonomy.' }
 ]
 
 function defaultAffinities() {
@@ -22,7 +22,7 @@ function defaultAffinities() {
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     affinities: defaultAffinities(),
-    ageBand: '6-8'
+    ageBand: '8-10'
   }),
   getters: {
     ageBandInfo(state) {
