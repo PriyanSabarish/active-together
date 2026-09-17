@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import StartView from './views/StartView.vue'
 import LocationView from './views/LocationView.vue'
 import TimeView from './views/TimeView.vue'
 import ResultsView from './views/ResultsView.vue'
@@ -22,7 +23,8 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     // Start
-    { path: '/', name: 'location', component: LocationView, meta: { tab: 'start' } },
+    { path: '/', name: 'start', component: StartView, meta: { tab: 'start' } },
+    { path: '/location', name: 'location', component: LocationView, meta: { tab: 'start' } },
     { path: '/time', name: 'time', component: TimeView, meta: { tab: 'start' } },
     { path: '/results', name: 'results', component: ResultsView, meta: { tab: 'start' } },
     { path: '/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'start' } },

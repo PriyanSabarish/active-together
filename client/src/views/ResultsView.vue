@@ -1,9 +1,20 @@
 <template>
-  <AppHeader back />
+  <AppHeader />
 
   <div class="scroll-area">
-    <h1>Your top options</h1>
-    <p class="subtitle">Each one now comes with a mission for Daniel.</p>
+    <button class="pill crumb" @click="$router.push('/location')">‹ Change starting point</button>
+    <div class="head-row">
+      <div>
+        <h1>Your top options</h1>
+        <p class="subtitle">Each one now comes with a mission for Daniel.</p>
+      </div>
+    </div>
+
+    <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
+    <div class="window-row">
+      <span class="window-text">{{ store.radiusKm }} km · {{ store.planMin }} min</span>
+      <button class="pill adjust-btn" @click="openAdjust">Adjust</button>
+    </div>
 
     <!-- loading -->
     <template v-if="store.loading">
@@ -37,7 +48,7 @@
           {{ store.message || 'Selected location is outside the active pilot area.' }}
           Active Together currently covers the City of Melbourne, Monash and Melton.
         </p>
-        <button class="btn btn-primary widen-btn" @click="$router.push('/')">Change location</button>
+        <button class="btn btn-primary widen-btn" @click="$router.push('/location')">Change location</button>
       </div>
     </template>
 
@@ -84,6 +95,7 @@
           </div>
           <ConditionBadge :badge="place.badge" />
         </div>
+        <p v-if="justAdjusted" class="updated-tag">Updated to fit new window</p>
 
         <div class="mission-block">
           <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
@@ -102,10 +114,39 @@
       </p>
     </template>
   </div>
+
+  <!-- Adjust sheet -->
+  <div v-if="adjusting" class="sheet-backdrop" @click.self="adjusting = false">
+    <div class="sheet" role="dialog" aria-label="Adjust search">
+      <h2>Adjust search</h2>
+
+      <p class="section-label" style="margin-top: 16px">Maximum distance</p>
+      <div class="seg-row">
+        <button v-for="km in [3, 5, 10]" :key="km" class="seg-btn" :class="{ on: draft.radiusKm === km }" @click="draft.radiusKm = km">{{ km }} km</button>
+      </div>
+
+      <p class="section-label" style="margin-top: 18px">How long have you got</p>
+      <button
+        v-for="opt in DURATIONS"
+        :key="opt.min"
+        class="dur-row"
+        :class="{ on: draft.durationMin === opt.min }"
+        @click="draft.durationMin = opt.min"
+      >
+        <span>{{ opt.min }} min</span>
+        <span class="dur-note">{{ opt.note }}</span>
+      </button>
+
+      <div class="btn-row" style="margin-top: 18px">
+        <button class="btn btn-secondary" @click="adjusting = false">Cancel</button>
+        <button class="btn btn-primary" @click="applyAdjust">Apply</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CategoryIcon from '../components/CategoryIcon.vue'
@@ -136,6 +177,34 @@ function missionFor(place) {
 
 const nextRadius = computed(() => (store.radiusKm === 3 ? 5 : 10))
 
+// Gap 2 — adjust distance and duration in place. Location is left alone; that
+// still goes through the setup form. The three durations line up with the
+// plan buckets the backend serves.
+const DURATIONS = [
+  { min: 20, note: 'a quick loop' },
+  { min: 40, note: 'room for a full mission' },
+  { min: 60, note: 'a proper outing' }
+]
+const adjusting = ref(false)
+const justAdjusted = ref(false)
+const draft = reactive({ radiusKm: store.radiusKm, durationMin: store.planMin })
+
+function openAdjust() {
+  draft.radiusKm = store.radiusKm
+  draft.durationMin = store.planMin
+  adjusting.value = true
+}
+
+function applyAdjust() {
+  const changed = draft.radiusKm !== store.radiusKm || draft.durationMin !== store.planMin
+  store.radiusKm = draft.radiusKm
+  store.durationMin = draft.durationMin
+  adjusting.value = false
+  if (!changed) return
+  justAdjusted.value = true
+  store.fetchRecommendations()
+}
+
 function widen() {
   store.radiusKm = nextRadius.value
   store.fetchRecommendations()
@@ -151,6 +220,72 @@ function openById(id) {
 </script>
 
 <style scoped>
+.head-row { margin-top: 14px; }
+
+.window-row {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.window-text { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
+.adjust-btn { background: var(--green-light); color: var(--green-dark); box-shadow: none; }
+
+.updated-tag {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--amber-light);
+  color: var(--amber);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* adjust sheet */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 42, 31, 0.45);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000; /* above Leaflet panes */
+}
+
+.sheet {
+  width: 100%;
+  background: var(--paper);
+  border-radius: 24px 24px 0 0;
+  padding: 22px 24px calc(22px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -10px 30px rgba(30, 42, 31, 0.18);
+}
+
+.dur-row {
+  width: 100%;
+  margin-top: 8px;
+  height: 54px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--ink);
+  font-size: 15.5px;
+  font-weight: 600;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.dur-row .dur-note { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.dur-row.on { background: var(--green); color: var(--paper); box-shadow: var(--shadow-selected); }
+.dur-row.on .dur-note { color: rgba(242, 241, 236, 0.75); }
+
 .results-map { margin-top: 16px; }
 
 .result-card {

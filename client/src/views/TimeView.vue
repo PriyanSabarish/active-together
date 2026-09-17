@@ -106,6 +106,7 @@ const weatherSub = computed(() => {
 })
 
 function findActivities() {
+  store.setupDone = true
   store.fetchRecommendations()
   router.push('/results')
 }
