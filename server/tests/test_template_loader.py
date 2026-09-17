@@ -6,7 +6,7 @@ from app.missions.loader import DEFAULT_MISSIONS_DIR, load_template_dir, load_te
 from app.missions.models import MissionTemplate
 from app.models import AgeBand
 
-CONTENT_MISSIONS_DIR = Path(__file__).resolve().parents[2] / "content" / "missions"
+CONTENT_MISSIONS_DIR = Path(__file__).resolve().parents[1] / "content" / "missions"
 
 
 #  content/missions/reviewed/ — the real, review-approved library (default)
