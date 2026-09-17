@@ -96,6 +96,7 @@ class EnvironmentalSummary:
 
 @dataclass(frozen=True)
 class Combo:
+    combo_id: str  # == place.place_id — see app.recommendation.recommend; how /missions resolves it back to a Place
     place: Place
     activity_type: str
     entered_duration_min: int
