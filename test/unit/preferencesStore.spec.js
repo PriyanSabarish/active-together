@@ -10,12 +10,12 @@ beforeEach(() => {
 })
 
 describe('F10 — preferences store', () => {
-  it('defaults every category to a neutral affinity and age band 6-8', () => {
+  it('defaults every category to a neutral affinity and age band 8-10', () => {
     const store = usePreferencesStore()
     expect(Object.keys(store.affinities).sort()).toEqual(Object.keys(CATEGORY_META).sort())
     for (const v of Object.values(store.affinities)) expect(v).toBe(50)
-    expect(store.ageBand).toBe('6-8')
-    expect(store.ageBandInfo.id).toBe('6-8')
+    expect(store.ageBand).toBe('8-10')
+    expect(store.ageBandInfo.id).toBe('8-10')
   })
 
   it('setAffinity clamps to 0-100 and rounds', () => {
@@ -36,11 +36,11 @@ describe('F10 — preferences store', () => {
 
   it('setAgeBand only accepts a known band id', () => {
     const store = usePreferencesStore()
-    store.setAgeBand('9-12')
-    expect(store.ageBand).toBe('9-12')
+    store.setAgeBand('11-12')
+    expect(store.ageBand).toBe('11-12')
     expect(store.ageBandInfo).toBe(AGE_BANDS[2])
 
     store.setAgeBand('not-a-band')
-    expect(store.ageBand).toBe('9-12') // unchanged
+    expect(store.ageBand).toBe('11-12') // unchanged
   })
 })
