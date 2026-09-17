@@ -180,3 +180,74 @@ def test_against_the_shared_fixture_library():
     )
     ids = {t.template_id for t in result}
     assert ids == {mfx.BUCKET20_BAND_5_7_SELF.template_id, mfx.BARE_SITE_ANY_CATEGORY.template_id}
+
+
+#  eligible_categories (B20 follow-up): the real per-place-type binding for
+#  "any"-category templates, from content/taxonomy/mission_context_bindings.yaml
+
+
+def test_any_category_with_no_binding_matches_everywhere():
+    template = _template(category="any", template_id="fx_unbound")
+    result = select_templates(
+        [template], PLACE_SPORTS_GROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories={},
+    )
+    assert result == [template]
+
+
+def test_any_category_with_binding_excludes_place_not_on_the_shortlist():
+    template = _template(category="any", template_id="fx_bound")
+    result = select_templates(
+        [template], PLACE_SPORTS_GROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories={"fx_bound": ["playground", "park_and_garden"]},
+    )
+    assert result == []
+
+
+def test_any_category_with_binding_matches_place_on_the_shortlist():
+    template = _template(category="any", template_id="fx_bound")
+    result = select_templates(
+        [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories={"fx_bound": ["playground", "park_and_garden"]},
+    )
+    assert result == [template]
+
+
+def test_binding_with_empty_list_is_treated_as_unbound():
+    template = _template(category="any", template_id="fx_empty_binding")
+    result = select_templates(
+        [template], PLACE_SPORTS_GROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories={"fx_empty_binding": []},
+    )
+    assert result == [template]
+
+
+def test_binding_never_applies_to_non_any_categories():
+    # A binding entry for a template that has a specific (non-"any") category
+    # is irrelevant — the direct category==place rule still governs.
+    template = _template(category="playground", template_id="fx_specific")
+    result = select_templates(
+        [template], PLACE_SPORTS_GROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories={"fx_specific": ["sports_ground"]},
+    )
+    assert result == []
+
+
+def test_against_the_real_reviewed_library_and_bindings():
+    from app.missions.context_bindings import load_eligible_categories
+    from app.missions.loader import load_template_dir
+
+    templates = load_template_dir()
+    bindings = load_eligible_categories()
+
+    colour_hunt_at_playground = select_templates(
+        templates, PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories=bindings,
+    )
+    assert any(t.template_id == "activity_colour_hunt" for t in colour_hunt_at_playground)
+
+    colour_hunt_at_sports_ground = select_templates(
+        templates, PLACE_SPORTS_GROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        eligible_categories=bindings,
+    )
+    assert not any(t.template_id == "activity_colour_hunt" for t in colour_hunt_at_sports_ground)

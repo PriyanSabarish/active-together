@@ -168,9 +168,11 @@ def generate_missions(
     model_client: ModelClient | None = None,
     max_missions: int = MAX_MISSIONS,
     stats: RejectionStats | None = None,
+    eligible_categories: dict[str, list[str]] | None = None,
 ) -> list[Mission]:
     candidates = select_templates(
         templates, place, context, age_band, duration_bucket, preferences, recent_template_ids,
+        eligible_categories=eligible_categories,
     )
 
     missions: list[Mission] = []

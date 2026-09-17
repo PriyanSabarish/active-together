@@ -38,9 +38,11 @@ def serve_from_library(
     duration_bucket: int,
     preferences: Iterable[str] = (),
     recent_template_ids: Iterable[str] = (),
+    eligible_categories: dict[str, list[str]] | None = None,
 ) -> Mission | None:
     candidates = select_templates(
         templates, place, context, age_band, duration_bucket, preferences, recent_template_ids,
+        eligible_categories=eligible_categories,
     )
 
     for template in candidates:
