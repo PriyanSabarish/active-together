@@ -2,8 +2,8 @@
   <AppHeader back />
 
   <div class="scroll-area">
-    <h2>Pick a mission</h2>
-    <p class="subtitle">Read these out. Daniel picks — the phone stays with you.</p>
+    <h2>Daniel chooses.</h2>
+    <p class="subtitle">Read these out loud and let him pick. Every pick still shows the full mission before anything starts.</p>
 
     <button
       v-for="option in missionStore.candidates"
@@ -21,7 +21,7 @@
   </div>
 
   <button class="btn btn-primary cta" :disabled="!selectedId" @click="confirm">
-    {{ selected ? `Start ${selected.title.toLowerCase()}` : 'Pick one to start' }}
+    {{ selected ? 'See full mission' : 'Pick one first' }} <span v-if="selected" class="btn-arrow">→</span>
   </button>
 </template>
 
@@ -38,9 +38,9 @@ const selected = computed(() => missionStore.candidates.find((m) => m.id === sel
 
 function confirm() {
   if (!selectedId.value) return
+  // Selection only — the mission starts from the preview, never from here.
   missionStore.chooseMission(selectedId.value)
-  missionStore.startMission()
-  router.push('/play/run')
+  router.push('/play/preview')
 }
 </script>
 

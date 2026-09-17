@@ -64,7 +64,10 @@ export const useMissionStore = defineStore('mission', {
     candidates: MOCK_MISSIONS, // options offered by Pick-a-mission (F16)
     active: null, // the chosen Mission object, or null before one is picked
     stepIndex: 0, // index of the step currently in progress within active.steps
-    status: 'not_started' // 'not_started' | 'in_progress' | 'done'
+    status: 'not_started', // 'not_started' | 'in_progress' | 'done'
+    // Set when a parent ends a mission early (AC-8.1.4): it is never written to
+    // history as complete. Play shows it once, then clears it.
+    lastAbandoned: null // { title, placeName, doneCount, totalSteps } | null
   }),
   getters: {
     totalSteps(state) {
@@ -107,6 +110,21 @@ export const useMissionStore = defineStore('mission', {
       } else {
         this.status = 'done'
       }
+    },
+    // Gap 5 — end a running mission without logging it as complete. Steps
+    // already done are kept on the notice so the parent sees they counted.
+    abandonMission() {
+      if (!this.active || this.status !== 'in_progress') return
+      this.lastAbandoned = {
+        title: this.active.title,
+        placeName: this.active.placeName,
+        doneCount: this.stepIndex,
+        totalSteps: this.active.steps.length
+      }
+      this.resetMission()
+    },
+    clearAbandoned() {
+      this.lastAbandoned = null
     },
     resetMission() {
       this.active = null

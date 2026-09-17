@@ -4,6 +4,7 @@
 
     <div class="scroll-area run-scroll">
       <div class="run-head">
+        <button class="abandon-btn" @click="confirming = true">Abandon mission</button>
         <span class="run-title">{{ mission.title }}</span>
         <button class="run-count" @click="showAll = !showAll">
           Task {{ missionStore.stepIndex + 1 }} of {{ missionStore.totalSteps }}
@@ -33,6 +34,17 @@
 
       <button class="link-btn" @click="router.push('/play/overview')">Full overview</button>
     </div>
+
+    <div v-if="confirming" class="sheet-backdrop" @click.self="confirming = false">
+      <div class="sheet" role="dialog" aria-label="End this mission">
+        <h2>End this mission now?</h2>
+        <p class="sheet-body">It won't be saved as complete. {{ doneCount ? `${doneCount} of ${missionStore.totalSteps} steps already done stay noted.` : 'Nothing has been logged yet.' }}</p>
+        <div class="btn-row" style="margin-top: 18px">
+          <button class="btn btn-secondary" @click="confirming = false">Cancel</button>
+          <button class="btn btn-danger" @click="abandon">End mission</button>
+        </div>
+      </div>
+    </div>
   </template>
 
   <template v-else>
@@ -56,7 +68,15 @@ const router = useRouter()
 const missionStore = useMissionStore()
 const mission = computed(() => missionStore.active)
 const showAll = ref(false)
+const confirming = ref(false)
+const doneCount = computed(() => missionStore.stepIndex)
 const isLast = computed(() => missionStore.stepIndex === missionStore.totalSteps - 1)
+
+function abandon() {
+  confirming.value = false
+  missionStore.abandonMission()
+  router.push('/play')
+}
 
 function advance() {
   missionStore.advanceStep()
@@ -67,8 +87,50 @@ function advance() {
 <style scoped>
 .run-scroll { display: flex; flex-direction: column; }
 
-.run-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.run-title { font-size: 14px; font-weight: 600; color: rgba(242, 241, 236, 0.6); }
+.run-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.run-title { font-size: 14px; font-weight: 600; color: rgba(242, 241, 236, 0.6); order: 2; flex: 1; }
+.run-count { order: 3; }
+
+.abandon-btn {
+  order: 1;
+  width: 100%;
+  margin-bottom: 10px;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(242, 241, 236, 0.08);
+  color: rgba(242, 241, 236, 0.7);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.sheet {
+  width: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 24px 24px 0 0;
+  padding: 22px 24px calc(22px + env(safe-area-inset-bottom, 0px));
+}
+
+.sheet-body { margin-top: 8px; font-size: 14.5px; line-height: 1.5; color: var(--ink-3); }
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--paper);
+  border: none;
+  box-shadow: 0 8px 20px rgba(178, 58, 46, 0.28);
+}
 
 .run-count {
   background: none;

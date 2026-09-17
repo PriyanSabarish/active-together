@@ -1,6 +1,14 @@
 <template>
   <AppHeader />
   <div class="scroll-area">
+    <div v-if="missionStore.lastAbandoned" class="ended-note">
+      <div>
+        <p class="ended-title">Ended early · not counted as complete</p>
+        <p class="ended-sub">{{ missionStore.lastAbandoned.title }} · {{ missionStore.lastAbandoned.doneCount }} of {{ missionStore.lastAbandoned.totalSteps }} steps done</p>
+      </div>
+      <button class="ended-close" aria-label="Dismiss" @click="missionStore.clearAbandoned()">✕</button>
+    </div>
+
     <!-- A mission is running: resume it, don't offer a new one on top. -->
     <template v-if="missionStore.status === 'in_progress'">
       <p class="eyebrow-accent">In progress</p>
@@ -111,6 +119,33 @@ function takeToday() {
 </script>
 
 <style scoped>
+.ended-note {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-field);
+  background: var(--amber-light);
+  color: var(--amber);
+}
+
+.ended-title { font-size: 13.5px; font-weight: 700; }
+.ended-sub { font-size: 12.5px; margin-top: 2px; opacity: 0.85; }
+
+.ended-close {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(138, 78, 17, 0.12);
+  color: var(--amber);
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .mission-card {
   margin-top: 18px;
   background: var(--card);
