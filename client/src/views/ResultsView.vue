@@ -101,7 +101,6 @@
         <div class="mission-block">
           <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
           <p class="mission-blurb"><b>"{{ missionFor(place).title }}"</b> — {{ missionFor(place).blurb }}</p>
-          <p class="reason">{{ place.reason }}</p>
         </div>
         <p class="duration-line">◷ {{ place.durationBucket }} min on-site · {{ place.comboTitle }}</p>
       </article>
@@ -325,7 +324,6 @@ function openById(id) {
 .mission-blurb { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
 .mission-blurb b { color: var(--ink); font-weight: 700; }
 .duration-line { margin-top: 10px; font-size: 12px; color: var(--ink-4); }
-.reason { font-size: 12px; color: var(--ink-4); margin-top: 8px; line-height: 1.4; }
 
 .footnote {
   text-align: center;
