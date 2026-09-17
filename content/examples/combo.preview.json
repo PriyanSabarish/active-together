@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.1.0",
+  "mode": "development_preview",
+  "timing_basis": "author_estimate_not_measured",
+  "duration_bucket": 40,
+  "age_band": "8-10",
+  "status": "unused_time",
+  "blocks": [
+    {
+      "kind": "preparation",
+      "minutes": 3
+    },
+    {
+      "kind": "activity",
+      "activity_id": "follow_the_leader",
+      "activity_version": 1,
+      "age_band": "8-10",
+      "base_minutes": 5,
+      "minutes": 9,
+      "extra_rounds": 2,
+      "extension": "Swap leaders for another round using movements already agreed with the adult."
+    },
+    {
+      "kind": "rest",
+      "minutes": 3
+    },
+    {
+      "kind": "transition",
+      "minutes": 1
+    },
+    {
+      "kind": "activity",
+      "activity_id": "colour_hunt",
+      "activity_version": 1,
+      "age_band": "8-10",
+      "base_minutes": 6,
+      "minutes": 9,
+      "extra_rounds": 1,
+      "extension": "Swap who chooses the visible colour or comparison rule for another round."
+    },
+    {
+      "kind": "rest",
+      "minutes": 3
+    },
+    {
+      "kind": "transition",
+      "minutes": 1
+    },
+    {
+      "kind": "activity",
+      "activity_id": "pass_and_move",
+      "activity_version": 1,
+      "age_band": "8-10",
+      "base_minutes": 6,
+      "minutes": 9,
+      "extra_rounds": 1,
+      "extension": "Swap who chooses the positions while keeping the same checked area and rolling rules."
+    }
+  ],
+  "scheduled_minutes": 38,
+  "unused_minutes": 2,
+  "over_budget_minutes": 0
+}

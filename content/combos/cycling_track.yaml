@@ -1,0 +1,55 @@
+# Base combos for cycling_track. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: cycling_track_20
+  category: cycling_track
+  duration_bucket: 20
+  label: Short ride
+  travel_excluded: true
+  blocks:
+  - name: Ride out along the path
+    minutes: 14
+    note: Helmet on; adult sets the turnaround
+  - name: Rest at the turn
+    minutes: 6
+    note: null
+- combo_id: cycling_track_40
+  category: cycling_track
+  duration_bucket: 40
+  label: Ride and stop
+  travel_excluded: true
+  blocks:
+  - name: Ride out along the path
+    minutes: 15
+    note: null
+  - name: Rest and drink break
+    minutes: 5
+    note: null
+  - name: Ride back with a looking game
+    minutes: 15
+    note: null
+  - name: Finish and check the bike
+    minutes: 5
+    note: null
+- combo_id: cycling_track_60
+  category: cycling_track
+  duration_bucket: 60
+  label: Long ride
+  travel_excluded: true
+  blocks:
+  - name: Ride out along the path
+    minutes: 20
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Off-bike game
+    minutes: 10
+    note: null
+  - name: Ride back
+    minutes: 20
+    note: null
+  - name: Finish and check the bike
+    minutes: 5
+    note: null

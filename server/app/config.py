@@ -19,6 +19,13 @@ class Settings(BaseSettings):
     weatherapi_key: str
     weatherapi_url: str = "https://api.weatherapi.com/v1/forecast.json"
 
+    # Gemini API (B37) — optional so the app boots and tests run with no key
+    # at all; only GeminiModelClient needs it, and only once something
+    # actually wires it up. A18b: lives in an environment variable only,
+    # never in the repository.
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-3.5-flash-lite"
+
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20
     max_duration_min: int = 120

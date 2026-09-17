@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: choose_your_route
+version: 1
+title: "Choose Your Route"
+summary: "Plan a short route inside a checked area and guide a partner along it."
+activity_type: movement_play
+core_mechanic: sequence
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks a small, level, clear area with space for a few slow forward steps."
+  - "The entire route stays visible and away from traffic, obstacles and moving equipment."
+setup:
+  - "Agree a nearby starting position and a nearby finishing position."
+  - "Choose turns only where there is clear space; no signs, lines or markers are required."
+  - "Walk together, pause before changing direction and stop whenever wanted."
+age_variants:
+  "5-7":
+    challenge: "Choose a nearby destination and walk there with an adult."
+    steps:
+      - step_id: pick_destination
+        instruction: "Point to a nearby clear spot for us to visit."
+        parent_prompt: "The adult confirms it is inside the checked area."
+      - step_id: walk_together
+        instruction: "Walk beside me to our chosen spot."
+        parent_prompt: "Take a few slow forward steps and stop together."
+      - step_id: choose_return
+        instruction: "Point to our starting spot and walk back with me."
+        parent_prompt: "Turn while stopped, then walk forward rather than backwards."
+    ending: "Stop together at the starting position and finish."
+  "8-10":
+    challenge: "Plan a short route with one stopping point."
+    steps:
+      - step_id: plan_stop
+        instruction: "Choose one clear stopping point before our finish."
+        parent_prompt: "Check that both short sections stay inside the agreed area."
+      - step_id: guide_route
+        instruction: "Guide us to the stop and then the finish."
+        parent_prompt: "Pause together before any direction change."
+      - step_id: revise_route
+        instruction: "Choose a different stop and compare the two routes."
+        parent_prompt: "Confirm the new point with the adult before walking."
+    ending: "Return together to the start and name one route difference."
+  "11-12":
+    challenge: "Explain and improve a route for a partner to follow."
+    steps:
+      - step_id: design_route
+        instruction: "Plan a short route with two clear stopping points."
+        parent_prompt: "Confirm all points and turns within the checked area."
+      - step_id: give_directions
+        instruction: "Give one direction at a time while we walk together."
+        parent_prompt: "Wait at each stopping point before the next instruction."
+      - step_id: improve_direction
+        instruction: "Reword one direction to make the route clearer."
+        parent_prompt: "Try that short section together without increasing speed or distance."
+    ending: "Walk back together and explain which direction became clearer."
+adaptations:
+  simplify:
+    - "Use one nearby destination with no intermediate stop."
+  extend:
+    - "Swap who plans the route within the same checked area."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Remain together and use slow forward walking; turn only after stopping."
+  - "Do not add obstacles, road crossings, hidden destinations or a race."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

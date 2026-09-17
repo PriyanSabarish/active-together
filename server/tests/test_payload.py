@@ -115,3 +115,18 @@ def test_partial_weather_keeps_present_values_and_omits_the_rest():
     assert summary.temp_c == 17.0
     assert summary.wind_gust_kmh is None
     assert summary.uv_index is None
+
+
+def test_combo_id_is_the_places_own_id():
+    # /missions resolves combo_id back to a Place via a stateless DB lookup
+    # (app.data.places.fetch_place_by_id) rather than an in-memory cache —
+    # combo_id has to be exactly the place_id for that to work.
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    for combo in result.combos:
+        assert combo.combo_id == combo.place.place_id
+
+
+def test_combo_ids_are_unique_across_returned_combos():
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    ids = [combo.combo_id for combo in result.combos]
+    assert len(ids) == len(set(ids))

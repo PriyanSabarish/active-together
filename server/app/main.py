@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,10 +11,11 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
-from app.data.database import get_db
-from app.data.places import fetch_candidate_places
+from app.data.database import SessionLocal, get_db
+from app.data.places import fetch_candidate_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
-from app.models import Context, Place, RecommendationRequest
+from app.missions import service
+from app.models import Context, Place, RecommendationRequest, AgeBand
 from app.recommendation.recommend import recommend
 
 # Task A32: Log filter to ensure image bytes never reach logs or error traces
@@ -47,9 +49,10 @@ ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
 class MissionRequest(BaseModel):
     combo_id: str
-    age_band: str = Field(..., pattern="^(toddler|child|youth)$")
+    age_band: AgeBand  # Matches agreed enum: "5-7" | "8-10" | "11-12"
     duration_bucket: int = Field(..., description="Duration in minutes (e.g. 20, 40)")
-    preferences: dict | None = Field(default=None, description="Task A30 preference payload")
+    preferences: list[str] = Field(default_factory=list, description="Category strings to exclude")
+    recent_template_ids: list[str] = Field(default_factory=list, description="Recently served template IDs to avoid repetition")
 
 @app.get("/health")
 def health():
@@ -86,35 +89,62 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
     context = await fetch_weather_context(lat=lat, lon=lon)
     return recommend(candidates=candidates, context=context, duration_min=req.duration_min)
 
-# Task A29: Generation caching by template, place bucket, and hour
+# Task A29: Generation caching keyed by combo, age, duration, preferences, and recency history
 @alru_cache(ttl=3600, maxsize=500)
-async def _cached_mission_fetch(combo_id: str, age_band: str, duration_bucket: int):
-    # Stubbed call to Backend B generator
-    return [
-        {
-            "mission_id": f"m_{combo_id}_{age_band}_{duration_bucket}",
-            "title": "Explore park perimeter and count trees",
-            "equipment": ["none"],
-            "steps": [
-                {"sequence": 1, "prompt_text": "Find a tall tree", "verify_mode": "photo", "prompt_id": "p_tree_1"},
-                {"sequence": 2, "prompt_text": "Walk three minutes north", "verify_mode": "self", "prompt_id": None}
-            ],
-            # Task A26: Offline mission payload bundle included for zero-signal environments
-            "offline_bundle": {
-                "assets_cached": True,
-                "fallback_instructions": "Complete local observation steps without network sync."
-            }
-        }
-    ]
+async def _cached_mission_fetch(
+    combo_id: str,
+    age_band: str,
+    duration_bucket: int,
+    preferences_tuple: tuple[str, ...],
+    recent_template_ids_tuple: tuple[str, ...]
+):
+    def resolve_place():
+        db = SessionLocal()
+        try:
+            return fetch_place_by_id(db, combo_id)
+        finally:
+            db.close()
+
+    place = await asyncio.to_thread(resolve_place)
+    if place is None:
+        raise ValueError(f"Unknown combo_id: {combo_id}")
+
+    # fetch_weather_context has its own cache (app/data/weather.py, 1800s
+    # TTL), so this doesn't duplicate the Open-Meteo/WeatherAPI call on
+    # every hit of this function's own cache.
+    context = await fetch_weather_context(lat=place.latitude, lon=place.longitude)
+
+    def generate_local_missions():
+        return service.get_missions(
+            place,
+            context,
+            AgeBand(age_band),
+            duration_bucket,
+            preferences=preferences_tuple,
+            recent_template_ids=recent_template_ids_tuple,
+        )
+
+    return await asyncio.to_thread(generate_local_missions)
 
 @app.post("/missions")
 @limiter.limit("10/minute")  # Task A24: Rate limiting on missions endpoint
 async def create_missions(request: Request, payload: MissionRequest):
     try:
-        missions = await _cached_mission_fetch(payload.combo_id, payload.age_band, payload.duration_bucket)
+        # Convert lists to tuples to make them hashable for @alru_cache
+        prefs_tuple = tuple(sorted(payload.preferences or []))
+        recents_tuple = tuple(sorted(payload.recent_template_ids))
+
+        missions = await _cached_mission_fetch(
+            combo_id=payload.combo_id,
+            age_band=payload.age_band,
+            duration_bucket=payload.duration_bucket,
+            preferences_tuple=prefs_tuple,
+            recent_template_ids_tuple=recents_tuple
+        )
         return {"missions": missions}
-    except Exception:
-        # Task A25: Degradation handling — return safe empty payload or fallback rather than hard crash
+    except Exception as e:
+        logger.error(f"Mission generation error: {e}")
+        # Task A25: Degradation handling — return safe empty payload fallback
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -134,7 +164,7 @@ async def verify_step(
 ):
     if file.content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(status_code=400, detail="Invalid image content type.")
-    
+
     image_bytes = await file.read()
     if len(image_bytes) > MAX_IMAGE_SIZE_BYTES:
         raise HTTPException(status_code=413, detail="Image exceeds size ceiling.")

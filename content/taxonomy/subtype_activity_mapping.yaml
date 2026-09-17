@@ -1,0 +1,127 @@
+# Planning evidence only. These are candidates, not runtime eligibility rules.
+schema_version: "0.1.0"
+status: draft
+source:
+  git_commit: c969c41ce49e946cce71f1df0b4a5dddc8e85697
+  path: data/vicmap_app_ready.csv
+  git_blob: 6c90da9a6700754966b6cc0c7f3d6a7b69049703
+  record_count: 3237
+
+policy:
+  match_fields: [activity_category, feature_type, feature_subtype]
+  unknown_combination: no_mapping
+  fallback: none_automatic
+  note: Candidate selection still requires each activity's equipment, participation and site conditions to be checked.
+
+mappings:
+  - activity_category: court
+    feature_type: sport facility
+    feature_subtype: basketball court
+    source_count: 79
+    candidate_activity_types: [ball_play, movement_play]
+    condition: Check usable space and required equipment; do not assume a usable hoop.
+
+  - activity_category: court
+    feature_type: sport facility
+    feature_subtype: netball court
+    source_count: 35
+    candidate_activity_types: [ball_play, movement_play]
+    condition: Check usable space and required equipment; do not assume a usable ring.
+
+  - activity_category: court
+    feature_type: sport facility
+    feature_subtype: tennis court
+    source_count: 180
+    candidate_activity_types: [racket_play, ball_play, movement_play]
+    condition: Check permitted use, available space and equipment; do not assume a net or booking access.
+
+  - activity_category: park_and_garden
+    feature_type: reserve
+    feature_subtype: gardens
+    source_count: 5
+    candidate_activity_types: [exploration_play, imaginative_play]
+    condition: Stay in permitted visitor areas; do not assume accessible lawns or plants that can be handled.
+
+  - activity_category: park_and_garden
+    feature_type: reserve
+    feature_subtype: park
+    source_count: 2039
+    candidate_activity_types: [movement_play, exploration_play, imaginative_play, ball_play]
+    condition: Check the space required by the activity; a park label does not establish grass or a clear playing area.
+
+  - activity_category: picnic_day_use
+    feature_type: recreational resource
+    feature_subtype: day visitor area
+    source_count: 1
+    candidate_activity_types: [exploration_play, imaginative_play, movement_play]
+    condition: Check a permitted area away from vehicles and other visitors; do not assume seating.
+
+  - activity_category: picnic_day_use
+    feature_type: recreational resource
+    feature_subtype: picnic site
+    source_count: 9
+    candidate_activity_types: [exploration_play, imaginative_play, movement_play]
+    condition: Check a clear permitted area; picnic infrastructure and free playing space are unverified.
+
+  - activity_category: playground
+    feature_type: recreational resource
+    feature_subtype: playground
+    source_count: 457
+    candidate_activity_types: [movement_play, exploration_play, imaginative_play]
+    condition: Check room outside equipment travel and landing areas; do not assume particular play equipment.
+
+  - activity_category: skate_bmx
+    feature_type: recreational resource
+    feature_subtype: bmx track
+    source_count: 6
+    candidate_activity_types: [wheeled_play]
+    condition: Require a cycling-specific activity, suitable equipment and ability, and an appropriate permitted area; never default to on-foot play on an active track.
+
+  - activity_category: skate_bmx
+    feature_type: recreational resource
+    feature_subtype: skate park
+    source_count: 15
+    candidate_activity_types: [wheeled_play]
+    condition: Require a skating-specific activity, suitable equipment and ability, and an appropriate permitted area; never assume cycling is permitted.
+
+  - activity_category: sports_ground
+    feature_type: sport facility
+    feature_subtype: athletic field
+    source_count: 18
+    candidate_activity_types: [movement_play]
+    condition: Check access and a clear activity area; do not assume lanes, markings or equipment.
+
+  - activity_category: sports_ground
+    feature_type: sport facility
+    feature_subtype: baseball field
+    source_count: 19
+    candidate_activity_types: [ball_play, movement_play]
+    condition: Check that casual play is permitted and separate from active sport; do not assume bases or supplied equipment.
+
+  - activity_category: sports_ground
+    feature_type: sport facility
+    feature_subtype: hockey ground
+    source_count: 5
+    candidate_activity_types: [ball_play, movement_play]
+    condition: Check permitted use and surface restrictions; this mapping does not authorize hockey-specific play.
+
+  - activity_category: sports_ground
+    feature_type: sport facility
+    feature_subtype: sports complex
+    source_count: 41
+    candidate_activity_types: [movement_play, ball_play, racket_play]
+    condition: Identify a permitted suitable area first; the broad label establishes no particular court, field or facility.
+
+  - activity_category: sports_ground
+    feature_type: sport facility
+    feature_subtype: sports ground
+    source_count: 327
+    candidate_activity_types: [movement_play, ball_play, imaginative_play]
+    condition: Check surface, permitted use and free space; do not assume grass, goals or access during organised sport.
+
+  - activity_category: trail_access
+    feature_type: recreational resource
+    feature_subtype: trailhead
+    source_count: 1
+    candidate_activity_types: [exploration_play]
+    condition: Check a suitable permitted observation area; a trailhead point does not verify a walkable child-appropriate route.

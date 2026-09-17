@@ -1,133 +1,159 @@
 <template>
-  <AppHeader :step="3" back />
+  <AppHeader />
 
   <div class="scroll-area">
-  <h1>Your top options</h1>
-  <p class="subtitle">Candidate places from open data.</p>
-  <p class="hint">Icon shape = category, badge colour = conditions</p>
-
-  <!-- loading -->
-  <template v-if="store.loading">
-    <div v-for="i in 3" :key="i" class="skeleton-card">
-      <div class="sk-row">
-        <span class="sk-circle" />
-        <span class="sk-lines"><span class="sk-line w60" /><span class="sk-line w40" /></span>
-        <span class="sk-pill" />
+    <button class="pill crumb" @click="$router.push('/location')">‹ Change starting point</button>
+    <div class="head-row">
+      <div>
+        <h1>Your top options</h1>
+        <p class="subtitle">Each one now comes with a mission for Daniel.</p>
       </div>
-      <span class="sk-line w80" style="margin-top: 18px" />
     </div>
-    <p class="loading-note">Checking places and today's forecast…</p>
-  </template>
 
-  <!-- backend / network error -->
-  <template v-else-if="store.status === 'error'">
-    <div class="empty-state">
-      <svg width="44" height="44" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="17" fill="none" stroke="#B4B2A9" stroke-width="2.5" />
-        <line x1="22" y1="13" x2="22" y2="25" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
-        <circle cx="22" cy="31" r="1.8" fill="#B4B2A9" />
-      </svg>
-      <p class="empty-title">We couldn't load places</p>
-      <p class="empty-text">{{ store.error }}</p>
-      <button class="btn btn-primary widen-btn" @click="store.fetchRecommendations()">Try again</button>
+    <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
+    <div class="window-row">
+      <span class="window-text">{{ store.radiusKm }} km · {{ store.planMin }} min</span>
+      <button class="pill adjust-btn" @click="openAdjust">Adjust</button>
     </div>
-  </template>
 
-  <!-- outside the pilot area -->
-  <template v-else-if="store.status === 'out_of_bounds'">
-    <div class="empty-state">
-      <svg width="44" height="44" viewBox="0 0 44 44">
-        <path d="M22 4 C13 4 7 11 7 19 C7 30 22 41 22 41 C22 41 37 30 37 19 C37 11 31 4 22 4 Z" fill="none" stroke="#B4B2A9" stroke-width="2.5" stroke-linejoin="round" />
-        <line x1="17" y1="14" x2="27" y2="24" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="27" y1="14" x2="17" y2="24" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
-      </svg>
-      <p class="empty-title">Outside the pilot area</p>
-      <p class="empty-text">
-        {{ store.message || 'Selected location is outside the active pilot area.' }}
-        Active Together currently covers the City of Melbourne, Monash and Melton.
-      </p>
-      <button class="btn btn-primary widen-btn" @click="$router.push('/')">Change location</button>
-    </div>
-  </template>
-
-  <!-- zero results -->
-  <template v-else-if="store.results.length === 0">
-    <div class="empty-state">
-      <svg width="44" height="44" viewBox="0 0 44 44">
-        <circle cx="20" cy="20" r="12" fill="none" stroke="#B4B2A9" stroke-width="2.5" />
-        <line x1="29" y1="29" x2="38" y2="38" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
-      </svg>
-      <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
-      <p class="empty-text">
-        {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
-        <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
-      </p>
-      <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
-        Search {{ nextRadius }} km instead
-      </button>
-    </div>
-  </template>
-
-  <!-- results -->
-  <template v-else>
-    <PlaceMap
-      class="results-map"
-      :center="store.coords"
-      :places="store.results"
-      fit
-      height="180px"
-      @select="openById"
-    />
-    <p class="map-hint">Tap a pin to open that place</p>
-
-    <article
-      v-for="place in store.results"
-      :key="place.id"
-      class="result-card"
-      role="button"
-      tabindex="0"
-      @click="open(place)"
-      @keydown.enter="open(place)"
-    >
-      <div class="card-top">
-        <CategoryIcon :category="place.category" />
-        <div class="card-title">
-          <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
-          <p class="place-meta">
-            {{ place.categoryLabel }} · {{ place.distanceKm }} km
-            <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
-          </p>
+    <!-- loading: three skeleton cards while /recommendations is in flight -->
+    <template v-if="store.loading">
+      <div v-for="i in 3" :key="i" class="skeleton-card">
+        <div class="sk-row">
+          <span class="sk-circle" />
+          <span class="sk-lines"><span class="sk-line w60" /><span class="sk-line w40" /></span>
+          <span class="sk-pill" />
         </div>
-        <ConditionBadge :badge="place.badge" />
+        <span class="sk-block" />
       </div>
-      <hr class="card-divider" />
-      <p class="reason">{{ place.reason }}</p>
-      <p class="duration-line">
-        <svg width="15" height="15" viewBox="0 0 15 15">
-          <circle cx="7.5" cy="7.5" r="6.5" fill="none" stroke="#888780" stroke-width="1.3" />
-          <line x1="7.5" y1="7.5" x2="7.5" y2="3.5" stroke="#888780" stroke-width="1.3" />
-          <line x1="7.5" y1="7.5" x2="10.5" y2="9.5" stroke="#888780" stroke-width="1.3" />
-        </svg>
-        {{ place.durationBucket }} min on-site · {{ place.comboTitle }}
-      </p>
-    </article>
+      <p class="loading-note">Checking places and today's forecast…</p>
+    </template>
 
-    <p v-if="store.results.length === 1" class="footnote">
-      Only one place within {{ store.radiusKm }} km of {{ store.locationLabel }}.
-      <template v-if="store.radiusKm < 10">Widen the radius to see more options.</template>
-    </p>
-    <p v-else-if="store.results.length === 2" class="footnote">
-      Only two places within {{ store.radiusKm }} km of {{ store.locationLabel }}.
-    </p>
-  </template>
+    <!-- backend / network error -->
+    <template v-else-if="store.status === 'error'">
+      <div class="empty-state">
+        <span class="empty-glyph">!</span>
+        <p class="empty-title">We couldn't load places</p>
+        <p class="empty-text">{{ store.error }}</p>
+        <button class="btn btn-primary widen-btn" @click="store.fetchRecommendations()">Try again</button>
+      </div>
+    </template>
+
+    <!-- outside the pilot area -->
+    <template v-else-if="store.status === 'out_of_bounds'">
+      <div class="empty-state">
+        <span class="empty-glyph">×</span>
+        <p class="empty-title">Outside the pilot area</p>
+        <p class="empty-text">
+          {{ store.message || 'Selected location is outside the active pilot area.' }}
+          Active Together currently covers the City of Melbourne, Monash and Melton.
+        </p>
+        <button class="btn btn-primary widen-btn" @click="$router.push('/location')">Change location</button>
+      </div>
+    </template>
+
+    <!-- zero results -->
+    <template v-else-if="store.results.length === 0">
+      <div class="empty-state">
+        <span class="empty-glyph">?</span>
+        <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
+        <p class="empty-text">
+          {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
+          <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
+        </p>
+        <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
+          Search {{ nextRadius }} km instead
+        </button>
+      </div>
+    </template>
+
+    <!-- results: map with a pin per place, then one card per place -->
+    <template v-else>
+      <PlaceMap
+        class="results-map"
+        :center="store.coords"
+        :places="store.results"
+        fit
+        height="150px"
+        @select="openById"
+      />
+
+      <article
+        v-for="place in store.results"
+        :key="place.id"
+        class="result-card"
+        role="button"
+        tabindex="0"
+        @click="open(place)"
+        @keydown.enter="open(place)"
+      >
+        <div class="card-top">
+          <CategoryIcon :category="place.category" />
+          <div class="card-title">
+            <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
+            <p class="place-meta">{{ place.categoryLabel }} · {{ place.distanceKm }} km</p>
+          </div>
+          <ConditionBadge :badge="place.badge" />
+        </div>
+        <p v-if="justAdjusted" class="updated-tag">Updated to fit new window</p>
+
+        <!-- Mission preview block. Mock until the missions endpoint is wired (see MOCK_MISSIONS). -->
+        <div class="mission-block">
+          <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
+          <p class="mission-blurb"><b>"{{ missionFor(place).title }}"</b> — {{ missionFor(place).blurb }}</p>
+          <p class="reason">{{ place.reason }}</p>
+        </div>
+        <p class="duration-line">◷ {{ place.durationBucket }} min on-site · {{ place.comboTitle }}</p>
+      </article>
+
+      <p v-if="store.results.length === 1" class="footnote">
+        Only one place within {{ store.radiusKm }} km of {{ store.locationLabel }}.
+        <template v-if="store.radiusKm < 10">Widen the radius to see more options.</template>
+      </p>
+      <p v-else-if="store.results.length === 2" class="footnote">
+        Only two places within {{ store.radiusKm }} km of {{ store.locationLabel }}.
+      </p>
+    </template>
   </div>
 
-  <hr class="divider" style="margin-bottom: 16px" />
-  <button class="btn btn-secondary" style="width: 100%" @click="$router.back()">Back</button>
+  <!-- Adjust sheet: bottom sheet over the list; z-index sits above Leaflet panes. -->
+  <div v-if="adjusting" class="sheet-backdrop" @click.self="adjusting = false">
+    <div class="sheet" role="dialog" aria-label="Adjust search">
+      <h2>Adjust search</h2>
+
+      <p class="section-label" style="margin-top: 16px">Maximum distance</p>
+      <div class="seg-row">
+        <button v-for="km in [3, 5, 10]" :key="km" class="seg-btn" :class="{ on: draft.radiusKm === km }" @click="draft.radiusKm = km">{{ km }} km</button>
+      </div>
+
+      <p class="section-label" style="margin-top: 18px">How long have you got</p>
+      <button
+        v-for="opt in DURATIONS"
+        :key="opt.min"
+        class="dur-row"
+        :class="{ on: draft.durationMin === opt.min }"
+        @click="draft.durationMin = opt.min"
+      >
+        <span>{{ opt.min }} min</span>
+        <span class="dur-note">{{ opt.note }}</span>
+      </button>
+
+      <div class="btn-row" style="margin-top: 18px">
+        <button class="btn btn-secondary" @click="adjusting = false">Cancel</button>
+        <button class="btn btn-primary" @click="applyAdjust">Apply</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+// Top options for the current window (place + radius + duration). Reads
+// store.results from POST /recommendations. Handles loading, error,
+// out-of-pilot-area and zero-result states. The Adjust sheet changes radius
+// and duration in place and refetches; location changes still go through the
+// setup form via the crumb.
+
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CategoryIcon from '../components/CategoryIcon.vue'
@@ -141,7 +167,50 @@ const router = useRouter()
 // Landing here directly (e.g. page refresh) still runs the search.
 if (!store.loading && store.status === 'idle') store.fetchRecommendations()
 
+// Mock mission per place until F14 (mission store) lands — deterministic by
+// place id so the badge doesn't change between re-renders.
+const MOCK_MISSIONS = [
+  { steps: 3, title: 'Bark Detective', blurb: 'find, feel and compare three kinds of tree bark.' },
+  { steps: 2, title: 'Shadow Tag', blurb: "chase and copy each other's shadow shapes." },
+  { steps: 2, title: 'Cloud Spotting', blurb: 'name the shapes you find in the clouds.' },
+  { steps: 3, title: 'Colour Hunt', blurb: 'find one thing in five different colours.' }
+]
+
+function missionFor(place) {
+  let hash = 0
+  for (const ch of String(place.id)) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0
+  return MOCK_MISSIONS[hash % MOCK_MISSIONS.length]
+}
+
 const nextRadius = computed(() => (store.radiusKm === 3 ? 5 : 10))
+
+// Gap 2 — adjust distance and duration in place. Location is left alone; that
+// still goes through the setup form. The three durations line up with the
+// plan buckets the backend serves.
+const DURATIONS = [
+  { min: 20, note: 'a quick loop' },
+  { min: 40, note: 'room for a full mission' },
+  { min: 60, note: 'a proper outing' }
+]
+const adjusting = ref(false)
+const justAdjusted = ref(false)
+const draft = reactive({ radiusKm: store.radiusKm, durationMin: store.planMin })
+
+function openAdjust() {
+  draft.radiusKm = store.radiusKm
+  draft.durationMin = store.planMin
+  adjusting.value = true
+}
+
+function applyAdjust() {
+  const changed = draft.radiusKm !== store.radiusKm || draft.durationMin !== store.planMin
+  store.radiusKm = draft.radiusKm
+  store.durationMin = draft.durationMin
+  adjusting.value = false
+  if (!changed) return
+  justAdjusted.value = true
+  store.fetchRecommendations()
+}
 
 function widen() {
   store.radiusKm = nextRadius.value
@@ -158,84 +227,109 @@ function openById(id) {
 </script>
 
 <style scoped>
-.hint {
-  font-size: 10px;
-  color: var(--ink-5);
-  margin-top: 4px;
-}
+.head-row { margin-top: 14px; }
 
-.results-map { margin-top: 14px; }
-
-.map-hint {
-  font-size: 10px;
-  color: var(--ink-5);
-  margin-top: 6px;
-  text-align: center;
-}
-
-.result-card {
+.window-row {
   margin-top: 14px;
-  border: 1px solid var(--line-2);
-  border-radius: 14px;
-  padding: 16px;
-  cursor: pointer;
-  transition: border-color 0.12s ease, transform 0.12s ease;
-}
-
-.result-card:hover { border-color: var(--line-3); }
-.result-card:active { transform: scale(0.985); }
-
-.card-top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
 }
 
-.card-title { flex: 1; min-width: 0; }
+.window-text { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
+.adjust-btn { background: var(--green-light); color: var(--green-dark); box-shadow: none; }
 
-.place-name {
-  font-size: 14.5px;
-  font-weight: 500;
-}
-
-.place-name.unnamed { color: var(--ink-3); font-style: italic; }
-
-.record-id {
-  margin-left: 6px;
-  font-size: 10px;
-  color: var(--ink-5);
-  font-variant-numeric: tabular-nums;
-}
-
-.place-meta {
-  font-size: 11.5px;
-  color: var(--ink-3);
-  margin-top: 3px;
-}
-
-.card-divider {
-  border: none;
-  border-top: 1px solid var(--line);
-  margin: 14px -16px;
-}
-
-.reason {
+.updated-tag {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--amber-light);
+  color: var(--amber);
   font-size: 12px;
-  color: var(--ink-2);
+  font-weight: 600;
 }
 
-.duration-line {
-  margin-top: 12px;
+/* adjust sheet */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 42, 31, 0.45);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000; /* above Leaflet panes */
+}
+
+.sheet {
+  width: 100%;
+  background: var(--paper);
+  border-radius: 24px 24px 0 0;
+  padding: 22px 24px calc(22px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -10px 30px rgba(30, 42, 31, 0.18);
+}
+
+.dur-row {
+  width: 100%;
+  margin-top: 8px;
+  height: 54px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--ink);
+  font-size: 15.5px;
+  font-weight: 600;
+  font-family: inherit;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--ink-4);
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.18s ease;
 }
+
+.dur-row .dur-note { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.dur-row.on { background: var(--green); color: var(--paper); box-shadow: var(--shadow-selected); }
+.dur-row.on .dur-note { color: rgba(242, 241, 236, 0.75); }
+
+.results-map { margin-top: 16px; }
+
+.result-card {
+  margin-top: 12px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 15px 16px 14px;
+  cursor: pointer;
+  transition: box-shadow 0.12s ease, transform 0.12s ease;
+}
+
+.result-card:hover { box-shadow: var(--shadow-raised); }
+.result-card:active { transform: scale(0.985); }
+
+.card-top { display: flex; align-items: center; gap: 12px; }
+.card-title { flex: 1; min-width: 0; }
+
+.place-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
+.place-name.unnamed { color: var(--ink-3); font-style: italic; }
+.place-meta { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+
+.mission-block {
+  margin-top: 12px;
+  background: var(--paper);
+  border-radius: 13px;
+  padding: 11px 13px 12px;
+}
+
+.mission-blurb { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
+.mission-blurb b { color: var(--ink); font-weight: 700; }
+.duration-line { margin-top: 10px; font-size: 12px; color: var(--ink-4); }
+.reason { font-size: 12px; color: var(--ink-4); margin-top: 8px; line-height: 1.4; }
 
 .footnote {
   text-align: center;
-  font-size: 10.5px;
+  font-size: 12px;
   color: var(--ink-4);
   margin-top: 20px;
   line-height: 1.5;
@@ -243,55 +337,35 @@ function openById(id) {
 
 /* skeleton */
 .skeleton-card {
-  margin-top: 14px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  margin-top: 12px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   padding: 16px;
 }
 
 .sk-row { display: flex; align-items: center; gap: 12px; }
 
-.sk-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--paper);
+.sk-circle, .sk-line, .sk-pill, .sk-block {
+  background: var(--tint);
   animation: pulse 1.2s ease-in-out infinite;
-}
-
-.sk-lines { flex: 1; display: flex; flex-direction: column; gap: 7px; }
-
-.sk-line {
   display: block;
-  height: 10px;
-  border-radius: 5px;
-  background: var(--paper);
-  animation: pulse 1.2s ease-in-out infinite;
 }
 
+.sk-circle { width: 32px; height: 32px; border-radius: 50%; }
+.sk-lines { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.sk-line { height: 10px; border-radius: 5px; }
 .w60 { width: 60%; }
 .w40 { width: 40%; }
-.w80 { width: 80%; }
-
-.sk-pill {
-  width: 64px;
-  height: 22px;
-  border-radius: 11px;
-  background: var(--paper);
-  animation: pulse 1.2s ease-in-out infinite;
-}
+.sk-pill { width: 64px; height: 22px; border-radius: 11px; }
+.sk-block { margin-top: 14px; height: 64px; border-radius: 13px; }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }
 }
 
-.loading-note {
-  text-align: center;
-  font-size: 11px;
-  color: var(--ink-4);
-  margin-top: 18px;
-}
+.loading-note { text-align: center; font-size: 12.5px; color: var(--ink-4); margin-top: 18px; }
 
 /* empty */
 .empty-state {
@@ -303,22 +377,21 @@ function openById(id) {
   padding: 0 24px;
 }
 
-.empty-title {
-  font-size: 15px;
-  font-weight: 500;
-  margin-top: 16px;
+.empty-glyph {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--ink-4);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.empty-text {
-  font-size: 12px;
-  color: var(--ink-3);
-  line-height: 1.5;
-  margin-top: 8px;
-}
-
-.widen-btn {
-  margin-top: 20px;
-  padding: 0 22px;
-  height: 44px;
-}
+.empty-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin-top: 16px; }
+.empty-text { font-size: 13.5px; color: var(--ink-3); line-height: 1.5; margin-top: 8px; }
+.widen-btn { margin-top: 20px; height: 48px; }
 </style>

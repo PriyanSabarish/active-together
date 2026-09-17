@@ -1,0 +1,55 @@
+# Base combos for reserve_and_bushland. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: reserve_and_bushland_20
+  category: reserve_and_bushland
+  duration_bucket: 20
+  label: Short reserve visit
+  travel_excluded: true
+  blocks:
+  - name: Walk the marked path
+    minutes: 14
+    note: Stay on the path
+  - name: Stop and look around
+    minutes: 6
+    note: null
+- combo_id: reserve_and_bushland_40
+  category: reserve_and_bushland
+  duration_bucket: 40
+  label: Reserve walk
+  travel_excluded: true
+  blocks:
+  - name: Walk the marked path
+    minutes: 15
+    note: null
+  - name: Looking game beside the path
+    minutes: 10
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Walk back
+    minutes: 10
+    note: null
+- combo_id: reserve_and_bushland_60
+  category: reserve_and_bushland
+  duration_bucket: 60
+  label: Long reserve walk
+  travel_excluded: true
+  blocks:
+  - name: Walk the marked path
+    minutes: 20
+    note: null
+  - name: Looking game beside the path
+    minutes: 15
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Walk back a different way
+    minutes: 15
+    note: null
+  - name: Finish and stretch
+    minutes: 5
+    note: null

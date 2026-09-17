@@ -1,0 +1,83 @@
+# Pilot draft. The parcel and destination are imaginary; the checked space is real.
+schema_version: "0.1.0"
+activity_id: imaginary_delivery
+version: 1
+title: Imaginary Delivery
+summary: Pretend to carry a make-believe parcel and decide how to deliver it together.
+activity_type: imaginative_play
+core_mechanic: pretend
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: Join the pretend delivery and agree any movements within the checked space.
+equipment:
+  required: []
+  optional: []
+requirements:
+  - An adult checks a small, clear, level area with room for a few forward steps together.
+  - The delivery begins and ends within that area, away from traffic and active play.
+setup:
+  - Agree on a nearby imaginary delivery spot inside the checked area.
+  - Explain that there is no real parcel to find, pick up or carry.
+  - Use comfortable arm movements and slow forward steps; staying in place is also allowed.
+  - Either person can change the pretend idea, pause or stop.
+age_variants:
+  "5-7":
+    challenge: Imagine one parcel and act out delivering it with an adult.
+    steps:
+      - step_id: choose_parcel
+        instruction: Pretend you have a soft, light parcel in your hands.
+        parent_prompt: Offer a simple imaginary parcel such as a cushion; nothing is actually held.
+      - step_id: carry_parcel
+        instruction: Carry your pretend parcel beside me with slow steps.
+        parent_prompt: Walk together towards the agreed spot, or mime the delivery in place.
+      - step_id: deliver_parcel
+        instruction: Show me how you give me the pretend parcel.
+        parent_prompt: Mime receiving it without requiring touching or carrying any real object.
+    ending: Set the imaginary parcel down in the story and relax your arms.
+  "8-10":
+    challenge: Choose an imaginary parcel's shape and adapt how you carry it.
+    steps:
+      - step_id: describe_parcel
+        instruction: Choose whether your pretend parcel is wide or narrow.
+        parent_prompt: Keep the imagined parcel light and use only comfortable arm positions.
+      - step_id: try_carrying
+        instruction: Show how you carry that shape to our delivery spot.
+        parent_prompt: Move together slowly within the checked area or mime the steps in place.
+      - step_id: change_shape
+        instruction: Pretend its shape changes and adjust your delivery movements.
+        parent_prompt: Stay at the delivery spot and use smaller arm movements if needed.
+    ending: Hand over the pretend parcel and describe how its shape changed your actions.
+  "11-12":
+    challenge: Plan a pretend delivery and adapt it when the imaginary parcel changes.
+    steps:
+      - step_id: plan_delivery
+        instruction: Invent a light parcel and explain your delivery plan.
+        parent_prompt: Agree the nearby destination first; the plan uses the same checked space.
+      - step_id: act_delivery
+        instruction: Act out carrying your parcel towards our agreed delivery spot.
+        parent_prompt: Walk beside the child with slow forward steps, or perform the delivery in place.
+      - step_id: adapt_plan
+        instruction: Imagine its shape changes and decide how to adjust your plan.
+        parent_prompt: Pause the walking and let the child adapt the arm movements without expanding the area.
+      - step_id: complete_delivery
+        instruction: Show your adjusted delivery and explain what you changed.
+        parent_prompt: Play the receiver and let the child finish using the agreed movements.
+    ending: Complete the handover in the story, then return your arms to rest.
+adaptations:
+  simplify:
+    - Mime the whole delivery in place with small arm movements.
+    - Let the adult suggest the parcel while the child chooses how to carry it.
+  extend:
+    - Swap sender and receiver roles using the same area and movement limits.
+constraints:
+  - All parcels are imaginary; do not collect, lift or deliver real objects.
+  - Remain together within the checked area; do not approach strangers as recipients.
+  - Do not add obstacles, roads, water, climbing, running or jumping to the story.
+  - Keep the parcel light in the story and every movement comfortable.
+  - Future story wording must retain the same delivery area and permitted actions.
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

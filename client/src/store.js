@@ -205,6 +205,9 @@ export const useSearchStore = defineStore('search', {
     myLocation: null, // { latitude, longitude } from the browser
     radiusKm: 5,
     recent: ['Carlton', 'Clayton'],
+    // true once the parent has been through where / how far / how long at
+    // least once — Start then opens on the results instead of the setup steps
+    setupDone: false,
     // screen 2
     durationMin: 45,
     context: null, // GET /data/context payload for the chosen point

@@ -1,0 +1,77 @@
+# Pilot draft. An adult checks the space and supports comfortable movement choices.
+schema_version: "0.1.0"
+activity_id: balance_shapes
+version: 1
+title: Balance Shapes
+summary: Explore steady body shapes and choose how to make them easier to hold.
+activity_type: movement_play
+core_mechanic: balance
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: Demonstrate comfortable shapes, stay nearby and help the child adjust.
+equipment:
+  required: []
+  optional: []
+requirements:
+  - An adult checks a clear, level, firm area with space to stretch without contact.
+  - The activity stays on the ground away from traffic and moving equipment.
+setup:
+  - Begin with both feet on the ground in a comfortable position.
+  - Explain that steady shapes can be small and both feet can stay down.
+  - Agree that either person can change a shape, pause or stop whenever wanted.
+age_variants:
+  "5-7":
+    challenge: Explore one steady shape at a time with both feet grounded.
+    steps:
+      - step_id: wide_shape
+        instruction: Keep both feet down and stretch your arms sideways.
+        parent_prompt: Show a small comfortable stretch and check room around each person.
+      - step_id: small_shape
+        instruction: Bring your arms close and make a smaller shape.
+        parent_prompt: Keep both feet still; a smaller arm position is enough.
+      - step_id: choose_shape
+        instruction: Choose a shape that feels steady to you.
+        parent_prompt: Invite the child to keep or change either demonstrated arm position.
+    ending: Return to a comfortable resting position and finish together.
+  "8-10":
+    challenge: Compare two arm positions and notice which feels steadier.
+    steps:
+      - step_id: first_position
+        instruction: Try a steady shape with your arms stretched sideways.
+        parent_prompt: Keep both feet comfortably grounded; do not time the hold.
+      - step_id: second_position
+        instruction: Keep your feet still and try a different arm position.
+        parent_prompt: Invite a comfortable change, then ask how it feels compared with the first.
+      - step_id: adjust_shape
+        instruction: Adjust your arms to make your shape feel steadier.
+        parent_prompt: Let the child decide; neither shape needs to be judged best.
+    ending: Relax the shape and describe one adjustment you noticed.
+  "11-12":
+    challenge: Design and adjust a controlled transition between two grounded shapes.
+    steps:
+      - step_id: design_pair
+        instruction: Choose two comfortable shapes with both feet on the ground.
+        parent_prompt: Help check space for both shapes and let the child choose arm positions.
+      - step_id: try_transition
+        instruction: Move slowly between your shapes while keeping your feet grounded.
+        parent_prompt: Let the child pause between shapes; there is no speed or holding target.
+      - step_id: improve_transition
+        instruction: Change one part to make the transition feel steadier.
+        parent_prompt: Ask whether a smaller arm movement or a pause helps, then try the change.
+    ending: Return to rest and name the change that helped you.
+adaptations:
+  simplify:
+    - Keep the arms close and use a smaller comfortable range of movement.
+  extend:
+    - Give each existing shape an imaginary name and repeat the same transition.
+constraints:
+  - Keep both feet on the ground; do not add raised surfaces or one-leg challenges.
+  - Do not add closed eyes, spinning, jumping, pushing or timed holding targets.
+  - Stop or change any movement that feels uncomfortable or unsteady.
+  - Story wording must retain the grounded positions and controlled transitions.
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

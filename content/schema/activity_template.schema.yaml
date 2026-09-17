@@ -1,0 +1,151 @@
+# Executable JSON Schema (Draft 2020-12), expressed as YAML.
+# Cross-file references and meaningful age differences need additional checks.
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Reusable activity family v0.1
+type: object
+additionalProperties: false
+required:
+  - schema_version
+  - activity_id
+  - version
+  - title
+  - summary
+  - activity_type
+  - core_mechanic
+  - participation
+  - equipment
+  - requirements
+  - setup
+  - age_variants
+  - adaptations
+  - constraints
+  - safety_reference
+  - review
+properties:
+  schema_version:
+    const: "0.1.0"
+  activity_id:
+    $ref: "#/$defs/identifier"
+  version:
+    type: integer
+    minimum: 1
+  title:
+    $ref: "#/$defs/text"
+  summary:
+    $ref: "#/$defs/text"
+  activity_type:
+    $ref: "#/$defs/identifier"
+  core_mechanic:
+    $ref: "#/$defs/identifier"
+  participation:
+    type: object
+    additionalProperties: false
+    required: [minimum_children, minimum_adults, adult_role]
+    properties:
+      minimum_children:
+        type: integer
+        minimum: 1
+      minimum_adults:
+        type: integer
+        minimum: 1
+      adult_role:
+        $ref: "#/$defs/text"
+  equipment:
+    type: object
+    additionalProperties: false
+    required: [required, optional]
+    properties:
+      required:
+        $ref: "#/$defs/text_list"
+      optional:
+        $ref: "#/$defs/text_list"
+  requirements:
+    $ref: "#/$defs/nonempty_text_list"
+  setup:
+    $ref: "#/$defs/nonempty_text_list"
+  age_variants:
+    type: object
+    minProperties: 1
+    maxProperties: 3
+    propertyNames:
+      enum: ["5-7", "8-10", "11-12"]
+    additionalProperties:
+      $ref: "#/$defs/age_variant"
+  adaptations:
+    type: object
+    additionalProperties: false
+    required: [simplify, extend]
+    properties:
+      simplify:
+        $ref: "#/$defs/text_list"
+      extend:
+        $ref: "#/$defs/text_list"
+  constraints:
+    $ref: "#/$defs/nonempty_text_list"
+  safety_reference:
+    const: schema/safety_constraints.yaml
+  review:
+    type: object
+    additionalProperties: false
+    required: [author, reviewed_by, status]
+    properties:
+      author:
+        $ref: "#/$defs/text"
+      reviewed_by:
+        anyOf:
+          - $ref: "#/$defs/text"
+          - type: "null"
+      status:
+        enum: [draft, reviewed]
+    # A reviewed record must name its reviewer. Independent review is checked separately.
+    allOf:
+      - if:
+          properties:
+            status:
+              const: reviewed
+        then:
+          properties:
+            reviewed_by:
+              $ref: "#/$defs/text"
+$defs:
+  text:
+    type: string
+    minLength: 1
+    pattern: '\S'
+  identifier:
+    type: string
+    pattern: '^[a-z][a-z0-9]*(_[a-z0-9]+)*$'
+  text_list:
+    type: array
+    uniqueItems: true
+    items:
+      $ref: "#/$defs/text"
+  nonempty_text_list:
+    allOf:
+      - $ref: "#/$defs/text_list"
+      - minItems: 1
+  age_variant:
+    type: object
+    additionalProperties: false
+    required: [challenge, steps, ending]
+    properties:
+      challenge:
+        $ref: "#/$defs/text"
+      steps:
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/$defs/step"
+      ending:
+        $ref: "#/$defs/text"
+  step:
+    type: object
+    additionalProperties: false
+    required: [step_id, instruction, parent_prompt]
+    properties:
+      step_id:
+        $ref: "#/$defs/identifier"
+      instruction:
+        $ref: "#/$defs/text"
+      parent_prompt:
+        $ref: "#/$defs/text"

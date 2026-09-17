@@ -1,5 +1,5 @@
 <template>
-  <div class="phone">
+  <div class="phone" :class="{ dark: isDark }">
     <LoginGate v-if="!authed" @authenticated="signIn" />
     <template v-else>
       <router-view v-slot="{ Component, route }">
@@ -9,6 +9,7 @@
           </div>
         </transition>
       </router-view>
+      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding" />
       <!-- Sits on top of the first screen and dims it; the app stays visible behind. -->
       <OnboardingModal v-if="showOnboarding" @done="finishOnboarding" />
     </template>
@@ -16,13 +17,23 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+// App shell. Order of layers, bottom to top: the routed screen, the four-tab
+// bar, the first-run walkthrough. Two flags gate what shows:
+//   - authed (sessionStorage): the private-pilot admin gate, per browser tab
+//   - onboarded (localStorage): walkthrough seen once per device
+// route.meta.tab picks the active tab; route.meta.dark switches the whole
+// shell to the dark mission-run look (background, header, tab bar).
+
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
+import TabShell from './components/TabShell.vue'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
+const router = useRouter()
+
 const AUTH_KEY = 'at-admin-authed'
 const authed = ref(readAuthed())
 
@@ -37,6 +48,8 @@ function readAuthed() {
 function signIn() {
   authed.value = true
   showOnboarding.value = !hasOnboarded()
+  // Always land on Start after the gate; the walkthrough sits on top of it.
+  router.replace('/')
   try {
     sessionStorage.setItem(AUTH_KEY, '1')
   } catch {
@@ -57,25 +70,33 @@ function hasOnboarded() {
   }
 }
 
-function finishOnboarding() {
+function finishOnboarding(reason) {
   showOnboarding.value = false
   try {
     localStorage.setItem(ONBOARDED_KEY, '1')
   } catch {
     /* storage unavailable; fine for this session */
   }
+  // The last slide's button is "Choose where you are starting": go straight
+  // into the setup form. Skip just reveals Start underneath.
+  if (reason === 'setup') router.push('/location')
 }
 
 const ORDER = ['location', 'time', 'results', 'detail']
-const router = useRouter()
 const transitionName = ref('slide-left')
+
+const currentTab = computed(() => router.currentRoute.value.meta.tab ?? '')
+const isDark = computed(() => !!router.currentRoute.value.meta.dark)
+const showTabBar = computed(() => !!currentTab.value && !router.currentRoute.value.meta.hideTabBar)
 
 watch(
   () => router.currentRoute.value,
   (to, from) => {
     if (!from?.name) return
+    const toIdx = ORDER.indexOf(to.name)
+    const fromIdx = ORDER.indexOf(from.name)
     transitionName.value =
-      ORDER.indexOf(to.name) >= ORDER.indexOf(from.name) ? 'slide-left' : 'slide-right'
+      toIdx === -1 || fromIdx === -1 || toIdx >= fromIdx ? 'slide-left' : 'slide-right'
   }
 )
 </script>

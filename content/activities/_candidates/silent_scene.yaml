@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: silent_scene
+version: 1
+title: "Silent Scene"
+summary: "Mime a familiar everyday action and help a partner understand the scene."
+activity_type: imaginative_play
+core_mechanic: pretend
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks clear, level space for small on-the-spot actions."
+setup:
+  - "Agree familiar pretend actions that need no props, such as opening a book."
+  - "Keep imaginary objects light and all movements comfortable."
+  - "Guessing is optional; either person can reveal the action, pause or stop."
+age_variants:
+  "5-7":
+    challenge: "Show a familiar pretend action and recognise a partner's action."
+    steps:
+      - step_id: choose_scene
+        instruction: "Show me how you open an imaginary book."
+        parent_prompt: "Mime the action gently; no real object is held."
+      - step_id: watch_scene
+        instruction: "Watch my action and tell me what it could be."
+        parent_prompt: "Choose another agreed familiar action and accept different interpretations."
+      - step_id: show_choice
+        instruction: "Choose a pretend action for me to recognise."
+        parent_prompt: "Offer two familiar choices if the child wants help."
+    ending: "Reveal the final action and relax your arms."
+  "8-10":
+    challenge: "Combine two familiar actions into a short scene."
+    steps:
+      - step_id: plan_scene
+        instruction: "Choose two everyday actions that belong in one scene."
+        parent_prompt: "Agree small on-the-spot movements without props."
+      - step_id: act_scene
+        instruction: "Show the actions in order while I watch."
+        parent_prompt: "Give the child time; recognising the scene is not scored."
+      - step_id: add_clue
+        instruction: "Change one gesture to help explain your scene."
+        parent_prompt: "The child can also describe the idea aloud if preferred."
+    ending: "Reveal the scene and name the helpful gesture."
+  "11-12":
+    challenge: "Design a scene and revise its gestures after a partner's interpretation."
+    steps:
+      - step_id: design_scene
+        instruction: "Plan a short scene using three agreed everyday actions."
+        parent_prompt: "Confirm that the scene needs no real objects, travel or contact."
+      - step_id: show_scene
+        instruction: "Act out your scene and ask what I understood."
+        parent_prompt: "Allow the partner to interpret it without a correct-answer target."
+      - step_id: revise_scene
+        instruction: "Adjust one gesture to make your intended meaning clearer."
+        parent_prompt: "Repeat just the adjusted part and compare interpretations."
+    ending: "Describe the intended scene and finish together."
+adaptations:
+  simplify:
+    - "Name the action first and mime it together."
+  extend:
+    - "Swap who creates a scene using the same agreed movement limits."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Mime only familiar gentle actions without contact or real props."
+  - "Do not mime hazardous challenges that encourage jumping, climbing or leaving the area."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft
