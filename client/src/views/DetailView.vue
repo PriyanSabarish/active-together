@@ -51,20 +51,6 @@
         <li v-for="r in place.reasons" :key="r" class="info-row">{{ r }}</li>
       </ul>
 
-      <h2 class="sect">Conditions when you go</h2>
-      <div class="info-card">
-        <p v-for="c in place.conditions" :key="c.text" class="info-row cond condition-row" :class="c.icon">
-          <span class="cond-dot" />{{ c.text }}
-        </p>
-      </div>
-
-      <h2 class="sect">What to expect</h2>
-      <div class="info-card">
-        <p class="info-title">{{ place.comboTitle }}</p>
-        <p class="info-body expect">{{ place.expect }}</p>
-      </div>
-
-      <p class="disclaimer">Candidate activity opportunity — opening hours, cost and accessibility aren't available yet.</p>
     </div>
 
     <p v-if="missionStore.error" class="mission-fetch-error">{{ missionStore.error }} Showing what we can.</p>
@@ -225,20 +211,6 @@ function getDirections() {
 }
 
 .info-row:last-child { border-bottom: none; }
-
-.cond-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.cond.wind .cond-dot { background: var(--accent); }
-.cond.unknown .cond-dot { background: var(--ink-5); }
-
-.info-title { font-size: 15px; font-weight: 600; padding-top: 10px; }
-.info-body { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; padding: 4px 0 10px; }
-
-.disclaimer {
-  margin-top: 16px;
-  font-size: 12px;
-  color: var(--ink-4);
-  line-height: 1.45;
-}
 
 .mission-fetch-error {
   margin-top: 14px;
