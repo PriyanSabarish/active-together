@@ -12,3 +12,4 @@ async-lru>=2.0.4
 tenacity>=8.0.0
 python-multipart>=0.0.9
 slowapi>=0.1.9
+pyyaml>=6.0
