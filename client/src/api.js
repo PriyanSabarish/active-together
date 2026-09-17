@@ -47,16 +47,17 @@ async function request(path, init = {}) {
 }
 
 // POST /recommendations
-// body: { latitude, longitude, radius_km, duration_min }
+// body: { latitude, longitude, radius_km, duration_min, excluded_categories }
 // returns: { status: 'ok' | 'zero_results' | 'out_of_bounds', combos: [...], message? }
-export function postRecommendations({ latitude, longitude, radiusKm, durationMin }) {
+export function postRecommendations({ latitude, longitude, radiusKm, durationMin, excludedCategories = [] }) {
   return request('/recommendations', {
     method: 'POST',
     body: JSON.stringify({
       latitude,
       longitude,
       radius_km: radiusKm,
-      duration_min: durationMin
+      duration_min: durationMin,
+      excluded_categories: excludedCategories
     })
   })
 }

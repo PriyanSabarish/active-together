@@ -87,7 +87,12 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
         return {"status": "out_of_bounds", "message": "Selected location is outside pilot area.", "combos": []}
 
     context = await fetch_weather_context(lat=lat, lon=lon)
-    return recommend(candidates=candidates, context=context, duration_min=req.duration_min)
+    return recommend(
+        candidates=candidates,
+        context=context,
+        duration_min=req.duration_min,
+        excluded_categories=tuple(req.excluded_categories),
+    )
 
 # Task A29: Generation caching keyed by combo, age, duration, preferences, and recency history
 @alru_cache(ttl=3600, maxsize=500)

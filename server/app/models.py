@@ -19,12 +19,6 @@ DURATION_BUCKETS = (20, 40, 60)
 
 # Enum - fixed variables 
 
-class RecommendationRequest(BaseModel):
-    latitude: float = Field(..., description="User latitude")
-    longitude: float = Field(..., description="User longitude")
-    radius_km: Optional[float] = Field(5.0, description="Search radius in kilometers")
-    duration_min: Optional[int] = Field(60, description="Activity duration in minutes")
-
 class ActivityCategory(str, Enum):
     """seven categoris produced by Vicmap"""
     PLAYGROUND = "playground"
@@ -34,6 +28,15 @@ class ActivityCategory(str, Enum):
     TRAIL_ACCESS = "trail_access"
     SKATE_BMX = "skate_bmx"
     PICNIC_DAY_USE = "picnic_day_use"
+
+class RecommendationRequest(BaseModel):
+    latitude: float = Field(..., description="User latitude")
+    longitude: float = Field(..., description="User longitude")
+    radius_km: Optional[float] = Field(5.0, description="Search radius in kilometers")
+    duration_min: Optional[int] = Field(60, description="Activity duration in minutes")
+    excluded_categories: list[ActivityCategory] = Field(
+        default_factory=list, description="Activity categories the family has excluded in preferences"
+    )
 
 
 class Tier(str, Enum):
