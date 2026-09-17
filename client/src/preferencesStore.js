@@ -19,6 +19,13 @@ function defaultAffinities() {
   return Object.fromEntries(Object.keys(CATEGORY_META).map((c) => [c, 50]))
 }
 
+// Below this, a category counts as "excluded" for POST /missions' preferences
+// list (app.recommendation.preferences / select_templates both treat it as a
+// plain exclusion, not a weighted score) — the backend has no concept of the
+// 0-100 slider itself. 20 was picked as "clearly dragged toward not
+// interested", not just "slightly below neutral".
+const EXCLUSION_THRESHOLD = 20
+
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     affinities: defaultAffinities(),
@@ -27,6 +34,11 @@ export const usePreferencesStore = defineStore('preferences', {
   getters: {
     ageBandInfo(state) {
       return AGE_BANDS.find((b) => b.id === state.ageBand) ?? AGE_BANDS[1]
+    },
+    excludedCategories(state) {
+      return Object.entries(state.affinities)
+        .filter(([, value]) => value < EXCLUSION_THRESHOLD)
+        .map(([category]) => category)
     }
   },
   actions: {

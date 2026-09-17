@@ -62,10 +62,23 @@ export function relativeDayLabel(dateStr) {
 
 export const useHistoryStore = defineStore('history', {
   state: () => ({
-    records: [], // newest first: { id, date, time, placeName, category, missionTitle, durationMin, photoStepsCount, totalSteps, feedback }
+    // newest first: { id, date, time, placeName, category, missionTitle,
+    // templateId, durationMin, photoStepsCount, totalSteps, feedback }
+    // templateId is the backend template_id, absent on records made before
+    // real /missions wiring — recentTemplateIds tolerates that.
+    records: [],
     _recordSeq: 0 // disambiguates ids when two records land in the same millisecond
   }),
   getters: {
+    // Most-recent-first template_ids, for POST /missions' recent_template_ids
+    // (B33: avoid serving the same template twice in a row). Older records
+    // with no templateId (mock-data era) are skipped, not sent as "null".
+    recentTemplateIds(state) {
+      return (limit) => state.records
+        .map((r) => r.templateId)
+        .filter((id) => id != null)
+        .slice(0, limit)
+    },
     thisWeekCount(state) {
       const weekStart = mondayOf(new Date())
       return state.records.filter((r) => inWeek(new Date(r.date), weekStart)).length

@@ -1,17 +1,41 @@
 import { defineStore } from 'pinia'
+import { postMissions } from './api'
 
 // ---------------------------------------------------------------------------
-// F14 — mission data model, on mock data only. No UI reads this yet; it exists
-// so F15-F18 (preview, pick, run, overview) all read the same shape instead of
-// each screen inventing its own. Swap MOCK_MISSIONS for a real POST /missions
-// call once Backend A's endpoint is stable — the shape below is the contract
-// those screens are written against.
+// F14 — mission data model. F15-F18 (preview, pick, run, overview) all read
+// the same shape instead of each screen inventing its own — MOCK_MISSIONS
+// below documents that shape and is kept as a fallback for when POST
+// /missions degrades (backend returns { missions: [], degraded: true }) or
+// fails outright, so Play/Pick never show a completely empty screen.
 //
 // A mission's live progress is a single number (`stepIndex`), not a status per
 // step, so the run screen (F17) and the overview screen (F18) can never show
 // two different ideas of how far along the mission is — both derive per-step
 // status from the same getter here.
 // ---------------------------------------------------------------------------
+
+// Converts one backend Mission into the flat shape these screens render.
+// verify_mode 'photo' maps to 'photo', everything else ('self') to 'tap' —
+// the UI has always only known a binary confirm type. whyThisMission has no
+// backend field to draw from (Mission carries no explanation, unlike Combo),
+// so it's composed client-side from what's on hand.
+export function mapMission(mission, { placeName, category, reason }) {
+  return {
+    id: mission.mission_id,
+    templateId: mission.template_id,
+    title: mission.title,
+    placeName,
+    category,
+    ageBand: mission.age_band,
+    durationMin: mission.estimated_minutes,
+    equipment: mission.equipment?.length ? mission.equipment.join(', ') : 'None — everyday clothes and shoes only.',
+    whyThisMission: reason,
+    steps: mission.steps.map((s) => ({
+      title: s.prompt_text,
+      confirm: s.verify_mode === 'photo' ? 'photo' : 'tap'
+    }))
+  }
+}
 
 export const MOCK_MISSIONS = [
   {
@@ -61,7 +85,9 @@ export const MOCK_MISSIONS = [
 
 export const useMissionStore = defineStore('mission', {
   state: () => ({
-    candidates: MOCK_MISSIONS, // options offered by Pick-a-mission (F16)
+    candidates: [], // options offered by Pick-a-mission (F16); empty until fetchMissions runs
+    loading: false,
+    error: '', // set on a hard failure (network/4xx/5xx) — a degraded-but-200 response is not an error
     active: null, // the chosen Mission object, or null before one is picked
     stepIndex: 0, // index of the step currently in progress within active.steps
     status: 'not_started', // 'not_started' | 'in_progress' | 'done'
@@ -89,6 +115,40 @@ export const useMissionStore = defineStore('mission', {
     }
   },
   actions: {
+    // Calls POST /missions for one chosen place and fills `candidates` from
+    // the response, mapped into the shape every mission screen expects.
+    // `place` is a mapped search-result place (store.js mapCombo output) —
+    // place.id is the combo_id (== the backend's place_id, see
+    // app.recommendation.recommend), place.durationBucket is the plan
+    // already agreed on Detail. reason is composed here since Mission
+    // carries no explanation field of its own (unlike Combo).
+    //
+    // A degraded-but-200 response ({ missions: [], degraded: true }) clears
+    // `error` and leaves `candidates` empty rather than throwing — Pick/Play
+    // show their own "nothing chosen yet" states for that, same as a
+    // genuinely empty result. A network/4xx/5xx failure sets `error` instead.
+    async fetchMissions(place, { ageBand, preferences = [], recentTemplateIds = [] }) {
+      this.loading = true
+      this.error = ''
+      try {
+        const data = await postMissions({
+          comboId: place.id,
+          ageBand,
+          durationBucket: place.durationBucket,
+          preferences,
+          recentTemplateIds
+        })
+        const reason = `Matches ${place.name} and your current preferences.`
+        this.candidates = (data.missions ?? []).map((m) =>
+          mapMission(m, { placeName: place.name, category: place.category, reason })
+        )
+      } catch (e) {
+        this.candidates = []
+        this.error = e?.message ?? 'Something went wrong.'
+      } finally {
+        this.loading = false
+      }
+    },
     chooseMission(missionId) {
       const mission = this.candidates.find((m) => m.id === missionId)
       if (!mission) return

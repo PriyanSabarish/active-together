@@ -46,8 +46,9 @@
       </article>
     </template>
 
-    <!-- Nothing chosen: today's recommendation. -->
-    <template v-else>
+    <!-- Nothing chosen: today's recommendation, if one has been fetched yet
+         (candidates starts empty until a place's "Pick a mission" has run). -->
+    <template v-else-if="todayMission">
       <p class="eyebrow-accent">Today</p>
       <h1>Ready when you are</h1>
       <p class="subtitle">{{ reason }}</p>
@@ -66,6 +67,17 @@
         </div>
         <button class="btn btn-primary start-btn" @click="takeToday">See the mission <span class="btn-arrow">→</span></button>
         <button class="link-btn" @click="router.push('/play/pick')">Let Daniel choose instead</button>
+      </article>
+    </template>
+
+    <!-- Nothing chosen and nothing fetched yet — no place visited this session. -->
+    <template v-else>
+      <p class="eyebrow-accent">Today</p>
+      <h1>Ready when you are</h1>
+      <p class="subtitle">Find a place first, then pick a mission for it.</p>
+
+      <article class="mission-card">
+        <button class="btn btn-primary start-btn" @click="router.push('/results')">Find a place</button>
       </article>
     </template>
 

@@ -78,6 +78,7 @@ function finish() {
     placeName: m.placeName,
     category: m.category,
     missionTitle: m.title,
+    templateId: m.templateId,
     durationMin: m.durationMin,
     photoStepsCount: photoStepsCount.value,
     totalSteps: m.steps.length,

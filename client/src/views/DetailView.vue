@@ -67,9 +67,13 @@
       <p class="disclaimer">Candidate activity opportunity — opening hours, cost and accessibility aren't available yet.</p>
     </div>
 
+    <p v-if="missionStore.error" class="mission-fetch-error">{{ missionStore.error }} Showing what we can.</p>
+
     <div class="btn-row" style="margin-top: 14px">
       <button class="btn btn-secondary" @click="getDirections">Directions</button>
-      <button class="btn btn-primary" @click="$router.push('/play/pick')">Pick a mission <span class="btn-arrow">→</span></button>
+      <button class="btn btn-primary" :disabled="missionStore.loading" @click="pickMission">
+        {{ missionStore.loading ? 'Finding missions…' : 'Pick a mission' }} <span v-if="!missionStore.loading" class="btn-arrow">→</span>
+      </button>
     </div>
   </template>
 
@@ -91,14 +95,36 @@
 // pace over straight-line distance. Directions hand off to Google Maps.
 
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
 import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
+import { useMissionStore } from '../missionStore'
+import { usePreferencesStore } from '../preferencesStore'
+import { useHistoryStore } from '../historyStore'
 
 const props = defineProps({ id: { type: String, required: true } })
+const router = useRouter()
 const store = useSearchStore()
+const missionStore = useMissionStore()
+const preferencesStore = usePreferencesStore()
+const historyStore = useHistoryStore()
 const place = computed(() => store.place(props.id))
+
+// Real POST /missions for this specific place, using the plan already agreed
+// on this screen (place.durationBucket), the parent's age band and category
+// preferences, and recent history so B33's "not twice in a row" has
+// something to exclude. Runs before navigating so Pick never shows a stale
+// or empty candidate list from a previous place.
+async function pickMission() {
+  await missionStore.fetchMissions(place.value, {
+    ageBand: preferencesStore.ageBand,
+    preferences: preferencesStore.excludedCategories,
+    recentTemplateIds: historyStore.recentTemplateIds(10)
+  })
+  router.push('/play/pick')
+}
 
 // Landing here directly (e.g. page refresh) — the inputs are restored from
 // storage but results are not, so run the search again and let `place` resolve.
@@ -212,5 +238,12 @@ function getDirections() {
   font-size: 12px;
   color: var(--ink-4);
   line-height: 1.45;
+}
+
+.mission-fetch-error {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--amber);
+  line-height: 1.4;
 }
 </style>
