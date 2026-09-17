@@ -73,22 +73,27 @@ def test_returns_none_when_only_candidate_fails_safety():
     assert mission is None
 
 
-def test_preferences_exclude_the_only_candidate():
+def test_preferences_relax_when_the_only_candidate_would_otherwise_be_excluded():
+    # select_templates (B33) relaxes preference/recency exclusion rather
+    # than return nothing when it's the only eligible candidate — getting
+    # something beats getting nothing because of a soft exclusion.
     template = _template(category="playground")
     mission = serve_from_library(
         [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
         preferences=["playground"],
     )
-    assert mission is None
+    assert mission is not None
+    assert mission.template_id == template.template_id
 
 
-def test_recent_template_ids_exclude_the_only_candidate():
+def test_recent_template_ids_relax_when_the_only_candidate_would_otherwise_be_excluded():
     template = _template(template_id="fx_recent")
     mission = serve_from_library(
         [template], PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
         recent_template_ids=["fx_recent"],
     )
-    assert mission is None
+    assert mission is not None
+    assert mission.template_id == "fx_recent"
 
 
 def test_empty_template_pool_returns_none():

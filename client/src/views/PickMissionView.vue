@@ -5,6 +5,10 @@
     <h2>Daniel chooses.</h2>
     <p class="subtitle">Read these out loud and let him pick. Every pick still shows the full mission before anything starts.</p>
 
+    <p v-if="missionStore.candidates.length === 0" class="subtitle" style="margin-top: 20px">
+      {{ missionStore.loading ? 'Finding missions…' : 'No missions available for this place right now.' }}
+    </p>
+
     <button
       v-for="option in missionStore.candidates"
       :key="option.id"

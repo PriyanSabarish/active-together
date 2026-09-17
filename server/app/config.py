@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     # actually wires it up. A18b: lives in an environment variable only,
     # never in the repository.
     gemini_api_key: str | None = None
-    gemini_model: str = "gemini-2.0-flash"
+    gemini_model: str = "gemini-3.5-flash-lite"
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20

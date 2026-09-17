@@ -77,6 +77,7 @@ def _build_combo(
         )
 
     return Combo(
+        combo_id=place.place_id,
         place=place,
         activity_type=template.activity_type,
         entered_duration_min=duration_min,

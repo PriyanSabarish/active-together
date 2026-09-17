@@ -143,3 +143,31 @@ def test_structured_output_parses_with_plain_json_loads(monkeypatch):
 
     parsed = json.loads(text)
     assert parsed == {"steps": ["Hop to the fence.", "Wave both arms."]}
+
+
+def test_thinking_config_omitted_by_default(monkeypatch):
+    # Not every model accepts thinkingConfig (gemini-3.5-flash-lite 400s on
+    # it), so the default must be "don't send it at all," not a fixed value.
+    captured = {}
+
+    def _fake_post(url, params=None, json=None, timeout=None):
+        captured["generation_config"] = json["generationConfig"]
+        return FakeResponse(200, _gemini_payload("ok"))
+
+    monkeypatch.setattr(httpx, "post", _fake_post)
+    GeminiModelClient(api_key="k").generate_text("hi", max_tokens=10, timeout_s=5)
+
+    assert "thinkingConfig" not in captured["generation_config"]
+
+
+def test_thinking_budget_included_when_explicitly_set(monkeypatch):
+    captured = {}
+
+    def _fake_post(url, params=None, json=None, timeout=None):
+        captured["generation_config"] = json["generationConfig"]
+        return FakeResponse(200, _gemini_payload("ok"))
+
+    monkeypatch.setattr(httpx, "post", _fake_post)
+    GeminiModelClient(api_key="k", thinking_budget=0).generate_text("hi", max_tokens=10, timeout_s=5)
+
+    assert captured["generation_config"]["thinkingConfig"] == {"thinkingBudget": 0}

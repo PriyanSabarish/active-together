@@ -68,3 +68,23 @@ export function getContext({ latitude, longitude }) {
   const qs = new URLSearchParams({ lat: String(latitude), lon: String(longitude) })
   return request(`/data/context?${qs}`)
 }
+
+// POST /missions
+// body: { combo_id, age_band, duration_bucket, preferences, recent_template_ids }
+// age_band is "5-7" | "8-10" | "11-12" (preferencesStore.ageBand values already
+// match this exactly). combo_id is the place_id from a /recommendations combo.
+// returns: { missions: [...] } — a generate_missions failure degrades to
+// { missions: [], degraded: true, message } rather than an HTTP error, so
+// the caller checks `missions.length`, not just whether the request threw.
+export function postMissions({ comboId, ageBand, durationBucket, preferences = [], recentTemplateIds = [] }) {
+  return request('/missions', {
+    method: 'POST',
+    body: JSON.stringify({
+      combo_id: comboId,
+      age_band: ageBand,
+      duration_bucket: durationBucket,
+      preferences,
+      recent_template_ids: recentTemplateIds
+    })
+  })
+}
