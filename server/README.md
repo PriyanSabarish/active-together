@@ -91,6 +91,34 @@ Seven categories: `playground`, `park_and_garden`, `sports_ground`, `court`,
 A change here breaks the other side silently. Any change is a pull request
 approved by **both** backend owners — not a message in chat.
 
+## Iteration 2 — missions
+
+`app/models.py` also carries `Mission` and `Step`, the shapes that cross the
+wire on `POST /missions` and `POST /verify-step`. `AgeBand` and `VerifyMode`
+live there too since both the wire shapes and the template schema below use
+them.
+
+`app/missions/models.py` is the frozen template **family** schema agreed
+with Content — one Pydantic model per
+`content/schema/mission_template.schema.yaml`. It enforces structure only
+(required fields, types, and `prompt_id` being required when `verify_mode`
+is `photo`). Cross-band and cross-template rules — step counts matching the
+duration bucket, the 5-7 band's word limit, `prompt_id` membership in the
+measured vocabulary — are the schema validator (B21) and safety validator
+(B22), not this module.
+
+`app/missions/loader.py` parses `content/missions/*.yaml` into
+`MissionTemplate` objects, non-recursively (so drafts under `_candidates/`
+are never loaded). A content author can check a draft file parses before
+opening a pull request:
+
+```python
+from pathlib import Path
+from app.missions.loader import load_template_file
+
+load_template_file(Path("content/missions/playground.yaml"))
+```
+
 ## `tests/fixtures.py` — test data
 
 Lets recommendation logic be developed without PostGIS, without Open-Meteo, and

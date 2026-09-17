@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: rhythm_steps
+version: 1
+title: "Rhythm Steps"
+summary: "Match comfortable stepping to a short rhythm and build a pattern together."
+activity_type: movement_play
+core_mechanic: sequence
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks a clear, level area with room to step on the spot."
+setup:
+  - "Agree to use gentle marching or side steps within the checked area."
+  - "Use a quiet spoken rhythm; no music device is needed."
+  - "Either person can pause, simplify the pattern or stop."
+age_variants:
+  "5-7":
+    challenge: "Match one gentle step to each spoken beat."
+    steps:
+      - step_id: match_beats
+        instruction: "Take one gentle marching step for each beat I say."
+        parent_prompt: "Say a slow, even beat and demonstrate on the spot."
+      - step_id: pause_beat
+        instruction: "Stand still when we leave a quiet gap."
+        parent_prompt: "Keep the pause predictable and let the child watch your demonstration."
+      - step_id: choose_rhythm
+        instruction: "Choose a short rhythm for our steps."
+        parent_prompt: "Offer two gentle beats and a pause if the child wants an idea."
+    ending: "Finish your short rhythm together and return to rest."
+  "8-10":
+    challenge: "Repeat a short stepping rhythm containing a pause."
+    steps:
+      - step_id: learn_pattern
+        instruction: "Try two gentle steps, a pause, then two more steps."
+        parent_prompt: "Speak the pattern slowly while both people stay in place."
+      - step_id: change_pause
+        instruction: "Choose where to put a pause in the pattern."
+        parent_prompt: "Let the child test the change without increasing speed."
+      - step_id: share_pattern
+        instruction: "Lead your rhythm while we step together."
+        parent_prompt: "Help with the spoken beat if remembering it is difficult."
+    ending: "Repeat the chosen rhythm once, then stop."
+  "11-12":
+    challenge: "Design a rhythm and adjust its pauses for a partner."
+    steps:
+      - step_id: design_rhythm
+        instruction: "Arrange gentle steps and pauses into a short rhythm."
+        parent_prompt: "Agree a slow pace and enough room before starting."
+      - step_id: test_rhythm
+        instruction: "Teach the rhythm and try it with me."
+        parent_prompt: "Use spoken beats rather than a speed or memory score."
+      - step_id: adapt_rhythm
+        instruction: "Change one pause to make the rhythm easier to follow."
+        parent_prompt: "Try the revised rhythm and discuss the change."
+    ending: "Finish the revised rhythm and relax together."
+adaptations:
+  simplify:
+    - "March gently in place to one repeated spoken beat."
+  extend:
+    - "Take another turn designing a short rhythm at the same gentle pace."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Keep steps small and controlled; do not add jumping or speed targets."
+  - "Use quiet spoken beats rather than loud calls."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

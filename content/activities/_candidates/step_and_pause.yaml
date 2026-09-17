@@ -1,0 +1,76 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: step_and_pause
+version: 1
+title: "Step and Pause"
+summary: "Practise starting and stopping gentle movement using agreed signals."
+activity_type: movement_play
+core_mechanic: control
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks level space for comfortable marching on the spot."
+setup:
+  - "Agree that 'move' means gentle marching and 'pause' means a comfortable stop."
+  - "Practise both signals before taking turns leading."
+  - "Allow time to respond; pausing or stopping the game is always allowed."
+age_variants:
+  "5-7":
+    challenge: "Recognise a spoken movement signal and pause comfortably."
+    steps:
+      - step_id: try_move
+        instruction: "March gently when I say move."
+        parent_prompt: "Start slowly on the spot and show the action."
+      - step_id: try_pause
+        instruction: "Stop comfortably when I say pause."
+        parent_prompt: "Give the child time to settle; no sudden freeze is required."
+      - step_id: give_signal
+        instruction: "Tell me when to move and when to pause."
+        parent_prompt: "Follow the child's signal at the same gentle pace."
+    ending: "Use the pause signal together and finish."
+  "8-10":
+    challenge: "Use spoken and visible signals without changing the pace."
+    steps:
+      - step_id: agree_gesture
+        instruction: "Choose a hand gesture that means pause."
+        parent_prompt: "Demonstrate a clear gesture without requiring touching."
+      - step_id: watch_signal
+        instruction: "March gently and pause when you see our gesture."
+        parent_prompt: "Stay in the child's view and keep plenty of time between signals."
+      - step_id: swap_signaller
+        instruction: "Give the gesture while I practise pausing."
+        parent_prompt: "Invite the child to check whether the signal was clear."
+    ending: "Show the final pause signal and relax."
+  "11-12":
+    challenge: "Design and improve clear movement signals for a partner."
+    steps:
+      - step_id: design_signals
+        instruction: "Agree one signal for moving and another for pausing."
+        parent_prompt: "Keep the movement gentle and the signals distinct."
+      - step_id: test_signals
+        instruction: "Use your signals to guide our movement on the spot."
+        parent_prompt: "Allow thinking time and remain facing each other."
+      - step_id: improve_signal
+        instruction: "Adjust a signal if it was hard to recognise."
+        parent_prompt: "Repeat a short trial to compare clarity rather than response speed."
+    ending: "Use the agreed pause signal to finish."
+adaptations:
+  simplify:
+    - "Use spoken signals and demonstrate each response."
+  extend:
+    - "Swap who gives the signals for another gentle round."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Keep movement gentle and on the spot; do not add sudden stops while running."
+  - "Do not use elimination, speed scoring or penalties for a missed signal."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

@@ -1,0 +1,55 @@
+# Base combos for waterway_and_foreshore. On-site minutes only; travel is held separately.
+# status: draft - not reviewed
+
+combos:
+- combo_id: waterway_and_foreshore_20
+  category: waterway_and_foreshore
+  duration_bucket: 20
+  label: Short waterside walk
+  travel_excluded: true
+  blocks:
+  - name: Walk the path beside the water
+    minutes: 14
+    note: Path only; no entering the water
+  - name: Sit and watch the water
+    minutes: 6
+    note: null
+- combo_id: waterway_and_foreshore_40
+  category: waterway_and_foreshore
+  duration_bucket: 40
+  label: Waterside walk
+  travel_excluded: true
+  blocks:
+  - name: Walk the path beside the water
+    minutes: 15
+    note: null
+  - name: Looking game from the path
+    minutes: 10
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Walk back
+    minutes: 10
+    note: null
+- combo_id: waterway_and_foreshore_60
+  category: waterway_and_foreshore
+  duration_bucket: 60
+  label: Long waterside walk
+  travel_excluded: true
+  blocks:
+  - name: Walk the path beside the water
+    minutes: 20
+    note: null
+  - name: Looking game from the path
+    minutes: 15
+    note: null
+  - name: Rest and snack break
+    minutes: 5
+    note: null
+  - name: Walk back
+    minutes: 15
+    note: null
+  - name: Finish and stretch
+    minutes: 5
+    note: null

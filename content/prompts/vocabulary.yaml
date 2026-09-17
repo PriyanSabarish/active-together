@@ -1,0 +1,42 @@
+# Candidate prompt vocabulary for the measurement in plan section 3.3 (task B25).
+# 20 candidates. Nothing here may be used in a template until status is "kept".
+# A prompt that does not separate cleanly becomes verify: self. It never gets a lower threshold.
+
+version: 1
+status_values: [candidate, kept, dropped]
+
+prompts:
+  - {id: p_red,             text: "something red",              status: candidate, expect: strong}
+  - {id: p_green,           text: "something green",            status: candidate, expect: weak,   note: "outdoors is mostly green; may fire on anything"}
+  - {id: p_yellow,          text: "something yellow",           status: candidate, expect: strong}
+  - {id: p_blue,            text: "something blue",             status: candidate, expect: medium, note: "sky may dominate"}
+  - {id: p_rough,           text: "something rough",            status: candidate, expect: medium}
+  - {id: p_smooth,          text: "something smooth",           status: candidate, expect: medium}
+  - {id: p_round,           text: "something round",            status: candidate, expect: medium}
+  - {id: p_leaf,            text: "a leaf",                     status: candidate, expect: strong}
+  - {id: p_flower,          text: "a flower",                   status: candidate, expect: strong}
+  - {id: p_tree_trunk,      text: "a tree trunk",               status: candidate, expect: strong}
+  - {id: p_stick,           text: "a stick on the ground",      status: candidate, expect: medium}
+  - {id: p_stone,           text: "a stone",                    status: candidate, expect: medium}
+  - {id: p_grass,           text: "grass",                      status: candidate, expect: weak,   note: "near-universal outdoors"}
+  - {id: p_bench,           text: "a bench or seat",            status: candidate, expect: strong}
+  - {id: p_fence,           text: "a fence",                    status: candidate, expect: strong}
+  - {id: p_path,            text: "a footpath or track",        status: candidate, expect: medium}
+  - {id: p_puddle,          text: "a puddle",                   status: candidate, expect: medium}
+  - {id: p_play_equipment,  text: "playground equipment",       status: candidate, expect: strong}
+  - {id: p_shadow,          text: "a shadow on the ground",     status: candidate, expect: weak,   note: "low contrast on overcast days"}
+  - {id: p_cloud,           text: "a cloud in the sky",         status: candidate, expect: medium}
+
+excluded_by_design:
+  - text: "a leaf bigger than your hand"
+    reason: "relative size with no reference object in frame; not judgeable from a single image"
+  - text: "a puddle bigger than your shoe"
+    reason: "same relative-size problem"
+  - text: "the tallest tree here"
+    reason: "requires comparison across the whole site, not one frame"
+  - text: "something older than you"
+    reason: "not a visual property"
+  - text: "something that makes a noise"
+    reason: "not a visual property"
+
+# Steps using any of the above go to verify: self by design, not by measurement failure.

@@ -1,0 +1,520 @@
+# CANDIDATE BATCH - cycling_track_move_wet. Drafted, not reviewed, not in the served library.
+# Move a family into missions/<category>.yaml only after human review.
+
+templates:
+- template_id: speed_challenge
+  title: Speed Challenge
+  category: cycling_track
+  duration_bucket: 60
+  weather_tags:
+  - wet
+  site_requirements:
+  - path
+  equipment: []
+  mechanic: move
+  step_count: 7
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+  bands:
+    5-7:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree you can see and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Turn around and ride back to where you started.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to a different tree you can see and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and count each pedal push you make.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride the same way again and try using fewer pushes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Find a farther tree, ride there and back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Ride back to start and try to beat your best push count.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    8-10:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree you can see and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Turn around and ride back to the starting point.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to another visible tree and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and count the number of pedal pushes you make.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride the same route again and try to use at least two fewer pushes than before.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Choose a tree farther away, ride there, turn, and ride back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Finish by riding back to the start and see if you can beat your best push count from earlier.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    11-12:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree you can see, stop, and note how far it feels.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Turn around and ride back to the start, noticing how long it takes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to a second tree, stop, and compare its distance to the first.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and count each pedal push, then write down the number.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride the same path again, aiming to reduce your push count by at least three.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Select the farthest tree you can spot, ride there, turn, and ride back, timing yourself.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Return to the start and decide whether you improved your time or push count, and explain why.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+- template_id: choose_your_path
+  title: Choose Your Path
+  category: cycling_track
+  duration_bucket: 60
+  weather_tags:
+  - wet
+  site_requirements:
+  - path
+  equipment: []
+  mechanic: move
+  step_count: 7
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+  bands:
+    5-7:
+      steps:
+      - sequence: 1
+        prompt_text: Pick a tree you see, ride to it and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back to where you started.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Pick another tree you see, ride to it and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and count the trees you visited.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Find a farther tree, ride there and back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: On the way back, point to something that looks different.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Ride back to start and tell me which tree was farthest.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    8-10:
+      steps:
+      - sequence: 1
+        prompt_text: Choose a tree you can see, ride to it, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back to the starting point.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Choose a second tree, ride to it, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and count how many trees you have visited.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Find a third tree farther away, ride there, turn, and ride back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: On the return, notice one thing that changed, like a cloud or leaf.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Return to start and compare the distances of the trees you rode to.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    11-12:
+      steps:
+      - sequence: 1
+        prompt_text: Select a tree you can see, estimate its distance, ride there, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back to the start, noting the time it took.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Select a second tree, estimate its distance, ride there, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and record how many trees you visited and their estimated distances.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Choose a third, farthest tree you can spot, ride there, turn, and ride back, timing yourself.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: On the way back, observe something that changed and write it down.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Back at the start, decide which tree was the longest ride and explain how you know.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+- template_id: pedal_rhythm
+  title: Pedal Rhythm
+  category: cycling_track
+  duration_bucket: 60
+  weather_tags:
+  - wet
+  site_requirements:
+  - path
+  equipment: []
+  mechanic: move
+  step_count: 7
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+  bands:
+    5-7:
+      steps:
+      - sequence: 1
+        prompt_text: Ride slowly to a tree you can see and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride quickly back to where you started.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride at a medium speed to another tree and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride quickly back to the start.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride as fast as you can to a farther tree and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride slowly back to where you began.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Tell an adult which part felt hardest.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    8-10:
+      steps:
+      - sequence: 1
+        prompt_text: Ride slowly to a tree you see and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride quickly back to the start, counting your pedal pushes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride at a medium speed to another tree and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride quickly back, counting pushes again.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride as fast as you can to a farther tree and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride slowly back, counting pushes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Compare which leg worked hardest by the number of pushes you counted.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    11-12:
+      steps:
+      - sequence: 1
+        prompt_text: Ride slowly to a visible tree, estimate the time it should take, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride quickly back, timing how long it actually took.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride at a medium pace to a second tree, estimate time, and stop.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride quickly back, compare actual time to your estimate.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride as fast as possible to the farthest tree you can see, note the time.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride slowly back, noting the time again.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Decide which segment was fastest and why, and share your reasoning.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+- template_id: tree_observations
+  title: Tree Observations
+  category: cycling_track
+  duration_bucket: 60
+  weather_tags:
+  - wet
+  site_requirements:
+  - path
+  equipment: []
+  mechanic: move
+  step_count: 7
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+  bands:
+    5-7:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree, look at its leaves and say a color you see.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back to where you started.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to another tree, look at its bark and say what it feels like.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and point to something different in the sky.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride to a third tree, look for a bird or insect and say what you see.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride back and count how many different colors you mentioned.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Tell an adult which tree was the most interesting.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    8-10:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree, look at its leaves and name a color you see.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back to the start.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to a second tree, feel its bark and describe its texture.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back and point out one change in the sky, like a cloud moving.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride to a third tree, look for a bird or insect and describe it.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride back and count the total number of colors you named.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Compare the three trees and tell which had the most interesting detail.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    11-12:
+      steps:
+      - sequence: 1
+        prompt_text: Ride to a tree, observe its leaves, and note the dominant color.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Ride back, recording how long the ride took.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Ride to a second tree, feel its bark, and describe its texture in detail.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Ride back, observing any change in the sky and noting it.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Ride to a third tree, watch for a bird or insect and record what you see.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Ride back, tally the different colors and textures you observed.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Reflect on which tree gave the richest observation and explain why.
+        verify_mode: self
+        prompt_id: null
+        variable: true

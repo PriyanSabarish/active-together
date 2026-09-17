@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: sort_and_step
+version: 1
+title: "Sort and Step"
+summary: "Sort familiar picture cards by a chosen rule and move between nearby groups."
+activity_type: exploration_play
+core_mechanic: sort
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: ["At least four large familiar picture cards brought by the family."]
+  optional: []
+requirements:
+  - "An adult checks a clear, level area for two nearby card groups and forward steps."
+  - "Cards can be placed securely without creating a slip or trip hazard."
+setup:
+  - "Choose a few family-supplied cards with pictures the child recognises."
+  - "Place groups beside the walking space, not under anyone's feet."
+  - "Pause or stop whenever wanted; the adult handles cards if preferred."
+age_variants:
+  "5-7":
+    challenge: "Use one simple rule to place familiar pictures into two groups."
+    steps:
+      - step_id: agree_rule
+        instruction: "Choose pictures of animals and pictures of other things."
+        parent_prompt: "Use suitable cards brought by the family; demonstrate the two groups."
+      - step_id: place_card
+        instruction: "Point to the group where this card belongs."
+        parent_prompt: "The adult places the card and walks beside the child to that group."
+      - step_id: choose_next
+        instruction: "Choose another card and show me its group."
+        parent_prompt: "Use a few slow forward steps between the checked positions."
+    ending: "Look at the two groups together, then collect the supplied cards."
+  "8-10":
+    challenge: "Explain a sorting rule and apply it to unfamiliar choices."
+    steps:
+      - step_id: choose_rule
+        instruction: "Choose a rule for making two groups from our cards."
+        parent_prompt: "Help choose a rule that fits the actual supplied pictures."
+      - step_id: sort_choices
+        instruction: "Decide where each card goes and walk with me to its group."
+        parent_prompt: "Keep cards beside the walking space and turn only while stopped."
+      - step_id: explain_choice
+        instruction: "Explain a card that could fit more than one group."
+        parent_prompt: "Allow either choice when the child explains their reasoning."
+    ending: "Name the rule and collect the supplied cards together."
+  "11-12":
+    challenge: "Compare two sorting rules for the same set of pictures."
+    steps:
+      - step_id: first_rule
+        instruction: "Create two groups using a rule of your choice."
+        parent_prompt: "Agree a rule that uses only the supplied pictures."
+      - step_id: change_rule
+        instruction: "Choose a different rule and reorganise the same cards."
+        parent_prompt: "Use the same nearby group positions and slow forward walking."
+      - step_id: compare_groups
+        instruction: "Explain which cards changed groups and why."
+        parent_prompt: "Focus on reasoning rather than a score or a single correct grouping."
+    ending: "Compare one change, then collect all supplied cards."
+adaptations:
+  simplify:
+    - "Use two cards and let the adult place them while the child points."
+  extend:
+    - "Try another rule using the same cards and checked group positions."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Use only supplied cards; do not collect found objects or disturb plants."
+  - "Keep cards outside the walking space and do not step on them."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

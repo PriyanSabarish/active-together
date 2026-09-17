@@ -1,0 +1,122 @@
+# Planning estimates only. These values have not been timed with families.
+config_version: "0.1.0"
+status: draft
+author: Jiabin
+timing_basis: author_estimate_not_measured
+# Base minutes include each activity's own setup, steps and ending.
+# Shared preparation, rest and transitions are additional non-activity blocks.
+combo_buckets:
+  "20": {activity_count: 2, preparation_minutes: 2, rest_between_minutes: 2, transition_between_minutes: 1}
+  "40": {activity_count: 3, preparation_minutes: 3, rest_between_minutes: 3, transition_between_minutes: 1}
+  "60": {activity_count: 3, preparation_minutes: 3, rest_between_minutes: 4, transition_between_minutes: 2}
+# Extension minutes refer to one use of the indexed, authored adaptation.
+# Extra rounds are optional ceilings, not requirements or targets.
+activity_profiles:
+  - activity_id: balance_shapes
+    activity_version: 1
+    base_minutes: {"5-7": 3, "8-10": 4, "11-12": 5}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 1
+  - activity_id: choose_your_route
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 6, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: colour_hunt
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 6, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 2
+  - activity_id: follow_the_leader
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 6}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 2
+  - activity_id: imaginary_delivery
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 6, "11-12": 8}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: invisible_orchestra
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: listen_and_point
+    activity_version: 1
+    base_minutes: {"5-7": 3, "8-10": 4, "11-12": 5}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 1
+  - activity_id: notice_the_change
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 6}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 2
+  - activity_id: opposite_actions
+    activity_version: 1
+    base_minutes: {"5-7": 3, "8-10": 4, "11-12": 5}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 2
+  - activity_id: partner_ball_carry
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 6}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 1
+  - activity_id: pass_and_move
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 6, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 2
+  - activity_id: rhythm_steps
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 6}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: robot_instructions
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 6, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: roll_to_target
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 6, "11-12": 8}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 2
+  - activity_id: silent_scene
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 6, "11-12": 7}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1
+  - activity_id: sort_and_step
+    activity_version: 1
+    base_minutes: {"5-7": 5, "8-10": 7, "11-12": 8}
+    extension_index: 0
+    extension_minutes: 4
+    max_extra_rounds: 1
+  - activity_id: step_and_pause
+    activity_version: 1
+    base_minutes: {"5-7": 3, "8-10": 4, "11-12": 5}
+    extension_index: 0
+    extension_minutes: 2
+    max_extra_rounds: 1
+  - activity_id: viewpoint_switch
+    activity_version: 1
+    base_minutes: {"5-7": 4, "8-10": 5, "11-12": 6}
+    extension_index: 0
+    extension_minutes: 3
+    max_extra_rounds: 1

@@ -1,0 +1,77 @@
+# Expansion draft. Review all age variants before live use.
+schema_version: "0.1.0"
+activity_id: viewpoint_switch
+version: 1
+title: "Viewpoint Switch"
+summary: "Compare how a visible feature looks from two nearby checked positions."
+activity_type: exploration_play
+core_mechanic: compare
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: "Explain the game, participate and keep the child within the checked area."
+equipment:
+  required: []
+  optional: []
+requirements:
+  - "An adult checks two nearby, clear, level observation positions."
+  - "A visible feature can be observed from both positions without touching or approaching hazards."
+setup:
+  - "Choose a feature actually visible from the checked area."
+  - "Agree the short forward-walking route between the two positions."
+  - "If there is no suitable second position, compare from one position or stop."
+age_variants:
+  "5-7":
+    challenge: "Look at one visible feature from two positions beside an adult."
+    steps:
+      - step_id: choose_view
+        instruction: "Point to something we can see from here."
+        parent_prompt: "Help choose a feature that does not require approaching animals or people."
+      - step_id: change_position
+        instruction: "Walk beside me to our other checked spot."
+        parent_prompt: "Use a few slow steps with the adult."
+      - step_id: look_again
+        instruction: "Point to the same thing from this spot."
+        parent_prompt: "Ask what the child notices without requiring a technical explanation."
+    ending: "Choose a favourite view and finish the observation."
+  "8-10":
+    challenge: "Compare one visible feature from two nearby positions."
+    steps:
+      - step_id: notice_detail
+        instruction: "Describe one detail you can see from here."
+        parent_prompt: "Use an existing feature without handling anything."
+      - step_id: try_view
+        instruction: "Walk with me to our second spot and look again."
+        parent_prompt: "Stay on the agreed clear route."
+      - step_id: compare_detail
+        instruction: "Explain what looks different or stays the same."
+        parent_prompt: "Accept that nothing may change noticeably; either result is useful."
+    ending: "Name one comparison together and finish."
+  "11-12":
+    challenge: "Make and check a prediction about a change in viewpoint."
+    steps:
+      - step_id: predict_view
+        instruction: "Predict how our chosen feature might look from the other spot."
+        parent_prompt: "Focus on visible shape or what may become hidden from view."
+      - step_id: check_prediction
+        instruction: "Walk with me to the checked spot and look again."
+        parent_prompt: "No leaning, climbing or leaving the permitted area is needed."
+      - step_id: explain_result
+        instruction: "Compare your prediction with what you can actually see."
+        parent_prompt: "A prediction can be unchanged or incorrect without being scored."
+    ending: "Share one observation and finish at the checked position."
+adaptations:
+  simplify:
+    - "Stay at one position and let the adult describe the comparison."
+  extend:
+    - "Swap who makes a prediction about the same two checked viewpoints."
+constraints:
+  - "Keep the child in the adult's sight and allow pausing or stopping at any time."
+  - "Use only checked ground-level viewpoints; do not climb or lean over edges."
+  - "Do not require any particular landmark or facility to be present."
+  - "Future story wording must preserve the tasks, requirements and constraints."
+safety_reference: schema/safety_constraints.yaml
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

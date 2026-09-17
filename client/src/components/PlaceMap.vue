@@ -44,7 +44,7 @@ const YOU_ICON = L.divIcon({
 function pinIcon(warn) {
   return L.divIcon({
     className: 'map-pin' + (warn ? ' warn' : ''),
-    html: '<svg width="22" height="30" viewBox="0 0 14 20"><path d="M1 7 C1 3.5 3.7 1 7 1 C10.3 1 13 3.5 13 7 C13 11 7 19 7 19 C7 19 1 11 1 7 Z" fill="currentColor"/><circle cx="7" cy="7" r="2.3" fill="#F1EFE8"/></svg>',
+    html: '<svg width="22" height="30" viewBox="0 0 14 20"><path d="M1 7 C1 3.5 3.7 1 7 1 C10.3 1 13 3.5 13 7 C13 11 7 19 7 19 C7 19 1 11 1 7 Z" fill="currentColor"/><circle cx="7" cy="7" r="2.3" fill="#F2F1EC"/></svg>',
     iconSize: [22, 30],
     iconAnchor: [11, 30],
     popupAnchor: [0, -28]
@@ -71,11 +71,11 @@ function draw() {
   if (props.center && props.radiusKm) {
     L.circle(toLatLng(centre), {
       radius: props.radiusKm * 1000,
-      color: '#3B6D11',
+      color: '#2F6B36',
       weight: 2,
       opacity: 0.9,
       dashArray: '6 5',
-      fillColor: '#639922',
+      fillColor: '#4E8F52',
       fillOpacity: 0.1
     }).addTo(layer)
   }
@@ -127,9 +127,10 @@ onBeforeUnmount(() => {
 
 <style>
 .place-map {
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   overflow: hidden;
-  background: var(--paper);
+  background: var(--tint);
+  box-shadow: var(--shadow-card);
   position: relative;
 }
 
@@ -145,12 +146,12 @@ onBeforeUnmount(() => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #3B6D11;
-  border: 3px solid #FFFFFF;
-  box-shadow: 0 0 0 2px rgba(59, 109, 17, 0.35);
+  background: var(--green);
+  border: 3px solid var(--card);
+  box-shadow: 0 0 0 2px rgba(47, 107, 54, 0.35);
 }
 
-.map-pin { color: #3B6D11; }
-.map-pin.warn { color: #854F0B; }
+.map-pin { color: var(--green); }
+.map-pin.warn { color: var(--amber); }
 .map-pin svg { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25)); }
 </style>

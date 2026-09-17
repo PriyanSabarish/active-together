@@ -22,5 +22,9 @@
 </template>
 
 <script setup>
+// Condition pill on a place: good / warn / muted, with a small glyph. The
+// badge object ({ type, label }) is built in store.js from the backend
+// weather summary, so this component only renders it.
+
 defineProps({ badge: { type: Object, required: true } })
 </script>

@@ -1,116 +1,170 @@
 <template>
   <template v-if="place">
-    <div class="app-bar">
-      <button class="back-btn" aria-label="Back to your top 3" @click="$router.back()">
-        <svg width="18" height="24" viewBox="0 0 18 24">
-          <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <span class="crumb">Back to your top 3</span>
-    </div>
+    <AppHeader />
 
     <div class="scroll-area">
-    <div class="head-row">
-      <div>
-        <h1>{{ place.name }}</h1>
-        <p class="subtitle">
-          {{ place.categoryLabel }} · {{ place.distanceKm }} km away
-          <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+      <button class="pill crumb" @click="$router.back()">‹ All places</button>
+
+      <h1 class="place-title">{{ place.name }}</h1>
+      <p class="subtitle">
+        {{ place.categoryLabel }} · {{ place.distanceKm }} km away
+        <span v-if="place.recordId" class="record-id">#{{ place.recordId }}</span>
+      </p>
+
+      <!-- Four fact tiles, all from the current /data/context reading plus distance. -->
+      <div class="fact-grid">
+        <div class="fact-tile">
+          <p class="fact-label">☂ Weather</p>
+          <p class="fact-value">{{ facts.temp }}</p>
+          <p class="fact-note">{{ facts.rain }}</p>
+        </div>
+        <div class="fact-tile">
+          <p class="fact-label">☀ UV</p>
+          <p class="fact-value">{{ facts.uv }}</p>
+          <p class="fact-note">{{ facts.uvNote }}</p>
+        </div>
+        <div class="fact-tile">
+          <p class="fact-label">≋ Air quality</p>
+          <p class="fact-value">{{ facts.air }}</p>
+          <p class="fact-note">{{ facts.airNote }}</p>
+        </div>
+        <div class="fact-tile">
+          <p class="fact-label">◷ Travel time</p>
+          <p class="fact-value">{{ facts.travel }}</p>
+          <p class="fact-note">each way, on foot</p>
+        </div>
+      </div>
+
+      <div class="plan-line">
+        <ConditionBadge :badge="place.badge" />
+        <span>
+          <span class="duration-main">{{ place.durationBucket }}-minute on-site plan</span>
+          <span class="duration-sub">Matches your {{ place.enteredDurationMin }}-min request · excludes travel</span>
+        </span>
+      </div>
+
+      <PlaceMap class="map-card" :center="store.coords" :places="[place]" fit height="130px" />
+
+      <h2 class="sect">Why this place</h2>
+      <p class="sect-sub explanation">{{ place.reason }}</p>
+      <ul class="info-card why-list">
+        <li v-for="r in place.reasons" :key="r" class="info-row">{{ r }}</li>
+      </ul>
+
+      <h2 class="sect">Conditions when you go</h2>
+      <div class="info-card">
+        <p v-for="c in place.conditions" :key="c.text" class="info-row cond condition-row" :class="c.icon">
+          <span class="cond-dot" />{{ c.text }}
         </p>
       </div>
-      <ConditionBadge :badge="place.badge" />
+
+      <h2 class="sect">What to expect</h2>
+      <div class="info-card">
+        <p class="info-title">{{ place.comboTitle }}</p>
+        <p class="info-body expect">{{ place.expect }}</p>
+      </div>
+
+      <p class="disclaimer">Candidate activity opportunity — opening hours, cost and accessibility aren't available yet.</p>
     </div>
 
-    <hr class="divider" />
+    <p v-if="missionStore.error" class="mission-fetch-error">{{ missionStore.error }} Showing what we can.</p>
 
-    <PlaceMap class="map-card" :center="store.coords" :places="[place]" fit height="140px" />
-    <p class="map-caption">{{ place.distanceKm }} km, straight-line distance</p>
-
-    <p class="section-label" style="margin-top: 20px">On-site duration</p>
-    <p class="duration-main">{{ place.durationBucket }}-minute on-site plan</p>
-    <p class="duration-sub">Matches your {{ place.enteredDurationMin }}-min request · excludes travel</p>
-
-    <hr class="divider" />
-
-    <p class="section-label">Conditions when you go</p>
-    <p v-for="c in place.conditions" :key="c.text" class="condition-row">
-      <span class="condition-icon">
-        <svg v-if="c.icon === 'sun'" width="12" height="12" viewBox="0 0 12 12">
-          <circle cx="6" cy="6" r="2.2" fill="none" stroke="#27500A" stroke-width="1" />
-          <path d="M6 3 v-1.3 M6 9 v1.3 M3 6 h-1.3 M9 6 h1.3" stroke="#27500A" stroke-width="1" />
-        </svg>
-        <svg v-else-if="c.icon === 'uv'" width="12" height="12" viewBox="0 0 12 12">
-          <path d="M2 10 L6 2 L10 10" fill="none" stroke="#27500A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <svg v-else-if="c.icon === 'wind'" width="12" height="12" viewBox="0 0 12 12">
-          <line x1="1" y1="3" x2="11" y2="3" stroke="#854F0B" stroke-width="1.3" stroke-linecap="round" />
-          <line x1="1" y1="6.5" x2="8" y2="6.5" stroke="#854F0B" stroke-width="1.3" stroke-linecap="round" />
-          <line x1="1" y1="10" x2="10" y2="10" stroke="#854F0B" stroke-width="1.3" stroke-linecap="round" />
-        </svg>
-        <svg v-else-if="c.icon === 'unknown'" width="12" height="12" viewBox="0 0 12 12">
-          <path d="M4.3 4.6 a1.7 1.7 0 1 1 2.5 1.5 c-0.6 0.3 -0.8 0.7 -0.8 1.3" fill="none" stroke="#5F5E5A" stroke-width="1.3" stroke-linecap="round" />
-          <circle cx="6" cy="9.4" r="0.8" fill="#5F5E5A" />
-        </svg>
-        <svg v-else width="12" height="12" viewBox="0 0 12 12">
-          <path d="M2 6 l3 3 l6 -7" fill="none" stroke="#27500A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </span>
-      {{ c.text }}
-    </p>
-
-    <hr class="divider" />
-
-    <p class="section-label">Why this appears in your top 3</p>
-    <p class="explanation">{{ place.reason }}</p>
-    <ul class="why-list">
-      <li v-for="r in place.reasons" :key="r">{{ r }}</li>
-    </ul>
-
-    <hr class="divider" />
-
-    <p class="section-label">What to expect</p>
-    <p class="expect-title">{{ place.comboTitle }}</p>
-    <p class="expect">{{ place.expect }}</p>
-
-    <div class="disclaimer">
-      Candidate activity opportunity — opening hours, cost and accessibility aren't available yet.
-    </div>
-    </div>
-
-    <div class="btn-row" style="margin-top: 20px">
-      <button class="btn btn-secondary" @click="$router.back()">Back</button>
-      <button class="btn btn-primary" @click="getDirections">Get directions</button>
+    <div class="btn-row" style="margin-top: 14px">
+      <button class="btn btn-secondary" @click="getDirections">Directions</button>
+      <button class="btn btn-primary" :disabled="missionStore.loading" @click="pickMission">
+        {{ missionStore.loading ? 'Finding missions…' : 'Pick a mission' }} <span v-if="!missionStore.loading" class="btn-arrow">→</span>
+      </button>
     </div>
   </template>
 
   <template v-else>
-    <div class="app-bar">
-      <button class="back-btn" aria-label="Back" @click="$router.push('/results')">
-        <svg width="18" height="24" viewBox="0 0 18 24">
-          <path d="M13 4 L5 12 L13 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <span class="crumb">Back to your top 3</span>
+    <AppHeader />
+    <div class="scroll-area">
+      <button class="pill crumb" @click="$router.push('/results')">‹ All places</button>
+      <p class="subtitle" style="margin-top: 20px">
+        {{ store.loading ? 'Loading your top options…' : 'Place not found.' }}
+      </p>
     </div>
-    <p class="subtitle" style="margin-top: 20px">
-      {{ store.loading ? 'Loading your top 3…' : 'Place not found.' }}
-    </p>
   </template>
 </template>
 
 <script setup>
+// One place in full: four fact tiles (weather, UV, air, walking time), the
+// map, why it appears, conditions and what to expect. Facts come from the
+// same /data/context payload the Time screen uses; the walking estimate is a
+// pace over straight-line distance. Directions hand off to Google Maps.
+
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import AppHeader from '../components/AppHeader.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
 import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
+import { useMissionStore } from '../missionStore'
+import { usePreferencesStore } from '../preferencesStore'
+import { useHistoryStore } from '../historyStore'
 
 const props = defineProps({ id: { type: String, required: true } })
+const router = useRouter()
 const store = useSearchStore()
+const missionStore = useMissionStore()
+const preferencesStore = usePreferencesStore()
+const historyStore = useHistoryStore()
 const place = computed(() => store.place(props.id))
+
+// Real POST /missions for this specific place, using the plan already agreed
+// on this screen (place.durationBucket), the parent's age band and category
+// preferences, and recent history so B33's "not twice in a row" has
+// something to exclude. Runs before navigating so Pick never shows a stale
+// or empty candidate list from a previous place.
+async function pickMission() {
+  await missionStore.fetchMissions(place.value, {
+    ageBand: preferencesStore.ageBand,
+    preferences: preferencesStore.excludedCategories,
+    recentTemplateIds: historyStore.recentTemplateIds(10)
+  })
+  router.push('/play/pick')
+}
 
 // Landing here directly (e.g. page refresh) — the inputs are restored from
 // storage but results are not, so run the search again and let `place` resolve.
 if (!place.value && !store.loading && store.status === 'idle') store.fetchRecommendations()
+
+// WHO UV index bands, used for the tile note.
+function uvNote(uv) {
+  if (uv == null) return 'No reading'
+  if (uv < 3) return 'Low'
+  if (uv < 6) return 'Moderate'
+  if (uv < 8) return 'High'
+  return 'Very high'
+}
+
+// Rough PM2.5 bands for a parent-facing label; not an official AQI.
+function airLabel(pm) {
+  if (pm == null) return ['—', 'No reading']
+  if (pm <= 12) return ['Good', 'No warnings']
+  if (pm <= 35) return ['Fair', 'Fine for most']
+  return ['Poor', 'Keep it short']
+}
+
+// The four fact tiles read the same context call the Time screen uses; the
+// travel estimate is a walking pace over the straight-line distance.
+const facts = computed(() => {
+  const w = store.weather
+  const ok = w && w.available !== false
+  const rain = ok && w.precip_prob != null ? Math.round(w.precip_prob * 100) : null
+  const [air, airNote] = airLabel(ok ? w.pm25 : null)
+  const km = Number(place.value?.distanceKm ?? 0)
+  return {
+    temp: ok && w.temp_c != null ? `${Math.round(w.temp_c)}°` : '—',
+    rain: rain == null ? (ok ? 'No rain data' : 'Weather unavailable') : rain >= 50 ? 'Rain likely' : rain >= 25 ? `${rain}% chance of rain` : 'Clear',
+    uv: ok && w.uv_index != null ? `UV ${w.uv_index}` : '—',
+    uvNote: uvNote(ok ? w.uv_index : null),
+    air,
+    airNote,
+    travel: km ? `${Math.max(1, Math.round(km * 12))} min` : '—'
+  }
+})
 
 function getDirections() {
   // Hand off to Google Maps using the place coordinates from the backend so
@@ -121,112 +175,75 @@ function getDirections() {
 </script>
 
 <style scoped>
+.place-title { margin-top: 14px; }
+
 .record-id {
   margin-left: 6px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ink-5);
   font-variant-numeric: tabular-nums;
 }
 
-.crumb {
-  font-size: 13px;
-  color: var(--ink-3);
-}
+.fact-grid { margin-top: 16px; }
 
-.head-row {
+.plan-line {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.4;
 }
 
-.map-caption {
-  text-align: center;
-  font-size: 10.5px;
-  color: var(--ink-4);
+.duration-main { display: block; font-weight: 600; color: var(--ink-2); }
+.duration-sub { display: block; margin-top: 2px; }
+.why-list { list-style: none; }
+
+.map-card { margin-top: 14px; }
+
+.sect { margin-top: 22px; }
+.sect-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.45; margin-top: 3px; }
+
+.info-card {
   margin-top: 10px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 6px 16px;
 }
 
-.duration-main {
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.duration-sub {
-  font-size: 11px;
-  color: var(--ink-4);
-  margin-top: 4px;
-}
-
-.condition-row {
+.info-row {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  line-height: 1.4;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 12.5px;
-  margin-bottom: 10px;
 }
 
-.condition-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--green-light);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+.info-row:last-child { border-bottom: none; }
 
-.explanation {
-  font-size: 12px;
-  color: var(--ink-2);
-  line-height: 1.5;
-  margin-bottom: 10px;
-}
+.cond-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.cond.wind .cond-dot { background: var(--accent); }
+.cond.unknown .cond-dot { background: var(--ink-5); }
 
-.why-list {
-  list-style: none;
-}
-
-.expect-title {
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.why-list li {
-  font-size: 11.5px;
-  color: var(--ink-2);
-  padding-left: 14px;
-  position: relative;
-  margin-bottom: 8px;
-}
-
-.why-list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 5px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--green);
-}
-
-.expect {
-  font-size: 11.5px;
-  color: var(--ink-2);
-  line-height: 1.5;
-}
+.info-title { font-size: 15px; font-weight: 600; padding-top: 10px; }
+.info-body { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; padding: 4px 0 10px; }
 
 .disclaimer {
-  margin-top: 14px;
-  border-radius: 10px;
-  background: var(--paper);
-  padding: 12px 16px;
-  font-size: 10.5px;
-  color: var(--ink-3);
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--ink-4);
   line-height: 1.45;
+}
+
+.mission-fetch-error {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--amber);
+  line-height: 1.4;
 }
 </style>

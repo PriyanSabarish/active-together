@@ -1,92 +1,84 @@
 <template>
-  <AppHeader :step="2" back />
+  <AppHeader back />
+  <!-- Setup step 2: on-site minutes, matched plan bucket, and the live forecast. -->
 
   <div class="scroll-area">
-  <h1>How long do you have</h1>
-  <p class="subtitle">Recommendations use the current forecast for your starting point.</p>
+    <h1>How long have you got?</h1>
+    <p class="subtitle">We'll match this to travel time and the forecast for your starting point.</p>
 
-  <p class="section-label" style="margin-top: 18px">On-site time (not including travel)</p>
-  <div class="slider-wrap">
-    <input
-      v-model.number="store.durationMin"
-      type="range"
-      min="20"
-      max="120"
-      step="5"
-      class="duration"
-      :style="{ '--fill': ((store.durationMin - 20) / 100) * 100 + '%' }"
-    />
-    <span class="duration-value">{{ store.durationMin }} min</span>
-  </div>
-  <div class="ticks">
-    <span v-for="t in [20, 40, 60, 80, 100, 120]" :key="t">{{ t }}</span>
-  </div>
+    <div class="time-card">
+      <div class="time-head">
+        <span class="time-label">On-site time</span>
+        <span class="time-value duration-value">{{ store.durationMin }} min</span>
+      </div>
+      <!-- --fill drives the coloured part of the track (see .duration in <style>). -->
+      <input
+        v-model.number="store.durationMin"
+        type="range"
+        min="20"
+        max="120"
+        step="5"
+        class="duration"
+        :style="{ '--fill': ((store.durationMin - 20) / 100) * 100 + '%' }"
+      />
+      <div class="ticks">
+        <span v-for="t in [20, 40, 60, 80, 100, 120]" :key="t">{{ t }}</span>
+      </div>
+      <p class="time-note">Not including travel.</p>
+    </div>
 
-  <div class="plan-card">
-    <svg width="18" height="18" viewBox="0 0 18 18">
-      <circle cx="9" cy="9" r="8" fill="none" stroke="#27500A" stroke-width="1.5" />
-      <line x1="9" y1="5" x2="9" y2="9.5" stroke="#27500A" stroke-width="1.5" />
-      <circle cx="9" cy="12.5" r="0.9" fill="#27500A" />
-    </svg>
-    <div>
-      <p class="plan-title">Matched to a {{ store.planMin }}-minute plan</p>
-      <p class="plan-note">Plans come in 20, 40 and 60 minutes. Ties at 30 or 50 min round to the lower plan.</p>
+    <div class="plan-card">
+      <span class="plan-icon">✓</span>
+      <div>
+        <p class="plan-title">Matched to a {{ store.planMin }}-minute plan</p>
+        <p class="plan-note">Plans come in 20, 40 and 60 minutes. Ties at 30 or 50 min round to the lower plan.</p>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top: 22px">Right now near {{ store.locationLabel }}</p>
+    <div class="weather-card">
+      <template v-if="store.contextLoading">
+        <span class="wx-spinner" />
+        <div>
+          <p class="weather-main">Checking the forecast…</p>
+          <p class="weather-sub">Live data from Open-Meteo</p>
+        </div>
+      </template>
+
+      <template v-else-if="!wx || !wx.available">
+        <span class="wx-glyph muted">?</span>
+        <div>
+          <p class="weather-main">Weather unavailable</p>
+          <p class="weather-sub">We'll still show places; conditions will be marked unavailable.</p>
+        </div>
+      </template>
+
+      <template v-else>
+        <span class="wx-glyph" :class="rainPct == null || rainPct < 25 ? 'sun' : 'rain'">
+          <svg v-if="rainPct == null || rainPct < 25" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="5" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          </svg>
+          <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 15a4 4 0 0 1 .6-7.95A6 6 0 0 1 19 9a3.5 3.5 0 0 1-1 6.86H7Z" /><path d="M9 18l-1 3M13 18l-1 3M17 18l-1 3" />
+          </svg>
+        </span>
+        <div>
+          <p class="weather-main">{{ weatherMain }}</p>
+          <p class="weather-sub">{{ weatherSub }}</p>
+        </div>
+      </template>
     </div>
   </div>
 
-  <hr class="divider" />
-
-  <p class="section-label">Right now near {{ store.locationLabel }}</p>
-  <div class="weather-card">
-    <template v-if="store.contextLoading">
-      <span class="wx-spinner" />
-      <div>
-        <p class="weather-main">Checking the forecast…</p>
-        <p class="weather-sub">Live data from Open-Meteo</p>
-      </div>
-    </template>
-
-    <template v-else-if="!wx || !wx.available">
-      <svg width="44" height="44" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="17" fill="none" stroke="#B4B2A9" stroke-width="2.5" />
-        <path d="M16 17 a6 6 0 1 1 8.5 5.5 c-2 1 -2.5 2.2 -2.5 4" fill="none" stroke="#B4B2A9" stroke-width="2.5" stroke-linecap="round" />
-        <circle cx="22" cy="31.5" r="1.8" fill="#B4B2A9" />
-      </svg>
-      <div>
-        <p class="weather-main">Weather unavailable</p>
-        <p class="weather-sub">We'll still show places; conditions will be marked unavailable.</p>
-      </div>
-    </template>
-
-    <template v-else>
-      <svg v-if="rainPct == null || rainPct < 25" width="44" height="44" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="12" fill="none" stroke="#BA7517" stroke-width="2.5" />
-        <line x1="22" y1="3" x2="22" y2="7" stroke="#BA7517" stroke-width="2" />
-        <line x1="22" y1="37" x2="22" y2="41" stroke="#BA7517" stroke-width="2" />
-        <line x1="3" y1="22" x2="7" y2="22" stroke="#BA7517" stroke-width="2" />
-        <line x1="37" y1="22" x2="41" y2="22" stroke="#BA7517" stroke-width="2" />
-      </svg>
-      <svg v-else width="44" height="44" viewBox="0 0 44 44">
-        <path d="M12 26 a8 8 0 1 1 2 -15 a10 10 0 0 1 19 3 a7 7 0 0 1 -2 12 Z" fill="none" stroke="#5F5E5A" stroke-width="2.5" stroke-linejoin="round" />
-        <line x1="16" y1="32" x2="14" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-        <line x1="24" y1="32" x2="22" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-        <line x1="32" y1="32" x2="30" y2="38" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round" />
-      </svg>
-      <div>
-        <p class="weather-main">{{ weatherMain }}</p>
-        <p class="weather-sub">{{ weatherSub }}</p>
-      </div>
-    </template>
-  </div>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-secondary" @click="$router.back()">Back</button>
-    <button class="btn btn-primary" @click="findActivities">Find activities</button>
-  </div>
+  <button class="btn btn-primary cta" @click="findActivities">See what fits <span class="btn-arrow">→</span></button>
 </template>
 
 <script setup>
+// Setup step 2 — how long have you got. On-site minutes (20-120) are mapped
+// by the store to the backend's 20/40/60 plan buckets. Also shows the live
+// forecast for the chosen point from /data/context. "See what fits" marks
+// setup as done and fires the recommendations request.
+
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
@@ -105,6 +97,7 @@ const rainPct = computed(() =>
   wx.value?.precip_prob == null ? null : Math.round(wx.value.precip_prob * 100)
 )
 
+// Headline: temperature and rain chance, whichever readings exist.
 const weatherMain = computed(() => {
   const parts = []
   if (wx.value?.temp_c != null) parts.push(`${Math.round(wx.value.temp_c)}°C`)
@@ -112,6 +105,7 @@ const weatherMain = computed(() => {
   return parts.length ? parts.join(', ') : 'Conditions available'
 })
 
+// Secondary line: UV, gusts and PM2.5, again only what the backend returned.
 const weatherSub = computed(() => {
   const parts = []
   if (wx.value?.uv_index != null) parts.push(`UV ${wx.value.uv_index}`)
@@ -121,76 +115,31 @@ const weatherSub = computed(() => {
 })
 
 function findActivities() {
+  store.setupDone = true
   store.fetchRecommendations()
   router.push('/results')
 }
 </script>
 
 <style scoped>
-.mode-row {
-  display: flex;
-  gap: 8px;
-  margin: 18px 0 12px;
+.time-card {
+  margin-top: 18px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px 14px;
 }
 
-.mode-btn {
-  flex: 1;
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--line-3);
-  background: #FFFFFF;
-  color: var(--ink-2);
-  font-size: 13.5px;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.mode-btn.on {
-  background: var(--green);
-  border-color: var(--green);
-  color: var(--green-light);
-  font-weight: 500;
-}
-
-.select-field {
-  height: 46px;
-  border: 1px solid var(--line-3);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 15px;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.select-field select {
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  outline: none;
-  background: transparent;
-  flex: 1;
-  font-size: 13.5px;
-  font-family: inherit;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.select-field .chev { pointer-events: none; }
-
-.slider-wrap {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+.time-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.time-label { font-size: 13.5px; font-weight: 600; color: var(--ink-3); }
+.time-value { font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
 
 .duration {
-  flex: 1;
+  width: 100%;
   appearance: none;
   -webkit-appearance: none;
-  height: 4px;
-  border-radius: 2px;
+  height: 6px;
+  border-radius: 3px;
   background: linear-gradient(
     to right,
     var(--green) 0%,
@@ -204,74 +153,91 @@ function findActivities() {
 .duration::-webkit-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #FFFFFF;
-  border: 2.5px solid var(--green);
+  background: var(--card);
+  border: 3px solid var(--green);
+  box-shadow: var(--shadow-card);
   cursor: pointer;
 }
 
 .duration::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #FFFFFF;
-  border: 2.5px solid var(--green);
+  background: var(--card);
+  border: 3px solid var(--green);
   cursor: pointer;
-}
-
-.duration-value {
-  font-size: 14px;
-  font-weight: 500;
-  width: 56px;
-  text-align: right;
 }
 
 .ticks {
   display: flex;
   justify-content: space-between;
-  margin: 8px 72px 0 0;
-  font-size: 9px;
+  margin-top: 8px;
+  font-size: 10px;
   color: var(--ink-5);
 }
 
+.time-note { font-size: 12.5px; color: var(--ink-4); margin-top: 10px; }
+
 .plan-card {
-  margin-top: 16px;
-  border-radius: 10px;
+  margin-top: 12px;
+  border-radius: var(--radius-field);
   background: var(--green-light);
   padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.plan-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.plan-title { font-size: 14px; font-weight: 600; color: var(--green-dark); }
+.plan-note { font-size: 12px; color: var(--green); margin-top: 3px; line-height: 1.4; }
+
+.weather-card {
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
-.plan-title {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--green-dark);
-}
-
-.plan-note {
-  font-size: 10.5px;
-  color: var(--green);
-  margin-top: 3px;
-}
-
-.weather-card {
-  border-radius: 12px;
-  background: var(--paper);
-  padding: 14px 18px;
-  display: flex;
+.wx-glyph {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
 }
+
+.wx-glyph.sun { background: var(--amber-light); color: var(--accent); }
+.wx-glyph.rain { background: var(--tint); color: var(--ink-3); }
+.wx-glyph.muted { background: var(--tint); color: var(--ink-4); }
 
 .wx-spinner {
   width: 26px;
   height: 26px;
-  margin: 9px;
-  border: 2.5px solid var(--green-dark);
+  margin: 7px;
+  border: 2.5px solid var(--green);
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -280,6 +246,8 @@ function findActivities() {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.weather-main { font-size: 14.5px; font-weight: 500; }
-.weather-sub { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+.weather-main { font-size: 15.5px; font-weight: 600; }
+.weather-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 3px; }
+
+.cta { width: 100%; margin-top: 14px; }
 </style>

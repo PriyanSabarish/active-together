@@ -1,0 +1,91 @@
+# Development sample. Requires independent human review before runtime use.
+schema_version: "0.1.0"
+activity_id: colour_hunt
+version: 1
+title: Colour Hunt
+summary: Look for visible colours together and take turns choosing what to notice.
+activity_type: exploration_play
+core_mechanic: find
+
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: Help choose visible colours and accompany the child within the agreed area.
+
+equipment:
+  required: []
+  optional: []
+
+requirements:
+  - An adult checks a permitted observation area away from traffic and active sport.
+  - Colours can be observed without touching objects or entering planting beds.
+
+setup:
+  - Agree on a small area where the adult and child will stay together.
+  - Look around together and choose a colour that is actually visible.
+  - Explain that pointing or describing is enough; nothing needs to be collected.
+  - Either person can pause or stop, and an unavailable colour can be changed.
+
+age_variants:
+  "5-7":
+    challenge: Notice one visible colour and take a turn choosing another.
+    steps:
+      - step_id: find_one
+        instruction: Point to something with our chosen colour.
+        parent_prompt: Choose a visible colour together and offer help locating it.
+      - step_id: notice_another
+        instruction: Point to a different colour you can see.
+        parent_prompt: Look from the same place or walk together within the agreed area.
+      - step_id: child_chooses
+        instruction: Choose a colour for me to find.
+        parent_prompt: Let the child point out their choice if naming colours is difficult.
+    ending: Point to one favourite colour together, then finish the search.
+
+  "8-10":
+    challenge: Compare two visible colours and use a clue to guide a partner.
+    steps:
+      - step_id: find_pair
+        instruction: Find two things with colours you can compare.
+        parent_prompt: Stay together and use visible objects without handling them.
+      - step_id: compare_pair
+        instruction: Describe one colour difference between your two choices.
+        parent_prompt: Accept the child's description; there is no correct shade to identify.
+      - step_id: give_clue
+        instruction: Give me a colour clue for one thing you found.
+        parent_prompt: Take a turn guessing from the checked area; let the child point if needed.
+    ending: Reveal the object from the clue and finish the search together.
+
+  "11-12":
+    challenge: Create a colour comparison rule and adjust it to what is visible.
+    steps:
+      - step_id: choose_rule
+        instruction: Choose a rule for comparing colours you can see.
+        parent_prompt: Offer examples such as similar shades or a strong contrast; use the child's own descriptions.
+      - step_id: apply_rule
+        instruction: Find two visible examples and explain how they fit your rule.
+        parent_prompt: Remain together; if examples are unavailable, invite a change to the rule.
+      - step_id: swap_searcher
+        instruction: Teach me your rule and help me find another example.
+        parent_prompt: Ask for a clue and search within the same area, adapting the rule if needed.
+    ending: Name one observation the rule helped you make, then finish.
+
+adaptations:
+  simplify:
+    - Point together instead of naming or comparing colours.
+    - Use a visible shape instead of colour if that is easier to distinguish.
+  extend:
+    - Swap who chooses the visible colour or comparison rule for another round.
+    - Describe each observation as an imaginary clue without collecting anything.
+
+constraints:
+  - Stay together within the checked area; a clue must never require searching beyond it.
+  - Observe without picking, collecting, tasting or touching unknown objects.
+  - Do not approach animals or strangers to inspect their colours.
+  - Do not assume any particular plant, landmark or colour will be present.
+  - Keep the observation tasks and ending when adding story wording.
+safety_reference: schema/safety_constraints.yaml
+
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft

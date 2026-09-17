@@ -1,0 +1,47 @@
+# HAND-WRITTEN. Never generated, never drafted, never relaxed by a template.
+# Inherited by every mission template. The validator enforces these; the prompt does not.
+# A template that conflicts with any line here is rejected before display.
+
+version: 1
+
+constraints:
+  - id: no_climbing
+    rule: No step may ask a child to climb above knee height.
+    rejects: [climb, scramble up, get on top of, stand on the]
+
+  - id: no_water_entry
+    rule: No step may ask a child to enter water of any depth.
+    rejects: [wade, paddle in, step into the water, swim, cross the creek]
+
+  - id: stay_in_sight
+    rule: No step may take a child out of the accompanying adult's line of sight.
+    rejects: [go around the back, out of sight, behind the building, run ahead until]
+
+  - id: no_road_crossing
+    rule: No step may involve crossing a road, car park or driveway.
+    rejects: [cross the road, other side of the street, across the car park]
+
+  - id: no_animals_or_strangers
+    rule: No step may ask a child to approach an animal or a person they do not know.
+    rejects: [pat the dog, ask someone, go up to the, feed the birds]
+
+  - id: no_handling_hazards
+    rule: No step may ask a child to pick up litter, glass, sharp objects or anything unknown.
+    rejects: [pick up the rubbish, collect the litter, hold the broken]
+
+  - id: no_tasting
+    rule: No step may involve eating, tasting or putting anything found in the mouth.
+    rejects: [taste, eat the, put it in your mouth, lick]
+
+  - id: no_digging
+    rule: No step may ask a child to dig, lift rocks or disturb ground.
+    rejects: [dig, turn over the rock, lift the log]
+
+  - id: no_dark_or_enclosed_areas
+    rule: No step may direct a child into tunnels, drains, dense scrub or unlit areas.
+    rejects: [into the tunnel, down the drain, into the bushes, inside the pipe]
+
+enforcement:
+  - Constraints are checked by validate_mission(), not by the generation prompt.
+  - The reject-phrase lists are a coarse first pass. Every template also gets human review.
+  - A rejected mission is never shown to a user. A different template is served instead.

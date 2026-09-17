@@ -1,0 +1,140 @@
+# Mission templates - bare_site. BULK DRAFT, not reviewed.
+# Safety constraints are inherited from schema/safety_constraints.yaml and are not restated here.
+# Steps marked verify: photo depend on their prompt_id surviving measurement (task B25).
+
+templates:
+- template_id: bare_grass_games
+  title: Grass games
+  category: any
+  duration_bucket: 20
+  weather_tags:
+  - any
+  site_requirements:
+  - bare_site
+  equipment: []
+  mechanic: move
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Run to the fence and back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Hop on one leg to me.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Lie on the grass and find a cloud.
+        verify_mode: photo
+        prompt_id: p_cloud
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: bare_open_ground
+  title: Open ground
+  category: any
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - bare_site
+  equipment: []
+  mechanic: move
+  bands:
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Run to the far edge of the grass and back.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Find a fence or edge and follow it as far as you can see.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 3
+        prompt_text: Do ten star jumps.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Find a leaf on the ground.
+        verify_mode: photo
+        prompt_id: p_leaf
+        variable: true
+      - sequence: 5
+        prompt_text: Make up one move and teach it to me.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft
+- template_id: bare_nothing_but_grass
+  title: Nothing but grass
+  category: any
+  duration_bucket: 60
+  weather_tags:
+  - any
+  site_requirements:
+  - bare_site
+  equipment: []
+  mechanic: sequence
+  bands:
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Pace out how wide this open space is.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Run the same distance and count your steps.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Find a fence or boundary line.
+        verify_mode: photo
+        prompt_id: p_fence
+        variable: true
+      - sequence: 4
+        prompt_text: Do twenty star jumps.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Invent a game using only the ground and your feet.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 6
+        prompt_text: Teach me the rules and play one round.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 7
+        prompt_text: Tell me what you would change about your game.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+  safety_tags:
+  - inherited
+  review:
+    author: bulk-draft
+    reviewed_by: null
+    status: draft

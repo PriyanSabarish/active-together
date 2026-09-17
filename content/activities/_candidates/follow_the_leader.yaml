@@ -1,0 +1,89 @@
+# Structure example for team review. Not approved for runtime use.
+schema_version: "0.1.0"
+activity_id: follow_the_leader
+version: 1
+title: Follow the Leader
+summary: Take turns inventing and copying a short pattern of movements together.
+activity_type: movement_play
+core_mechanic: imitate
+
+participation:
+  minimum_children: 1
+  minimum_adults: 1
+  adult_role: Demonstrate, copy the child and help keep movements controlled.
+
+equipment:
+  required: []
+  optional: []
+
+requirements:
+  - An adult checks a clear, level area with room to move without contact.
+  - The area is outside traffic, wheeled routes and play equipment landing areas.
+
+setup:
+  - Stand facing each other with enough space to stretch arms without touching.
+  - Agree to use gentle movements such as marching, arm circles or side steps.
+  - Explain that either person can pause, change a movement or stop.
+
+age_variants:
+  "5-7":
+    challenge: Copy one movement at a time and take a turn leading.
+    steps:
+      - step_id: copy_one
+        instruction: Copy my slow marching steps.
+        parent_prompt: March gently on the spot; let the child watch before joining.
+      - step_id: change_one
+        instruction: Copy my small arm circles.
+        parent_prompt: Stop marching first, then demonstrate a comfortable arm circle.
+      - step_id: child_leads
+        instruction: Choose a gentle movement for me to copy.
+        parent_prompt: Offer the two demonstrated movements if the child wants help choosing.
+    ending: Choose one favourite movement and do it together, then stop.
+
+  "8-10":
+    challenge: Remember a two-movement pattern and notice a change in its order.
+    steps:
+      - step_id: copy_pair
+        instruction: Copy four marching steps, then two small arm circles.
+        parent_prompt: Demonstrate the whole pattern slowly, then repeat it together.
+      - step_id: change_order
+        instruction: Put the arm circles first and try the pattern again.
+        parent_prompt: Let the child organise the two movements; offer a demonstration if wanted.
+      - step_id: child_leads
+        instruction: Choose two gentle movements and teach me your pattern.
+        parent_prompt: Follow the child's pattern without scoring memory or counting errors.
+    ending: Perform the child's two-movement pattern together once, then stop.
+
+  "11-12":
+    challenge: Design, teach and adapt a three-movement pattern for a partner.
+    steps:
+      - step_id: design_pattern
+        instruction: Choose three gentle movements and arrange them into a pattern.
+        parent_prompt: Agree which movements fit the space; let the child decide their order.
+      - step_id: teach_pattern
+        instruction: Teach me your pattern one movement at a time.
+        parent_prompt: Copy each movement, then ask the child to lead the combined pattern.
+      - step_id: adapt_pattern
+        instruction: Change one part so the pattern is easier to copy.
+        parent_prompt: Invite a change to order, repetition or movement size, then try it together.
+    ending: Perform the adapted pattern together once and name the change, then stop.
+
+adaptations:
+  simplify:
+    - Use one comfortable movement at a time and copy it together.
+    - Use small arm movements while staying in place if preferred.
+  extend:
+    - Swap leaders for another round using movements already agreed with the adult.
+    - Give the same movements an imaginary character without adding new actions.
+
+constraints:
+  - Keep movements gentle, within the checked area and in the adult's sight.
+  - Do not add climbing, backward travel, chasing, contact or speed competitions.
+  - Do not require equipment, landmarks or surfaces absent from the requirements.
+  - Keep the listed tasks and each age variant's ending when adding story wording.
+safety_reference: schema/safety_constraints.yaml
+
+review:
+  author: Jiabin
+  reviewed_by: null
+  status: draft
