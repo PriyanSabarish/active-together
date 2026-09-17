@@ -164,7 +164,7 @@ async def verify_step(
 ):
     if file.content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(status_code=400, detail="Invalid image content type.")
-    
+
     image_bytes = await file.read()
     if len(image_bytes) > MAX_IMAGE_SIZE_BYTES:
         raise HTTPException(status_code=413, detail="Image exceeds size ceiling.")
