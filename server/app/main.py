@@ -11,10 +11,11 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
-from app.data.database import get_db
-from app.data.places import fetch_candidate_places
+from app.data.database import SessionLocal, get_db
+from app.data.places import fetch_candidate_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
-from app.models import Context, Place, RecommendationRequest, Mission, AgeBand
+from app.missions import service
+from app.models import Context, Place, RecommendationRequest, AgeBand
 from app.recommendation.recommend import recommend
 
 # Task A32: Log filter to ensure image bytes never reach logs or error traces
@@ -97,27 +98,31 @@ async def _cached_mission_fetch(
     preferences_tuple: tuple[str, ...],
     recent_template_ids_tuple: tuple[str, ...]
 ):
-    # Non-blocking async execution boundary for internal generation logic
+    def resolve_place():
+        db = SessionLocal()
+        try:
+            return fetch_place_by_id(db, combo_id)
+        finally:
+            db.close()
+
+    place = await asyncio.to_thread(resolve_place)
+    if place is None:
+        raise ValueError(f"Unknown combo_id: {combo_id}")
+
+    # fetch_weather_context has its own cache (app/data/weather.py, 1800s
+    # TTL), so this doesn't duplicate the Open-Meteo/WeatherAPI call on
+    # every hit of this function's own cache.
+    context = await fetch_weather_context(lat=place.latitude, lon=place.longitude)
+
     def generate_local_missions():
-        # Insert your standalone generation logic here
-        return [
-            Mission(
-                mission_id=f"m_{combo_id}_{age_band}_{duration_bucket}",
-                template_id="tpl_default",
-                age_band=age_band,
-                estimated_minutes=duration_bucket,
-                title="Explore park perimeter and count trees",
-                equipment=["none"],
-                steps=[
-                    {"sequence": 1, "prompt_text": "Find a tall tree", "verify_mode": "photo", "prompt_id": "p_tree_1"},
-                    {"sequence": 2, "prompt_text": "Walk three minutes north", "verify_mode": "self", "prompt_id": None}
-                ],
-                offline_bundle={
-                    "assets_cached": True,
-                    "fallback_instructions": "Complete local observation steps without network sync."
-                }
-            )
-        ]
+        return service.get_missions(
+            place,
+            context,
+            AgeBand(age_band),
+            duration_bucket,
+            preferences=preferences_tuple,
+            recent_template_ids=recent_template_ids_tuple,
+        )
 
     return await asyncio.to_thread(generate_local_missions)
 
