@@ -25,6 +25,8 @@ import TabShell from './components/TabShell.vue'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
+const router = useRouter()
+
 const AUTH_KEY = 'at-admin-authed'
 const authed = ref(readAuthed())
 
@@ -39,6 +41,8 @@ function readAuthed() {
 function signIn() {
   authed.value = true
   showOnboarding.value = !hasOnboarded()
+  // Always land on Start after the gate; the walkthrough sits on top of it.
+  router.replace('/')
   try {
     sessionStorage.setItem(AUTH_KEY, '1')
   } catch {
@@ -59,17 +63,19 @@ function hasOnboarded() {
   }
 }
 
-function finishOnboarding() {
+function finishOnboarding(reason) {
   showOnboarding.value = false
   try {
     localStorage.setItem(ONBOARDED_KEY, '1')
   } catch {
     /* storage unavailable; fine for this session */
   }
+  // The last slide's button is "Choose where you are starting": go straight
+  // into the setup form. Skip just reveals Start underneath.
+  if (reason === 'setup') router.push('/location')
 }
 
 const ORDER = ['location', 'time', 'results', 'detail']
-const router = useRouter()
 const transitionName = ref('slide-left')
 
 const currentTab = computed(() => router.currentRoute.value.meta.tab ?? '')
