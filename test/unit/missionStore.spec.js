@@ -10,17 +10,23 @@ beforeEach(() => {
   setActivePinia(createPinia())
 })
 
-describe('F14 — mission store on mock data', () => {
-  it('starts with no active mission and the mock candidates offered', () => {
+function seededStore() {
+  const store = useMissionStore()
+  store.candidates = [...MOCK_MISSIONS]
+  return store
+}
+
+describe('F14 — mission store', () => {
+  it('starts empty until missions are fetched', () => {
     const store = useMissionStore()
     expect(store.active).toBeNull()
     expect(store.status).toBe('not_started')
-    expect(store.candidates).toHaveLength(MOCK_MISSIONS.length)
+    expect(store.candidates).toEqual([])
     expect(store.stepStates).toEqual([])
   })
 
   it('chooseMission sets the active mission and resets progress', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('bark-detective')
     expect(store.active?.id).toBe('bark-detective')
     expect(store.stepIndex).toBe(0)
@@ -29,13 +35,13 @@ describe('F14 — mission store on mock data', () => {
   })
 
   it('an unknown mission id leaves the store unchanged', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('does-not-exist')
     expect(store.active).toBeNull()
   })
 
   it('startMission moves to in_progress at the first step', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('shadow-tag')
     store.startMission()
     expect(store.status).toBe('in_progress')
@@ -44,7 +50,7 @@ describe('F14 — mission store on mock data', () => {
   })
 
   it('advanceStep moves through steps and finishes on the last one', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('shadow-tag') // two steps
     store.startMission()
 
@@ -60,7 +66,7 @@ describe('F14 — mission store on mock data', () => {
   })
 
   it('advanceStep before startMission is a no-op', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('bark-detective')
     store.advanceStep()
     expect(store.status).toBe('not_started')
@@ -68,7 +74,7 @@ describe('F14 — mission store on mock data', () => {
   })
 
   it('resetMission clears the active mission entirely', () => {
-    const store = useMissionStore()
+    const store = seededStore()
     store.chooseMission('bark-detective')
     store.startMission()
     store.advanceStep()

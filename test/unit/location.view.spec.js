@@ -7,11 +7,13 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 
 vi.mock('../../client/src/api', () => ({
   postRecommendations: vi.fn(),
-  getContext: vi.fn()
+  getContext: vi.fn(),
+  searchAddresses: vi.fn()
 }))
 
 import LocationView from '../../client/src/views/LocationView.vue'
 import { useSearchStore } from '../../client/src/store'
+import { searchAddresses } from '../../client/src/api'
 
 let pinia
 let geoMock
@@ -24,9 +26,11 @@ beforeEach(() => {
     value: geoMock,
     configurable: true
   })
+  searchAddresses.mockReset()
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   delete navigator.geolocation
 })
 
@@ -61,7 +65,7 @@ describe('AC-1.1.1 — Current or manual location', () => {
     expect(store.myLocation).toEqual({ latitude: -37.9, longitude: 145.1 })
   })
 
-  it('TC-1.1.1-02 — permission denial is handled and manual entry keeps working', async () => {
+  it('TC-1.1.1-02 — permission denial is handled and address entry keeps working', async () => {
     geoMock.getCurrentPosition.mockImplementation((_ok, fail) =>
       fail({ code: 1, PERMISSION_DENIED: 1 })
     )
@@ -70,12 +74,19 @@ describe('AC-1.1.1 — Current or manual location', () => {
 
     await wrapper.find('button.use-location').trigger('click')
     expect(store.useMyLocation).toBe(false)
-    expect(wrapper.text()).toMatch(/permission was denied.*Enter a suburb/i)
+    expect(wrapper.text()).toMatch(/permission was denied.*Enter an address/i)
 
-    // manual entry still available and functional
+    searchAddresses.mockResolvedValue({ suggestions: [{
+      id: '123', label: '1 Centre Road Clayton Vic 3168',
+      latitude: -37.927, longitude: 145.12, suburb: 'Clayton', postcode: '3168'
+    }] })
+    vi.useFakeTimers()
     const input = wrapper.find('input[type="text"]')
-    await input.setValue('Clayton')
-    expect(store.suburb).toBe('Clayton')
+    await input.setValue('1 Centre Road Clayton')
+    await vi.advanceTimersByTimeAsync(300)
+    await wrapper.find('.suggest-item').trigger('click')
+    vi.useRealTimers()
+    expect(store.selectedAddress.label).toMatch(/Centre Road/)
     expect(store.hasLocation).toBe(true)
   })
 
@@ -83,7 +94,7 @@ describe('AC-1.1.1 — Current or manual location', () => {
     delete navigator.geolocation
     const wrapper = mountView()
     await wrapper.find('button.use-location').trigger('click')
-    expect(wrapper.text()).toMatch(/not available in this browser.*Enter a suburb/i)
+    expect(wrapper.text()).toMatch(/not available in this browser.*Enter an address/i)
   })
 })
 
@@ -109,7 +120,15 @@ describe('Guard rails', () => {
     const wrapper = mountView()
     const next = wrapper.find('.btn-primary')
     expect(next.attributes('disabled')).toBeDefined()
-    await wrapper.find('input[type="text"]').setValue('Clayton')
+    searchAddresses.mockResolvedValue({ suggestions: [{
+      id: '123', label: '1 Centre Road Clayton Vic 3168',
+      latitude: -37.927, longitude: 145.12, suburb: 'Clayton', postcode: '3168'
+    }] })
+    vi.useFakeTimers()
+    await wrapper.find('input[type="text"]').setValue('1 Centre Road')
+    await vi.advanceTimersByTimeAsync(300)
+    await wrapper.find('.suggest-item').trigger('click')
+    vi.useRealTimers()
     expect(next.attributes('disabled')).toBeUndefined()
   })
 })

@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import httpx
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -11,6 +12,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
+from app.data.addresses import autocomplete_addresses
 from app.data.database import SessionLocal, get_db
 from app.data.places import fetch_candidate_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
@@ -73,6 +75,20 @@ async def get_context(
     lon: float = Query(..., ge=-180, le=180),
 ):
     return await fetch_weather_context(lat=lat, lon=lon)
+
+
+@app.get("/locations/autocomplete")
+async def address_autocomplete(
+    q: str = Query(..., min_length=3, max_length=100),
+    limit: int = Query(5, ge=1, le=10),
+):
+    try:
+        return {"suggestions": await autocomplete_addresses(q, limit)}
+    except (httpx.HTTPError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Address search is temporarily unavailable.",
+        )
 
 @app.post("/recommendations")
 async def create_recommendations(req: RecommendationRequest, db: Session = Depends(get_db)):
