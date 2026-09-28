@@ -1,5 +1,7 @@
 <template>
+  <!-- Leaflet map; optional numbered pins and a "You are here" chip for the Play list. -->
   <div class="place-map" :style="{ height }">
+    <span v-if="youChip && center" class="you-chip">● You are here</span>
     <div ref="el" class="place-map-canvas" />
   </div>
 </template>
@@ -17,6 +19,8 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const props = defineProps({
+  numbered: { type: Boolean, default: false },
+  youChip: { type: Boolean, default: false },
   center: { type: Object, default: null },
   radiusKm: { type: Number, default: null },
   places: { type: Array, default: () => [] },
@@ -41,13 +45,15 @@ const YOU_ICON = L.divIcon({
   iconAnchor: [7, 7]
 })
 
-function pinIcon(warn) {
+// Pins carry their rank (1, 2, 3) so the map and the list read the same.
+function pinIcon(warn, n) {
+  const label = n ? `<text x="7" y="9.3" text-anchor="middle" font-size="6.5" font-weight="700" font-family="Bricolage Grotesque, system-ui" fill="#F2F1EC">${n}</text>` : '<circle cx="7" cy="7" r="2.3" fill="#F2F1EC"/>'
   return L.divIcon({
     className: 'map-pin' + (warn ? ' warn' : ''),
-    html: '<svg width="22" height="30" viewBox="0 0 14 20"><path d="M1 7 C1 3.5 3.7 1 7 1 C10.3 1 13 3.5 13 7 C13 11 7 19 7 19 C7 19 1 11 1 7 Z" fill="currentColor"/><circle cx="7" cy="7" r="2.3" fill="#F2F1EC"/></svg>',
-    iconSize: [22, 30],
-    iconAnchor: [11, 30],
-    popupAnchor: [0, -28]
+    html: `<svg width="26" height="36" viewBox="0 0 14 20"><path d="M1 7 C1 3.5 3.7 1 7 1 C10.3 1 13 3.5 13 7 C13 11 7 19 7 19 C7 19 1 11 1 7 Z" fill="currentColor"/>${label}</svg>`,
+    iconSize: [26, 36],
+    iconAnchor: [13, 36],
+    popupAnchor: [0, -32]
   })
 }
 
@@ -80,13 +86,13 @@ function draw() {
     }).addTo(layer)
   }
 
-  for (const p of props.places) {
-    if (p.latitude == null || p.longitude == null) continue
-    const m = L.marker(toLatLng(p), { icon: pinIcon(p.badge?.type === 'warn'), title: p.name }).addTo(layer)
+  props.places.forEach((p, i) => {
+    if (p.latitude == null || p.longitude == null) return
+    const m = L.marker(toLatLng(p), { icon: pinIcon(p.badge?.type === 'warn', props.numbered ? i + 1 : 0), title: p.name }).addTo(layer)
     m.bindTooltip(p.name, { direction: 'top', offset: [0, -28] })
     m.on('click', () => emit('select', p.id))
     bounds.push(toLatLng(p))
-  }
+  })
 
   if (props.fit && bounds.length > 1) {
     map.fitBounds(bounds, { padding: [28, 28], maxZoom: 16 })
@@ -138,8 +144,12 @@ onBeforeUnmount(() => {
 
 .place-map .leaflet-control-attribution {
   font-size: 8px;
-  background: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-body);
+  background: rgba(242, 241, 236, 0.75);
+  color: var(--ink-4);
 }
+
+.place-map .leaflet-control-attribution a { color: var(--green); }
 
 .map-you span {
   display: block;
@@ -151,7 +161,22 @@ onBeforeUnmount(() => {
   box-shadow: 0 0 0 2px rgba(47, 107, 54, 0.35);
 }
 
+.you-chip {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 500;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--shadow-card);
+}
+
 .map-pin { color: var(--green); }
 .map-pin.warn { color: var(--amber); }
-.map-pin svg { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25)); }
+.map-pin svg { filter: drop-shadow(0 3px 4px rgba(30, 42, 31, 0.28)); }
 </style>

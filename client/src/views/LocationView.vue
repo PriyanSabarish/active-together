@@ -1,6 +1,6 @@
 <template>
   <AppHeader />
-  <!-- Setup step 1: pick a starting point (device location or a pilot suburb) and a radius. -->
+  <!-- Start: pick a starting point (device location or a pilot suburb), a radius and how long you have. -->
 
   <div class="scroll-area">
     <h1>Where are you starting?</h1>
@@ -75,9 +75,23 @@
       </button>
     </div>
 
-    <!-- Radius preview around the chosen point. -->
-    <PlaceMap class="map-preview" :center="store.coords" :radius-km="store.radiusKm" height="150px" />
-    <p class="map-caption">{{ store.radiusKm }} km radius around {{ pointLabel }}</p>
+    <!-- Time you have: on-site minutes, mapped by the store to the 20/40/60 plan buckets. -->
+    <div class="time-head">
+      <span class="section-label" style="margin: 0">Time you have</span>
+      <span class="time-value duration-value">{{ timeLabel }}</span>
+    </div>
+    <input
+      v-model.number="store.durationMin"
+      type="range"
+      min="10"
+      max="120"
+      step="5"
+      class="duration"
+      aria-label="Time you have"
+      :style="{ '--fill': ((store.durationMin - 10) / 110) * 100 + '%' }"
+    />
+    <div class="ticks"><span>10 min</span><span>2 hrs</span></div>
+    <p class="plan-note">Matched to a {{ store.planMin }}-minute plan. Travel isn't counted.</p>
   </div>
 
   <button class="btn btn-primary cta" :disabled="!ready" @click="next">
@@ -87,13 +101,14 @@
 </template>
 
 <script setup>
-// Setup step 1 — choose browser geolocation, a quick-pick suburb, or a
-// Vicmap address returned by the pilot-area autocomplete endpoint.
-
-import { computed, onBeforeUnmount, ref } from 'vue'
+// Start — where are you starting, how far, how long. Browser geolocation
+// (nothing stored), a quick-pick suburb, or a Vicmap address from the
+// pilot-area autocomplete endpoint. Radius (3/5/10 km) and on-site minutes
+// are chosen here too; "Show places" fires the recommendations request and
+// hands over to the Play tab.
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import PlaceMap from '../components/PlaceMap.vue'
 import { searchAddresses } from '../api'
 import { useSearchStore } from '../store'
 
@@ -113,6 +128,21 @@ let searchSeq = 0
 
 const ready = computed(() => store.hasLocation)
 
+const timeLabel = computed(() => {
+  const m = store.durationMin
+  if (m < 60) return `${m} min`
+  const h = Math.floor(m / 60)
+  const r = m % 60
+  return r ? `${h} hr ${r} min` : `${h} hr${h > 1 ? 's' : ''}`
+})
+
+// Load the forecast for the header pill as soon as there is a point; refresh
+// when the point changes.
+onMounted(() => {
+  if (store.hasLocation) store.loadContext()
+})
+watch(() => store.coords, (c) => { if (c) store.loadContext() })
+
 // Recent suburbs first, topped up with pilot-area suburbs so the chip row is
 // never empty on a fresh install.
 const FALLBACK = ['Clayton', 'Oakleigh', 'Carlton North', 'Glen Waverley', 'Melton South']
@@ -121,7 +151,6 @@ const quickPicks = computed(() => {
   return [...store.recent, ...FALLBACK].filter((s) => !seen.has(s) && seen.add(s)).slice(0, 5)
 })
 
-const pointLabel = computed(() => store.locationLabel)
 const ctaLabel = computed(() => (store.useMyLocation ? 'you' : store.locationLabel))
 
 function onInput() {
@@ -225,7 +254,8 @@ onBeforeUnmount(() => {
 
 function next() {
   if (store.suburb) store.rememberSuburb(store.suburb)
-  router.push('/time')
+  store.fetchRecommendations()
+  router.push('/play')
 }
 </script>
 
@@ -361,14 +391,36 @@ function next() {
 
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 
-.map-preview { margin-top: 16px; }
+.time-head { display: flex; justify-content: space-between; align-items: baseline; margin-top: 22px; }
+.time-value { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
 
-.map-caption {
-  text-align: center;
-  font-size: 12px;
-  color: var(--ink-4);
-  margin-top: 8px;
+.duration {
+  width: 100%;
+  margin-top: 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--green) 0%, var(--green) var(--fill, 25%), var(--line-2) var(--fill, 25%), var(--line-2) 100%);
+  outline: none;
 }
+
+.duration::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid var(--green);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+}
+
+.duration::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--card); border: 3px solid var(--green); cursor: pointer; }
+
+.ticks { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--ink-5); }
+.plan-note { margin-top: 8px; font-size: 12.5px; color: var(--ink-4); }
 
 .cta { width: 100%; margin-top: 14px; }
 </style>

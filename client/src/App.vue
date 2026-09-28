@@ -10,8 +10,9 @@
         </transition>
       </router-view>
       <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding" />
-      <!-- Sits on top of the first screen and dims it; the app stays visible behind. -->
-      <OnboardingModal v-if="showOnboarding" @done="finishOnboarding" />
+      <!-- First run: the landing cover, then the four-slide walkthrough, both over Start. -->
+      <LandingCover v-if="showOnboarding && showCover" @done="showCover = false" />
+      <OnboardingModal v-else-if="showOnboarding" @done="finishOnboarding" />
     </template>
   </div>
 </template>
@@ -27,6 +28,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'
+import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
 
@@ -48,6 +50,7 @@ function readAuthed() {
 function signIn() {
   authed.value = true
   showOnboarding.value = !hasOnboarded()
+  showCover.value = true
   // Always land on Start after the gate; the walkthrough sits on top of it.
   router.replace('/')
   try {
@@ -61,6 +64,7 @@ function signIn() {
 // returning user (or a reload mid-session) goes straight to the app.
 const ONBOARDED_KEY = 'at-onboarded-v1'
 const showOnboarding = ref(false)
+const showCover = ref(true) // cover first, then the slides
 
 function hasOnboarded() {
   try {
@@ -79,7 +83,7 @@ function finishOnboarding(reason) {
   }
   // The last slide's button is "Choose where you are starting": go straight
   // into the setup form. Skip just reveals Start underneath.
-  if (reason === 'setup') router.push('/location')
+  if (reason === 'setup') router.push('/')
 }
 
 const ORDER = ['location', 'time', 'results', 'detail']
