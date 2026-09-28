@@ -1,4 +1,5 @@
 <template>
+  <div class="onb-backdrop">
   <div class="onb" role="dialog" aria-modal="true" aria-labelledby="onb-title">
     <!-- hero: shared landscape, slide-specific mini preview -->
     <div class="onb-hero">
@@ -55,7 +56,7 @@
         <section v-for="(s, i) in SLIDES" :key="s.key" class="onb-slide" :aria-hidden="i !== index">
           <!-- Mascot pin; smiles with closed eyes on the last slide. -->
           <span class="mascot" :class="{ happy: i === SLIDES.length - 1 }">
-            <svg width="72" height="88" viewBox="0 0 100 126" aria-hidden="true">
+            <svg width="58" height="72" viewBox="0 0 100 126" aria-hidden="true">
               <path d="M50 2 C23 2 4 22 4 48 C4 82 50 124 50 124 C50 124 96 82 96 48 C96 22 77 2 50 2 Z" fill="var(--green)" />
               <template v-if="i === SLIDES.length - 1">
                 <path d="M30 40 q8 -10 16 0" fill="none" stroke="var(--paper)" stroke-width="6" stroke-linecap="round" />
@@ -80,6 +81,7 @@
     <button class="btn btn-primary onb-btn" type="button" @click="next">
       {{ isLast ? 'Choose where you are starting' : 'Next' }}
     </button>
+  </div>
   </div>
 </template>
 
@@ -219,11 +221,25 @@ function finish() {
 </script>
 
 <style scoped>
-.onb {
+/* Dimmed layer over the app; the card floats on top like a pop-up. */
+.onb-backdrop {
   position: absolute;
   inset: 0;
   z-index: 1100; /* above Leaflet panes and controls (up to 1000) */
+  background: rgba(30, 42, 31, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+}
+
+.onb {
+  width: 100%;
+  max-width: 390px;
+  max-height: 100%;
   background: var(--paper);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(30, 42, 31, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -232,10 +248,10 @@ function finish() {
 /* hero */
 .onb-hero {
   position: relative;
-  height: 300px;
+  height: 236px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 0 0 28px 28px;
+  border-radius: 0 0 24px 24px;
 }
 
 .onb-sky { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -259,17 +275,17 @@ function finish() {
   background: #8A5A2E;
 }
 
-.t1 { left: 24px; top: 138px; transform: scale(0.8); }
-.t2 { left: 250px; top: 128px; }
-.t3 { left: 296px; top: 150px; transform: scale(0.75); }
-.t4 { left: 120px; top: 96px; transform: scale(0.55); }
+.t1 { left: 24px; top: 100px; transform: scale(0.8); }
+.t2 { left: 250px; top: 90px; }
+.t3 { left: 296px; top: 112px; transform: scale(0.75); }
+.t4 { left: 120px; top: 62px; transform: scale(0.55); }
 
 .onb-bar {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 20px 0;
+  padding: 16px 18px 0;
 }
 
 .onb-brand { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
@@ -289,8 +305,8 @@ function finish() {
 
 .onb-mini {
   position: absolute;
-  left: 24px;
-  right: 24px;
+  left: 20px;
+  right: 20px;
   bottom: -6px;
   background: var(--card);
   border-radius: 20px 20px 0 0;
@@ -333,26 +349,26 @@ function finish() {
 
 .onb-slide {
   flex: 0 0 100%;
-  padding: 26px 28px 0;
+  padding: 20px 24px 0;
   display: flex;
   flex-direction: column;
 }
 
-.mascot { display: inline-block; margin-bottom: 14px; filter: drop-shadow(0 8px 14px rgba(47, 107, 54, 0.25)); }
+.mascot { display: inline-block; margin-bottom: 10px; filter: drop-shadow(0 8px 14px rgba(47, 107, 54, 0.25)); }
 
 .onb-title {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 700;
   line-height: 1.06;
   letter-spacing: -0.8px;
   margin: 0 0 10px;
 }
 
-.onb-body { font-size: 15.5px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.onb-body { font-size: 14.5px; margin-bottom: 18px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
 
 /* dots + cta */
-.onb-dots { display: flex; gap: 6px; padding: 0 28px 14px; }
+.onb-dots { display: flex; gap: 6px; padding: 0 24px 12px; }
 
 .onb-dots button {
   width: 7px;
@@ -372,5 +388,5 @@ function finish() {
   50% { opacity: 0.55; }
 }
 
-.onb-btn { margin: 0 24px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.onb-btn { margin: 0 20px 20px; height: 52px; }
 </style>

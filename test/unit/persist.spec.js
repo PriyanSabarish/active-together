@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { sanitise } from '../../client/src/persist'
 
 describe('search state persistence', () => {
-  it('keeps a bounded selected address and setupDone', () => {
+  it('keeps a bounded selected address', () => {
     const saved = sanitise({
       selectedAddress: {
         id: 42,
@@ -11,8 +11,7 @@ describe('search state persistence', () => {
         longitude: 145.12,
         suburb: 'Clayton',
         postcode: '3168'
-      },
-      setupDone: true
+      }
     })
 
     expect(saved.selectedAddress).toEqual({
@@ -23,7 +22,6 @@ describe('search state persistence', () => {
       suburb: 'Clayton',
       postcode: '3168'
     })
-    expect(saved.setupDone).toBe(true)
   })
 
   it('drops an address without finite coordinates', () => {

@@ -119,7 +119,6 @@ describe('AC-1.2.2 / AC-3.2.1 — Card facts', () => {
     for (const card of cards) {
       expect(card.find('.place-name').text()).toBeTruthy()
       expect(card.find('.place-meta').text()).toMatch(/·\s*[\d.]+ km/)
-      expect(card.find('.mission-blurb').text()).toBeTruthy()
     }
   })
 

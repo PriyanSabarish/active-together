@@ -19,6 +19,8 @@ import { postMissions } from './api'
 // the UI has always only known a binary confirm type. whyThisMission has no
 // backend field to draw from (Mission carries no explanation, unlike Combo),
 // so it's composed client-side from what's on hand.
+const STEP_ICONS = ['sun', 'eye', 'hand', 'leaf', 'paw', 'wind', 'rock', 'drop']
+
 export function mapMission(mission, { placeName, category, reason }) {
   return {
     id: mission.mission_id,
@@ -30,9 +32,12 @@ export function mapMission(mission, { placeName, category, reason }) {
     durationMin: mission.estimated_minutes,
     equipment: mission.equipment?.length ? mission.equipment.join(', ') : 'None — everyday clothes and shoes only.',
     whyThisMission: reason,
-    steps: mission.steps.map((s) => ({
+    // Backend steps carry no icon; cycle through the task glyphs so each step
+    // gets a different sketch on the run screen.
+    steps: mission.steps.map((s, i) => ({
       title: s.prompt_text,
-      confirm: s.verify_mode === 'photo' ? 'photo' : 'tap'
+      confirm: s.verify_mode === 'photo' ? 'photo' : 'tap',
+      icon: STEP_ICONS[i % STEP_ICONS.length]
     }))
   }
 }
@@ -48,9 +53,9 @@ export const MOCK_MISSIONS = [
     equipment: 'None — everyday clothes and shoes only.',
     whyThisMission: "Matches Daniel's \"playground play\" preference and hasn't been used in the last 5 outings.",
     steps: [
-      { title: 'Find a tree with smooth bark', confirm: 'tap' },
-      { title: 'Find a tree with bumpy bark', confirm: 'photo' },
-      { title: 'Say which bark you liked most', confirm: 'tap' }
+      { title: 'Find a tree with smooth bark', confirm: 'tap', icon: 'hand' },
+      { title: 'Find a tree with bumpy bark', confirm: 'photo', icon: 'rock' },
+      { title: 'Say which bark you liked most', confirm: 'tap', icon: 'leaf' }
     ]
   },
   {
@@ -63,8 +68,8 @@ export const MOCK_MISSIONS = [
     equipment: 'None — works best in direct sun.',
     whyThisMission: "A quick, active pick for a sporting ground with no equipment on hand.",
     steps: [
-      { title: "Chase and copy each other's shadow shapes", confirm: 'tap' },
-      { title: 'Make a shadow shape Daniel has to guess', confirm: 'tap' }
+      { title: "Chase and copy each other's shadow shapes", confirm: 'tap', icon: 'sun' },
+      { title: 'Make a shadow shape Daniel has to guess', confirm: 'tap', icon: 'paw' }
     ]
   },
   {
@@ -77,8 +82,8 @@ export const MOCK_MISSIONS = [
     equipment: 'None.',
     whyThisMission: 'A calm option for a windier day, along a trail with open sky.',
     steps: [
-      { title: 'Find a cloud that looks like an animal', confirm: 'tap' },
-      { title: 'Name the shapes you find in the clouds', confirm: 'photo' }
+      { title: 'Find a cloud that looks like an animal', confirm: 'tap', icon: 'eye' },
+      { title: 'Name the shapes you find in the clouds', confirm: 'photo', icon: 'wind' }
     ]
   }
 ]

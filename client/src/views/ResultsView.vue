@@ -1,14 +1,28 @@
 <template>
   <AppHeader />
 
-  <div class="scroll-area">
-    <button class="pill crumb" @click="$router.push('/location')">‹ Change starting point</button>
-    <div class="head-row">
-      <div>
-        <h1>Your top options</h1>
-        <p class="subtitle">Each one now comes with a mission for Daniel.</p>
-      </div>
-    </div>
+  <!-- First run: nothing to show until a starting point exists. -->
+  <div v-if="!store.hasLocation" class="scroll-area setup">
+    <span class="setup-glyph">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+      </svg>
+    </span>
+    <h1>Set up where you're starting</h1>
+    <p class="subtitle">We need a starting point and how long you've got before we can suggest anything nearby.</p>
+    <button class="btn btn-primary setup-cta" @click="$router.push('/')">Set up now <span class="btn-arrow">→</span></button>
+  </div>
+
+  <div v-else class="scroll-area">
+    <!-- A mission is running: offer to go back to it before anything else. -->
+    <button v-if="missionStore.status === 'in_progress'" class="resume" @click="$router.push('/play/run')">
+      <span class="resume-text"><b>{{ missionStore.active.title }}</b> · task {{ missionStore.stepIndex + 1 }} of {{ missionStore.totalSteps }}</span>
+      <span class="resume-go">Continue →</span>
+    </button>
+
+    <h1>Your top options</h1>
+    <p class="subtitle">Each one now comes with a mission for Daniel.</p>
 
     <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
     <div class="window-row">
@@ -48,7 +62,7 @@
           {{ store.message || 'Selected location is outside the active pilot area.' }}
           Active Together currently covers the City of Melbourne, Monash and Melton.
         </p>
-        <button class="btn btn-primary widen-btn" @click="$router.push('/location')">Change location</button>
+        <button class="btn btn-primary widen-btn" @click="$router.push('/')">Change location</button>
       </div>
     </template>
 
@@ -67,19 +81,21 @@
       </div>
     </template>
 
-    <!-- results: map with a pin per place, then one card per place -->
+    <!-- results: map with a numbered pin per place, then one card per place -->
     <template v-else>
       <PlaceMap
         class="results-map"
         :center="store.coords"
         :places="store.results"
         fit
+        numbered
+        you-chip
         height="150px"
         @select="openById"
       />
 
       <article
-        v-for="place in store.results"
+        v-for="(place, i) in store.results"
         :key="place.id"
         class="result-card"
         role="button"
@@ -88,6 +104,7 @@
         @keydown.enter="open(place)"
       >
         <div class="card-top">
+          <span class="rank">{{ i + 1 }}</span>
           <CategoryIcon :category="place.category" />
           <div class="card-title">
             <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
@@ -95,12 +112,10 @@
           </div>
           <ConditionBadge :badge="place.badge" />
         </div>
-        <p v-if="justAdjusted" class="updated-tag">Updated to fit new window</p>
-
-        <!-- Mission preview block. Mock until the missions endpoint is wired (see MOCK_MISSIONS). -->
-        <div class="mission-block">
+        <div class="card-foot">
+          <!-- Mission count is mock until the missions endpoint is wired (see MOCK_MISSIONS). -->
           <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
-          <p class="mission-blurb"><b>"{{ missionFor(place).title }}"</b> — {{ missionFor(place).blurb }}</p>
+          <span v-if="justAdjusted" class="updated-tag">Updated to fit new window</span>
         </div>
         <p class="duration-line">◷ {{ place.durationBucket }} min on-site · {{ place.comboTitle }}</p>
       </article>
@@ -146,12 +161,12 @@
 </template>
 
 <script setup>
-// Top options for the current window (place + radius + duration). Reads
-// store.results from POST /recommendations. Handles loading, error,
-// out-of-pilot-area and zero-result states. The Adjust sheet changes radius
-// and duration in place and refetches; location changes still go through the
-// setup form via the crumb.
-
+// Play tab root: your top options for the current window (place + radius +
+// duration), from POST /recommendations. With no starting point yet it shows
+// the first-run setup card instead (routes into Start). Handles loading,
+// error, out-of-pilot-area and zero-result states. The Adjust sheet changes
+// radius and duration in place and refetches; the starting point itself is
+// changed on Start. A running mission gets a resume banner at the top.
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
@@ -159,8 +174,10 @@ import CategoryIcon from '../components/CategoryIcon.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
 import PlaceMap from '../components/PlaceMap.vue'
 import { useSearchStore } from '../store'
+import { useMissionStore } from '../missionStore'
 
 const store = useSearchStore()
+const missionStore = useMissionStore()
 const router = useRouter()
 
 // Landing here directly (e.g. page refresh) still runs the search.
@@ -217,16 +234,58 @@ function widen() {
 }
 
 function open(place) {
-  router.push(`/place/${place.id}`)
+  router.push(`/play/place/${place.id}`)
 }
 
 function openById(id) {
-  router.push(`/place/${id}`)
+  router.push(`/play/place/${id}`)
 }
 </script>
 
 <style scoped>
-.head-row { margin-top: 14px; }
+.setup { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 28px; }
+.setup-glyph { width: 64px; height: 64px; border-radius: 50%; background: var(--green-light); color: var(--green); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.setup h1 { text-wrap: balance; }
+.setup-cta { width: 100%; margin-top: 22px; }
+
+.resume {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 11px 14px;
+  border: none;
+  border-radius: var(--radius-field);
+  background: var(--dark);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.resume b { font-weight: 700; }
+.resume-go { color: var(--accent); font-weight: 700; white-space: nowrap; }
+
+.rank {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--card);
+}
+
+.card-foot { margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 .window-row {
   margin-top: 14px;
@@ -240,7 +299,6 @@ function openById(id) {
 .adjust-btn { background: var(--green-light); color: var(--green-dark); box-shadow: none; }
 
 .updated-tag {
-  margin-top: 10px;
   display: inline-block;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
@@ -295,6 +353,7 @@ function openById(id) {
 .results-map { margin-top: 16px; }
 
 .result-card {
+  position: relative;
   margin-top: 12px;
   background: var(--card);
   border-radius: var(--radius-card);
@@ -314,16 +373,7 @@ function openById(id) {
 .place-name.unnamed { color: var(--ink-3); font-style: italic; }
 .place-meta { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
 
-.mission-block {
-  margin-top: 12px;
-  background: var(--paper);
-  border-radius: 13px;
-  padding: 11px 13px 12px;
-}
-
-.mission-blurb { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
-.mission-blurb b { color: var(--ink); font-weight: 700; }
-.duration-line { margin-top: 10px; font-size: 12px; color: var(--ink-4); }
+.duration-line { margin-top: 8px; font-size: 12px; color: var(--ink-4); }
 
 .footnote {
   text-align: center;

@@ -44,25 +44,12 @@
 
     <p class="quiet-note">No targets, no streaks, no score. Just what you did.</p>
 
-    <h2 class="sect">Activity mix</h2>
-    <template v-if="mix.length">
-      <div class="mix-bar">
-        <span v-for="seg in mix" :key="seg.category" :style="{ width: seg.pct + '%', background: seg.color }" />
-      </div>
-      <div class="mix-legend">
-        <span v-for="seg in mix" :key="seg.category" class="legend-item">
-          <span class="dot" :style="{ background: seg.color }" />
-          {{ categoryLabel(seg.category) }}
-        </span>
-      </div>
-    </template>
-    <p v-else class="body-text">No activity logged this week yet.</p>
     </template>
   </div>
 </template>
 
 <script setup>
-// Week tab: this week vs last week, a Mon-Sun log and the activity mix. All
+// Week tab: this week vs last week and a Mon-Sun log. All
 // data is device-local (historyStore); demo records are seeded at boot unless
 // switched off on You. With no records at all it shows a "never used" state,
 // distinct from a quiet day inside a real week.
@@ -71,7 +58,6 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { useHistoryStore, mondayOf } from '../historyStore'
-import { categoryLabel } from '../store'
 
 const router = useRouter()
 const historyStore = useHistoryStore()
@@ -97,28 +83,6 @@ const weekDays = computed(() => {
   })
 })
 
-// Reuses store.js's CATEGORY_META keys; only a subset shows up in the mock
-// data, but every category gets a distinct swatch.
-const CATEGORY_COLOR = {
-  playground: 'var(--green)',
-  park_and_garden: 'var(--green-dark)',
-  picnic_day_use: 'var(--amber)',
-  sports_ground: 'var(--green-mid)',
-  court: 'var(--ink-3)',
-  skate_bmx: 'var(--ink-4)',
-  trail_access: 'var(--orange)'
-}
-
-const mix = computed(() => {
-  const rows = historyStore.categoryMixThisWeek
-  const total = rows.reduce((s, c) => s + c.count, 0)
-  if (!total) return []
-  return rows.map((c) => ({
-    category: c.category,
-    pct: (c.count / total) * 100,
-    color: CATEGORY_COLOR[c.category] ?? 'var(--ink-4)'
-  }))
-})
 </script>
 
 <style scoped>
@@ -170,28 +134,4 @@ h1 { margin-bottom: 18px; }
 
 .quiet-note { margin-top: 16px; font-size: 13px; color: var(--ink-4); line-height: 1.5; }
 
-.sect { margin-top: 26px; }
-
-.mix-bar {
-  display: flex;
-  height: 10px;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-top: 12px;
-  background: var(--tint);
-}
-
-.mix-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
-
-.legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  color: var(--ink-3);
-}
-
-.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-.body-text { font-size: 13px; color: var(--ink-4); margin-top: 10px; }
 </style>

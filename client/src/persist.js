@@ -8,7 +8,7 @@ import { SUBURBS } from './store'
 
 export const STORAGE_KEY = 'at-search-v1'
 
-const PERSISTED = ['suburb', 'selectedAddress', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin', 'setupDone']
+const PERSISTED = ['suburb', 'selectedAddress', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin']
 const RADII = [3, 5, 10]
 
 function isCoords(v) {
@@ -34,9 +34,8 @@ export function sanitise(saved) {
   if (isCoords(saved.myLocation)) out.myLocation = { latitude: saved.myLocation.latitude, longitude: saved.myLocation.longitude }
   if (saved.useMyLocation === true && out.myLocation) out.useMyLocation = true
   if (RADII.includes(saved.radiusKm)) out.radiusKm = saved.radiusKm
-  if (Number.isInteger(saved.durationMin) && saved.durationMin >= 20 && saved.durationMin <= 120) out.durationMin = saved.durationMin
+  if (Number.isInteger(saved.durationMin) && saved.durationMin >= 10 && saved.durationMin <= 120) out.durationMin = saved.durationMin
   if (Array.isArray(saved.recent)) out.recent = saved.recent.filter((r) => SUBURBS.includes(r)).slice(0, 3)
-  if (saved.setupDone === true) out.setupDone = true
   return out
 }
 
