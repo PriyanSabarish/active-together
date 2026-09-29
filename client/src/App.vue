@@ -4,14 +4,14 @@
     <template v-else>
       <router-view v-slot="{ Component, route }">
         <transition :name="transitionName" mode="out-in">
-          <div :key="route.name" class="screen" :inert="showOnboarding">
+          <div :key="route.name" class="screen" :inert="showOnboarding || showCover">
             <component :is="Component" />
           </div>
         </transition>
       </router-view>
-      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding" />
-      <!-- First run: the landing cover, then the four-slide walkthrough, both over Start. -->
-      <LandingCover v-if="showOnboarding && showCover" @done="showCover = false" />
+      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding || showCover" />
+      <!-- After every sign-in: the welcome cover, then the four-slide walkthrough, both over Start. -->
+      <LandingCover v-if="showCover" @done="showCover = false" />
       <OnboardingModal v-else-if="showOnboarding" @done="finishOnboarding" />
     </template>
   </div>
@@ -49,7 +49,7 @@ function readAuthed() {
 
 function signIn() {
   authed.value = true
-  showOnboarding.value = !hasOnboarded()
+  showOnboarding.value = true
   showCover.value = true
   // Always land on Start after the gate; the walkthrough sits on top of it.
   router.replace('/')
@@ -60,19 +60,12 @@ function signIn() {
   }
 }
 
-// First-run walkthrough. Shown once per device after a fresh sign-in, so a
-// returning user (or a reload mid-session) goes straight to the app.
+// Welcome cover + walkthrough. Shown after every sign-in; a reload mid-session
+// goes straight to the app. The flag below only records that it has been seen.
 const ONBOARDED_KEY = 'at-onboarded-v1'
 const showOnboarding = ref(false)
-const showCover = ref(true) // cover first, then the slides
+const showCover = ref(false) // welcome cover, shown after each sign-in
 
-function hasOnboarded() {
-  try {
-    return localStorage.getItem(ONBOARDED_KEY) === '1'
-  } catch {
-    return true // storage blocked: never trap the user in the walkthrough
-  }
-}
 
 function finishOnboarding(reason) {
   showOnboarding.value = false

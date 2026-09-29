@@ -117,7 +117,6 @@
           <span class="badge mission">{{ missionFor(place).steps }}-task mission</span>
           <span v-if="justAdjusted" class="updated-tag">Updated to fit new window</span>
         </div>
-        <p class="duration-line">◷ {{ place.durationBucket }} min on-site · {{ place.comboTitle }}</p>
       </article>
 
       <p v-if="store.results.length === 1" class="footnote">
@@ -373,7 +372,6 @@ function openById(id) {
 .place-name.unnamed { color: var(--ink-3); font-style: italic; }
 .place-meta { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
 
-.duration-line { margin-top: 8px; font-size: 12px; color: var(--ink-4); }
 
 .footnote {
   text-align: center;
