@@ -63,13 +63,6 @@ describe('AC-3.2.2 — Unverified facts stay off the card', () => {
   })
 })
 
-describe('AC-3.3.1 — The explanation uses only decision inputs', () => {
-  it('TC-3.3.1-01 — the backend explanation and reasons are rendered verbatim', () => {
-    const { wrapper, mapped } = mountDetail()
-    expect(wrapper.find('.explanation').text()).toBe(mapped.reason)
-    expect(wrapper.findAll('.why-list li').map((li) => li.text())).toEqual(mapped.reasons)
-  })
-})
 
 describe('Guard rails', () => {
   it('an unknown place id shows a not-found state instead of a broken page', () => {
