@@ -44,13 +44,7 @@
       </div>
 
 
-      <h2 class="sect">Why this place</h2>
-      <p class="sect-sub explanation">{{ place.reason }}</p>
-      <ul class="info-card why-list">
-        <li v-for="r in place.reasons" :key="r" class="info-row">{{ r }}</li>
-      </ul>
-
-      <p class="disclaimer"><button class="link-btn" @click="getDirections">Directions ↗</button></p>
+      <p class="disclaimer" style="margin-top: 14px"><button class="link-btn" @click="getDirections">Directions ↗</button></p>
 
       <!-- Pick a mission: real POST /missions for this place, fetched on arrival.
            The parent reads them out, the child picks; every card can show its
@@ -225,6 +219,7 @@ function getDirections() {
 
 .link-btn { background: none; border: none; padding: 0; margin-left: 6px; color: var(--green); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }
 
+.sect-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.45; margin-top: 3px; }
 .mission-status { margin-top: 10px; font-size: 13.5px; color: var(--ink-3); }
 .mission-status.warn { color: var(--amber); }
 
@@ -278,32 +273,9 @@ function getDirections() {
 
 .duration-main { display: block; font-weight: 600; color: var(--ink-2); }
 .duration-sub { display: block; margin-top: 2px; }
-.why-list { list-style: none; }
-
 
 .sect { margin-top: 22px; }
-.sect-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.45; margin-top: 3px; }
 
-.info-card {
-  margin-top: 10px;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  padding: 6px 16px;
-}
-
-.info-row {
-  font-size: 13.5px;
-  color: var(--ink-2);
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  line-height: 1.4;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.info-row:last-child { border-bottom: none; }
 
 .mission-fetch-error {
   margin-top: 14px;
