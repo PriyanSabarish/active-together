@@ -1,51 +1,41 @@
-# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
 templates:
   - template_id: activity_colour_hunt
     title: "Colour Hunt"
     category: any
-    duration_bucket: 60
+    duration_bucket: 40
     weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, point to a colour you can see."
+            prompt_text: "Run to something that matches your clothes, then come back."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Point to another colour from the same spot."
+            prompt_text: "Find something green and something brown. Show me both."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose a visible colour and help me find it."
+            prompt_text: "Run to three different colours, coming back to me each time."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Point to two things sharing a colour."
+            prompt_text: "I'll call a colour. Find it before I count to ten."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show me one colour difference between them."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Choose a colour clue for something nearby."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Reveal your choice and compare our colour descriptions."
+            prompt_text: "Pick a colour for me. Say hotter or colder."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +43,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Find two visible colours beside your adult."
+            prompt_text: "Find two things that match your clothes. Run to each one and back."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe one difference between your two choices."
+            prompt_text: "Find three different greens and show me them from darkest to lightest."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Give your adult a colour clue, then reveal your choice."
+            prompt_text: "Rainbow run: stand next to three different colours, coming back to me between each."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Find two examples of a similar shade."
+            prompt_text: "I'll call a colour. Find it before I count to ten, then try another one even faster."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the examples and explain what makes them similar."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Let your adult choose a different colour clue."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Solve the clue together and describe the colour you found."
+            prompt_text: "Your turn: pick a colour for me, and say hotter or colder while I hunt."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +71,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a rule for comparing colours visible beside your adult."
+            prompt_text: "Find something that matches your clothes, then find a colour that looks like its opposite."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Find two examples that fit your comparison rule."
+            prompt_text: "Build a green scale from darkest to lightest. Decide how many steps it has, then show me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Teach your rule, then compare your adult's choice with yours."
+            prompt_text: "Plan a rainbow route of four colours. Tell me the order, then run it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change the rule to explore a different colour relationship."
+            prompt_text: "Find as many colours as you can before I count to twenty. Then try to beat your number."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Apply the new rule and explain how the results differ."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Create a short colour clue using your preferred rule."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Test the clue with your adult and explain any ambiguity."
+            prompt_text: "Your turn: pick a secret colour, give me three hints, then guide me with hotter or colder."
             verify_mode: self
             prompt_id: null
             variable: true
