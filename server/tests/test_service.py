@@ -10,8 +10,8 @@ from tests import fixtures
 PLACE_PARK = fixtures.DENSE_INNER[0]  # Argyle Square, park_and_garden
 
 
-def test_templates_loaded_from_the_real_reviewed_library():
-    assert len(service.TEMPLATES) == 18
+def test_only_enabled_templates_are_served():
+    assert {t.template_id for t in service.TEMPLATES} == service.ENABLED_TEMPLATE_IDS
 
 
 def test_eligible_categories_loaded_from_the_real_bindings_file():

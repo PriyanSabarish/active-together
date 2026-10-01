@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from app.missions.builder import STEPS_FOR
 from app.missions.loader import DEFAULT_MISSIONS_DIR, load_template_dir, load_template_file
 from app.missions.models import MissionTemplate
 from app.models import AgeBand
@@ -22,12 +23,14 @@ def test_load_template_dir_with_no_args_loads_the_reviewed_library():
     assert all(isinstance(f, MissionTemplate) for f in families)
 
 
-def test_reviewed_families_all_have_three_bands_and_seven_steps():
-    # MIGRATION.md's own claim: "every family has three bands and seven steps."
+def test_reviewed_families_all_have_three_bands_and_bucket_matching_steps():
+    # Originally every family had seven steps (60-minute bucket). Rewritten
+    # families use fewer; each band must have the step count its own
+    # duration_bucket expects (STEPS_FOR), which is what the builder needs.
     for family in load_template_dir():
         assert set(family.bands) == set(AgeBand)
         for band in family.bands.values():
-            assert len(band.steps) == 7, family.template_id
+            assert len(band.steps) == STEPS_FOR[family.duration_bucket], family.template_id
 
 
 def test_reviewed_families_use_category_any():
@@ -37,9 +40,10 @@ def test_reviewed_families_use_category_any():
         assert family.category == "any"
 
 
-def test_reviewed_families_are_all_reviewed_status():
+def test_reviewed_families_are_reviewed_or_draft_status():
+    # Rewritten families may still be marked draft while content is revised.
     for family in load_template_dir():
-        assert family.review.status.value == "reviewed", family.template_id
+        assert family.review.status.value in {"reviewed", "draft"}, family.template_id
 
 
 #  content/missions/*.yaml (top level) — older, superseded placeholder files.

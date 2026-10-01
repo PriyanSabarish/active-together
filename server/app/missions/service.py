@@ -38,7 +38,22 @@ from app.missions.models import MissionTemplate
 from app.model_client import ModelClient
 from app.models import AgeBand, Context, Mission, Place
 
-TEMPLATES: list[MissionTemplate] = load_template_dir()
+# Demo allowlist: only the families whose wording has been rewritten are
+# served for now. Add an id here as each remaining family is updated; an
+# empty set would serve nothing, so remove the filter below to serve all 18.
+ENABLED_TEMPLATE_IDS: frozenset[str] = frozenset({
+    "activity_colour_hunt",
+    "activity_balance_shapes",
+    "activity_follow_the_leader",
+    "activity_invisible_orchestra",
+    "activity_listen_and_point",
+    "activity_choose_your_route",
+    "activity_viewpoint_switch",
+})
+
+TEMPLATES: list[MissionTemplate] = [
+    t for t in load_template_dir() if t.template_id in ENABLED_TEMPLATE_IDS
+]
 ELIGIBLE_CATEGORIES: dict[str, list[str]] = load_eligible_categories()
 REJECTION_STATS = RejectionStats()
 
