@@ -42,7 +42,8 @@ describe('AC-1.1.2 — Radius and pilot boundary are enforced', () => {
       latitude: SUBURB_COORDS.Melbourne.latitude,
       longitude: SUBURB_COORDS.Melbourne.longitude,
       radiusKm: 3,
-      durationMin: store.durationMin
+      durationMin: store.durationMin,
+      excludedCategories: []
     })
   })
 

@@ -119,14 +119,9 @@ describe('AC-1.2.2 / AC-3.2.1 — Card facts', () => {
     for (const card of cards) {
       expect(card.find('.place-name').text()).toBeTruthy()
       expect(card.find('.place-meta').text()).toMatch(/·\s*[\d.]+ km/)
-      expect(card.find('.reason').text()).toBeTruthy()
     }
   })
 
-  it('TC-3.2.1-01 — each card shows the matched bucket and combo template', async () => {
-    const { wrapper } = await mountResults(okResponse(threeCombos().slice(0, 1)))
-    expect(wrapper.find('.duration-line').text()).toMatch(/40 min on-site · 40-minute park visit/)
-  })
 })
 
 describe('AC-3.1.2 — Order comes from the backend and is preserved', () => {

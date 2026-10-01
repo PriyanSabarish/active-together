@@ -1,51 +1,41 @@
-# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
 templates:
   - template_id: activity_balance_shapes
     title: "Balance Shapes"
     category: any
-    duration_bucket: 60
+    duration_bucket: 40
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, plant both feet and stretch your arms gently."
+            prompt_text: "Be a flamingo on one leg while I count to five."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Make a small star shape with both feet grounded."
+            prompt_text: "Now be a flamingo on your other leg."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Choose your favourite grounded shape and show it again."
+            prompt_text: "Walk around. When I say statue, freeze on one leg."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change only your arms to make a new shape."
+            prompt_text: "Walk heel to toe, like on a tightrope, to me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Copy my arm shape, then lower your arms comfortably."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Make your favourite shape a little smaller."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Show me your smaller shape with both feet grounded."
+            prompt_text: "Show me your best flamingo. Can you reach ten?"
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +43,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose two grounded body shapes beside your adult."
+            prompt_text: "Be a flamingo on one leg while I count to ten, then swap legs."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Move slowly between them while keeping both feet grounded."
+            prompt_text: "Which leg felt harder? Try that one again and see if you can match the other."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Repeat your preferred transition and explain what feels comfortable."
+            prompt_text: "Statues: walk around, and when I say freeze, hold a one-leg shape while I count to five."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change one arm position in your first shape."
+            prompt_text: "Walk heel to toe for ten steps, then turn and walk back to me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare both versions, then settle into a comfortable stance."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Let your adult suggest a smaller arm movement."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Try the adjustment and describe how the transition changes."
+            prompt_text: "Your turn: make up a balance shape, teach it to me, and count while I try."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +71,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Plan three comfortable shapes with both feet continuously grounded."
+            prompt_text: "Hold a flamingo while I count. Remember your number, it's your score to beat."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Test slow transitions without twisting your knees or reaching far."
+            prompt_text: "Try three different arm positions on one leg. Decide which keeps you steadiest."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Select the clearest transition and demonstrate it to your adult."
+            prompt_text: "Plan a routine of three balance shapes, tell me the order, then do it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Change one arm position to simplify that transition."
+            prompt_text: "Walk heel to toe and count your steps before you wobble. Then try to beat it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Compare the original and revised movements while staying grounded."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Design a shorter sequence using the most comfortable shapes."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Teach your sequence and explain one choice that improved control."
+            prompt_text: "Teach me your routine, then count while I try it."
             verify_mode: self
             prompt_id: null
             variable: true

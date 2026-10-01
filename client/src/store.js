@@ -202,13 +202,11 @@ export const useSearchStore = defineStore('search', {
   state: () => ({
     // screen 1
     suburb: '',
+    selectedAddress: null, // { id, label, latitude, longitude, suburb, postcode }
     useMyLocation: false,
     myLocation: null, // { latitude, longitude } from the browser
     radiusKm: 5,
     recent: ['Carlton', 'Clayton'],
-    // true once the parent has been through where / how far / how long at
-    // least once — Start then opens on the results instead of the setup steps
-    setupDone: false,
     // screen 2
     durationMin: 45,
     context: null, // GET /data/context payload for the chosen point
@@ -224,10 +222,12 @@ export const useSearchStore = defineStore('search', {
   getters: {
     locationLabel(state) {
       if (state.useMyLocation) return 'your location'
+      if (state.selectedAddress) return state.selectedAddress.label
       return state.suburb || 'your point'
     },
     coords(state) {
       if (state.useMyLocation) return state.myLocation
+      if (state.selectedAddress) return state.selectedAddress
       return SUBURB_COORDS[state.suburb] ?? null
     },
     hasLocation() {
@@ -251,6 +251,12 @@ export const useSearchStore = defineStore('search', {
     setMyLocation(coords) {
       this.myLocation = coords
       this.useMyLocation = true
+      this.suburb = ''
+      this.selectedAddress = null
+    },
+    setAddress(address) {
+      this.selectedAddress = address
+      this.useMyLocation = false
       this.suburb = ''
     },
     // Current conditions for the chosen point, shown on the time screen.

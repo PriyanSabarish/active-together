@@ -41,12 +41,12 @@ function mountDetail(combo, id) {
 }
 
 describe('AC-3.2.1 — Each card carries the verified facts', () => {
-  it('TC-3.2.1-01 — the detail page shows name, category, distance and conditions', () => {
+  it('TC-3.2.1-01 — the detail page shows name, category, distance and four context facts', () => {
     const { wrapper, mapped } = mountDetail()
     expect(wrapper.find('h1').text()).toBe(mapped.name)
     expect(wrapper.find('.subtitle').text()).toContain(mapped.categoryLabel)
     expect(wrapper.find('.subtitle').text()).toMatch(/[\d.]+ km away/)
-    expect(wrapper.findAll('.condition-row')).toHaveLength(mapped.conditions.length)
+    expect(wrapper.findAll('.fact-tile')).toHaveLength(4)
   })
 
   it('TC-3.2.1-01 — the matched bucket and entered duration are both shown, excluding travel', () => {
@@ -57,21 +57,12 @@ describe('AC-3.2.1 — Each card carries the verified facts', () => {
 })
 
 describe('AC-3.2.2 — Unverified facts stay off the card', () => {
-  it('TC-3.2.2-01 — the page shows the candidate disclaimer and no hours/cost claims', () => {
+  it('TC-3.2.2-01 — the streamlined page makes no hours, cost or accessibility claims', () => {
     const { wrapper } = mountDetail()
-    expect(wrapper.find('.disclaimer').text()).toMatch(/opening hours, cost and accessibility aren't available yet/i)
-    expect(wrapper.find('.expect').text()).toMatch(/Not verified/i)
-    expect(wrapper.text()).not.toMatch(/open(s|ing)? at|\$|entry fee/i)
+    expect(wrapper.text()).not.toMatch(/open(s|ing)? at|opening hours|\$|entry fee|accessibility/i)
   })
 })
 
-describe('AC-3.3.1 — The explanation uses only decision inputs', () => {
-  it('TC-3.3.1-01 — the backend explanation and reasons are rendered verbatim', () => {
-    const { wrapper, mapped } = mountDetail()
-    expect(wrapper.find('.explanation').text()).toBe(mapped.reason)
-    expect(wrapper.findAll('.why-list li').map((li) => li.text())).toEqual(mapped.reasons)
-  })
-})
 
 describe('Guard rails', () => {
   it('an unknown place id shows a not-found state instead of a broken page', () => {

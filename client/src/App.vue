@@ -4,14 +4,15 @@
     <template v-else>
       <router-view v-slot="{ Component, route }">
         <transition :name="transitionName" mode="out-in">
-          <div :key="route.name" class="screen" :inert="showOnboarding">
+          <div :key="route.name" class="screen" :inert="showOnboarding || showCover">
             <component :is="Component" />
           </div>
         </transition>
       </router-view>
-      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding" />
-      <!-- Sits on top of the first screen and dims it; the app stays visible behind. -->
-      <OnboardingModal v-if="showOnboarding" @done="finishOnboarding" />
+      <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding || showCover" />
+      <!-- After every sign-in: the welcome cover, then the four-slide walkthrough, both over Start. -->
+      <LandingCover v-if="showCover" @done="showCover = false" />
+      <OnboardingModal v-else-if="showOnboarding" @done="finishOnboarding" />
     </template>
   </div>
 </template>
@@ -27,6 +28,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoginGate from './components/LoginGate.vue'
+import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
 
@@ -47,7 +49,8 @@ function readAuthed() {
 
 function signIn() {
   authed.value = true
-  showOnboarding.value = !hasOnboarded()
+  showOnboarding.value = true
+  showCover.value = true
   // Always land on Start after the gate; the walkthrough sits on top of it.
   router.replace('/')
   try {
@@ -57,18 +60,12 @@ function signIn() {
   }
 }
 
-// First-run walkthrough. Shown once per device after a fresh sign-in, so a
-// returning user (or a reload mid-session) goes straight to the app.
+// Welcome cover + walkthrough. Shown after every sign-in; a reload mid-session
+// goes straight to the app. The flag below only records that it has been seen.
 const ONBOARDED_KEY = 'at-onboarded-v1'
 const showOnboarding = ref(false)
+const showCover = ref(false) // welcome cover, shown after each sign-in
 
-function hasOnboarded() {
-  try {
-    return localStorage.getItem(ONBOARDED_KEY) === '1'
-  } catch {
-    return true // storage blocked: never trap the user in the walkthrough
-  }
-}
 
 function finishOnboarding(reason) {
   showOnboarding.value = false
@@ -79,7 +76,7 @@ function finishOnboarding(reason) {
   }
   // The last slide's button is "Choose where you are starting": go straight
   // into the setup form. Skip just reveals Start underneath.
-  if (reason === 'setup') router.push('/location')
+  if (reason === 'setup') router.push('/')
 }
 
 const ORDER = ['location', 'time', 'results', 'detail']
