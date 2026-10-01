@@ -1,51 +1,41 @@
-# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
 templates:
   - template_id: activity_invisible_orchestra
     title: "Invisible Orchestra"
     category: any
-    duration_bucket: 60
+    duration_bucket: 40
     weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, pretend to play a tiny silent drum."
+            prompt_text: "Play a giant pretend drum with big swinging arms."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Copy my slow pretend drumming without touching anything."
+            prompt_text: "March with me like a band, playing your drum."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Lead your own silent rhythm and finish with hands still."
+            prompt_text: "Act out an instrument. I'll guess what it is."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Pretend to play a different silent instrument."
+            prompt_text: "Watch my arms: high means play big, low means tiny."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Show its gentle movements and let me guess."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Choose a hand movement that means finish."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Conduct my silent playing and end with our chosen movement."
+            prompt_text: "Your turn to conduct. Make me play big and tiny."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +43,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose an imaginary instrument to play silently beside your adult."
+            prompt_text: "Play three pretend instruments: a big drum, a trumpet, and a cymbal crash with a jump."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Show a short gentle playing pattern without touching anything."
+            prompt_text: "Marching band: march around our space playing an instrument, and switch every ten steps."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Let your adult copy it and identify one clear movement."
+            prompt_text: "Act out an instrument for me to guess. If I get it wrong, act it out even bigger."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Agree a small conducting gesture for longer pauses."
+            prompt_text: "I'll conduct: arms high means big and fast, arms low means small and slow."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Conduct your adult's silent pattern and compare the pauses."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Swap imaginary instruments while keeping movements comfortable."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Perform the changed pattern and explain how the gestures differ."
+            prompt_text: "Your turn to conduct me. Make the music go from tiny to huge and back again."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +71,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Invent a silent instrument with a distinctive comfortable playing gesture."
+            prompt_text: "Invent a new instrument and show me how you play it with your whole body."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Teach your adult a short pattern using that gesture."
+            prompt_text: "Plan a three-instrument song. Decide which goes first, second and last, then play it."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare your interpretations and refine one unclear movement."
+            prompt_text: "Act out instruments for me to guess. Count how many I get from your acting."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Define conducting gestures for starting, pausing and finishing."
+            prompt_text: "Make up conducting signals for big, tiny, fast and stop, and teach them to me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Conduct a complete silent phrase using your agreed gestures."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Change the instrument while retaining the same conducting rules."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Perform the new phrase and explain what remained consistent."
+            prompt_text: "Conduct me through your three-instrument song using your signals."
             verify_mode: self
             prompt_id: null
             variable: true

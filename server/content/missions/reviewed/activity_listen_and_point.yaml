@@ -1,51 +1,41 @@
-# Content review by lychen, as confirmed by Jiabin. Timing remains unmeasured.
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
 templates:
   - template_id: activity_listen_and_point
     title: "Listen and Point"
     category: any
-    duration_bucket: 60
+    duration_bucket: 40
     weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Beside me, listen with your eyes open for one sound."
+            prompt_text: "Turn your back. When I clap, point to where I am."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Point towards the sound while staying beside me."
+            prompt_text: "Turn your back again. When I clap, run to me."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Describe the sound or copy its rhythm softly."
+            prompt_text: "Copy my clap pattern by stomping your feet."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Listen as I make a soft finger tap."
+            prompt_text: "Walk while I clap. When I stop, freeze!"
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Point towards my hand and copy the tapping rhythm."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Choose one quiet tapping rhythm for me."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Tap it softly and compare our rhythms."
+            prompt_text: "Your turn: clap a pattern for me to copy with stomps."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -53,37 +43,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Listen beside your adult with your eyes open."
+            prompt_text: "Turn your back. I'll clap from somewhere nearby. Point to me, then turn and check."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Describe two features of one sound without moving towards it."
+            prompt_text: "I'll clap a few times. Jump the same number of times."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare your description with your adult's observation."
+            prompt_text: "Copy my clap pattern with stomps. Then I'll make it longer and you try again."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Listen to two soft tapping patterns your adult makes."
+            prompt_text: "Walk to my claps: fast claps, walk fast; slow claps, walk slow; no claps, freeze."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Identify one difference and reproduce your preferred pattern quietly."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Make a quiet pattern with a deliberate pause."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Ask your adult to describe the pause and compare your answers."
+            prompt_text: "Your turn: make a clap pattern with a pause in it, and see if I can stomp it back."
             verify_mode: self
             prompt_id: null
             variable: true
@@ -91,37 +71,27 @@ templates:
         title: null
         steps:
           - sequence: 1
-            prompt_text: "Choose a sound to describe while staying beside your adult."
+            prompt_text: "Turn your back. I'll clap from three different spots. Point each time and count how many you get right."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Separate what you heard from guesses about its source."
+            prompt_text: "Stomp back my clap pattern. Each round I'll add one clap. How long can you go?"
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 3
-            prompt_text: "Compare observations and identify one detail you both heard."
+            prompt_text: "Make up a clap code for three moves, teach it to me, then call it while I do the moves."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Ask your adult for two quiet tapping patterns."
+            prompt_text: "Walk to my clap speed and freeze when I stop. Do five rounds and count your steady freezes."
             verify_mode: self
             prompt_id: null
             variable: true
           - sequence: 5
-            prompt_text: "Define a rhythm rule that distinguishes the patterns."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Make a third soft pattern following your rule."
-            verify_mode: self
-            prompt_id: null
-            variable: true
-          - sequence: 7
-            prompt_text: "Test your adult's interpretation and explain any ambiguity."
+            prompt_text: "Play the stomp-back game again and try to go one clap longer than before."
             verify_mode: self
             prompt_id: null
             variable: true

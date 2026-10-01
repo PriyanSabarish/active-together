@@ -30,7 +30,8 @@ export function mapMission(mission, { placeName, category, reason }) {
     category,
     ageBand: mission.age_band,
     durationMin: mission.estimated_minutes,
-    equipment: mission.equipment?.length ? mission.equipment.join(', ') : 'None — everyday clothes and shoes only.',
+    // Empty when the mission needs nothing, so the card shows no line at all.
+    equipment: mission.equipment?.length ? 'Bring: ' + mission.equipment.join(', ') : '',
     whyThisMission: reason,
     // Backend steps carry no icon; cycle through the task glyphs so each step
     // gets a different sketch on the run screen.
@@ -91,6 +92,9 @@ export const MOCK_MISSIONS = [
 export const useMissionStore = defineStore('mission', {
   state: () => ({
     candidates: [], // options offered by Pick-a-mission (F16); empty until fetchMissions runs
+    // Set by reloadMissions when the server could only offer the same set again
+    // (nothing else is eligible for this place), so the screen can say so.
+    noNewMissions: false,
     loading: false,
     error: '', // set on a hard failure (network/4xx/5xx) — a degraded-but-200 response is not an error
     active: null, // the chosen Mission object, or null before one is picked
@@ -135,6 +139,7 @@ export const useMissionStore = defineStore('mission', {
     async fetchMissions(place, { ageBand, preferences = [], recentTemplateIds = [] }) {
       this.loading = true
       this.error = ''
+      this.noNewMissions = false
       try {
         const data = await postMissions({
           comboId: place.id,
@@ -153,6 +158,20 @@ export const useMissionStore = defineStore('mission', {
       } finally {
         this.loading = false
       }
+    },
+    // "Show different missions": asks again with the templates already on
+    // screen added to the recent list, so the server prefers ones not shown yet
+    // (it falls back to repeats only when nothing else is eligible).
+    async reloadMissions(place, { ageBand, preferences = [], recentTemplateIds = [] }) {
+      const shown = this.candidates.map((m) => m.templateId)
+      await this.fetchMissions(place, {
+        ageBand,
+        preferences,
+        recentTemplateIds: [...new Set([...recentTemplateIds, ...shown])]
+      })
+      const next = this.candidates.map((m) => m.templateId)
+      this.noNewMissions =
+        shown.length > 0 && next.length > 0 && next.every((id) => shown.includes(id))
     },
     chooseMission(missionId) {
       const mission = this.candidates.find((m) => m.id === missionId)

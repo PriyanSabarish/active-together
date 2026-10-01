@@ -50,7 +50,11 @@
            The parent reads them out, the child picks; every card can show its
            full task list before anything starts (nothing hidden). -->
       <h2 class="sect">Pick a mission</h2>
-      <p class="sect-sub">Read these out. Daniel picks — the phone stays with you.</p>
+
+      <button class="link-btn reload-btn" :disabled="missionStore.loading" @click="reloadMissions">
+        ↻ Show different missions
+      </button>
+      <p v-if="missionStore.noNewMissions" class="mission-status">That's every mission that fits this place right now.</p>
 
       <p v-if="missionStore.loading" class="mission-status">Finding missions…</p>
       <p v-else-if="missionStore.error" class="mission-status warn">{{ missionStore.error }} Showing what we can.</p>
@@ -70,7 +74,7 @@
           <span class="mission-title">{{ m.title }}</span>
           <span class="mission-meta">{{ m.steps.length }} tasks · {{ m.durationMin }} min</span>
         </div>
-        <p class="mission-line">{{ m.equipment }}</p>
+        <p v-if="m.equipment" class="mission-line">{{ m.equipment }}</p>
         <button class="tasks-toggle" @click.stop="toggleTasks(m.id)">
           {{ openId === m.id ? 'Hide tasks ▴' : 'See tasks ▾' }}
         </button>
@@ -155,6 +159,16 @@ watch(
 )
 const chosen = computed(() => missionStore.candidates.find((m) => m.id === chosenId.value) ?? null)
 
+function reloadMissions() {
+  if (!place.value) return
+  openId.value = null
+  missionStore.reloadMissions(place.value, {
+    ageBand: preferencesStore.ageBand,
+    preferences: preferencesStore.excludedCategories,
+    recentTemplateIds: historyStore.recentTemplateIds(10)
+  })
+}
+
 function toggleTasks(id) {
   openId.value = openId.value === id ? null : id
 }
@@ -220,6 +234,8 @@ function getDirections() {
 .link-btn { background: none; border: none; padding: 0; margin-left: 6px; color: var(--green); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }
 
 .sect-sub { font-size: 13.5px; color: var(--ink-3); line-height: 1.45; margin-top: 3px; }
+.reload-btn { display: block; margin: 10px 0 0; font-size: 13px; }
+.reload-btn:disabled { opacity: 0.5; }
 .mission-status { margin-top: 10px; font-size: 13.5px; color: var(--ink-3); }
 .mission-status.warn { color: var(--amber); }
 
