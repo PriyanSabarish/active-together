@@ -19,7 +19,7 @@ from pydantic import BaseModel
 from app.missions.models import MissionTemplate, ValidationResult
 from app.models import Mission
 
-CONSTRAINTS_PATH = Path(__file__).resolve().parents[3] / "content" / "schema" / "safety_constraints.yaml"
+CONSTRAINTS_PATH = Path(__file__).resolve().parents[2] / "content" / "schema" / "safety_constraints.yaml"
 
 
 class SafetyConstraint(BaseModel):
