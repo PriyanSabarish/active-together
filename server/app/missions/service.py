@@ -31,6 +31,7 @@ from typing import Iterable
 from app.config import settings
 from app.gemini_client import GeminiModelClient
 from app.missions.context_bindings import load_eligible_categories
+from app.missions.builder import STEPS_FOR
 from app.missions.generation import GENERATION_RESPONSE_SCHEMA, MAX_MISSIONS, generate_missions
 from app.missions.instrumentation import RejectionStats
 from app.missions.loader import load_template_dir
@@ -78,16 +79,23 @@ def get_missions(
     max_missions: int = MAX_MISSIONS,
     model_client: ModelClient | None = _MODEL_CLIENT,
 ) -> list[Mission]:
-    return generate_missions(
-        TEMPLATES,
-        place,
-        context,
-        age_band,
-        duration_bucket,
-        preferences=preferences,
-        recent_template_ids=recent_template_ids,
-        model_client=model_client,
-        max_missions=max_missions,
-        stats=REJECTION_STATS,
-        eligible_categories=ELIGIBLE_CATEGORIES,
-    )
+    # If nothing is long enough for the requested bucket (the rewritten
+    # families only exist at 40 minutes for now), fall back to the longest
+    # shorter bucket that has missions rather than showing an empty list.
+    for bucket in sorted((b for b in STEPS_FOR if b <= duration_bucket), reverse=True):
+        missions = generate_missions(
+            TEMPLATES,
+            place,
+            context,
+            age_band,
+            bucket,
+            preferences=preferences,
+            recent_template_ids=recent_template_ids,
+            model_client=model_client,
+            max_missions=max_missions,
+            stats=REJECTION_STATS,
+            eligible_categories=ELIGIBLE_CATEGORIES,
+        )
+        if missions:
+            return missions
+    return []
