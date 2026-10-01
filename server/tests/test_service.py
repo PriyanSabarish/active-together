@@ -29,6 +29,16 @@ def test_get_missions_pure_library_direct():
     assert all(len(m.steps) == 3 for m in missions)  # STEPS_FOR[20]
 
 
+def test_get_missions_falls_back_to_a_shorter_bucket_when_none_is_long_enough():
+    # The enabled families are 40-minute; a 60-minute request must still get
+    # missions instead of an empty list.
+    missions = service.get_missions(
+        PLACE_PARK, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 60, model_client=None,
+    )
+    assert missions
+    assert all(len(m.steps) == 5 for m in missions)  # STEPS_FOR[40]
+
+
 def test_get_missions_returns_a_real_reviewed_family():
     missions = service.get_missions(
         PLACE_PARK, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20, model_client=None,
