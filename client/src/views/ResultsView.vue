@@ -22,7 +22,7 @@
     </button>
 
     <h1>Your top options</h1>
-    <p class="subtitle">Each one now comes with a mission for Daniel.</p>
+    <p class="subtitle">Each one now comes with a mission for your child.</p>
 
     <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
     <div class="window-row">

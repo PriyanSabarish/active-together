@@ -83,14 +83,14 @@
     <input
       v-model.number="store.durationMin"
       type="range"
-      min="10"
-      max="120"
+      min="20"
+      max="60"
       step="5"
       class="duration"
       aria-label="Time you have"
-      :style="{ '--fill': ((store.durationMin - 10) / 110) * 100 + '%' }"
+      :style="{ '--fill': ((store.durationMin - 20) / 40) * 100 + '%' }"
     />
-    <div class="ticks"><span>10 min</span><span>2 hrs</span></div>
+    <div class="ticks"><span>20 min</span><span>1 hr</span></div>
     <p class="plan-note">Matched to a {{ store.planMin }}-minute plan. Travel isn't counted.</p>
   </div>
 

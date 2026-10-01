@@ -50,7 +50,6 @@
            The parent reads them out, the child picks; every card can show its
            full task list before anything starts (nothing hidden). -->
       <h2 class="sect">Pick a mission</h2>
-      <p class="sect-sub">Read these out. Daniel picks — the phone stays with you.</p>
 
       <button class="link-btn reload-btn" :disabled="missionStore.loading" @click="reloadMissions">
         ↻ Show different missions
@@ -75,7 +74,7 @@
           <span class="mission-title">{{ m.title }}</span>
           <span class="mission-meta">{{ m.steps.length }} tasks · {{ m.durationMin }} min</span>
         </div>
-        <p class="mission-line">{{ m.equipment }}</p>
+        <p v-if="m.equipment" class="mission-line">{{ m.equipment }}</p>
         <button class="tasks-toggle" @click.stop="toggleTasks(m.id)">
           {{ openId === m.id ? 'Hide tasks ▴' : 'See tasks ▾' }}
         </button>

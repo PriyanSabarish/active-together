@@ -30,7 +30,8 @@ export function mapMission(mission, { placeName, category, reason }) {
     category,
     ageBand: mission.age_band,
     durationMin: mission.estimated_minutes,
-    equipment: mission.equipment?.length ? mission.equipment.join(', ') : 'None — everyday clothes and shoes only.',
+    // Empty when the mission needs nothing, so the card shows no line at all.
+    equipment: mission.equipment?.length ? 'Bring: ' + mission.equipment.join(', ') : '',
     whyThisMission: reason,
     // Backend steps carry no icon; cycle through the task glyphs so each step
     // gets a different sketch on the run screen.
