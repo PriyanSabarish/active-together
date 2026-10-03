@@ -1,7 +1,8 @@
 # Home activity templates — parent guide and demo handoff
 
-Draft, AI-assisted content prepared for human review. Timings are design targets,
-not measured play durations. This guide is part of the activity: the short YAML
+The three AI-assisted templates are authored by Jiabin and content-reviewed by
+lychen, with status `reviewed`. Timings remain design targets, not measured play
+durations. This guide is part of the activity: the short YAML
 prompts alone do not contain the rules, story or clue answers needed to run it.
 
 ## Shared setup
@@ -407,15 +408,18 @@ hidden locations are required.
 ## Integration and review notes
 
 Validation after task consolidation: runtime YAML loading, structural checks
-and content step checks passed for all three drafts. All 18 combinations of
+and content step checks passed for all three Home templates. All 18 combinations of
 three templates, three age bands and two durations build using the existing
 3/5-step policy. Each story's 20-minute output now includes the complete ending;
 its detailed subtasks are retained in this guide. No duration-code change is
-needed. Full content JSON Schema validation still reports the household-equipment
-enum incompatibility. No family playtest or end-to-end app test has been performed.
+needed. The equipment allowlist now includes the required household materials.
+The three Home templates pass full per-family content validation, including
+review metadata. This does not establish that the entire legacy library passes
+its checks. No family playtest or end-to-end app test has been verified here.
 
-- Draft files live in `missions/_candidates/`, with `review.status: draft` and
-  no named reviewer. After actual review, promote them and record the reviewer.
+- All three YAML files live in `missions/reviewed/`, with `review.author: Jiabin`,
+  `review.reviewed_by: lychen` and `review.status: reviewed`. No Home copies
+  remain in `missions/_candidates/`.
 - Duration policy remains unchanged: three steps at 20 minutes, five at 40.
   Each of the two story templates groups five core tasks into the first three
   steps; the guide supplies sequential subtask instructions for the parent.
@@ -432,11 +436,9 @@ enum incompatibility. No family playtest or end-to-end app test has been perform
   place recommendations, including good-weather days. Venue-specific indoor
   locations receive no activity guide in the I3 demo. Neither routing change
   is implemented by adding these files.
-- Real household equipment is listed explicitly. The runtime Pydantic model
-  accepts these strings, but the older content JSON Schema restricts equipment
-  to bicycle/helmet/ball/chalk/water bottle. Its allowlist needs a reviewed
-  extension before the full content validator can accept these drafts. Do not
-  hide required materials behind `equipment: []` to bypass that check.
+- Real household equipment is listed explicitly and is supported by the runtime
+  model and the content schema's equipment allowlist. The original outdoor
+  equipment names remain allowed; arbitrary unlisted equipment remains invalid.
 - The application currently transmits short steps, not this parent guide.
   For a facilitated demo, give the parent/facilitator this guide beforehand.
   For an in-app demo, provide a guide/preparation view or equivalent reviewed
@@ -447,4 +449,4 @@ enum incompatibility. No family playtest or end-to-end app test has been perform
   and validate protection for puzzle-dependent instructions before activation.
 - Review the preparation burden, age suitability, clue clarity, available
   floor space and equipment; play through both lengths before claiming their
-  duration. These drafts do not establish 20/40 minutes of continuous exercise.
+  duration. These templates do not establish 20/40 minutes of continuous exercise.

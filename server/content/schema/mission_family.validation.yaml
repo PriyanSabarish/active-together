@@ -24,7 +24,22 @@ properties:
   equipment:
     type: array
     uniqueItems: true
-    items: { enum: [bicycle, helmet, ball, chalk, water bottle] }
+    items:
+      enum:
+        - bicycle
+        - helmet
+        - ball
+        - chalk
+        - water bottle
+        - rolled socks
+        - three rolled socks
+        - paper
+        - pencil
+        - small towel
+        - soft toy
+        - paper cups
+        - laundry basket or cardboard box
+        - paper clue cards
   mechanic: { enum: [find, move, count, imagine, sequence] }
   safety_tags:
     const: [inherited]
