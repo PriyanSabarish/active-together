@@ -1,0 +1,121 @@
+# Draft for review; timing targets are unmeasured.
+# 20 minutes: stages 1-3 complete all five core tasks.
+# 40 minutes: stages 1-5, including two extension stages.
+# Read parent subtask instructions: ../HOME_ACTIVITY_GUIDE.md
+templates:
+- template_id: activity_home_missing_power_crystals
+  title: 'Home: The Missing Power Crystals'
+  category: any
+  duration_bucket: 40
+  weather_tags:
+  - any
+  site_requirements:
+  - bare_site
+  equipment:
+  - three rolled socks
+  - paper
+  - pencil
+  - small towel
+  - soft toy
+  mechanic: imagine
+  safety_tags:
+  - inherited
+  review:
+    author: Codex (AI-assisted draft)
+    reviewed_by: null
+    status: draft
+  bands:
+    5-7:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Follow our planet map and bring back the first crystal.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Carry our crystal together, then rescue our astronaut and last crystal.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Load our crystals, then teach me actions to launch our ship.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Plan another rescue route; swap jobs and try it together.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Design our next expedition, then lead me through your launch code.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    8-10:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Remember three planet stops, walk the route and bring back the first crystal. Check
+          the map together.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Carry the second crystal on our towel together. Then plan separate trips to rescue
+          our astronaut and third crystal.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Guide three crystal deliveries through our loading stops. Teach me a three-action
+          password, rehearse together, then launch our ship.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: A new rescue signal! Change two planet stops, choose a new route and swap navigator
+          and carrier with me.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Design a new loading route and launch code. Teach me your expedition, then swap roles
+          and improve one part.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+    11-12:
+      title: null
+      steps:
+      - sequence: 1
+        prompt_text: Plan a route through four planet stops. Walk it from memory, check your route and
+          retrieve the first crystal.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 2
+        prompt_text: Choose a stable route for our shared towel transport. Then plan separate pickups
+          for the astronaut and third crystal, revising if a route closes.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 3
+        prompt_text: Plan three deliveries through two loading stops. Teach me a four-action launch code,
+          correct a rehearsal mistake and launch with all crystals aboard.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 4
+        prompt_text: Create a second rescue with a changed map and a closed route. Trade navigator and
+          carrier roles, then compare your two plans.
+        verify_mode: self
+        prompt_id: null
+        variable: true
+      - sequence: 5
+        prompt_text: Design a complete expedition with a delivery problem and a new launch code. Test
+          it on me, switch roles and refine the instructions.
+        verify_mode: self
+        prompt_id: null
+        variable: true

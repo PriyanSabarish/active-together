@@ -1,0 +1,99 @@
+# Draft for review; timing targets are unmeasured.
+# Parent setup, stage rules and answers: ../HOME_ACTIVITY_GUIDE.md
+# Home-only routing and parent-guide display are required before activation.
+templates:
+  - template_id: activity_home_sock_ball_carnival
+    title: "Home: Sock Ball Carnival"
+    category: any
+    duration_bucket: 40
+    weather_tags: [any]
+    site_requirements: [bare_site]
+    equipment: ["rolled socks", "paper cups", "laundry basket or cardboard box", "paper"]
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: "Codex (AI-assisted draft)", reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Roll and toss softly with me to test our space."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Roll at our cup pins; rebuild them for another round."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Toss into our basket; choose our final team challenge."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Throw at our cup snow forts, then rebuild them differently."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Roll towards our paper target; try stopping closer each round."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Help me choose rolling and throwing spots. Try three gentle rolls and three gentle throws."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Roll twice at six cup pins, then reset them. Change the pattern and compare rounds."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Take turns tossing into our basket from two spots. Finish with a shared scoring goal."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Build two cup snow forts. Take turns throwing at the forts, then change their layouts."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Roll three socks towards our paper target. Compare where they stop, then adjust your next round."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Test gentle rolls and throws with me. Agree on clear play boundaries and fair throwing distances."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Design two six-pin layouts. Play three rounds of each and decide which demands more control."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Choose two throwing distances and a scoring rule. Play alternating rounds, then set a shared final goal."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Design a cup snow fort within our boundaries. Alternate throws at each other's forts; rebuild to test a new layout."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Choose a target distance and predict where your rolls will stop. Adjust your force across rounds, then coach me."
+            verify_mode: self
+            prompt_id: null
+            variable: true
