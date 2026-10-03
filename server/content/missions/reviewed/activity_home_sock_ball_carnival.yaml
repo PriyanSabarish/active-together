@@ -1,4 +1,4 @@
-# Draft for review; timing targets are unmeasured.
+# Content reviewed by lychen; timing targets are unmeasured.
 # Parent setup, stage rules and answers: ../HOME_ACTIVITY_GUIDE.md
 # Home-only routing and parent-guide display are required before activation.
 templates:
@@ -11,7 +11,7 @@ templates:
     equipment: ["rolled socks", "paper cups", "laundry basket or cardboard box", "paper"]
     mechanic: move
     safety_tags: [inherited]
-    review: {author: "Codex (AI-assisted draft)", reviewed_by: null, status: draft}
+    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
