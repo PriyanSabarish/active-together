@@ -9,7 +9,8 @@ duration_bucket:    int        # 20 | 40 | 60 - the LONGEST bucket this family c
 weather_tags:       list[str]  # any | dry | wet | windy | hot | cold | overcast
 site_requirements:  list[str]  # bare_site | grass | trees | path | open_space |
                                # play_equipment | water_adjacent | seating
-equipment:          list[str]  # everyday items only; empty list preferred
+equipment:          list[str]  # list all required items; allowed names are in
+                               # mission_family.validation.yaml (including Home props)
 mechanic:           str        # find | move | count | imagine | sequence
 
 bands:                         # at least one; three is the target
