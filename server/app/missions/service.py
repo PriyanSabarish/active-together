@@ -31,6 +31,7 @@ from typing import Iterable
 from app.config import settings
 from app.gemini_client import GeminiModelClient
 from app.missions.context_bindings import load_eligible_categories
+from app.missions.builder import STEPS_FOR
 from app.missions.generation import GENERATION_RESPONSE_SCHEMA, MAX_MISSIONS, generate_missions
 from app.missions.instrumentation import RejectionStats
 from app.missions.loader import load_template_dir
@@ -38,7 +39,22 @@ from app.missions.models import MissionTemplate
 from app.model_client import ModelClient
 from app.models import AgeBand, Context, Mission, Place
 
-TEMPLATES: list[MissionTemplate] = load_template_dir()
+# Demo allowlist: only the families whose wording has been rewritten are
+# served for now. Add an id here as each remaining family is updated; an
+# empty set would serve nothing, so remove the filter below to serve all 18.
+ENABLED_TEMPLATE_IDS: frozenset[str] = frozenset({
+    "activity_colour_hunt",
+    "activity_balance_shapes",
+    "activity_follow_the_leader",
+    "activity_invisible_orchestra",
+    "activity_listen_and_point",
+    "activity_choose_your_route",
+    "activity_viewpoint_switch",
+})
+
+TEMPLATES: list[MissionTemplate] = [
+    t for t in load_template_dir() if t.template_id in ENABLED_TEMPLATE_IDS
+]
 ELIGIBLE_CATEGORIES: dict[str, list[str]] = load_eligible_categories()
 REJECTION_STATS = RejectionStats()
 
@@ -63,16 +79,23 @@ def get_missions(
     max_missions: int = MAX_MISSIONS,
     model_client: ModelClient | None = _MODEL_CLIENT,
 ) -> list[Mission]:
-    return generate_missions(
-        TEMPLATES,
-        place,
-        context,
-        age_band,
-        duration_bucket,
-        preferences=preferences,
-        recent_template_ids=recent_template_ids,
-        model_client=model_client,
-        max_missions=max_missions,
-        stats=REJECTION_STATS,
-        eligible_categories=ELIGIBLE_CATEGORIES,
-    )
+    # If nothing is long enough for the requested bucket (the rewritten
+    # families only exist at 40 minutes for now), fall back to the longest
+    # shorter bucket that has missions rather than showing an empty list.
+    for bucket in sorted((b for b in STEPS_FOR if b <= duration_bucket), reverse=True):
+        missions = generate_missions(
+            TEMPLATES,
+            place,
+            context,
+            age_band,
+            bucket,
+            preferences=preferences,
+            recent_template_ids=recent_template_ids,
+            model_client=model_client,
+            max_missions=max_missions,
+            stats=REJECTION_STATS,
+            eligible_categories=ELIGIBLE_CATEGORIES,
+        )
+        if missions:
+            return missions
+    return []

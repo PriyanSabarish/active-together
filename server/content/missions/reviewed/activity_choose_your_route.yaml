@@ -1,0 +1,97 @@
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
+templates:
+  - template_id: activity_choose_your_route
+    title: "Shape Routes"
+    category: any
+    duration_bucket: 40
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: sequence
+    safety_tags: [inherited]
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Run a big circle around me and come back."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Now walk a big square. Stop at each corner."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Run a triangle. I'll count the corners with you."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "I'll walk a shape. Can you guess what it is?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Your turn: run any shape you like. I'll guess!"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Run a square with ten steps on each side. Count out loud."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Now a triangle with ten steps on each side. Which shape took fewer steps?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Run a five-point star. If it looks wonky, try it again."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "I'll walk a shape. Guess it, and tell me how many corners it had."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Your turn: run a tricky shape for me to guess."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Run a hexagon with the same number of steps on all six sides. Count as you go."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Plan the biggest shape that fits our space. Decide the shape and steps per side, then run it."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Run your shape while I count, then try again faster with the same steps per side."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Run a capital letter as a shape. I'll guess which letter it is."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Design a shape for me with a rule, like eight sides or no corners. Count while I run it."
+            verify_mode: self
+            prompt_id: null
+            variable: true

@@ -21,8 +21,8 @@ import yaml
 
 from app.missions.models import MissionTemplate
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_MISSIONS_DIR = REPO_ROOT / "content" / "missions" / "reviewed"
+SERVER_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_MISSIONS_DIR = SERVER_ROOT / "content" / "missions" / "reviewed"
 
 
 def load_template_file(path: Path) -> list[MissionTemplate]:

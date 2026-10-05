@@ -1,0 +1,97 @@
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
+templates:
+  - template_id: activity_follow_the_leader
+    title: "Follow the Leader"
+    category: any
+    duration_bucket: 40
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: reviewed}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Follow me around and copy how I walk."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Follow me again. This time we're animals, so copy my animal!"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Your turn to lead. I'll follow everything you do."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Follow me and copy two moves in a row."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Lead me on an animal parade. Change animals whenever you want."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Follow me around our space and copy every change in how I move."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Animal follow: copy my moves, like ten frog jumps, then a crab walk."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Your turn to lead. Use at least three different moves and I'll follow."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Copy my three-move combo in order. If you miss one, we try it again."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Lead me on a route around our space, using a different move for each part."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Follow my route and copy my moves. Then lead the same route back from memory."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Plan an animal route with three animals. Tell me where each one changes."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Lead me through your animal route and count how many changes I copy right."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Copy my five-move combo in order. Count how many you get right, then try again."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Design a combo with one tricky move. Lead it until I can copy it all."
+            verify_mode: self
+            prompt_id: null
+            variable: true

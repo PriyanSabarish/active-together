@@ -22,7 +22,7 @@
     </button>
 
     <h1>Your top options</h1>
-    <p class="subtitle">Each one now comes with a mission for your kid.</p>
+    <p class="subtitle">Each one now comes with a mission for your child.</p>
 
     <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
     <div class="window-row">
@@ -369,7 +369,6 @@ function openById(id) {
 .card-title { flex: 1; min-width: 0; }
 
 .place-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
-.place-name.unnamed { color: var(--ink-3); font-style: italic; }
 .place-meta { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
 
 

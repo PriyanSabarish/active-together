@@ -10,8 +10,8 @@ from tests import fixtures
 PLACE_PARK = fixtures.DENSE_INNER[0]  # Argyle Square, park_and_garden
 
 
-def test_templates_loaded_from_the_real_reviewed_library():
-    assert len(service.TEMPLATES) == 18
+def test_only_enabled_templates_are_served():
+    assert {t.template_id for t in service.TEMPLATES} == service.ENABLED_TEMPLATE_IDS
 
 
 def test_eligible_categories_loaded_from_the_real_bindings_file():
@@ -27,6 +27,16 @@ def test_get_missions_pure_library_direct():
     assert missions
     assert all(m.age_band == AgeBand.BAND_5_7 for m in missions)
     assert all(len(m.steps) == 3 for m in missions)  # STEPS_FOR[20]
+
+
+def test_get_missions_falls_back_to_a_shorter_bucket_when_none_is_long_enough():
+    # The enabled families are 40-minute; a 60-minute request must still get
+    # missions instead of an empty list.
+    missions = service.get_missions(
+        PLACE_PARK, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 60, model_client=None,
+    )
+    assert missions
+    assert all(len(m.steps) == 5 for m in missions)  # STEPS_FOR[40]
 
 
 def test_get_missions_returns_a_real_reviewed_family():

@@ -41,6 +41,8 @@ args = ap.parse_args()
 safety = yaml.safe_load(open("schema/safety_constraints.yaml", encoding="utf-8"))
 vocab = yaml.safe_load(open("prompts/vocabulary.yaml", encoding="utf-8"))
 schema = open("schema/mission_template.schema.yaml", encoding="utf-8").read()
+with open("schema/mission_family.validation.yaml", encoding="utf-8") as equipment_schema:
+    allowed_equipment = yaml.safe_load(equipment_schema)["properties"]["equipment"]["items"]["enum"]
 
 # Only prompts that survived measurement may be used. Before measurement, none have.
 usable = [p for p in vocab["prompts"] if p["status"] == "kept"]
@@ -120,6 +122,12 @@ the way back; a sequence you build up step by step; a rhythm or pattern of movem
 challenge that gets harder each round. Pick a different one per family.
 
 ONLY REFERENCE WHAT IS ACTUALLY THERE
+
+List required equipment explicitly, using only these allowed equipment names:
+{", ".join(allowed_equipment)}.
+Household props in that allowlist
+are parent-provided materials for Home activities, not facilities to assume at
+an outdoor location. Do not omit required materials to pass validation.
 
 The app knows a place's category and nothing else. It does not know that a site has cones,
 flags, painted lines, markers, signs, start lines, benches or equipment. Never invent them.

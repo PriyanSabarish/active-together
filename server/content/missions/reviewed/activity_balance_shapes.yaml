@@ -1,0 +1,97 @@
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
+templates:
+  - template_id: activity_balance_shapes
+    title: "Balance Shapes"
+    category: any
+    duration_bucket: 40
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: move
+    safety_tags: [inherited]
+    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Be a flamingo on one leg while I count to five."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Now be a flamingo on your other leg."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Walk around. When I say statue, freeze on one leg."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Walk heel to toe, like on a tightrope, to me."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Show me your best flamingo. Can you reach ten?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Be a flamingo on one leg while I count to ten, then swap legs."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Which leg felt harder? Try that one again and see if you can match the other."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Statues: walk around, and when I say freeze, hold a one-leg shape while I count to five."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Walk heel to toe for ten steps, then turn and walk back to me."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Your turn: make up a balance shape, teach it to me, and count while I try."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Hold a flamingo while I count. Remember your number, it's your score to beat."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Try three different arm positions on one leg. Decide which keeps you steadiest."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Plan a routine of three balance shapes, tell me the order, then do it."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Walk heel to toe and count your steps before you wobble. Then try to beat it."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Teach me your routine, then count while I try it."
+            verify_mode: self
+            prompt_id: null
+            variable: true

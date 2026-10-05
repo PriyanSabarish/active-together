@@ -1,0 +1,97 @@
+# Draft. Requires independent human review before runtime use. Timing unmeasured.
+templates:
+  - template_id: activity_viewpoint_switch
+    title: "Viewpoint Switch"
+    category: any
+    duration_bucket: 40
+    weather_tags: [dry]
+    site_requirements: [bare_site, open_space]
+    equipment: []
+    mechanic: find
+    safety_tags: [inherited]
+    review: {author: Jiabin, reviewed_by: null, status: draft}
+    bands:
+      "5-7":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Be an ant: crouch low and look around. What's big?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Be a giant: tiptoe tall and look around. What's small?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Bend over and look at me through your legs!"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Walk away until I look tiny, then run back."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Lie on your back. Point to the highest thing you see."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "8-10":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Look at something from three heights: lying down, crouching and on tiptoe. Which makes it look biggest?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Walk away until I fit behind your thumb. Count your steps, then run back."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Run around something you can see, stopping four times to look. Which side looks most different?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Look at me through your legs, then from lying down. Which view makes me look taller?"
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Your turn: tell me to crouch, tiptoe or lie down, and tell me what to look for."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+      "11-12":
+        title: null
+        steps:
+          - sequence: 1
+            prompt_text: "Walk away until I fit behind your thumb and count the steps. Then do it with your little finger."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 2
+            prompt_text: "Predict: lying down, will something nearby look taller than me? Test it."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 3
+            prompt_text: "Plan three views of the same thing: low, high and far. Run to each and decide which surprised you most."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 4
+            prompt_text: "Find a spot where I look small enough to stand on your hand."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+          - sequence: 5
+            prompt_text: "Set me a viewpoint challenge: tell me where to stand and what to look at, then I'll tell you what I see."
+            verify_mode: self
+            prompt_id: null
+            variable: true
