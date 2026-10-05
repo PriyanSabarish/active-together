@@ -38,6 +38,7 @@ export function mapMission(mission, { placeName, category, reason }) {
     steps: mission.steps.map((s, i) => ({
       title: s.prompt_text,
       confirm: s.verify_mode === 'photo' ? 'photo' : 'tap',
+      promptId: s.prompt_id ?? null,
       icon: STEP_ICONS[i % STEP_ICONS.length]
     }))
   }
@@ -89,6 +90,11 @@ export const MOCK_MISSIONS = [
   }
 ]
 
+function newRunId() {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID()
+  return `run-${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
 export const useMissionStore = defineStore('mission', {
   state: () => ({
     candidates: [], // options offered by Pick-a-mission (F16); empty until fetchMissions runs
@@ -100,6 +106,11 @@ export const useMissionStore = defineStore('mission', {
     active: null, // the chosen Mission object, or null before one is picked
     stepIndex: 0, // index of the step currently in progress within active.steps
     status: 'not_started', // 'not_started' | 'in_progress' | 'done'
+    // Random id for one run of a mission (D28). Photos and the history record
+    // link through it; it is never sent to the server.
+    runId: null,
+    // Per-step outcome for the progress bar and task sheet: 'done' | 'skipped'.
+    results: {},
     // Set when a parent ends a mission early (AC-8.1.4): it is never written to
     // history as complete. Play shows it once, then clears it.
     lastAbandoned: null // { title, placeName, doneCount, totalSteps } | null
@@ -184,6 +195,21 @@ export const useMissionStore = defineStore('mission', {
       if (!this.active) return
       this.status = 'in_progress'
       this.stepIndex = 0
+      this.results = {}
+      this.runId = newRunId()
+    },
+    // Record the outcome of the current step, then move on. The last step
+    // finishes the mission whatever order the others were done in.
+    completeStep(result = 'done') {
+      if (!this.active || this.status !== 'in_progress') return
+      this.results = { ...this.results, [this.stepIndex]: result }
+      this.advanceStep()
+    },
+    // Jump to any step from the task sheet.
+    goToStep(index) {
+      if (!this.active || this.status !== 'in_progress') return
+      if (index < 0 || index >= this.active.steps.length) return
+      this.stepIndex = index
     },
     // Skip is deliberately the same transition as confirm — the walkthrough
     // treats them as equally weighted, "nothing is a fail".
@@ -214,6 +240,8 @@ export const useMissionStore = defineStore('mission', {
       this.active = null
       this.stepIndex = 0
       this.status = 'not_started'
+      this.results = {}
+      this.runId = null
     }
   }
 })

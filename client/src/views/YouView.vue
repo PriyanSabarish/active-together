@@ -1,43 +1,61 @@
 <template>
   <AppHeader />
-  <div class="scroll-area">
-    <h1>What does Daniel like?</h1>
-    <p class="subtitle">Optional. Tap to set each one — change it any time.</p>
+  <div class="scroll-area hub">
+    <h1>You</h1>
 
-    <!-- One row per backend category with a three-way choice: likes / no preference /
-         not for me. Stored as an affinity (80 / 50 / 20) so the recommender can weight it. -->
-    <div v-for="(meta, key) in CATEGORY_META" :key="key" class="pref-row" :class="degreeClass(prefs.affinities[key])">
-      <span class="glyph">{{ meta.label.charAt(0) }}</span>
-      <span class="pref-label">{{ meta.label }}</span>
-      <span class="tri" role="radiogroup" :aria-label="meta.label">
+    <div class="card block">
+      <p class="block-title">Your kid's age</p>
+      <p class="block-sub">Missions are pitched to this age band.</p>
+      <div class="seg" role="radiogroup" aria-label="Age band">
         <button
-          v-for="o in OPTIONS"
-          :key="o.id"
-          type="button"
-          class="tri-btn"
-          :class="[o.id, { on: degreeClass(prefs.affinities[key]) === o.id }]"
-          :title="o.label"
-          :aria-label="o.label"
+          v-for="b in AGE_BANDS"
+          :key="b.id"
+          class="seg-opt"
+          :class="{ on: prefs.ageBand === b.id }"
           role="radio"
-          :aria-checked="degreeClass(prefs.affinities[key]) === o.id"
-          @click="prefs.setAffinity(key, o.value)"
+          :aria-checked="prefs.ageBand === b.id"
+          @click="prefs.setAgeBand(b.id)"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="o.icon" /></svg>
+          {{ b.id.replace('-', '–') }}
         </button>
-      </span>
+      </div>
     </div>
 
-    <h2 class="sect">Age band</h2>
-    <button class="info-card as-btn" @click="router.push('/you/age-band')">
-      <span class="info-title">{{ prefs.ageBandInfo.label }}</span>
-      <span class="info-body">{{ prefs.ageBandInfo.note }}</span>
-      <span class="change-link">Change ›</span>
+    <button class="card block as-btn" @click="router.push('/you/outings')">
+      <span class="block-head">
+        <span class="block-title">Your outings</span>
+        <Chevron />
+      </span>
+      <span class="stats">{{ statsLine }}</span>
+      <template v-if="thumbs.length">
+        <span class="thumbs">
+          <span v-for="p in thumbs" :key="p.id" class="thumb" :style="tileStyle(p)" />
+        </span>
+        <span class="block-sub">Photos saved only on this phone</span>
+      </template>
+      <span v-else class="block-sub empty-line">{{ historyStore.records.length ? "Take a photo at the end of a mission and it'll show up here." : 'Photos from your outings will show up here.' }}</span>
     </button>
 
-    <button class="info-card as-btn" style="margin-top: 10px" @click="toggleDemo">
-      <span class="info-title">Demo data</span>
-      <span class="info-body">{{ demoOn ? 'Week and You show sample outings and preferences.' : 'Off — Week starts empty until a mission is finished.' }}</span>
-      <span class="change-link">{{ demoOn ? 'Turn off' : 'Turn on' }}</span>
+    <button class="card block as-btn" @click="router.push('/you/likes')">
+      <span class="block-head">
+        <span class="block-title">What your kid likes</span>
+        <Chevron />
+      </span>
+      <span v-if="likes.length" class="likes">
+        <span v-for="c in likes" :key="c.key" class="like" :class="c.up ? 'up' : 'down'" :title="c.label">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path :d="categoryIcon(c.key)" /></svg>
+          <span class="badge-dot">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path :d="c.up ? THUMB_UP : THUMB_DOWN" /></svg>
+          </span>
+        </span>
+      </span>
+      <span v-else class="block-sub empty-line">Not set yet</span>
+    </button>
+
+    <button class="card row-link as-btn" @click="router.push('/you/about')">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5.5 M12 7.8v.01" /></svg>
+      <span class="row-label">About</span>
+      <Chevron />
     </button>
 
     <button class="btn btn-outline replay" @click="replayIntro">Replay the intro</button>
@@ -45,41 +63,44 @@
 </template>
 
 <script setup>
-// You tab: a three-way like / neutral / not-for-me choice per category, age
-// band, the demo-data switch and a way to replay the intro. Preferences are
-// device-local and, in this iteration, not yet read by the recommender.
+// You tab hub (Canvas → You): age band, a summary of the outings with the
+// latest photos, what the kid likes, About, and replaying the intro. Each card
+// opens its own page. Everything here is device-local.
 
+import { computed, h } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { CATEGORY_META } from '../store'
-import { usePreferencesStore } from '../preferencesStore'
-import { demoEnabled, setDemoEnabled } from '../demoSeed'
-import { ref } from 'vue'
+import { usePreferencesStore, AGE_BANDS } from '../preferencesStore'
+import { useHistoryStore, weekStreak } from '../historyStore'
+import { usePhotosFor, tileStyle } from '../journal'
+import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
 
 const router = useRouter()
 const prefs = usePreferencesStore()
+const historyStore = useHistoryStore()
+const photosFor = usePhotosFor()
 
-// Three-way choice, stored as an affinity so the recommender can weight it.
-const OPTIONS = [
-  { id: 'likes', label: 'Likes', value: 80, icon: 'M7 10v11 M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7a2 2 0 0 1-1.9 1.4H7V10l4.5-6.2a1.6 1.6 0 0 1 3 .9l.5 1.2Z' },
-  { id: 'neutral', label: 'No preference', value: 50, icon: 'M5 12h14' },
-  { id: 'nope', label: 'Not for me', value: 20, icon: 'M17 14V3 M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H17v11l-4.5 6.2a1.6 1.6 0 0 1-3-.9l-.5-1.2Z' }
-]
+const Chevron = () => h('svg', { width: 8, height: 13, viewBox: '0 0 8 13', fill: 'none', stroke: 'rgba(30,42,31,.28)', 'stroke-width': 1.8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', class: 'chev' }, [h('path', { d: 'M1.5 1.5 6.5 6.5l-5 5' })])
 
-// 0-100 affinity -> which of the three is lit.
-function degreeClass(v) {
-  if (v >= 67) return 'likes'
-  if (v >= 34) return 'neutral'
-  return 'nope'
-}
+const statsLine = computed(() => {
+  const recs = historyStore.records
+  const places = new Set(recs.filter((r) => r.placeName !== 'Home').map((r) => r.placeName)).size
+  const kinds = new Set(recs.map((r) => r.category)).size
+  if (!recs.length) return '0 places · 0 kinds of play'
+  const streak = weekStreak(recs)
+  const parts = [`${places} ${places === 1 ? 'place' : 'places'}`, `${kinds} ${kinds === 1 ? 'kind' : 'kinds'} of play`]
+  if (streak) parts.push(`${streak} ${streak === 1 ? 'week' : 'weeks in a row'}`)
+  return parts.join(' · ')
+})
 
-const demoOn = ref(demoEnabled())
+const thumbs = computed(() => historyStore.records.flatMap((r) => photosFor(r).slice(0, 1)).slice(0, 3))
 
-// Demo data is seeded at boot, so flipping it reloads the app.
-function toggleDemo() {
-  setDemoEnabled(!demoOn.value)
-  window.location.assign('/week')
-}
+// Likes first, then not-for-me; "no preference" is left out.
+const likes = computed(() => Object.entries(prefs.affinities)
+  .filter(([, v]) => v >= 67 || v < 34)
+  .sort(([, a], [, b]) => b - a)
+  .map(([key, v]) => ({ key, up: v >= 67, label: CATEGORY_META[key]?.label ?? key })))
 
 // The walkthrough is gated on a localStorage flag in App.vue; clearing it and
 // reloading is the simplest way to see it again.
@@ -95,78 +116,37 @@ function replayIntro() {
 </script>
 
 <style scoped>
-.pref-row {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 9px 9px 14px;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-}
+.hub { display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; }
+.hub h1 { margin: 4px 0 4px; font-size: 29px; letter-spacing: -0.8px; }
 
-.pref-row:first-of-type { margin-top: 18px; }
-.pref-row.likes { box-shadow: inset 0 0 0 1.5px var(--green), var(--shadow-card); }
-.pref-row.nope { box-shadow: inset 0 0 0 1.5px rgba(232, 145, 58, 0.55), var(--shadow-card); }
+.block { padding: 16px 18px; }
+.as-btn { border: none; font-family: inherit; color: var(--ink); text-align: left; cursor: pointer; display: flex; flex-direction: column; width: 100%; }
+.as-btn:active { transform: scale(0.99); }
 
-.glyph {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--tint);
-  color: var(--ink-2);
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+.block-head { display: flex; align-items: center; gap: 10px; width: 100%; }
+.block-title { flex: 1; font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.3px; }
+.block-sub { display: block; margin-top: 2px; font-size: 13px; color: rgba(30, 42, 31, 0.55); }
+.empty-line { margin-top: 8px; font-size: 13.5px; line-height: 1.45; }
 
-.pref-row.likes .glyph { background: var(--green-light); color: var(--green); }
-.pref-row.nope .glyph { background: var(--amber-light); color: var(--amber); }
+.seg { display: flex; gap: 4px; margin-top: 12px; padding: 3px; border-radius: 13px; background: rgba(30, 42, 31, 0.055); }
+.seg-opt { flex: 1; height: 44px; border: none; border-radius: 10px; background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--ink-3); cursor: pointer; transition: all 0.15s ease; }
+.seg-opt.on { background: var(--green); color: var(--paper); box-shadow: 0 1px 3px rgba(30, 42, 31, 0.18); }
 
-.pref-label { flex: 1; min-width: 0; font-size: 15.5px; font-weight: 500; }
+.stats { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--green); }
+.thumbs { display: flex; gap: 8px; margin: 12px 0 8px; }
+.thumb { width: 84px; height: 84px; border-radius: 13px; }
 
-.tri { display: inline-flex; gap: 4px; padding: 3px; border-radius: 13px; background: rgba(30, 42, 31, 0.055); }
+.likes { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.like { position: relative; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.like.up { background: rgba(47, 107, 54, 0.12); color: var(--green); }
+.like.down { background: rgba(196, 118, 30, 0.13); color: #A85E12; }
+.badge-dot { position: absolute; right: -3px; bottom: -3px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #FFFFFF; }
+.like.up .badge-dot { background: var(--green); }
+.like.down .badge-dot { background: #C4761E; }
 
-.tri-btn {
-  width: 44px;
-  height: 38px;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--ink-4);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.16s ease;
-}
+.row-link { flex-direction: row; align-items: center; gap: 12px; padding: 14px 18px; color: var(--ink); }
+.row-link > svg:first-child { color: rgba(30, 42, 31, 0.5); }
+.row-label { flex: 1; font-size: 15.5px; font-weight: 600; }
 
-.tri-btn.on.likes { background: var(--green); color: var(--paper); }
-.tri-btn.on.neutral { background: rgba(30, 42, 31, 0.28); color: var(--paper); }
-.tri-btn.on.nope { background: var(--amber); color: var(--paper); }
-
-.sect { margin-top: 24px; margin-bottom: 10px; }
-
-.info-card {
-  width: 100%;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  padding: 14px 16px;
-  text-align: left;
-  position: relative;
-}
-
-.as-btn { border: none; font-family: inherit; color: var(--ink); cursor: pointer; display: flex; flex-direction: column; }
-
-.info-title { display: block; font-size: 15px; font-weight: 600; }
-.info-body { display: block; font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-top: 3px; padding-right: 64px; }
-.change-link { position: absolute; right: 16px; top: 15px; font-size: 13.5px; font-weight: 600; color: var(--green); }
-
-.replay { width: 100%; margin-top: 16px; }
+.replay { width: 100%; height: 52px; border-radius: 999px; margin-top: 4px; box-shadow: inset 0 0 0 1.5px rgba(30, 42, 31, 0.2); }
 </style>
