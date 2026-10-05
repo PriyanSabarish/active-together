@@ -5,15 +5,17 @@ import DetailView from './views/DetailView.vue'
 import MissionRunView from './views/MissionRunView.vue'
 import MissionFinishedView from './views/MissionFinishedView.vue'
 import WeekView from './views/WeekView.vue'
-import DayDetailView from './views/DayDetailView.vue'
+import EntryView from './views/EntryView.vue'
 import YouView from './views/YouView.vue'
-import AgeBandView from './views/AgeBandView.vue'
+import YouOutingsView from './views/YouOutingsView.vue'
+import YouLikesView from './views/YouLikesView.vue'
+import YouAboutView from './views/YouAboutView.vue'
 
 // Four tabs, as in the prototype:
 //   Start — where you are, how far, how long (one screen)
 //   Play  — your top options → a place → pick a mission → run it → finished
-//   Week  — what happened, device-local
-//   You   — preferences, device-local
+//   Week  — the activity diary and each outing, device-local
+//   You   — age band, outings and photos, likes, about; device-local
 // meta.tab picks the active tab in TabShell; meta.dark switches the shell to
 // the dark mission-run look.
 export default createRouter({
@@ -25,10 +27,14 @@ export default createRouter({
     { path: '/play/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'play', dark: true } },
     { path: '/play/finished', name: 'mission-finished', component: MissionFinishedView, meta: { tab: 'play' } },
     { path: '/week', name: 'week', component: WeekView, meta: { tab: 'week' } },
-    { path: '/week/:date', name: 'day-detail', component: DayDetailView, props: true, meta: { tab: 'week' } },
+    { path: '/week/entry/:id', name: 'entry', component: EntryView, props: true, meta: { tab: 'week' } },
     { path: '/you', name: 'you', component: YouView, meta: { tab: 'you' } },
-    { path: '/you/age-band', name: 'age-band', component: AgeBandView, meta: { tab: 'you' } },
+    { path: '/you/outings', name: 'you-outings', component: YouOutingsView, meta: { tab: 'you' } },
+    { path: '/you/likes', name: 'you-likes', component: YouLikesView, meta: { tab: 'you' } },
+    { path: '/you/about', name: 'you-about', component: YouAboutView, meta: { tab: 'you' } },
     // Earlier paths, kept so bookmarks still land somewhere sensible.
+    { path: '/week/:date', redirect: '/week' },
+    { path: '/you/age-band', redirect: '/you' },
     { path: '/location', redirect: '/' },
     { path: '/time', redirect: '/' },
     { path: '/results', redirect: '/play' },
@@ -40,8 +46,8 @@ export default createRouter({
     { path: '/plan', redirect: '/play' },
     { path: '/plan/:rest(.*)', redirect: (to) => `/play/${to.params.rest}` },
     { path: '/insights', redirect: '/week' },
-    { path: '/insights/:date', redirect: (to) => `/week/${to.params.date}` },
+    { path: '/insights/:date', redirect: '/week' },
     { path: '/prefs', redirect: '/you' },
-    { path: '/prefs/age-band', redirect: '/you/age-band' }
+    { path: '/prefs/age-band', redirect: '/you' }
   ]
 })

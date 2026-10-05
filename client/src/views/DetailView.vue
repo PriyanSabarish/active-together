@@ -50,7 +50,7 @@
            The parent reads them out, the child picks; every card can show its
            full task list before anything starts (nothing hidden). -->
       <h2 class="sect">Pick a mission</h2>
-      <p class="sect-sub">Read these out. Daniel picks — the phone stays with you.</p>
+      <p class="sect-sub">Read these out. Your kid picks — the phone stays with you.</p>
 
       <p v-if="missionStore.loading" class="mission-status">Finding missions…</p>
       <p v-else-if="missionStore.error" class="mission-status warn">{{ missionStore.error }} Showing what we can.</p>
