@@ -1,53 +1,73 @@
-"""Inference service scaffold (B37) — loads both models at startup, warms
-them, and exposes one scoring route and one generation route.
+"""Inference host for photo checks (B47).
 
-This is the only thing HostedModelClient (B38) talks to. Nothing about model
-choice, prompts, or thresholds belongs on the Backend A side of the wire.
+One scoring route and a health check. The only caller is the server's
+HostedImageScorer (B53). Nothing about prompts or thresholds lives here: the
+server decides what a score means.
+
+Privacy rules this file keeps:
+  - The photo is the raw request body, read straight into memory. FastAPI's
+    UploadFile is not used: it spools bodies above about 1 MB to a temporary
+    file on disk.
+  - Nothing here logs the body, and the prompt travels as a query parameter so
+    the body never has to be parsed or echoed into an error.
+  - Nothing is written to disk.
 """
 
 from __future__ import annotations
 
-import json
+import secrets
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from app.config import settings
-from app.generator import TextGenerator
-from app.scorer import ClipScorer, InvalidImageError
-
-
-class GenerateRequest(BaseModel):
-    prompt: str
-    max_tokens: int = 64
-    timeout_s: int = 10
-
-
-class GenerateResponse(BaseModel):
-    text: str | None
+from app.scorer import InvalidImageError, OpenClipScorer
 
 
 class ScoreResponse(BaseModel):
-    scores: list[float] | None
+    score: float
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    scorer = ClipScorer(settings.clip_model_name, settings.device)
-    generator = TextGenerator(settings.text_model_name, settings.device)
-
+    scorer = OpenClipScorer(settings.clip_model_name, settings.clip_pretrained, settings.device)
     scorer.load()
     scorer.warm()
-    generator.load()
-    generator.warm()
-
     app.state.scorer = scorer
-    app.state.generator = generator
     yield
 
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
+
+
+def _check_transport_and_token(request: Request) -> None:
+    if settings.require_https:
+        scheme = request.headers.get("x-forwarded-proto", request.url.scheme)
+        if scheme != "https":
+            raise HTTPException(status_code=403, detail="HTTPS required")
+
+    if not settings.token:
+        # No token configured: refuse rather than run an open scoring route.
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    header = request.headers.get("authorization", "")
+    expected = f"Bearer {settings.token}"
+    if not secrets.compare_digest(header.encode(), expected.encode()):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+async def _read_body_capped(request: Request, limit: int) -> bytes:
+    declared = request.headers.get("content-length")
+    if declared is not None and declared.isdigit() and int(declared) > limit:
+        raise HTTPException(status_code=413, detail="Image too large")
+    chunks: list[bytes] = []
+    size = 0
+    async for chunk in request.stream():
+        size += len(chunk)
+        if size > limit:
+            raise HTTPException(status_code=413, detail="Image too large")
+        chunks.append(chunk)
+    return b"".join(chunks)
 
 
 @app.get("/health")
@@ -59,28 +79,16 @@ def health():
     }
 
 
-@app.post("/generate", response_model=GenerateResponse)
-def generate(req: GenerateRequest) -> GenerateResponse:
-    text = app.state.generator.generate(req.prompt, req.max_tokens, req.timeout_s)
-    return GenerateResponse(text=text)
-
-
 @app.post("/score", response_model=ScoreResponse)
-async def score(image: UploadFile = File(...), prompts: str = Form(...)) -> ScoreResponse:
+async def score(request: Request, prompt: str = Query(..., min_length=1, max_length=200)) -> ScoreResponse:
+    _check_transport_and_token(request)
+    image_bytes = await _read_body_capped(request, settings.max_image_bytes)
+    if not image_bytes:
+        raise HTTPException(status_code=400, detail="Empty body")
     try:
-        prompt_list = json.loads(prompts)
-    except json.JSONDecodeError as exc:
-        raise HTTPException(
-            status_code=400, detail="prompts must be a JSON-encoded list of strings"
-        ) from exc
-
-    if not isinstance(prompt_list, list) or not all(isinstance(p, str) for p in prompt_list):
-        raise HTTPException(status_code=400, detail="prompts must be a JSON list of strings")
-
-    image_bytes = await image.read()
-    try:
-        scores = app.state.scorer.score(image_bytes, prompt_list)
+        value = app.state.scorer.score(image_bytes, prompt)
     except InvalidImageError as exc:
         raise HTTPException(status_code=400, detail="Could not decode image") from exc
-
-    return ScoreResponse(scores=scores)
+    finally:
+        del image_bytes
+    return ScoreResponse(score=value)

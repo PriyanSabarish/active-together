@@ -33,6 +33,7 @@ support and need disabling it.
 
 from __future__ import annotations
 
+import base64
 import logging
 
 import httpx
@@ -72,6 +73,45 @@ class GeminiModelClient:
             "generationConfig": generation_config,
         }
 
+        return self._post(url, payload, timeout_s)
+
+    def generate_from_image(
+        self,
+        prompt: str,
+        image_bytes: bytes,
+        max_tokens: int,
+        timeout_s: int,
+        response_schema: dict | None = None,
+        mime_type: str = "image/jpeg",
+    ) -> str | None:
+        """Multimodal call for photo checks (B52). Temperature 0.
+
+        The image goes out inline in the request body and is held in memory
+        only. Nothing here logs the payload: failures log the status code or
+        the exception class, never the request body.
+        """
+        url = f"{self._base_url}/models/{self._model}:generateContent"
+        generation_config: dict = {"maxOutputTokens": max_tokens, "temperature": 0}
+        if self._thinking_budget is not None:
+            generation_config["thinkingConfig"] = {"thinkingBudget": self._thinking_budget}
+        if response_schema is not None:
+            generation_config["responseMimeType"] = "application/json"
+            generation_config["responseSchema"] = response_schema
+
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt},
+                        {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode("ascii")}},
+                    ]
+                }
+            ],
+            "generationConfig": generation_config,
+        }
+        return self._post(url, payload, timeout_s)
+
+    def _post(self, url: str, payload: dict, timeout_s: int) -> str | None:
         try:
             response = httpx.post(url, params={"key": self._api_key}, json=payload, timeout=timeout_s)
         except httpx.RequestError as exc:

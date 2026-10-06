@@ -1,66 +1,69 @@
-# Inference service
+# Inference host
 
-The self-hosted model service Backend B owns in iteration 2 (task B37). This
-is the only thing `HostedModelClient` (B38, not yet built) talks to — nobody
-outside this directory should import a model library directly.
+Scores photos for the photo-check feature (iteration 3, task B47). The only
+caller is the server's `HostedImageScorer` (B53). The server owns prompts,
+thresholds and the decision; this host only returns a similarity number.
 
-## Scope of this scaffold (B37)
+Text generation is out of scope for iteration 3. `app/generator.py` is left
+over from iteration 2 and nothing imports it any more; delete it when
+convenient.
 
-- Load both models once at startup and run a warm-up call for each, so the
-  first real request isn't the one paying model-load latency.
-- One scoring route, one generation route, a health check.
-- No persistence anywhere on the scoring path — the image lives in memory
-  for the duration of one request and is never written to disk. (Formal
-  assertion of that guarantee is B40.)
+## Model
 
-Not in scope here: `HostedModelClient` itself (B38), deployment (B39), and
-prompt threshold calibration (B25/B26) — those are separate tasks and should
-stay separate PRs.
-
-## Model choice
-
-Both defaults are CPU-hostable, since hosting budget wasn't decided yet and
-everything is swappable behind these two classes without touching the routes
-or `ModelClient` on the Backend B side:
-
-| Capability | Model | Why |
-|---|---|---|
-| `score_image` | `openai/clip-vit-base-patch32` (CLIP) | Zero-shot image/text similarity, no training required, ~600MB, fast enough on CPU for single-image requests. Standard tool for "does this photo match this short prompt." |
-| `generate_text` | `Qwen/Qwen2.5-1.5B-Instruct` | Short template-step rewriting is low-stakes text generation, not reasoning — a small instruct model is enough and keeps CPU latency tolerable. |
-
-Override via env vars if hosting changes (`INFERENCE_CLIP_MODEL_NAME`,
-`INFERENCE_TEXT_MODEL_NAME`, `INFERENCE_DEVICE=cuda`) — see `app/config.py`.
+`open_clip` ViT-B/32, pretrained `laion2b_s34b_b79k`, CPU by default. Both are
+pinned in `app/config.py` (`INFERENCE_CLIP_MODEL_NAME`,
+`INFERENCE_CLIP_PRETRAINED`). Changing either changes every score, so the
+per-prompt thresholds in `server/content/prompts/vocabulary.yaml` must be
+re-measured first (B54).
 
 ## Endpoints
 
-`POST /generate`
-```json
-{"prompt": "...", "max_tokens": 64, "timeout_s": 10}
-```
-→ `{"text": "..."}` or `{"text": null}` on timeout or failure.
+`GET /health` — no token. Returns `{"status": "ok", ...}`.
 
-`POST /score` (multipart/form-data)
-- `image`: file
-- `prompts`: JSON-encoded list of strings, e.g. `["p_play_equipment", "p_blue"]`
+`POST /score?prompt=<text>` — `Authorization: Bearer <token>`
 
-→ `{"scores": [0.9, 0.1]}` — one score per prompt, in the order given, scored
-independently (not a softmax over prompts). `null` on failure.
-Malformed `prompts` or an undecodable image returns `400`.
+The body is the raw image bytes (not multipart). Returns `{"score": 0.31}`, the
+cosine similarity between the image and the prompt text.
 
-`GET /health`
+| Status | Meaning |
+|---|---|
+| 400 | empty body, or bytes are not a decodable image |
+| 401 | missing or wrong token, or no token configured on the host |
+| 403 | `INFERENCE_REQUIRE_HTTPS=true` and the request did not arrive over HTTPS |
+| 413 | body over `INFERENCE_MAX_IMAGE_BYTES` (default 5 MB) |
+
+## Privacy
+
+- The photo is read straight into memory. `UploadFile` is deliberately not
+  used: it moves bodies above about 1 MB to a temporary file on disk.
+- No body is logged. The prompt text is a query parameter, so the body is never
+  parsed into an error message.
+- Nothing is written to disk. `tests/test_main.py` checks that large photos
+  leave the temp directory unchanged.
+
+## Configuration
+
+| Variable | Default | Notes |
+|---|---|---|
+| `INFERENCE_TOKEN` | unset | Shared secret. Unset means `/score` refuses everything. |
+| `INFERENCE_REQUIRE_HTTPS` | `false` | Set `true` when deployed. Honours `X-Forwarded-Proto`. |
+| `INFERENCE_MAX_IMAGE_BYTES` | 5242880 | Second size wall behind the server's own cap. |
+| `INFERENCE_DEVICE` | `cpu` | `cuda` if the host has a GPU. |
+
+The server side uses `INFERENCE_HOST_URL` and `INFERENCE_HOST_TOKEN`.
 
 ## Running
 
 ```bash
 cd inference
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1        # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+INFERENCE_TOKEN=change-me uvicorn app.main:app
 ```
 
-First startup downloads both models from Hugging Face — expect it to take a
-while and to need a few GB of disk.
+The first start downloads the model weights. HTTPS is terminated by whatever
+fronts the host (the university's proxy, or `uvicorn --ssl-keyfile/--ssl-certfile`).
 
 ## Testing
 
@@ -68,10 +71,9 @@ while and to need a few GB of disk.
 pytest
 ```
 
-The test suite never loads a real model: `app.state.scorer` / `.generator`
-are replaced with fakes before any request, and the client is never used as
-a context manager, so the lifespan (which does the real model loading) never
-runs. There is currently no automated test that exercises the real
-`ClipScorer` / `TextGenerator` against actual weights — verify those
-manually (`uvicorn` + a real request) once you can download the models in
-your environment. That real-model check should happen before B39 (deploy).
+The suite never loads the model: `app.state.scorer` is replaced with a fake and
+the lifespan never runs. There is no automated test of the real
+`OpenClipScorer`. Check it by hand once weights can be downloaded: start the
+host, `POST /score` with a photo of something red and the prompt
+`something red`, then with an unrelated photo, and confirm the first scores
+higher. Do this before B54 measurement and before deploying.
