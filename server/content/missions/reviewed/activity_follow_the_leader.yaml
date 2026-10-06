@@ -3,13 +3,13 @@ templates:
   - template_id: activity_follow_the_leader
     title: "Follow the Leader"
     category: any
-    duration_bucket: 40
+    duration_bucket: 60
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: reviewed}
+    review: {author: Jiabin, reviewed_by: null, status: draft}
     bands:
       "5-7":
         title: null
@@ -30,11 +30,21 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
+            prompt_text: "Lead me like an animal to a leaf. I'll photograph it."
+            verify_mode: photo
+            prompt_id: object_leaf
+            variable: true
+          - sequence: 5
             prompt_text: "Follow me and copy two moves in a row."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 6
+            prompt_text: "Copy my frog jumps, then find something round to photograph."
+            verify_mode: photo
+            prompt_id: shape_round
+            variable: true
+          - sequence: 7
             prompt_text: "Lead me on an animal parade. Change animals whenever you want."
             verify_mode: self
             prompt_id: null
@@ -58,11 +68,21 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
+            prompt_text: "Lead me to a stone smaller than my hand, using three different moves on the way. I'll put my hand beside it for a photo."
+            verify_mode: photo
+            prompt_id: size_stone_hand
+            variable: true
+          - sequence: 5
             prompt_text: "Copy my three-move combo in order. If you miss one, we try it again."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 6
+            prompt_text: "Copy my moves until I stop, then find something red within ten steps. I'll photograph it."
+            verify_mode: photo
+            prompt_id: colour_red
+            variable: true
+          - sequence: 7
             prompt_text: "Lead me on a route around our space, using a different move for each part."
             verify_mode: self
             prompt_id: null
@@ -86,11 +106,21 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
+            prompt_text: "Plan an animal route that ends at a flower, with a different animal for each part. Lead me there for a photo."
+            verify_mode: photo
+            prompt_id: object_flower
+            variable: true
+          - sequence: 5
             prompt_text: "Copy my five-move combo in order. Count how many you get right, then try again."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 6
+            prompt_text: "Find two rough things and decide which is rougher. Lead me to it with a move I have to copy, and I'll photograph it."
+            verify_mode: photo
+            prompt_id: texture_rough
+            variable: true
+          - sequence: 7
             prompt_text: "Design a combo with one tricky move. Lead it until I can copy it all."
             verify_mode: self
             prompt_id: null
