@@ -19,6 +19,12 @@ DURATION_BUCKETS = (20, 40, 60)
 
 # Enum - fixed variables 
 
+class Setting(str, Enum):
+    OUTDOOR = "outdoor"
+    HOME = "home"
+    INDOOR_PLACE = "indoor_place"
+
+
 class ActivityCategory(str, Enum):
     """seven categoris produced by Vicmap"""
     PLAYGROUND = "playground"
@@ -97,17 +103,61 @@ class EnvironmentalSummary:
     reminders: tuple[str, ...] = ()
 
 
+class TravelMode(str, Enum):
+    WALKING = "walking"
+    CYCLING = "cycling"
+    DRIVING = "driving"
+
+
+TravelSource = str  # "openrouteservice" | "estimate"
+
+
+@dataclass(frozen=True)
+class TravelTime:
+    """One-way travel time to a place. Produced by Backend A's get_travel_times()."""
+    minutes: int
+    source: TravelSource
+
+
+@dataclass(frozen=True)
+class TravelBlock:
+    """Travel summary on a combo. on_site_min is this place's own plan length."""
+    mode: TravelMode
+    out_min: int
+    back_min: int
+    on_site_min: int
+    total_min: int
+    source: TravelSource
+    back_from_outbound: bool = True
+
+
+class SuggestionKind(str, Enum):
+    MORE_TIME = "more_time"
+    OTHER_MODE = "other_mode"
+
+
+@dataclass(frozen=True)
+class Suggestion:
+    """Zero-result next step. more_time carries total_min and fits_count;
+    other_mode carries mode and deliberately no count."""
+    kind: SuggestionKind
+    total_min: int | None = None
+    fits_count: int | None = None
+    mode: TravelMode | None = None
+
+
 @dataclass(frozen=True)
 class Combo:
     combo_id: str  # == place.place_id — see app.recommendation.recommend; how /missions resolves it back to a Place
     place: Place
     activity_type: str
-    entered_duration_min: int
-    duration_bucket: int
+    entered_duration_min: int  # the parent's total time, travel included
+    duration_bucket: int  # this place's plan length (20/40/60)
     combo_template: str
     tier: Tier
     environmental_summary: EnvironmentalSummary
     explanation: str
+    travel: TravelBlock
 
 
 @dataclass(frozen=True)
@@ -115,6 +165,7 @@ class Recommendation:
     status: RecommendationStatus
     combos: tuple[Combo, ...] = ()
     message: str | None = None
+    suggestions: tuple[Suggestion, ...] = ()
 
 
 # Client Requests

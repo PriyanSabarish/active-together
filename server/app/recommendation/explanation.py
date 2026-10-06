@@ -19,7 +19,14 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from app.models import EnvironmentalSummary
+from app.models import EnvironmentalSummary, TravelBlock, TravelMode
+
+ESTIMATE_SOURCE = "estimate"
+MODE_LABELS = {
+    TravelMode.WALKING: "walking",
+    TravelMode.CYCLING: "cycling",
+    TravelMode.DRIVING: "driving",
+}
 
 WEATHER_UNAVAILABLE = "Weather data is unavailable for this time."
 
@@ -33,11 +40,17 @@ def distance_clause(distance_m: int) -> str:
     return f"About {round(distance_m, -1)} m away."
 
 
-def duration_clause(entered_duration_min: int, bucket: int) -> str:
-    """Both the entered value and the matched bucket, per story 2.1."""
+def duration_clause(entered_total_min: int, travel: TravelBlock) -> str:
+    """Total time, travel each way and this place's own plan length.
+
+    The plan length belongs to this place alone: another combo in the same
+    search can carry a different one, so nothing here speaks for the search.
+    """
+    estimate = " (estimated)" if travel.source == ESTIMATE_SOURCE else ""
     return (
-        f"Fits your {entered_duration_min} minute window "
-        f"using the {bucket} minute plan."
+        f"Fits your {entered_total_min} minute window: about {travel.out_min} minutes "
+        f"each way by {MODE_LABELS[travel.mode]}{estimate}, "
+        f"with a {travel.on_site_min} minute plan here."
     )
 
 
@@ -88,8 +101,8 @@ def weather_clause(summary: EnvironmentalSummary) -> str:
 
 def build_explanation(
     distance_m: int,
-    entered_duration_min: int,
-    bucket: int,
+    entered_total_min: int,
+    travel: TravelBlock,
     summary: EnvironmentalSummary,
     timestamp: str | None = None,
 ) -> str:
@@ -100,7 +113,7 @@ def build_explanation(
     clauses: list[str | None] = [
         distance_clause(distance_m),
         time_clause(timestamp),
-        duration_clause(entered_duration_min, bucket),
+        duration_clause(entered_total_min, travel),
         weather_clause(summary),
         *warnings,
         *reminders,

@@ -27,7 +27,7 @@ from app.missions.models import MissionTemplate
 from app.missions.safety import validate_mission
 from app.missions.schema_validator import validate_schema
 from app.missions.selector import select_templates
-from app.models import AgeBand, Context, Mission, Place
+from app.models import AgeBand, Context, Mission, Place, Setting
 
 
 def serve_from_library(
@@ -39,6 +39,7 @@ def serve_from_library(
     preferences: Iterable[str] = (),
     recent_template_ids: Iterable[str] = (),
     eligible_categories: dict[str, list[str]] | None = None,
+    setting: Setting | str = Setting.OUTDOOR,
 ) -> Mission | None:
     candidates = select_templates(
         templates, place, context, age_band, duration_bucket, preferences, recent_template_ids,
@@ -51,7 +52,7 @@ def serve_from_library(
 
         mission = build_mission(template, age_band, duration_bucket)
 
-        if not validate_mission(mission, template).ok:
+        if not validate_mission(mission, template, setting=setting).ok:
             continue
 
         return mission

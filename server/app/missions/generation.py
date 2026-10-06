@@ -52,7 +52,7 @@ from app.missions.safety import validate_mission
 from app.missions.schema_validator import validate_schema
 from app.missions.selector import select_templates
 from app.model_client import ModelClient
-from app.models import AgeBand, Context, Mission, Place, Step
+from app.models import AgeBand, Context, Mission, Place, Setting, Step
 
 logger = logging.getLogger(__name__)
 
@@ -169,6 +169,7 @@ def generate_missions(
     max_missions: int = MAX_MISSIONS,
     stats: RejectionStats | None = None,
     eligible_categories: dict[str, list[str]] | None = None,
+    setting: Setting | str = Setting.OUTDOOR,
 ) -> list[Mission]:
     candidates = select_templates(
         templates, place, context, age_band, duration_bucket, preferences, recent_template_ids,
@@ -199,7 +200,7 @@ def generate_missions(
                 mission = generated
                 source = type(model_client).__name__
 
-        result = validate_mission(mission, template)
+        result = validate_mission(mission, template, setting=setting)
         if stats is not None:
             stats.record(result, was_generated=source != "library-direct")
 
@@ -215,7 +216,7 @@ def generate_missions(
             break
 
         library_mission = build_mission(template, age_band, duration_bucket)
-        if not validate_mission(library_mission, template).ok:
+        if not validate_mission(library_mission, template, setting=setting).ok:
             continue
 
         _log_and_append(missions, library_mission, template, "library-direct (after generated rejection)")

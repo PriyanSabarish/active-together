@@ -14,6 +14,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
+from app.data.addresses import autocomplete_addresses
 from app.data.database import SessionLocal, get_db, engine
 from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
@@ -78,8 +79,17 @@ async def get_data_context(lat: float, lon: float):
 
 
 @app.get("/locations/autocomplete")
-def locations_autocomplete(q: str = Query(..., min_length=2)):
-    return {"status": "ok", "query": q, "suggestions": []}
+async def locations_autocomplete(
+    q: str = Query(..., min_length=2, max_length=100),
+    limit: int = Query(5, ge=1, le=10),
+):
+    try:
+        return {"suggestions": await autocomplete_addresses(q, limit)}
+    except (httpx.HTTPError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Address search is temporarily unavailable.",
+        )
 
 
 @app.post("/recommendations")

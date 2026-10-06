@@ -65,32 +65,33 @@ def test_low_confidence_filtered_when_threshold_specified():
 
 
 def test_filter_dense_inner_places_within_ten_km():
-    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=10, duration_min=45)
+    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=10, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert len(eligible) == len(fixtures.DENSE_INNER)
 
 
 def test_filter_dense_inner_places_radius_constrains_results():
-    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=1, duration_min=45)
+    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=1, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert all(p.distance_m <= 1000 for p in eligible)
     assert len(eligible) < len(fixtures.DENSE_INNER)
 
 
 def test_filter_empty_place_set():
-    assert filter_eligible(fixtures.EMPTY, radius_km=3, duration_min=45) == ()
+    assert filter_eligible(fixtures.EMPTY, radius_km=3, total_min=55, travel_times=fixtures.travel(fixtures.EMPTY)) == ()
 
 
 def test_filter_suppresses_low_confidence_set():
     eligible = filter_eligible(
-        fixtures.LOW_CONFIDENCE, radius_km=3, duration_min=45, min_confidence=0.70
+        fixtures.LOW_CONFIDENCE, radius_km=3, total_min=55,
+        travel_times=fixtures.travel(fixtures.LOW_CONFIDENCE), min_confidence=0.70
     )
     assert eligible == ()
 
 
 def test_filter_preserves_input_sequence():
-    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=10, duration_min=45)
+    eligible = filter_eligible(fixtures.DENSE_INNER, radius_km=10, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert [p.place_id for p in eligible] == [p.place_id for p in fixtures.DENSE_INNER]
 
 
 def test_duration_bucket_resolution_propagates_to_combo_lookup():
-    eligible = filter_eligible(fixtures.MIDDLE_MONASH, radius_km=10, duration_min=50)
+    eligible = filter_eligible(fixtures.MIDDLE_MONASH, radius_km=10, total_min=60, travel_times=fixtures.travel(fixtures.MIDDLE_MONASH))
     assert len(eligible) == len(fixtures.MIDDLE_MONASH)
