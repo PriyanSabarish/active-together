@@ -6,9 +6,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # server/.env is for secrets (git-ignored); server/app/.env is tracked in
-        # git and holds only local, non-secret defaults. Later files win.
-        env_file=(Path(__file__).parent.parent / ".env", Path(__file__).with_name(".env")),
+        # server/app/.env is tracked in git and holds shared, non-secret defaults.
+        # server/.env is git-ignored, for secrets and personal overrides (a
+        # different local database port, say). Later files win, so it wins.
+        env_file=(Path(__file__).with_name(".env"), Path(__file__).parent.parent / ".env"),
         extra="ignore",
     )
 
