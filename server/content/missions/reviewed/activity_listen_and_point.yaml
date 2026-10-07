@@ -3,13 +3,13 @@ templates:
   - template_id: activity_listen_and_point
     title: "Listen and Point"
     category: any
-    duration_bucket: 40
+    duration_bucket: 60
     weather_tags: [any]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: find
     safety_tags: [inherited]
-    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: draft}
     bands:
       "5-7":
         title: null
@@ -25,16 +25,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "When I clap, find something round. I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_round
+            variable: true
+          - sequence: 4
             prompt_text: "Copy my clap pattern by stomping your feet."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Two claps means find something red. I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 6
             prompt_text: "Walk while I clap. When I stop, freeze!"
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Your turn: clap a pattern for me to copy with stomps."
             verify_mode: self
             prompt_id: null
@@ -53,16 +63,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Turn your back. When I clap, find something round before I clap again. I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_round
+            variable: true
+          - sequence: 4
             prompt_text: "Copy my clap pattern with stomps. Then I'll make it longer and you try again."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Count my claps, take that many big steps, then find something red nearby. I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 6
             prompt_text: "Walk to my claps: fast claps, walk fast; slow claps, walk slow; no claps, freeze."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Your turn: make a clap pattern with a pause in it, and see if I can stomp it back."
             verify_mode: self
             prompt_id: null
@@ -81,16 +101,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find something round that would make a good drum and tell me why you chose it. I'll photograph it, then you clap a rhythm next to it."
+            verify_mode: photo
+            prompt_id: p_round
+            variable: true
+          - sequence: 4
             prompt_text: "Make up a clap code for three moves, teach it to me, then call it while I do the moves."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find something red before I finish ten claps. After I photograph it, try again and beat my clap count."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 6
             prompt_text: "Walk to my clap speed and freeze when I stop. Do five rounds and count your steady freezes."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Play the stomp-back game again and try to go one clap longer than before."
             verify_mode: self
             prompt_id: null

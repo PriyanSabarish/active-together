@@ -45,3 +45,196 @@ enforcement:
   - Constraints are checked by validate_mission(), not by the generation prompt.
   - The reject-phrase lists are a coarse first pass. Every template also gets human review.
   - A rejected mission is never shown to a user. A different template is served instead.
+
+home_constraints:
+  - id: no_climbing_on_furniture
+    rule: No step may ask a child to climb, stand, or jump on furniture.
+    rejects:
+      - climb on the sofa
+      - climb on a sofa
+      - climb on sofa
+      - climb onto the sofa
+      - climb onto a sofa
+      - climb onto sofa
+      - climb the sofa
+      - climb over the sofa
+      - climb on the couch
+      - climb on a couch
+      - climb on couch
+      - climb onto the couch
+      - climb onto a couch
+      - climb onto couch
+      - climb the couch
+      - climb on the chair
+      - climb on a chair
+      - climb on chair
+      - climb onto the chair
+      - climb onto a chair
+      - climb the chair
+      - climb on the table
+      - climb on a table
+      - climb on table
+      - climb onto the table
+      - climb onto a table
+      - climb the table
+      - climb on the bed
+      - climb on a bed
+      - climb on bed
+      - climb onto the bed
+      - climb onto a bed
+      - climb the bed
+      - climb on furniture
+      - climb onto furniture
+      - climb furniture
+      - scramble onto the sofa
+      - scramble onto a sofa
+      - scramble onto sofa
+      - scramble on the sofa
+      - scramble on a sofa
+      - scramble on sofa
+      - scramble onto the couch
+      - scramble onto a couch
+      - scramble onto couch
+      - scramble on the couch
+      - scramble on a couch
+      - scramble on couch
+      - scramble onto the bed
+      - scramble onto a bed
+      - scramble onto bed
+      - scramble on the bed
+      - scramble on a bed
+      - scramble on bed
+      - scramble onto the chair
+      - scramble onto a chair
+      - scramble onto chair
+      - scramble on the chair
+      - scramble on a chair
+      - scramble on chair
+      - scramble onto the table
+      - scramble onto a table
+      - scramble onto table
+      - scramble on the table
+      - scramble on a table
+      - scramble on table
+      - scramble onto furniture
+      - scramble on furniture
+      - stand on the sofa
+      - stand on a sofa
+      - stand on sofa
+      - stand on the couch
+      - stand on a couch
+      - stand on couch
+      - stand on the chair
+      - stand on a chair
+      - stand on chair
+      - stand on the table
+      - stand on a table
+      - stand on table
+      - stand on the bed
+      - stand on a bed
+      - stand on bed
+      - stand on furniture
+      - jump on the sofa
+      - jump on a sofa
+      - jump on sofa
+      - jump on the couch
+      - jump on a couch
+      - jump on couch
+      - jump on the chair
+      - jump on a chair
+      - jump on chair
+      - jump on the table
+      - jump on a table
+      - jump on table
+      - jump on the bed
+      - jump on a bed
+      - jump on bed
+      - jump on furniture
+      - jump off the sofa
+      - jump off a sofa
+      - jump off sofa
+      - jump off the couch
+      - jump off a couch
+      - jump off couch
+      - jump off the chair
+      - jump off a chair
+      - jump off chair
+      - jump off the table
+      - jump off a table
+      - jump off table
+      - jump off the bed
+      - jump off a bed
+      - jump off bed
+      - jump off furniture
+      - on top of the sofa
+      - on top of a sofa
+      - on top of the couch
+      - on top of a couch
+      - on top of the table
+      - on top of a table
+      - on top of the chair
+      - on top of a chair
+      - on top of the bed
+      - on top of a bed
+      - on top of furniture
+
+  - id: no_throwing_hard_objects
+    rule: No step may ask a child to throw hard objects indoors.
+    rejects:
+      - throw the ball
+      - throw a ball
+      - throw ball
+      - throw balls
+      - throwing the ball
+      - throwing a ball
+      - throw the tennis ball
+      - throw a tennis ball
+      - throw the book
+      - throw a book
+      - throw book
+      - throw books
+      - throw the bottle
+      - throw a bottle
+      - throw bottle
+      - throw bottles
+      - throw the shoe
+      - throw a shoe
+      - throw shoe
+      - throw shoes
+      - throw the cup
+      - throw a cup
+      - throw cup
+      - throw cups
+      - throw the mug
+      - throw a mug
+      - throw mug
+      - throw the plate
+      - throw a plate
+      - throw plate
+      - throw plates
+      - throw the bowl
+      - throw a bowl
+      - throw the rock
+      - throw a rock
+      - throw rock
+      - throw rocks
+      - throw the stone
+      - throw a stone
+      - throw stone
+      - throw stones
+      - throw hard objects
+      - throw a hard object
+      - throw hard object
+      - throw anything hard
+      - throw hard
+      - toss the ball
+      - toss a ball
+      - toss the book
+      - toss a book
+      - toss the bottle
+      - toss a shoe
+      - toss the shoe
+      - toss the rock
+      - toss a rock
+      - toss the cup
+      - toss the plate

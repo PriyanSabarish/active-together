@@ -10,7 +10,7 @@ Scenarios covered:
   CONTEXT  clear, rain, wind, high UV, poor air, multiple warnings, unavailable
 """
 
-from app.models import ActivityCategory, Context, Place
+from app.models import ActivityCategory, Context, Place, TravelTime
 
 
 #  PLACES
@@ -307,82 +307,88 @@ PARTIAL = Context(
 # Named scenarios — pair a place set with a context
 
 
+def travel(places, minutes: int = 5, source: str = "openrouteservice") -> dict:
+    """Hand-written travel-time dictionary: the same one-way minutes for every
+    place. Stands in for Backend A's get_travel_times() until A40 is live."""
+    return {p.place_id: TravelTime(minutes=minutes, source=source) for p in places}
+
+
 SCENARIOS: dict[str, dict] = {
     "dense_clear": {
-        "places": DENSE_INNER, "context": CLEAR_MILD, "duration_min": 45,
+        "places": DENSE_INNER, "context": CLEAR_MILD, "total_min": 45,
         "expect": "Three normal-tier combos, ordered by distance.",
     },
     "dense_rain": {
-        "places": DENSE_INNER, "context": RAIN_HEAVY, "duration_min": 45,
+        "places": DENSE_INNER, "context": RAIN_HEAVY, "total_min": 45,
         "expect": "All outdoor candidates deprioritised and warned.",
     },
     "dense_boundary_rain": {
-        "places": DENSE_INNER, "context": RAIN_AT_THRESHOLD, "duration_min": 45,
+        "places": DENSE_INNER, "context": RAIN_AT_THRESHOLD, "total_min": 45,
         "expect": "Deprioritised at exactly 0.60 — inclusive threshold.",
     },
     "dense_below_rain": {
-        "places": DENSE_INNER, "context": RAIN_BELOW_THRESHOLD, "duration_min": 45,
+        "places": DENSE_INNER, "context": RAIN_BELOW_THRESHOLD, "total_min": 45,
         "expect": "Normal tier at 0.59 — confirms the boundary is inclusive.",
     },
     "dense_high_uv": {
-        "places": DENSE_INNER, "context": CLEAR_HIGH_UV, "duration_min": 45,
+        "places": DENSE_INNER, "context": CLEAR_HIGH_UV, "total_min": 45,
         "expect": "Sun-protection reminder, tier stays normal.",
     },
     "dense_wind_boundary": {
-        "places": DENSE_INNER, "context": WIND_AT_THRESHOLD, "duration_min": 45,
+        "places": DENSE_INNER, "context": WIND_AT_THRESHOLD, "total_min": 45,
         "expect": "Deprioritised at exactly 40 km/h.",
     },
     "dense_poor_air": {
-        "places": DENSE_INNER, "context": POOR_AIR_PM25, "duration_min": 45,
+        "places": DENSE_INNER, "context": POOR_AIR_PM25, "total_min": 45,
         "expect": "Air-quality warning, deprioritised, plus UV reminder.",
     },
     "dense_stormy": {
-        "places": DENSE_INNER, "context": STORMY, "duration_min": 45,
+        "places": DENSE_INNER, "context": STORMY, "total_min": 45,
         "expect": "Two warnings on one combo — rain and wind.",
     },
     "dense_no_weather": {
-        "places": DENSE_INNER, "context": UNAVAILABLE, "duration_min": 45,
+        "places": DENSE_INNER, "context": UNAVAILABLE, "total_min": 45,
         "expect": "Candidates still shown, weather labelled unavailable.",
     },
     "dense_partial_weather": {
-        "places": DENSE_INNER, "context": PARTIAL, "duration_min": 45,
+        "places": DENSE_INNER, "context": PARTIAL, "total_min": 45,
         "expect": "Present fields shown, missing fields labelled unavailable.",
     },
     "sparse_clear": {
-        "places": SPARSE_OUTER, "context": CLEAR_MILD, "duration_min": 45,
+        "places": SPARSE_OUTER, "context": CLEAR_MILD, "total_min": 45,
         "expect": "Two combos only — no padding to three.",
     },
     "sparse_rain": {
-        "places": SPARSE_OUTER, "context": RAIN_HEAVY, "duration_min": 45,
+        "places": SPARSE_OUTER, "context": RAIN_HEAVY, "total_min": 45,
         "expect": "Two deprioritised combos. Nothing normal-tier to rank above.",
     },
     "middle_clear": {
-        "places": MIDDLE_MONASH, "context": CLEAR_MILD, "duration_min": 60,
+        "places": MIDDLE_MONASH, "context": CLEAR_MILD, "total_min": 70,
         "expect": "Three combos, 60-minute bucket.",
     },
     "empty": {
-        "places": EMPTY, "context": CLEAR_MILD, "duration_min": 45,
+        "places": EMPTY, "context": CLEAR_MILD, "total_min": 45,
         "expect": "Zero-result status with suggested next actions.",
     },
     "low_confidence_only": {
-        "places": LOW_CONFIDENCE, "context": CLEAR_MILD, "duration_min": 45,
+        "places": LOW_CONFIDENCE, "context": CLEAR_MILD, "total_min": 45,
         "expect": "Zero results if the threshold suppresses these.",
     },
-    "duration_tie_30": {
-        "places": DENSE_INNER, "context": CLEAR_MILD, "duration_min": 30,
-        "expect": "Bucket 20, not 40 — tie selects the lower bucket.",
+    "fit_30": {
+        "places": DENSE_INNER, "context": CLEAR_MILD, "total_min": 30,
+        "expect": "30 total, 5 min each way: 20 on site, so the 20 minute plan.",
     },
-    "duration_tie_50": {
-        "places": DENSE_INNER, "context": CLEAR_MILD, "duration_min": 50,
-        "expect": "Bucket 40, not 60 — tie selects the lower bucket.",
+    "fit_50": {
+        "places": DENSE_INNER, "context": CLEAR_MILD, "total_min": 50,
+        "expect": "50 total, 5 min each way: 40 on site, so the 40 minute plan.",
     },
-    "duration_min": {
-        "places": DENSE_INNER, "context": CLEAR_MILD, "duration_min": 20,
-        "expect": "Bucket 20, lower bound accepted.",
+    "total_floor": {
+        "places": DENSE_INNER, "context": CLEAR_MILD, "total_min": 20,
+        "expect": "20 total, 5 min each way: only 10 on site, nothing fits (zero results).",
     },
-    "duration_max": {
-        "places": DENSE_INNER, "context": CLEAR_MILD, "duration_min": 120,
-        "expect": "Bucket 60, upper bound accepted.",
+    "total_max": {
+        "places": DENSE_INNER, "context": CLEAR_MILD, "total_min": 120,
+        "expect": "120 total, 5 min each way: 110 on site, the 60 minute plan.",
     },
 }
 

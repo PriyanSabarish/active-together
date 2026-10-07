@@ -1,4 +1,4 @@
-import { mondayOf, useHistoryStore } from './historyStore'
+import { localIso, mondayOf, useHistoryStore } from './historyStore'
 import { usePreferencesStore } from './preferencesStore'
 
 // ---------------------------------------------------------------------------
@@ -12,11 +12,12 @@ import { usePreferencesStore } from './preferencesStore'
 function iso(base, offsetDays) {
   const d = new Date(base)
   d.setDate(base.getDate() + offsetDays)
-  return d.toISOString().slice(0, 10)
+  return localIso(d)
 }
 
-const rec = (date, time, placeName, category, missionTitle, durationMin, feedback, photoStepsCount = 1, totalSteps = 3) => ({
-  date, time, placeName, category, missionTitle, durationMin, feedback, photoStepsCount, totalSteps
+// tone: a colour placeholder standing in for an outing photo (demo only).
+const rec = (date, time, placeName, category, missionTitle, durationMin, feedback, tone = null, photoStepsCount = 1, totalSteps = 3) => ({
+  date, time, placeName, category, missionTitle, durationMin, feedback, tone, photoStepsCount, totalSteps
 })
 
 export const DEMO_KEY = 'at-demo-data'
@@ -44,17 +45,25 @@ export function seedDemoData() {
 
   if (history.records.length === 0) {
     const thisMon = mondayOf(new Date())
-    const lastMon = new Date(thisMon)
-    lastMon.setDate(thisMon.getDate() - 7)
+    const weeksAgo = (n) => {
+      const d = new Date(thisMon)
+      d.setDate(thisMon.getDate() - 7 * n)
+      return d
+    }
 
-    // Oldest first, so the newest ends up at the top of the list.
+    // Oldest first, so the newest ends up at the top of the list. Days past
+    // today are skipped below, so early in the week the sample stays honest.
     const seed = [
-      rec(iso(lastMon, 1), '4:10 pm', 'Napier Park', 'playground', 'Colour Hunt', 25, 'fun'),
-      rec(iso(lastMon, 4), '10:30 am', 'Jells Park', 'trail_access', 'Cloud Spotting', 55, null, 1, 2),
-      rec(iso(thisMon, 1), '4:05 pm', 'Central Reserve', 'sports_ground', 'Shadow Tag', 40, 'fun', 0, 2),
-      rec(iso(thisMon, 3), '3:50 pm', 'Napier Park', 'playground', 'Bark Detective', 25, 'too_easy'),
-      rec(iso(thisMon, 5), '10:15 am', 'Jells Park', 'trail_access', 'Texture Trail', 55, 'fun', 2, 3)
-    ]
+      rec(iso(weeksAgo(3), 5), '10:20 am', 'Fawkner Park', 'playground', 'Shadow Detective', 40, 'fun', '#C9DBBE'),
+      rec(iso(weeksAgo(2), 2), '4:00 pm', 'Napier Park', 'playground', 'Animal Tracker', 40, 'too_hard', '#D9CDB4'),
+      rec(iso(weeksAgo(2), 6), '11:00 am', 'Jells Park', 'trail_access', 'Wind Watchers', 30, 'fun', '#C6D9DC'),
+      rec(iso(weeksAgo(1), 1), '4:10 pm', 'Napier Park', 'playground', 'Colour Hunt', 25, 'fun'),
+      rec(iso(weeksAgo(1), 5), '10:30 am', 'Central Reserve', 'sports_ground', 'Texture Trail', 40, null, '#D6E2C4'),
+      rec(iso(thisMon, 0), '4:05 pm', 'Central Reserve', 'trail_access', 'Exploring', 40, 'fun', '#E6D8BE', 0, 2),
+      rec(iso(thisMon, 1), '3:50 pm', 'Napier Park', 'playground', 'Playground', 15, 'too_easy'),
+      rec(iso(thisMon, 1), '5:30 pm', 'Home', 'home', 'Obstacle course', 15, 'fun', null, 0, 3),
+      rec(iso(thisMon, 3), '10:15 am', 'Jells Park', 'trail_access', 'Trail walk', 55, 'fun', '#BFD4B0', 2, 3)
+    ].filter((r) => r.date <= localIso())
     seed.forEach((r) => history.addRecord(r))
   }
 

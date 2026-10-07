@@ -10,6 +10,11 @@
         </transition>
       </router-view>
       <TabShell v-if="showTabBar" :tab="currentTab" :inert="showOnboarding || showCover" />
+      <!-- Short confirmation with an optional Undo (photo deleted, saved). -->
+      <div v-if="photoStore.toast" class="toast" role="status">
+        <span class="toast-text">{{ photoStore.toast.text }}</span>
+        <button v-if="photoStore.toast.undo" class="toast-undo" @click="photoStore.undoToast()">Undo</button>
+      </div>
       <!-- After every sign-in: the welcome cover, then the four-slide walkthrough, both over Start. -->
       <LandingCover v-if="showCover" @done="showCover = false" />
       <OnboardingModal v-else-if="showOnboarding" @done="finishOnboarding" />
@@ -31,10 +36,12 @@ import LoginGate from './components/LoginGate.vue'
 import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
+import { usePhotoStore } from './photoStore'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
 const router = useRouter()
+const photoStore = usePhotoStore()
 
 const AUTH_KEY = 'at-admin-authed'
 const authed = ref(readAuthed())
@@ -99,6 +106,37 @@ watch(
 </script>
 
 <style>
+.toast {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 97px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 8px 0 18px;
+  border-radius: 16px;
+  background: var(--dark);
+  box-shadow: 0 10px 26px rgba(30, 42, 31, 0.25);
+}
+
+.toast-text { flex: 1; font-size: 14.5px; font-weight: 600; color: var(--paper); }
+
+.toast-undo {
+  height: 38px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 11px;
+  background: none;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+
 .screen {
   display: flex;
   flex-direction: column;

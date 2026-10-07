@@ -78,6 +78,32 @@ export function searchAddresses(query, { signal } = {}) {
   return request(`/locations/autocomplete?${qs}`, { signal })
 }
 
+// POST /verify-step (story 6.3)
+// multipart: image (EXIF-free JPEG), prompt_id, attempt (1-3). Never a run id,
+// record data or any journal photo.
+// returns: { result: 'match' | 'no_match' | ..., attempts_left, checked_by }
+// Any failure (offline, endpoint not live, no scorer, or no answer within
+// timeoutMs) throws, and the run screen falls back to a tap confirm — never an
+// endless spinner.
+export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 8000 }) {
+  const form = new FormData()
+  form.append('image', image, 'check.jpg')
+  form.append('prompt_id', String(promptId ?? ''))
+  form.append('attempt', String(attempt))
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs)
+  let res
+  try {
+    res = await fetch(`${BASE_URL}/verify-step`, { method: 'POST', body: form, headers: { Accept: 'application/json' }, signal: ctrl.signal })
+  } catch {
+    throw new ApiError('Could not reach the photo check.', 0)
+  } finally {
+    clearTimeout(timer)
+  }
+  if (!res.ok) throw new ApiError('The photo check is unavailable.', res.status)
+  return res.json()
+}
+
 // POST /missions
 // body: { combo_id, age_band, duration_bucket, preferences, recent_template_ids }
 // age_band is "5-7" | "8-10" | "11-12" (preferencesStore.ageBand values already

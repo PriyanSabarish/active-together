@@ -49,23 +49,23 @@ def test_empty_places_returns_empty():
 
 def test_recommend_excludes_preferred_away_category():
     result = recommend(
-        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45,
+        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER),
         excluded_categories=(ActivityCategory.SPORTS_GROUND,),
     )
     assert all(combo.place.activity_category != ActivityCategory.SPORTS_GROUND for combo in result.combos)
 
 
 def test_recommend_without_excluded_categories_is_unchanged():
-    baseline = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    baseline = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     with_empty_exclusion = recommend(
-        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45, excluded_categories=(),
+        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER), excluded_categories=(),
     )
     assert baseline == with_empty_exclusion
 
 
 def test_recommend_relaxes_when_exclusion_would_empty_results():
     result = recommend(
-        fixtures.SINGLE_CATEGORY, fixtures.CLEAR_MILD, duration_min=45,
+        fixtures.SINGLE_CATEGORY, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.SINGLE_CATEGORY),
         excluded_categories=(ActivityCategory.PARK_AND_GARDEN,),
     )
     assert result.status.value == "ok"

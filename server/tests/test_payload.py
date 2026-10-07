@@ -57,7 +57,7 @@ def test_title_is_readable_not_an_identifier():
 
 
 def test_card_carries_the_verified_place_facts():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     combo = result.combos[0]
     assert combo.place.display_name
     assert combo.place.distance_m > 0
@@ -66,15 +66,15 @@ def test_card_carries_the_verified_place_facts():
 
 
 def test_card_carries_duration_bucket_and_combo():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     combo = result.combos[0]
-    assert combo.entered_duration_min == 45
+    assert combo.entered_duration_min == 55
     assert combo.duration_bucket == 40
     assert combo.combo_template
 
 
 def test_combo_matches_the_place_category_and_bucket():
-    result = recommend(fixtures.MIDDLE_MONASH, fixtures.CLEAR_MILD, duration_min=60)
+    result = recommend(fixtures.MIDDLE_MONASH, fixtures.CLEAR_MILD, total_min=70, travel_times=fixtures.travel(fixtures.MIDDLE_MONASH))
     for combo in result.combos:
         expected = find_combo(combo.place.activity_category, 60)
         assert combo.combo_template == expected.title
@@ -83,7 +83,7 @@ def test_combo_matches_the_place_category_and_bucket():
 
 def test_unnamed_place_still_produces_a_card():
     """Story 1.2 asks for the available name — absence is not an error."""
-    result = recommend((make_place(display_name=None),), fixtures.CLEAR_MILD, 45)
+    result = recommend((make_place(display_name=None),), fixtures.CLEAR_MILD, 55, fixtures.travel((make_place(display_name=None),)))
     assert len(result.combos) == 1
     assert result.combos[0].place.display_name is None
 
@@ -93,7 +93,7 @@ def test_unnamed_place_still_produces_a_card():
 
 def test_no_opening_hours_cost_or_facilities_on_the_payload():
     """Place does not carry them and nothing here infers them."""
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     combo = result.combos[0]
     forbidden = {"opening_hours", "cost", "price", "facilities", "accessibility"}
     assert not forbidden & set(vars(combo))
@@ -102,7 +102,7 @@ def test_no_opening_hours_cost_or_facilities_on_the_payload():
 
 def test_unavailable_weather_stays_none_on_the_card():
     """Missing values are absent, never filled with a default."""
-    result = recommend(fixtures.DENSE_INNER, fixtures.UNAVAILABLE, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.UNAVAILABLE, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     summary = result.combos[0].environmental_summary
     assert summary.available is False
     assert summary.temp_c is None
@@ -110,7 +110,7 @@ def test_unavailable_weather_stays_none_on_the_card():
 
 
 def test_partial_weather_keeps_present_values_and_omits_the_rest():
-    result = recommend(fixtures.DENSE_INNER, fixtures.PARTIAL, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.PARTIAL, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     summary = result.combos[0].environmental_summary
     assert summary.temp_c == 17.0
     assert summary.wind_gust_kmh is None
@@ -121,12 +121,12 @@ def test_combo_id_is_the_places_own_id():
     # /missions resolves combo_id back to a Place via a stateless DB lookup
     # (app.data.places.fetch_place_by_id) rather than an in-memory cache —
     # combo_id has to be exactly the place_id for that to work.
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     for combo in result.combos:
         assert combo.combo_id == combo.place.place_id
 
 
 def test_combo_ids_are_unique_across_returned_combos():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     ids = [combo.combo_id for combo in result.combos]
     assert len(ids) == len(set(ids))

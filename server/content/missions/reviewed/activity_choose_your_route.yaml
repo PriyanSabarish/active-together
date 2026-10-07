@@ -3,13 +3,13 @@ templates:
   - template_id: activity_choose_your_route
     title: "Shape Routes"
     category: any
-    duration_bucket: 40
+    duration_bucket: 60
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
     mechanic: sequence
     safety_tags: [inherited]
-    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    review: {author: Priyan, reviewed_by: null, status: draft}
     bands:
       "5-7":
         title: null
@@ -25,16 +25,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find something round. I'll take a photo of it."
+            verify_mode: photo
+            prompt_id: p_round
+            variable: true
+          - sequence: 4
             prompt_text: "Run a triangle. I'll count the corners with you."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find a bench or seat. Point so I can photograph it."
+            verify_mode: photo
+            prompt_id: p_bench
+            variable: true
+          - sequence: 6
             prompt_text: "I'll walk a shape. Can you guess what it is?"
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Your turn: run any shape you like. I'll guess!"
             verify_mode: self
             prompt_id: null
@@ -53,16 +63,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find a leaf and decide if it is more like a circle or a triangle. Lead me to it so I can photograph it."
+            verify_mode: photo
+            prompt_id: p_leaf
+            variable: true
+          - sequence: 4
             prompt_text: "Run a five-point star. If it looks wonky, try it again."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find a bench or seat. Count its corners, then I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_bench
+            variable: true
+          - sequence: 6
             prompt_text: "I'll walk a shape. Guess it, and tell me how many corners it had."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Your turn: run a tricky shape for me to guess."
             verify_mode: self
             prompt_id: null
@@ -81,16 +101,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find two round things and decide which is the better circle. I'll photograph your pick."
+            verify_mode: photo
+            prompt_id: p_round
+            variable: true
+          - sequence: 4
             prompt_text: "Run your shape while I count, then try again faster with the same steps per side."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find a bench or seat and count its corners. After I photograph it, run a shape with that many sides."
+            verify_mode: photo
+            prompt_id: p_bench
+            variable: true
+          - sequence: 6
             prompt_text: "Run a capital letter as a shape. I'll guess which letter it is."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Design a shape for me with a rule, like eight sides or no corners. Count while I run it."
             verify_mode: self
             prompt_id: null

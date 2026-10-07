@@ -19,7 +19,7 @@ def test_default_directory_is_the_reviewed_library():
 
 def test_load_template_dir_with_no_args_loads_the_reviewed_library():
     families = load_template_dir()
-    assert len(families) == 18
+    assert len(families) == 21
     assert all(isinstance(f, MissionTemplate) for f in families)
 
 

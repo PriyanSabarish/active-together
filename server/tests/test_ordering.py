@@ -99,42 +99,42 @@ def test_ordering_is_deterministic():
 
 
 def test_recommend_returns_normal_tier_combos_for_clear_weather():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert result.status is RecommendationStatus.OK
     assert len(result.combos) == 3
     assert all(c.tier is Tier.NORMAL for c in result.combos)
 
 
 def test_recommend_orders_closest_first():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert result.combos[0].place.place_id == "fx_001"
 
 
 def test_recommend_deprioritises_combos_in_heavy_rain():
-    result = recommend(fixtures.DENSE_INNER, fixtures.RAIN_HEAVY, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.RAIN_HEAVY, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert all(c.tier is Tier.DEPRIORITISED for c in result.combos)
     assert all(c.environmental_summary.warnings for c in result.combos)
 
 
 def test_recommend_preserves_exact_count_for_sparse_results():
-    result = recommend(fixtures.SPARSE_OUTER, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.SPARSE_OUTER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.SPARSE_OUTER))
     assert len(result.combos) == 2
 
 
 def test_recommend_retains_entered_duration_and_matched_bucket():
-    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=50)
+    result = recommend(fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=60, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     combo = result.combos[0]
-    assert combo.entered_duration_min == 50
+    assert combo.entered_duration_min == 60
     assert combo.duration_bucket == 40
 
 
 def test_recommend_populates_combo_template():
-    result = recommend(fixtures.MIDDLE_MONASH, fixtures.CLEAR_MILD, duration_min=60)
+    result = recommend(fixtures.MIDDLE_MONASH, fixtures.CLEAR_MILD, total_min=70, travel_times=fixtures.travel(fixtures.MIDDLE_MONASH))
     assert all(c.combo_template for c in result.combos)
 
 
 def test_recommend_handles_unavailable_weather_gracefully():
-    result = recommend(fixtures.DENSE_INNER, fixtures.UNAVAILABLE, duration_min=45)
+    result = recommend(fixtures.DENSE_INNER, fixtures.UNAVAILABLE, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER))
     assert len(result.combos) == 3
     assert all(c.environmental_summary.available is False for c in result.combos)
     assert all(c.tier is Tier.NORMAL for c in result.combos)
@@ -142,11 +142,11 @@ def test_recommend_handles_unavailable_weather_gracefully():
 
 def test_recommend_constrains_places_by_radius():
     result = recommend(
-        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, duration_min=45, radius_km=1
+        fixtures.DENSE_INNER, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.DENSE_INNER), radius_km=1
     )
     assert all(c.place.distance_m <= 1000 for c in result.combos)
 
 
 def test_recommend_empty_candidate_set():
-    result = recommend(fixtures.EMPTY, fixtures.CLEAR_MILD, duration_min=45)
+    result = recommend(fixtures.EMPTY, fixtures.CLEAR_MILD, total_min=55, travel_times=fixtures.travel(fixtures.EMPTY))
     assert result.combos == ()

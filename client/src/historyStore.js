@@ -18,6 +18,13 @@ export function mondayOf(date) {
   return d
 }
 
+// YYYY-MM-DD in local time (Melbourne on the device), not UTC — toISOString
+// would put an early-morning outing on the previous day.
+export function localIso(date = new Date()) {
+  const d = new Date(date)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 function inWeek(date, weekStart) {
   const weekEnd = new Date(weekStart)
   weekEnd.setDate(weekStart.getDate() + 7)
@@ -60,10 +67,41 @@ export function relativeDayLabel(dateStr) {
   return d.toLocaleDateString('en-AU', { weekday: 'long' })
 }
 
+// Three kinds of outing for the Week diary mix line: At home, Exploring
+// (trails) and Park (everything else).
+export const KINDS = [
+  { id: 'park', label: 'park' },
+  { id: 'exploring', label: 'exploring' },
+  { id: 'home', label: 'at home' }
+]
+
+export function kindOf(record) {
+  if (record.category === 'home' || record.placeName === 'Home') return 'home'
+  if (record.category === 'trail_access') return 'exploring'
+  return 'park'
+}
+
+// Consecutive Monday-Sunday weeks with at least one outing (D5), counted back
+// from this week — or from last week, so an empty "so far" week does not break
+// it early. A gap restarts it quietly at 0.
+export function weekStreak(records, now = new Date()) {
+  const weeks = new Set(records.map((r) => mondayOf(new Date(r.date)).getTime()))
+  const cursor = mondayOf(now)
+  if (!weeks.has(cursor.getTime())) cursor.setDate(cursor.getDate() - 7)
+  let n = 0
+  while (weeks.has(cursor.getTime())) {
+    n += 1
+    cursor.setDate(cursor.getDate() - 7)
+  }
+  return n
+}
+
 export const useHistoryStore = defineStore('history', {
   state: () => ({
-    // newest first: { id, date, time, placeName, category, missionTitle,
-    // templateId, durationMin, photoStepsCount, totalSteps, feedback }
+    // newest first: { id, runId, date, time, placeName, category, missionTitle,
+    // templateId, durationMin, photoStepsCount, totalSteps, feedback, tone? }
+    // runId links the record to its photos (photoStore). tone is a colour
+    // placeholder standing in for a photo on demo records only.
     // templateId is the backend template_id, absent on records made before
     // real /missions wiring — recentTemplateIds tolerates that.
     records: [],
