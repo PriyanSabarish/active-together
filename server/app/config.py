@@ -6,7 +6,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).with_name(".env"),
+        # server/.env is for secrets (git-ignored); server/app/.env is tracked in
+        # git and holds only local, non-secret defaults. Later files win.
+        env_file=(Path(__file__).parent.parent / ".env", Path(__file__).with_name(".env")),
         extra="ignore",
     )
 
@@ -46,6 +48,9 @@ class Settings(BaseSettings):
     inference_host_url: str | None = None
     inference_host_token: str | None = None
     photo_check_timeout_s: float = 8.0
+    # Thinking level for photo-check calls; empty string sends none. Some models
+    # reject the field, in which case set PHOTO_GEMINI_THINKING_LEVEL= (empty).
+    photo_gemini_thinking_level: str = "minimal"
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20

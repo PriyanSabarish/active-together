@@ -39,7 +39,11 @@ def build_scorers() -> list[ImageScorer]:
     if settings.gemini_api_key:
         from app.gemini_client import GeminiModelClient
 
-        api_client = GeminiModelClient(api_key=settings.gemini_api_key, model=settings.gemini_model)
+        api_client = GeminiModelClient(
+            api_key=settings.gemini_api_key,
+            model=settings.gemini_model,
+            photo_thinking_level=settings.photo_gemini_thinking_level or None,
+        )
     return [
         HostedImageScorer(
             settings.inference_host_url,
