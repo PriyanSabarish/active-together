@@ -263,8 +263,8 @@ async function onCapture(blob) {
     const res = await postVerifyStep({ image: blob, promptId: step.value.promptId, attempt: tries.value })
     if (token !== checkToken) return
     checkedBy.value = res?.checked_by ?? ''
-    if (res?.result === 'match') pc.value = 'matched'
-    else if (tries.value >= 3 || res?.attempts_left === 0) pc.value = 'fallback'
+    if (res?.result === 'confirmed' || res?.result === 'match') pc.value = 'matched'
+    else if (tries.value >= 3 || res?.result === 'use_tap' || res?.attempts_left === 0) pc.value = 'fallback'
     else pc.value = 'retry'
   } catch {
     if (token === checkToken) pc.value = 'offline'
