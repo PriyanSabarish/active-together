@@ -25,24 +25,24 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find something red. I'll take a photo of it."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 4
             prompt_text: "Run to three different colours, coming back to me each time."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
-            prompt_text: "Find something red. I'll take a photo of it."
-            verify_mode: photo
-            prompt_id: colour_red
-            variable: true
           - sequence: 5
+            prompt_text: "Find something yellow. Point so I can photograph it."
+            verify_mode: photo
+            prompt_id: p_yellow
+            variable: true
+          - sequence: 6
             prompt_text: "I'll call a colour. Find it before I count to ten."
             verify_mode: self
             prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Find something yellow. Point so I can photograph it."
-            verify_mode: photo
-            prompt_id: colour_yellow
             variable: true
           - sequence: 7
             prompt_text: "Pick a colour for me. Say hotter or colder."
@@ -63,24 +63,24 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find something red, run back to me, then lead me to it for a photo."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 4
             prompt_text: "Rainbow run: stand next to three different colours, coming back to me between each."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
-            prompt_text: "Find something red, run back to me, then lead me to it for a photo."
-            verify_mode: photo
-            prompt_id: colour_red
-            variable: true
           - sequence: 5
+            prompt_text: "Find two yellow things. Pick the brightest one and I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_yellow
+            variable: true
+          - sequence: 6
             prompt_text: "I'll call a colour. Find it before I count to ten, then try another one even faster."
             verify_mode: self
             prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Find two yellow things. Pick the brightest one and I'll photograph it."
-            verify_mode: photo
-            prompt_id: colour_yellow
             variable: true
           - sequence: 7
             prompt_text: "Your turn: pick a colour for me, and say hotter or colder while I hunt."
@@ -101,24 +101,24 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Find the reddest thing in our space. Choose between your top two, then I'll photograph your pick."
+            verify_mode: photo
+            prompt_id: p_red
+            variable: true
+          - sequence: 4
             prompt_text: "Plan a rainbow route of four colours. Tell me the order, then run it."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
-            prompt_text: "Find the reddest thing in our space. Choose between your top two, then I'll photograph your pick."
-            verify_mode: photo
-            prompt_id: colour_red
-            variable: true
           - sequence: 5
+            prompt_text: "Find something yellow before I count to twenty. After I photograph it, try to find another one faster."
+            verify_mode: photo
+            prompt_id: p_yellow
+            variable: true
+          - sequence: 6
             prompt_text: "Find as many colours as you can before I count to twenty. Then try to beat your number."
             verify_mode: self
             prompt_id: null
-            variable: true
-          - sequence: 6
-            prompt_text: "Find something yellow before I count to twenty. After I photograph it, try to find another one faster."
-            verify_mode: photo
-            prompt_id: colour_yellow
             variable: true
           - sequence: 7
             prompt_text: "Your turn: pick a secret colour, give me three hints, then guide me with hotter or colder."

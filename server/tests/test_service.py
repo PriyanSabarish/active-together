@@ -29,14 +29,27 @@ def test_get_missions_pure_library_direct():
     assert all(len(m.steps) == 3 for m in missions)  # STEPS_FOR[20]
 
 
-def test_get_missions_falls_back_to_a_shorter_bucket_when_none_is_long_enough():
-    # The enabled families are 40-minute; a 60-minute request must still get
-    # missions instead of an empty list.
+def test_get_missions_falls_back_to_a_shorter_bucket_when_none_is_long_enough(monkeypatch):
+    # With only 40-minute families served, a 60-minute request must still get
+    # missions instead of an empty list. Pinned to those families so the test
+    # keeps exercising the fallback now that 60-minute families are enabled.
+    only_40 = [t for t in service.TEMPLATES if t.duration_bucket == 40]
+    assert only_40
+    monkeypatch.setattr(service, "TEMPLATES", only_40)
     missions = service.get_missions(
         PLACE_PARK, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 60, model_client=None,
     )
     assert missions
     assert all(len(m.steps) == 5 for m in missions)  # STEPS_FOR[40]
+
+
+def test_get_missions_serves_a_full_length_mission_when_a_60_minute_family_exists():
+    missions = service.get_missions(
+        PLACE_PARK, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 60, model_client=None,
+    )
+    assert missions
+    assert all(len(m.steps) in (5, 7) for m in missions)
+    assert any(len(m.steps) == 7 for m in missions)
 
 
 def test_get_missions_returns_a_real_reviewed_family():

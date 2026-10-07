@@ -20,9 +20,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Now be a flamingo on your other leg."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Find a stick for a photo. Flamingo on your other leg."
+            verify_mode: photo
+            prompt_id: p_stick
             variable: true
           - sequence: 3
             prompt_text: "Walk around. When I say statue, freeze on one leg."
@@ -30,9 +30,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk heel to toe, like on a tightrope, to me."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Walk heel to toe to a leaf for a photo."
+            verify_mode: photo
+            prompt_id: p_leaf
             variable: true
           - sequence: 5
             prompt_text: "Show me your best flamingo. Can you reach ten?"
@@ -48,9 +48,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Which leg felt harder? Try that one again and see if you can match the other."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Find a stick and take a photo. Then try your harder leg again beside it and see if you can match the other."
+            verify_mode: photo
+            prompt_id: p_stick
             variable: true
           - sequence: 3
             prompt_text: "Statues: walk around, and when I say freeze, hold a one-leg shape while I count to five."
@@ -58,9 +58,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk heel to toe for ten steps, then turn and walk back to me."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Find a leaf and take a photo. Walk heel to toe to it, counting your steps, then walk back to me."
+            verify_mode: photo
+            prompt_id: p_leaf
             variable: true
           - sequence: 5
             prompt_text: "Your turn: make up a balance shape, teach it to me, and count while I try."
@@ -76,9 +76,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 2
-            prompt_text: "Try three different arm positions on one leg. Decide which keeps you steadiest."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Find a stick and take a photo. Then try three arm positions on one leg beside it and decide which keeps you steadiest."
+            verify_mode: photo
+            prompt_id: p_stick
             variable: true
           - sequence: 3
             prompt_text: "Plan a routine of three balance shapes, tell me the order, then do it."
@@ -86,9 +86,9 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 4
-            prompt_text: "Walk heel to toe and count your steps before you wobble. Then try to beat it."
-            verify_mode: self
-            prompt_id: null
+            prompt_text: "Find a leaf and take a photo. Guess how many heel-to-toe steps it takes to reach it, then walk it and count."
+            verify_mode: photo
+            prompt_id: p_leaf
             variable: true
           - sequence: 5
             prompt_text: "Teach me your routine, then count while I try it."
