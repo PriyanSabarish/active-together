@@ -1,4 +1,4 @@
-import { SUBURBS } from './store'
+import { SUBURBS, SETTINGS, TRAVEL_MODES, TRAVEL_STOPS, STAY_STOPS } from './store'
 
 // Pinia plugin that keeps the parent's search inputs across a page reload.
 //
@@ -8,7 +8,7 @@ import { SUBURBS } from './store'
 
 export const STORAGE_KEY = 'at-search-v1'
 
-const PERSISTED = ['suburb', 'selectedAddress', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin']
+const PERSISTED = ['suburb', 'selectedAddress', 'useMyLocation', 'myLocation', 'radiusKm', 'recent', 'durationMin', 'setting', 'travelMode', 'travelMin', 'stayMin']
 const RADII = [3, 5, 10]
 
 function isCoords(v) {
@@ -35,6 +35,10 @@ export function sanitise(saved) {
   if (saved.useMyLocation === true && out.myLocation) out.useMyLocation = true
   if (RADII.includes(saved.radiusKm)) out.radiusKm = saved.radiusKm
   if (Number.isInteger(saved.durationMin) && saved.durationMin >= 20 && saved.durationMin <= 60) out.durationMin = saved.durationMin
+  if (SETTINGS.includes(saved.setting)) out.setting = saved.setting
+  if (TRAVEL_MODES.includes(saved.travelMode)) out.travelMode = saved.travelMode
+  if (TRAVEL_STOPS.includes(saved.travelMin)) out.travelMin = saved.travelMin
+  if (STAY_STOPS.includes(saved.stayMin)) out.stayMin = saved.stayMin
   if (Array.isArray(saved.recent)) out.recent = saved.recent.filter((r) => SUBURBS.includes(r)).slice(0, 3)
   return out
 }

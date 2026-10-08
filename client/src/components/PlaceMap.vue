@@ -7,7 +7,9 @@
 </template>
 
 <script setup>
-// Leaflet + OpenStreetMap tiles. No API key needed.
+// Leaflet + OpenStreetMap tiles (no API key), desaturated and tinted toward
+// the app's green and paper by a CSS filter so the map sits quietly in the
+// page instead of OSM's pinks and oranges.
 //
 // props.center   { latitude, longitude }   map centre / "you" marker
 // props.radiusKm number | null             dashed search-radius circle
@@ -140,7 +142,10 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-.place-map-canvas { width: 100%; height: 100%; }
+.place-map-canvas { width: 100%; height: 100%; background: #EDF1E8; }
+
+/* Mute OSM's colours, then tint toward the Canvas map greens (#EDF1E8, #DCE8D2). */
+.place-map .leaflet-tile-pane { filter: grayscale(1) sepia(0.35) hue-rotate(50deg) saturate(0.9) brightness(1.06) contrast(0.88); }
 
 .place-map .leaflet-control-attribution {
   font-size: 8px;

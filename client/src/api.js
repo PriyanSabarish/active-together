@@ -71,6 +71,29 @@ export function getContext({ latitude, longitude }) {
   return request(`/data/context?${qs}`)
 }
 
+// Hourly forecast for the Start page's "When?" strip, straight from Open-Meteo
+// (free, no key) until the backend serves a forecast. Coordinates are rounded
+// to 2 dp (~1 km) before they leave the phone.
+// returns: [{ time: Date, temp, rain (0-100), uv }] for the next 7 days.
+export async function getHourlyForecast({ latitude, longitude }) {
+  const qs = new URLSearchParams({
+    latitude: latitude.toFixed(2),
+    longitude: longitude.toFixed(2),
+    hourly: 'temperature_2m,precipitation_probability,uv_index',
+    timezone: 'Australia/Melbourne',
+    forecast_days: '7'
+  })
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?${qs}`)
+  if (!res.ok) throw new ApiError('Forecast unavailable.', res.status)
+  const h = (await res.json()).hourly ?? {}
+  return (h.time ?? []).map((t, i) => ({
+    time: new Date(t),
+    temp: h.temperature_2m?.[i] ?? null,
+    rain: h.precipitation_probability?.[i] ?? null,
+    uv: h.uv_index?.[i] ?? null
+  }))
+}
+
 // GET /locations/autocomplete?q=&limit=
 // returns Vicmap addresses restricted to the three pilot LGAs.
 export function searchAddresses(query, { signal } = {}) {
