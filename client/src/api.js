@@ -48,9 +48,12 @@ async function request(path, init = {}) {
 }
 
 // POST /recommendations
-// body: { latitude, longitude, radius_km, duration_min, excluded_categories }
-// returns: { status: 'ok' | 'zero_results' | 'out_of_bounds', combos: [...], message? }
-export function postRecommendations({ latitude, longitude, radiusKm, durationMin, excludedCategories = [] }) {
+// body: { latitude, longitude, radius_km, duration_min, travel_mode, excluded_categories }
+// duration_min is the WHOLE outing in minutes (travel out + play + travel back), 20-120.
+// returns: { status: 'ok' | 'zero_results' | 'out_of_bounds', combos: [...], message?,
+//            suggest_indoors, suggestions?: [{ kind: 'more_time', total_min, fits_count } | { kind: 'other_mode', mode }] }
+// Each combo has its own plan length (duration_bucket) and a travel block.
+export function postRecommendations({ latitude, longitude, radiusKm, durationMin, travelMode = 'walking', excludedCategories = [] }) {
   return request('/recommendations', {
     method: 'POST',
     body: JSON.stringify({
@@ -58,6 +61,7 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
       longitude,
       radius_km: radiusKm,
       duration_min: durationMin,
+      travel_mode: travelMode,
       excluded_categories: excludedCategories
     })
   })

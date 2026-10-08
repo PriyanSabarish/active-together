@@ -31,6 +31,7 @@ describe('POST /recommendations request contract (AC-1.1.2)', () => {
       longitude: 144.9631,
       radius_km: 3,
       duration_min: 45,
+      travel_mode: 'walking',
       excluded_categories: []
     })
   })

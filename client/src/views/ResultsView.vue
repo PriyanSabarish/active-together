@@ -73,14 +73,27 @@
     <template v-else-if="store.results.length === 0">
       <div class="empty-state">
         <span class="empty-glyph">?</span>
-        <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
-        <p class="empty-text">
-          {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
-          <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
-        </p>
-        <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
-          Search {{ nextRadius }} km instead
-        </button>
+        <template v-if="store.moreTime">
+          <p class="empty-title">Not enough time for the trip</p>
+          <p class="empty-text">
+            Nothing fits in a {{ store.outingMin }} minute outing once travel there and back is counted.
+            About {{ store.moreTime.total_min }} minutes would fit
+            {{ store.moreTime.fits_count === 1 ? '1 place' : `${store.moreTime.fits_count} places` }}.
+          </p>
+          <button class="btn btn-primary widen-btn" @click="allowMoreTime">
+            Allow {{ store.moreTime.total_min }} minutes
+          </button>
+        </template>
+        <template v-else>
+          <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
+          <p class="empty-text">
+            {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
+            <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
+          </p>
+          <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
+            Search {{ nextRadius }} km instead
+          </button>
+        </template>
       </div>
     </template>
 
@@ -224,6 +237,15 @@ function applyAdjust() {
   adjusting.value = false
   if (!changed) return
   justAdjusted.value = true
+  store.fetchRecommendations()
+}
+
+// Raise the play time until the whole outing reaches the suggested total, using
+// the same play-time steps the Start screen offers, then search again.
+function allowMoreTime() {
+  const needed = store.moreTime.total_min - store.travelMin * 2
+  const stay = STAY_STOPS.find((m) => m >= needed) ?? STAY_STOPS[STAY_STOPS.length - 1]
+  store.setStay(Math.max(stay, store.stayMin))
   store.fetchRecommendations()
 }
 
