@@ -52,6 +52,13 @@ class Settings(BaseSettings):
     # Thinking level for photo-check calls; empty string sends none. Some models
     # reject the field, in which case set PHOTO_GEMINI_THINKING_LEVEL= (empty).
     photo_gemini_thinking_level: str = "minimal"
+    # Same idea for mission-text generation. Without it the model "thinks" for
+    # seconds and the 5 s generation budget runs out. Empty string sends none.
+    gemini_thinking_level: str = "minimal"
+    # False: serve the reviewed library wording as written and never call Gemini
+    # for mission text (instant, and no model rewrite of the steps). Photo
+    # checks are unaffected. Set MISSION_GENERATION_ENABLED=false for the demo.
+    mission_generation_enabled: bool = True
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20

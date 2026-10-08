@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from typing import Iterable
 
 from app.missions.builder import build_mission
@@ -58,7 +59,7 @@ logger = logging.getLogger(__name__)
 
 MAX_MISSIONS = 3
 GENERATION_MAX_TOKENS = 512
-GENERATION_TIMEOUT_S = 5  # story 5.1's five-second budget
+GENERATION_TIMEOUT_S = 5  # story 5.1's five-second budget, for the whole request
 
 GENERATION_RESPONSE_SCHEMA = {
     "type": "OBJECT",
@@ -124,13 +125,14 @@ def _try_generate(
     context: Context,
     age_band: AgeBand,
     model_client: ModelClient,
+    timeout_s: float = GENERATION_TIMEOUT_S,
 ) -> Mission | None:
     variable_steps = _variable_steps(template, base_mission, age_band)
     if not variable_steps:
         return base_mission
 
     prompt = build_generation_prompt(template, place, context, age_band, variable_steps)
-    text = model_client.generate_text(prompt, max_tokens=GENERATION_MAX_TOKENS, timeout_s=GENERATION_TIMEOUT_S)
+    text = model_client.generate_text(prompt, max_tokens=GENERATION_MAX_TOKENS, timeout_s=timeout_s)
     if text is None:
         return None
 
@@ -183,6 +185,10 @@ def generate_missions(
     # giving up on them, rather than discarding on first rejection.
     retry_with_library_direct: list[MissionTemplate] = []
 
+    # The five seconds is a budget for the whole request, not per candidate:
+    # once it is spent, remaining candidates use their reviewed library text.
+    deadline = time.monotonic() + GENERATION_TIMEOUT_S
+
     for template in candidates:
         if len(missions) >= max_missions:
             break
@@ -194,8 +200,11 @@ def generate_missions(
 
         mission = library_mission
         source = "library-direct"
-        if model_client is not None:
-            generated = _try_generate(template, library_mission, place, context, age_band, model_client)
+        remaining = deadline - time.monotonic()
+        if model_client is not None and remaining > 0.5:
+            generated = _try_generate(
+                template, library_mission, place, context, age_band, model_client, timeout_s=remaining
+            )
             if generated is not None:
                 mission = generated
                 source = type(model_client).__name__
