@@ -1,46 +1,35 @@
 <template>
-  <!-- One of three shapes per backend category (see CATEGORY_META in
-       store.js): canopy+trunk = park-like, circle with seam = ground-like,
-       zigzag = trail -->
-  <span class="cat-icon" :aria-label="categoryLabel(category)">
-    <svg width="32" height="32" viewBox="0 0 32 32">
-      <template v-if="shape === 'park'">
-        <circle cx="16" cy="13" r="7" fill="none" stroke="currentColor" stroke-width="1.8" />
-        <line x1="16" y1="20" x2="16" y2="26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-      </template>
-      <template v-else-if="shape === 'ground'">
-        <circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="1.8" />
-        <path d="M10 11 Q16 16 10 21 M22 11 Q16 16 22 21" fill="none" stroke="currentColor" stroke-width="1.3" />
-      </template>
-      <template v-else>
-        <path d="M8 20 L13 10 L16.5 16 L20 8 L24 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-      </template>
-    </svg>
+  <!-- Tinted circle per backend category, as in the Canvas cards: green for
+       park-like places, orange for grounds and courts. -->
+  <span class="cat-icon" :class="tone" :aria-label="categoryLabel(category)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" :stroke-width="category === 'playground' ? 1.4 : 1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="categoryIcon(category)" /></svg>
   </span>
 </template>
 
 <script setup>
-// Category glyph for a place card. Three shapes cover the seven backend
-// categories (see CATEGORY_META in store.js). Strokes use currentColor so the
-// parent sets the colour.
+// Category glyph for a place card. The tone follows CATEGORY_META's shape
+// (store.js): park and trail places are green, grounds and courts orange.
+// The glyph itself comes from taskIcons (tree, oval, leaf, ...).
 
 import { computed } from 'vue'
 import { CATEGORY_META, categoryLabel } from '../store'
+import { categoryIcon } from '../taskIcons'
 
 const props = defineProps({ category: { type: String, required: true } })
-const shape = computed(() => CATEGORY_META[props.category]?.shape ?? 'park')
+const tone = computed(() => (CATEGORY_META[props.category]?.shape === 'ground' ? 'warm' : 'green'))
 </script>
 
 <style scoped>
 .cat-icon {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--tint);
-  color: var(--ink-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
+
+.cat-icon.green { background: rgba(47, 107, 54, 0.12); color: var(--green); }
+.cat-icon.warm { background: rgba(232, 145, 58, 0.2); color: var(--amber); }
 </style>

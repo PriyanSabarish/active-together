@@ -217,3 +217,17 @@ def test_hosted_timeout_is_unavailable_and_marks_the_host_down(monkeypatch, capl
             scorer.check(IMAGE, PROMPT)
     assert scorer.available() is False
     assert "secret-photo-bytes" not in caplog.text
+
+
+def test_generate_from_image_sends_the_photo_thinking_level_when_set(monkeypatch):
+    seen = {}
+
+    def fake_post(url, params=None, json=None, timeout=None):
+        seen.update(json=json)
+        return FakeResponse(200, {"candidates": [{"content": {"parts": [{"text": "{}"}]}}]})
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    GeminiModelClient(api_key="k", photo_thinking_level="minimal").generate_from_image("q", IMAGE, 16, 4)
+    assert seen["json"]["generationConfig"]["thinkingConfig"] == {"thinkingLevel": "minimal"}
+    GeminiModelClient(api_key="k").generate_from_image("q", IMAGE, 16, 4)
+    assert "thinkingConfig" not in seen["json"]["generationConfig"]

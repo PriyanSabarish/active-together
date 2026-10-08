@@ -95,3 +95,23 @@ def test_get_missions_uses_the_shared_rejection_stats():
         model_client=FixtureModelClient(default_text=rewritten),
     )
     assert service.REJECTION_STATS.generation_attempts > before
+
+
+def test_generation_can_be_switched_off_by_config(monkeypatch):
+    """With MISSION_GENERATION_ENABLED=false no model client is built, even with a key."""
+    import importlib
+
+    from app.config import settings
+    from app.missions import service as svc
+
+    monkeypatch.setattr(settings, "gemini_api_key", "a-key")
+    monkeypatch.setattr(settings, "mission_generation_enabled", False)
+    try:
+        reloaded = importlib.reload(svc)
+        assert reloaded._MODEL_CLIENT is None
+        monkeypatch.setattr(settings, "mission_generation_enabled", True)
+        reloaded = importlib.reload(svc)
+        assert type(reloaded._MODEL_CLIENT).__name__ == "GeminiModelClient"
+    finally:
+        monkeypatch.undo()
+        importlib.reload(svc)

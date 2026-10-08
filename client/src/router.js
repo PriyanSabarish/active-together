@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LocationView from './views/LocationView.vue'
 import ResultsView from './views/ResultsView.vue'
 import DetailView from './views/DetailView.vue'
+import IndoorPlaceView from './views/IndoorPlaceView.vue'
 import MissionRunView from './views/MissionRunView.vue'
 import MissionFinishedView from './views/MissionFinishedView.vue'
 import WeekView from './views/WeekView.vue'
@@ -12,7 +13,7 @@ import YouLikesView from './views/YouLikesView.vue'
 import YouAboutView from './views/YouAboutView.vue'
 
 // Four tabs, as in the prototype:
-//   Start — where you are, how far, how long (one screen)
+//   Start — outdoors / at home / indoor place, then where, how far, when, how long
 //   Play  — your top options → a place → pick a mission → run it → finished
 //   Week  — the activity diary and each outing, device-local
 //   You   — age band, outings and photos, likes, about; device-local
@@ -24,6 +25,7 @@ export default createRouter({
     { path: '/', name: 'start', component: LocationView, meta: { tab: 'start' } },
     { path: '/play', name: 'play', component: ResultsView, meta: { tab: 'play' } },
     { path: '/play/place/:id', name: 'detail', component: DetailView, props: true, meta: { tab: 'play' } },
+    { path: '/play/indoor/:id', name: 'indoor-place', component: IndoorPlaceView, props: true, meta: { tab: 'play' } },
     { path: '/play/run', name: 'mission-run', component: MissionRunView, meta: { tab: 'play', dark: true } },
     { path: '/play/finished', name: 'mission-finished', component: MissionFinishedView, meta: { tab: 'play' } },
     { path: '/week', name: 'week', component: WeekView, meta: { tab: 'week' } },

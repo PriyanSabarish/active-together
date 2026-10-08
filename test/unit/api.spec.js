@@ -31,6 +31,7 @@ describe('POST /recommendations request contract (AC-1.1.2)', () => {
       longitude: 144.9631,
       radius_km: 3,
       duration_min: 45,
+      travel_mode: 'walking',
       excluded_categories: []
     })
   })
@@ -39,6 +40,17 @@ describe('POST /recommendations request contract (AC-1.1.2)', () => {
     fetch.mockResolvedValue(jsonResponse({ available: true }))
     await getContext({ latitude: -37.9, longitude: 145.1 })
     expect(fetch.mock.calls[0][0]).toMatch(/\/data\/context\?lat=-37\.9&lon=145\.1$/)
+  })
+
+  it('GET /data/context unwraps the { status, context } shape to the flat readings', async () => {
+    fetch.mockResolvedValue(jsonResponse({ status: 'ok', context: { available: true, temp_c: 22.3, uv_index: 8.1 } }))
+    await expect(getContext({ latitude: -37.9, longitude: 145.1 }))
+      .resolves.toEqual({ available: true, temp_c: 22.3, uv_index: 8.1 })
+  })
+
+  it('GET /data/context still accepts the older flat shape', async () => {
+    fetch.mockResolvedValue(jsonResponse({ available: true, temp_c: 18 }))
+    await expect(getContext({ latitude: -37.9, longitude: 145.1 })).resolves.toEqual({ available: true, temp_c: 18 })
   })
 
   it('encodes address autocomplete query parameters', async () => {

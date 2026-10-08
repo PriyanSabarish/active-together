@@ -63,8 +63,9 @@ _MODEL_CLIENT: ModelClient | None = (
         api_key=settings.gemini_api_key,
         model=settings.gemini_model,
         response_schema=GENERATION_RESPONSE_SCHEMA,
+        thinking_level=settings.gemini_thinking_level or None,
     )
-    if settings.gemini_api_key
+    if settings.gemini_api_key and settings.mission_generation_enabled
     else None
 )
 

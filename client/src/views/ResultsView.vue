@@ -14,6 +14,9 @@
     <button class="btn btn-primary setup-cta" @click="$router.push('/')">Set up now <span class="btn-arrow">→</span></button>
   </div>
 
+  <!-- Indoor place (story 9.3): an unverified list, no missions. -->
+  <IndoorList v-else-if="store.setting === 'indoor_place'" />
+
   <div v-else class="scroll-area">
     <!-- A mission is running: offer to go back to it before anything else. -->
     <button v-if="missionStore.status === 'in_progress'" class="resume" @click="$router.push('/play/run')">
@@ -22,11 +25,11 @@
     </button>
 
     <h1>Your top options</h1>
-    <p class="subtitle">Each one now comes with a mission for your child.</p>
+    <p class="subtitle">Each one now comes with a mission for your kid.</p>
 
     <!-- Gap 2 — the current window, and a way to change it without redoing setup. -->
     <div class="window-row">
-      <span class="window-text">{{ store.radiusKm }} km · {{ store.planMin }} min</span>
+      <span class="window-text">{{ windowLabel }}</span>
       <button class="pill adjust-btn" @click="openAdjust">Adjust</button>
     </div>
 
@@ -70,14 +73,27 @@
     <template v-else-if="store.results.length === 0">
       <div class="empty-state">
         <span class="empty-glyph">?</span>
-        <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
-        <p class="empty-text">
-          {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
-          <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
-        </p>
-        <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
-          Search {{ nextRadius }} km instead
-        </button>
+        <template v-if="store.moreTime">
+          <p class="empty-title">Not enough time for the trip</p>
+          <p class="empty-text">
+            Nothing fits in a {{ store.outingMin }} minute outing once travel there and back is counted.
+            About {{ store.moreTime.total_min }} minutes would fit
+            {{ store.moreTime.fits_count === 1 ? '1 place' : `${store.moreTime.fits_count} places` }}.
+          </p>
+          <button class="btn btn-primary widen-btn" @click="allowMoreTime">
+            Allow {{ store.moreTime.total_min }} minutes
+          </button>
+        </template>
+        <template v-else>
+          <p class="empty-title">Nothing within {{ store.radiusKm }} km</p>
+          <p class="empty-text">
+            {{ store.message || `We couldn't find activity places within ${store.radiusKm} km of ${store.locationLabel}.` }}
+            <template v-if="store.radiusKm < 10">Try a wider search radius.</template>
+          </p>
+          <button v-if="store.radiusKm < 10" class="btn btn-primary widen-btn" @click="widen">
+            Search {{ nextRadius }} km instead
+          </button>
+        </template>
       </div>
     </template>
 
@@ -95,7 +111,7 @@
       />
 
       <article
-        v-for="(place, i) in store.results"
+        v-for="place in store.results"
         :key="place.id"
         class="result-card"
         role="button"
@@ -104,7 +120,6 @@
         @keydown.enter="open(place)"
       >
         <div class="card-top">
-          <span class="rank">{{ i + 1 }}</span>
           <CategoryIcon :category="place.category" />
           <div class="card-title">
             <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
@@ -134,22 +149,18 @@
     <div class="sheet" role="dialog" aria-label="Adjust search">
       <h2>Adjust search</h2>
 
-      <p class="section-label" style="margin-top: 16px">Maximum distance</p>
+      <p class="section-label" style="margin-top: 16px">How far, each way</p>
       <div class="seg-row">
-        <button v-for="km in [3, 5, 10]" :key="km" class="seg-btn" :class="{ on: draft.radiusKm === km }" @click="draft.radiusKm = km">{{ km }} km</button>
+        <button v-for="m in MODES" :key="m.id" class="seg-btn" :class="{ on: draft.travelMode === m.id }" @click="draft.travelMode = m.id">{{ m.label }}</button>
+      </div>
+      <div class="seg-row" style="margin-top: 8px">
+        <button v-for="n in TRAVEL_STOPS" :key="n" class="seg-btn mins-btn" :class="{ on: draft.travelMin === n }" @click="draft.travelMin = n">{{ n }}</button>
       </div>
 
-      <p class="section-label" style="margin-top: 18px">How long have you got</p>
-      <button
-        v-for="opt in DURATIONS"
-        :key="opt.min"
-        class="dur-row"
-        :class="{ on: draft.durationMin === opt.min }"
-        @click="draft.durationMin = opt.min"
-      >
-        <span>{{ opt.min }} min</span>
-        <span class="dur-note">{{ opt.note }}</span>
-      </button>
+      <p class="section-label" style="margin-top: 18px">How long to play</p>
+      <div class="seg-row">
+        <button v-for="n in STAY_STOPS" :key="n" class="seg-btn mins-btn" :class="{ on: draft.durationMin === n }" @click="draft.durationMin = n">{{ n }}</button>
+      </div>
 
       <div class="btn-row" style="margin-top: 18px">
         <button class="btn btn-secondary" @click="adjusting = false">Cancel</button>
@@ -164,7 +175,7 @@
 // duration), from POST /recommendations. With no starting point yet it shows
 // the first-run setup card instead (routes into Start). Handles loading,
 // error, out-of-pilot-area and zero-result states. The Adjust sheet changes
-// radius and duration in place and refetches; the starting point itself is
+// travel time and play time in place and refetches; the starting point itself is
 // changed on Start. A running mission gets a resume banner at the top.
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -172,7 +183,8 @@ import AppHeader from '../components/AppHeader.vue'
 import CategoryIcon from '../components/CategoryIcon.vue'
 import ConditionBadge from '../components/ConditionBadge.vue'
 import PlaceMap from '../components/PlaceMap.vue'
-import { useSearchStore } from '../store'
+import IndoorList from '../components/IndoorList.vue'
+import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
 import { useMissionStore } from '../missionStore'
 
 const store = useSearchStore()
@@ -199,31 +211,41 @@ function missionFor(place) {
 
 const nextRadius = computed(() => (store.radiusKm === 3 ? 5 : 10))
 
-// Gap 2 — adjust distance and duration in place. Location is left alone; that
-// still goes through the setup form. The three durations line up with the
-// plan buckets the backend serves.
-const DURATIONS = [
-  { min: 20, note: 'a quick loop' },
-  { min: 40, note: 'room for a full mission' },
-  { min: 60, note: 'a proper outing' }
-]
+// Gap 2 — adjust travel and play time in place, with the same choices as
+// Start. Location is left alone; that still goes through Start.
+const MODES = [{ id: 'walking', label: 'Walk' }, { id: 'driving', label: 'Drive' }]
 const adjusting = ref(false)
 const justAdjusted = ref(false)
-const draft = reactive({ radiusKm: store.radiusKm, durationMin: store.planMin })
+const draft = reactive({ travelMode: store.travelMode, travelMin: store.travelMin, durationMin: store.stayMin })
+
+// Same words as Start: travel each way and time to play, not km.
+const windowLabel = computed(() =>
+  `${store.travelMode === 'walking' ? 'Walk' : 'Drive'} ${store.travelMin} min · ${store.stayMin} min to play`
+)
 
 function openAdjust() {
-  draft.radiusKm = store.radiusKm
-  draft.durationMin = store.planMin
+  draft.travelMode = store.travelMode
+  draft.travelMin = store.travelMin
+  draft.durationMin = store.stayMin
   adjusting.value = true
 }
 
 function applyAdjust() {
-  const changed = draft.radiusKm !== store.radiusKm || draft.durationMin !== store.planMin
-  store.radiusKm = draft.radiusKm
-  store.durationMin = draft.durationMin
+  const changed = draft.travelMode !== store.travelMode || draft.travelMin !== store.travelMin || draft.durationMin !== store.stayMin
+  store.setTravel({ minutes: draft.travelMin, mode: draft.travelMode })
+  store.setStay(draft.durationMin)
   adjusting.value = false
   if (!changed) return
   justAdjusted.value = true
+  store.fetchRecommendations()
+}
+
+// Raise the play time until the whole outing reaches the suggested total, using
+// the same play-time steps the Start screen offers, then search again.
+function allowMoreTime() {
+  const needed = store.moreTime.total_min - store.travelMin * 2
+  const stay = STAY_STOPS.find((m) => m >= needed) ?? STAY_STOPS[STAY_STOPS.length - 1]
+  store.setStay(Math.max(stay, store.stayMin))
   store.fetchRecommendations()
 }
 
@@ -267,22 +289,6 @@ function openById(id) {
 .resume b { font-weight: 700; }
 .resume-go { color: var(--accent); font-weight: 700; white-space: nowrap; }
 
-.rank {
-  position: absolute;
-  left: -6px;
-  top: -6px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--green);
-  color: var(--paper);
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 2px var(--card);
-}
 
 .card-foot { margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
@@ -325,29 +331,7 @@ function openById(id) {
   box-shadow: 0 -10px 30px rgba(30, 42, 31, 0.18);
 }
 
-.dur-row {
-  width: 100%;
-  margin-top: 8px;
-  height: 54px;
-  padding: 0 16px;
-  border: none;
-  border-radius: var(--radius-field);
-  background: var(--card);
-  box-shadow: var(--shadow-card);
-  color: var(--ink);
-  font-size: 15.5px;
-  font-weight: 600;
-  font-family: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
 
-.dur-row .dur-note { font-size: 13px; font-weight: 500; color: var(--ink-3); }
-.dur-row.on { background: var(--green); color: var(--paper); box-shadow: var(--shadow-selected); }
-.dur-row.on .dur-note { color: rgba(242, 241, 236, 0.75); }
 
 .results-map { margin-top: 16px; }
 

@@ -52,17 +52,25 @@ class GeminiModelClient:
         base_url: str = DEFAULT_BASE_URL,
         response_schema: dict | None = None,
         thinking_budget: int | None = None,
+        photo_thinking_level: str | None = None,
+        thinking_level: str | None = None,
     ) -> None:
         self._api_key = api_key
         self._model = model
         self._base_url = base_url
         self._response_schema = response_schema
         self._thinking_budget = thinking_budget
+        self._photo_thinking_level = photo_thinking_level
+        self._thinking_level = thinking_level
 
     def generate_text(self, prompt: str, max_tokens: int, timeout_s: int) -> str | None:
         url = f"{self._base_url}/models/{self._model}:generateContent"
         generation_config: dict = {"maxOutputTokens": max_tokens}
-        if self._thinking_budget is not None:
+        # thinking_level (e.g. "minimal") keeps replies inside the caller's
+        # time budget; it wins over thinking_budget when both are set.
+        if self._thinking_level is not None:
+            generation_config["thinkingConfig"] = {"thinkingLevel": self._thinking_level}
+        elif self._thinking_budget is not None:
             generation_config["thinkingConfig"] = {"thinkingBudget": self._thinking_budget}
         if self._response_schema is not None:
             generation_config["responseMimeType"] = "application/json"
@@ -92,7 +100,13 @@ class GeminiModelClient:
         """
         url = f"{self._base_url}/models/{self._model}:generateContent"
         generation_config: dict = {"maxOutputTokens": max_tokens, "temperature": 0}
-        if self._thinking_budget is not None:
+        # A photo check is a yes/no answer, so reasoning only adds seconds. A
+        # level (e.g. "minimal") cut a call from ~3-12 s to ~1.6 s on
+        # gemini-3.5-flash-lite; that model rejects thinkingBudget=0.
+        photo_level = self._photo_thinking_level or self._thinking_level
+        if photo_level is not None:
+            generation_config["thinkingConfig"] = {"thinkingLevel": photo_level}
+        elif self._thinking_budget is not None:
             generation_config["thinkingConfig"] = {"thinkingBudget": self._thinking_budget}
         if response_schema is not None:
             generation_config["responseMimeType"] = "application/json"

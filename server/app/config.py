@@ -6,7 +6,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).with_name(".env"),
+        # server/app/.env is tracked in git and holds shared, non-secret defaults.
+        # server/.env is git-ignored, for secrets and personal overrides (a
+        # different local database port, say). Later files win, so it wins.
+        env_file=(Path(__file__).with_name(".env"), Path(__file__).parent.parent / ".env"),
         extra="ignore",
     )
 
@@ -46,6 +49,16 @@ class Settings(BaseSettings):
     inference_host_url: str | None = None
     inference_host_token: str | None = None
     photo_check_timeout_s: float = 8.0
+    # Thinking level for photo-check calls; empty string sends none. Some models
+    # reject the field, in which case set PHOTO_GEMINI_THINKING_LEVEL= (empty).
+    photo_gemini_thinking_level: str = "minimal"
+    # Same idea for mission-text generation. Without it the model "thinks" for
+    # seconds and the 5 s generation budget runs out. Empty string sends none.
+    gemini_thinking_level: str = "minimal"
+    # False: serve the reviewed library wording as written and never call Gemini
+    # for mission text (instant, and no model rewrite of the steps). Photo
+    # checks are unaffected. Set MISSION_GENERATION_ENABLED=false for the demo.
+    mission_generation_enabled: bool = True
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20

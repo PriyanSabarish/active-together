@@ -198,8 +198,53 @@ export function mapCombo(combo, ctx) {
   }
 }
 
+// Start page, iteration 3 design: how far is chosen as travel minutes each
+// way and a mode. The backend still takes a 3/5/10 km radius, so the minutes
+// are turned into the smallest radius that covers them (walking ~5 km/h,
+// driving ~30 km/h in suburban traffic).
+export const SETTINGS = ['outdoor', 'home', 'indoor_place']
+export const TRAVEL_MODES = ['walking', 'driving']
+export const TRAVEL_STOPS = [5, 10, 15, 20, 25, 30]
+export const STAY_STOPS = [20, 30, 40, 50, 60]
+const SPEED_KMH = { walking: 5, driving: 30 }
+
+export function radiusFor(travelMin, mode) {
+  const km = (travelMin / 60) * (SPEED_KMH[mode] ?? 5)
+  return [3, 5, 10].find((r) => r >= km) ?? 10
+}
+
+// Indoor places (story 9.3) until the backend's indoor_place setting is wired:
+// a short, unverified list near the starting point, nearest first.
+const INDOOR_KINDS = [
+  { suffix: 'Library', label: 'Library', category: 'library', km: 0.8 },
+  { suffix: 'Leisure Centre', label: 'Leisure centre', category: 'leisure_centre', km: 1.6 },
+  { suffix: 'Indoor Play Centre', label: 'Indoor play', category: 'indoor_play', km: 2.4 },
+  { suffix: 'Community Hall', label: 'Community hall', category: 'community_hall', km: 3.1 }
+]
+
+export function mockIndoorPlaces(center, label, radiusKm) {
+  const base = (label || 'Local').split(/\s+/).slice(0, 2).join(' ').replace(/[0-9/]+/g, '').trim() || 'Local'
+  return INDOOR_KINDS.filter((k) => k.km <= radiusKm).map((k, i) => ({
+    id: `indoor-${i}`,
+    name: `${base} ${k.suffix}`,
+    category: k.category,
+    categoryLabel: k.label,
+    distanceKm: k.km,
+    latitude: center.latitude + 0.006 * (i + 1) * (i % 2 ? 1 : -1),
+    longitude: center.longitude + 0.007 * (i + 1),
+    unverified: true
+  }))
+}
+
 export const useSearchStore = defineStore('search', {
   state: () => ({
+    // Start: outdoors, at home or an indoor place (story 9.1)
+    setting: 'outdoor',
+    travelMode: 'walking',
+    travelMin: 10, // each way
+    stayMin: 40, // time to play there (or at home)
+    whenAt: null, // chosen forecast hour (ISO string); null = now
+    indoorResults: [],
     // screen 1
     suburb: '',
     selectedAddress: null, // { id, label, latitude, longitude, suburb, postcode }
@@ -208,18 +253,29 @@ export const useSearchStore = defineStore('search', {
     radiusKm: 5,
     recent: ['Carlton', 'Clayton'],
     // screen 2
-    durationMin: 45,
+    durationMin: 40, // what POST /recommendations gets; kept equal to stayMin by setStay
     context: null, // GET /data/context payload for the chosen point
     contextLoading: false,
     // results
     loading: false,
     status: 'idle', // 'idle' | 'ok' | 'zero_results' | 'out_of_bounds' | 'error'
     message: '',
+    suggestions: [], // zero-result next steps from the server (more_time, other_mode)
     error: '',
     results: [],
     _requestSeq: 0
   }),
   getters: {
+    // Whole outing in minutes: travel out + play + travel back, capped at the
+    // 120 the backend accepts. This is what POST /recommendations plans around;
+    // the backend picks each place's own plan length from what is left.
+    outingMin(state) {
+      return Math.min(120, Math.max(20, state.travelMin * 2 + state.stayMin))
+    },
+    // The server's "more time" suggestion, if any, when nothing fits.
+    moreTime(state) {
+      return state.suggestions.find((x) => x.kind === 'more_time') ?? null
+    },
     locationLabel(state) {
       if (state.useMyLocation) return 'your location'
       if (state.selectedAddress) return state.selectedAddress.label
@@ -241,9 +297,26 @@ export const useSearchStore = defineStore('search', {
     },
     place(state) {
       return (id) => state.results.find((p) => p.id === id)
+    },
+    indoorPlace(state) {
+      return (id) => state.indoorResults.find((p) => p.id === id)
     }
   },
   actions: {
+    // Travel minutes and mode decide the radius the backend searches.
+    setTravel({ minutes = this.travelMin, mode = this.travelMode } = {}) {
+      this.travelMin = minutes
+      this.travelMode = mode
+      this.radiusKm = radiusFor(minutes, mode)
+    },
+    setStay(minutes) {
+      this.stayMin = minutes
+      this.durationMin = minutes
+    },
+    searchIndoor() {
+      const c = this.coords
+      this.indoorResults = c ? mockIndoorPlaces(c, this.selectedAddress?.suburb || this.suburb || 'Local', this.radiusKm) : []
+    },
     rememberSuburb(name) {
       if (!name) return
       this.recent = [name, ...this.recent.filter((r) => r !== name)].slice(0, 3)
@@ -288,6 +361,7 @@ export const useSearchStore = defineStore('search', {
       this.results = []
       this.status = 'idle'
       this.message = ''
+      this.suggestions = []
       this.error = ''
       try {
         const preferencesStore = usePreferencesStore()
@@ -295,7 +369,8 @@ export const useSearchStore = defineStore('search', {
           latitude: coords.latitude,
           longitude: coords.longitude,
           radiusKm: this.radiusKm,
-          durationMin: this.durationMin,
+          durationMin: this.outingMin,
+          travelMode: this.travelMode,
           excludedCategories: preferencesStore.excludedCategories
         })
         if (seq !== this._requestSeq) return // a newer search superseded this one
@@ -303,6 +378,7 @@ export const useSearchStore = defineStore('search', {
         this.results = (data.combos ?? []).map((c) => mapCombo(c, ctx))
         this.status = data.status ?? (this.results.length ? 'ok' : 'zero_results')
         this.message = data.message ?? ''
+        this.suggestions = data.suggestions ?? []
       } catch (e) {
         if (seq !== this._requestSeq) return
         this.status = 'error'

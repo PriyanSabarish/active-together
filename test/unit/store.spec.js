@@ -42,9 +42,34 @@ describe('AC-1.1.2 — Radius and pilot boundary are enforced', () => {
       latitude: SUBURB_COORDS.Melbourne.latitude,
       longitude: SUBURB_COORDS.Melbourne.longitude,
       radiusKm: 3,
-      durationMin: store.durationMin,
+      // the whole outing: travel each way x 2 + play time (10 x 2 + 40 by default)
+      durationMin: 60,
+      travelMode: 'walking',
       excludedCategories: []
     })
+  })
+
+  it('the whole outing, not just play time, is what the server plans around', async () => {
+    postRecommendations.mockResolvedValue(okResponse([makeCombo()]))
+    const store = useSearchStore()
+    store.suburb = 'Melbourne'
+    store.travelMin = 15
+    store.stayMin = 50
+    await store.fetchRecommendations()
+    expect(postRecommendations.mock.calls.at(-1)[0].durationMin).toBe(80)
+    store.travelMin = 30
+    store.stayMin = 60
+    await store.fetchRecommendations()
+    expect(postRecommendations.mock.calls.at(-1)[0].durationMin).toBe(120)
+  })
+
+  it('zero results keep the server\x27s more-time suggestion', async () => {
+    postRecommendations.mockResolvedValue({ status: 'zero_results', combos: [], suggestions: [{ kind: 'more_time', total_min: 36, fits_count: 4 }, { kind: 'other_mode', mode: 'cycling' }] })
+    const store = useSearchStore()
+    store.suburb = 'Melbourne'
+    await store.fetchRecommendations()
+    expect(store.status).toBe('zero_results')
+    expect(store.moreTime).toEqual({ kind: 'more_time', total_min: 36, fits_count: 4 })
   })
 
   it.todo('TC-1.1.2-02 — inclusive 5 km distance boundary (backend query logic; pytest with seeded places)')
