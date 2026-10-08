@@ -64,11 +64,14 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
 }
 
 // GET /data/context?lat=&lon=
-// returns the current Open-Meteo readings for a point:
+// returns the current readings for a point:
 // { available, temp_c, precip_prob, wind_gust_kmh, uv_index, pm25, pm10 }
-export function getContext({ latitude, longitude }) {
+// Since Oct 2026 the backend wraps them as { status, context: {...} }; both
+// shapes are accepted so callers always get the flat readings.
+export async function getContext({ latitude, longitude }) {
   const qs = new URLSearchParams({ lat: String(latitude), lon: String(longitude) })
-  return request(`/data/context?${qs}`)
+  const data = await request(`/data/context?${qs}`)
+  return data && typeof data.context === 'object' && data.context !== null ? data.context : data
 }
 
 // Hourly forecast for the Start page's "When?" strip, straight from Open-Meteo

@@ -31,7 +31,7 @@
         <div class="fact-tile">
           <p class="fact-label">◷ Travel time</p>
           <p class="fact-value">{{ facts.travel }}</p>
-          <p class="fact-note">each way, on foot</p>
+          <p class="fact-note">{{ facts.travelNote }}</p>
         </div>
       </div>
 
@@ -201,14 +201,16 @@ function airLabel(pm) {
   return ['Poor', 'Keep it short']
 }
 
-// The four fact tiles read the same context call the Time screen uses; the
-// travel estimate is a walking pace over the straight-line distance.
+// The four fact tiles read the same context call the Start page uses; the
+// travel estimate is the chosen mode's pace over the straight-line distance
+// (walking ~5 km/h, driving ~30 km/h, the speeds Start uses for the radius).
 const facts = computed(() => {
   const w = store.weather
   const ok = w && w.available !== false
   const rain = ok && w.precip_prob != null ? Math.round(w.precip_prob * 100) : null
   const [air, airNote] = airLabel(ok ? w.pm25 : null)
   const km = Number(place.value?.distanceKm ?? 0)
+  const driving = store.travelMode === 'driving'
   return {
     temp: ok && w.temp_c != null ? `${Math.round(w.temp_c)}°` : '—',
     rain: rain == null ? (ok ? 'No rain data' : 'Weather unavailable') : rain >= 50 ? 'Rain likely' : rain >= 25 ? `${rain}% chance of rain` : 'Clear',
@@ -216,7 +218,8 @@ const facts = computed(() => {
     uvNote: uvNote(ok ? w.uv_index : null),
     air,
     airNote,
-    travel: km ? `${Math.max(1, Math.round(km * 12))} min` : '—'
+    travel: km ? `${Math.max(1, Math.round(km * (driving ? 2 : 12)))} min` : '—',
+    travelNote: driving ? 'each way, by car' : 'each way, on foot'
   }
 })
 

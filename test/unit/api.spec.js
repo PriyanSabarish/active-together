@@ -41,6 +41,17 @@ describe('POST /recommendations request contract (AC-1.1.2)', () => {
     expect(fetch.mock.calls[0][0]).toMatch(/\/data\/context\?lat=-37\.9&lon=145\.1$/)
   })
 
+  it('GET /data/context unwraps the { status, context } shape to the flat readings', async () => {
+    fetch.mockResolvedValue(jsonResponse({ status: 'ok', context: { available: true, temp_c: 22.3, uv_index: 8.1 } }))
+    await expect(getContext({ latitude: -37.9, longitude: 145.1 }))
+      .resolves.toEqual({ available: true, temp_c: 22.3, uv_index: 8.1 })
+  })
+
+  it('GET /data/context still accepts the older flat shape', async () => {
+    fetch.mockResolvedValue(jsonResponse({ available: true, temp_c: 18 }))
+    await expect(getContext({ latitude: -37.9, longitude: 145.1 })).resolves.toEqual({ available: true, temp_c: 18 })
+  })
+
   it('encodes address autocomplete query parameters', async () => {
     fetch.mockResolvedValue(jsonResponse({ suggestions: [] }))
     await searchAddresses('1 Centre Road')
