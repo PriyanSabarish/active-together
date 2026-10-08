@@ -33,6 +33,7 @@ support and need disabling it.
 
 from __future__ import annotations
 
+import base64
 import logging
 
 import httpx
@@ -51,17 +52,25 @@ class GeminiModelClient:
         base_url: str = DEFAULT_BASE_URL,
         response_schema: dict | None = None,
         thinking_budget: int | None = None,
+        photo_thinking_level: str | None = None,
+        thinking_level: str | None = None,
     ) -> None:
         self._api_key = api_key
         self._model = model
         self._base_url = base_url
         self._response_schema = response_schema
         self._thinking_budget = thinking_budget
+        self._photo_thinking_level = photo_thinking_level
+        self._thinking_level = thinking_level
 
     def generate_text(self, prompt: str, max_tokens: int, timeout_s: int) -> str | None:
         url = f"{self._base_url}/models/{self._model}:generateContent"
         generation_config: dict = {"maxOutputTokens": max_tokens}
-        if self._thinking_budget is not None:
+        # thinking_level (e.g. "minimal") keeps replies inside the caller's
+        # time budget; it wins over thinking_budget when both are set.
+        if self._thinking_level is not None:
+            generation_config["thinkingConfig"] = {"thinkingLevel": self._thinking_level}
+        elif self._thinking_budget is not None:
             generation_config["thinkingConfig"] = {"thinkingBudget": self._thinking_budget}
         if self._response_schema is not None:
             generation_config["responseMimeType"] = "application/json"
@@ -72,6 +81,51 @@ class GeminiModelClient:
             "generationConfig": generation_config,
         }
 
+        return self._post(url, payload, timeout_s)
+
+    def generate_from_image(
+        self,
+        prompt: str,
+        image_bytes: bytes,
+        max_tokens: int,
+        timeout_s: int,
+        response_schema: dict | None = None,
+        mime_type: str = "image/jpeg",
+    ) -> str | None:
+        """Multimodal call for photo checks (B52). Temperature 0.
+
+        The image goes out inline in the request body and is held in memory
+        only. Nothing here logs the payload: failures log the status code or
+        the exception class, never the request body.
+        """
+        url = f"{self._base_url}/models/{self._model}:generateContent"
+        generation_config: dict = {"maxOutputTokens": max_tokens, "temperature": 0}
+        # A photo check is a yes/no answer, so reasoning only adds seconds. A
+        # level (e.g. "minimal") cut a call from ~3-12 s to ~1.6 s on
+        # gemini-3.5-flash-lite; that model rejects thinkingBudget=0.
+        photo_level = self._photo_thinking_level or self._thinking_level
+        if photo_level is not None:
+            generation_config["thinkingConfig"] = {"thinkingLevel": photo_level}
+        elif self._thinking_budget is not None:
+            generation_config["thinkingConfig"] = {"thinkingBudget": self._thinking_budget}
+        if response_schema is not None:
+            generation_config["responseMimeType"] = "application/json"
+            generation_config["responseSchema"] = response_schema
+
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt},
+                        {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode("ascii")}},
+                    ]
+                }
+            ],
+            "generationConfig": generation_config,
+        }
+        return self._post(url, payload, timeout_s)
+
+    def _post(self, url: str, payload: dict, timeout_s: int) -> str | None:
         try:
             response = httpx.post(url, params={"key": self._api_key}, json=payload, timeout=timeout_s)
         except httpx.RequestError as exc:

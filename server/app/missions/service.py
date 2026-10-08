@@ -37,7 +37,7 @@ from app.missions.instrumentation import RejectionStats
 from app.missions.loader import load_template_dir
 from app.missions.models import MissionTemplate
 from app.model_client import ModelClient
-from app.models import AgeBand, Context, Mission, Place
+from app.models import AgeBand, Context, Mission, Place, Setting
 
 # Demo allowlist: only the families whose wording has been rewritten are
 # served for now. Add an id here as each remaining family is updated; an
@@ -63,8 +63,9 @@ _MODEL_CLIENT: ModelClient | None = (
         api_key=settings.gemini_api_key,
         model=settings.gemini_model,
         response_schema=GENERATION_RESPONSE_SCHEMA,
+        thinking_level=settings.gemini_thinking_level or None,
     )
-    if settings.gemini_api_key
+    if settings.gemini_api_key and settings.mission_generation_enabled
     else None
 )
 
@@ -78,6 +79,7 @@ def get_missions(
     recent_template_ids: Iterable[str] = (),
     max_missions: int = MAX_MISSIONS,
     model_client: ModelClient | None = _MODEL_CLIENT,
+    setting: Setting | str = Setting.OUTDOOR,
 ) -> list[Mission]:
     # If nothing is long enough for the requested bucket (the rewritten
     # families only exist at 40 minutes for now), fall back to the longest
@@ -95,6 +97,7 @@ def get_missions(
             max_missions=max_missions,
             stats=REJECTION_STATS,
             eligible_categories=ELIGIBLE_CATEGORIES,
+            setting=setting,
         )
         if missions:
             return missions

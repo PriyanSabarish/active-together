@@ -101,23 +101,26 @@ export function searchAddresses(query, { signal } = {}) {
   return request(`/locations/autocomplete?${qs}`, { signal })
 }
 
-// POST /verify-step (story 6.3)
-// multipart: image (EXIF-free JPEG), prompt_id, attempt (1-3). Never a run id,
-// record data or any journal photo.
-// returns: { result: 'match' | 'no_match' | ..., attempts_left, checked_by }
+// POST /verify-step?prompt_id=&attempt= (story 6.3)
+// body: the raw image (EXIF-free JPEG), not multipart, so the server can keep it
+// in memory. Query: prompt_id and attempt (1-3) only. Never a run id, record
+// data or any journal photo; the server rejects any other parameter.
+// returns: { result: 'confirmed' | 'retry' | 'use_tap', attempts_left, checked_by }
 // Any failure (offline, endpoint not live, no scorer, or no answer within
 // timeoutMs) throws, and the run screen falls back to a tap confirm — never an
 // endless spinner.
 export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 8000 }) {
-  const form = new FormData()
-  form.append('image', image, 'check.jpg')
-  form.append('prompt_id', String(promptId ?? ''))
-  form.append('attempt', String(attempt))
+  const query = new URLSearchParams({ prompt_id: String(promptId ?? ''), attempt: String(attempt) })
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), timeoutMs)
   let res
   try {
-    res = await fetch(`${BASE_URL}/verify-step`, { method: 'POST', body: form, headers: { Accept: 'application/json' }, signal: ctrl.signal })
+    res = await fetch(`${BASE_URL}/verify-step?${query}`, {
+      method: 'POST',
+      body: image,
+      headers: { Accept: 'application/json', 'Content-Type': 'image/jpeg' },
+      signal: ctrl.signal
+    })
   } catch {
     throw new ApiError('Could not reach the photo check.', 0)
   } finally {

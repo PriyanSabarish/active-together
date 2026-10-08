@@ -6,7 +6,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).with_name(".env"),
+        # server/app/.env is tracked in git and holds shared, non-secret defaults.
+        # server/.env is git-ignored, for secrets and personal overrides (a
+        # different local database port, say). Later files win, so it wins.
+        env_file=(Path(__file__).with_name(".env"), Path(__file__).parent.parent / ".env"),
         extra="ignore",
     )
 
@@ -31,6 +34,31 @@ class Settings(BaseSettings):
     # never in the repository.
     gemini_api_key: str | None = None
     gemini_model: str = "gemini-3.5-flash-lite"
+
+    # Photo checks (iteration 3, B52/B53/B55). All optional so the app boots and
+    # tests run with nothing configured; with nothing set every photo step
+    # falls back to a tap. photo_api_enabled stays False until the mentor has
+    # signed off on sending photos to the Gemini API (D6) and the data terms
+    # are confirmed (D2). Host URL and token live in environment variables only.
+    photo_api_enabled: bool = False
+    # True (default): a scorer is only asked about prompts measured and kept
+    # for it (B54). False: candidate prompts are asked too, so photo checks
+    # work before any measurement exists. Prompts marked dropped are never
+    # asked either way. The accuracy of unmeasured checks is not known.
+    photo_require_measured: bool = True
+    inference_host_url: str | None = None
+    inference_host_token: str | None = None
+    photo_check_timeout_s: float = 8.0
+    # Thinking level for photo-check calls; empty string sends none. Some models
+    # reject the field, in which case set PHOTO_GEMINI_THINKING_LEVEL= (empty).
+    photo_gemini_thinking_level: str = "minimal"
+    # Same idea for mission-text generation. Without it the model "thinks" for
+    # seconds and the 5 s generation budget runs out. Empty string sends none.
+    gemini_thinking_level: str = "minimal"
+    # False: serve the reviewed library wording as written and never call Gemini
+    # for mission text (instant, and no model rewrite of the steps). Photo
+    # checks are unaffected. Set MISSION_GENERATION_ENABLED=false for the demo.
+    mission_generation_enabled: bool = True
 
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20

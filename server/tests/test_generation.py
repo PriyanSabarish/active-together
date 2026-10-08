@@ -314,3 +314,37 @@ def test_preferences_and_recent_ids_still_apply():
         recent_template_ids=["fx_excluded"],
     )
     assert [m.template_id for m in missions] == ["fx_other"]
+
+
+class SlowModelClient:
+    """Every call times out after using up the whole timeout it was given."""
+
+    def __init__(self, clock):
+        self.clock = clock
+        self.timeouts = []
+
+    def generate_text(self, prompt: str, max_tokens: int, timeout_s: float) -> str | None:
+        self.timeouts.append(timeout_s)
+        self.clock.now += timeout_s
+        return None
+
+
+def test_five_second_budget_covers_the_whole_request_not_each_candidate(monkeypatch):
+    from app.missions import generation
+
+    class Clock:
+        now = 1000.0
+
+    clock = Clock()
+    monkeypatch.setattr(generation.time, "monotonic", lambda: clock.now)
+    templates = [_template(template_id=f"fx_slow_{i}") for i in range(3)]
+    client = SlowModelClient(clock)
+    missions = generate_missions(
+        templates, PLACE_PLAYGROUND, fixtures.CLEAR_MILD, AgeBand.BAND_5_7, 20,
+        model_client=client, max_missions=3,
+    )
+    # the first call spends the whole budget; the other candidates go straight
+    # to their reviewed library text instead of waiting another 5 s each
+    assert len(client.timeouts) == 1
+    assert client.timeouts[0] <= generation.GENERATION_TIMEOUT_S
+    assert len(missions) == 3

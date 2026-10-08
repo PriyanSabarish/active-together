@@ -3,7 +3,7 @@ templates:
   - template_id: activity_viewpoint_switch
     title: "Viewpoint Switch"
     category: any
-    duration_bucket: 40
+    duration_bucket: 60
     weather_tags: [dry]
     site_requirements: [bare_site, open_space]
     equipment: []
@@ -25,16 +25,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Crouch like an ant and find a stone. I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_stone
+            variable: true
+          - sequence: 4
             prompt_text: "Bend over and look at me through your legs!"
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Tiptoe like a giant and spot a leaf to photograph."
+            verify_mode: photo
+            prompt_id: p_leaf
+            variable: true
+          - sequence: 6
             prompt_text: "Walk away until I look tiny, then run back."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Lie on your back. Point to the highest thing you see."
             verify_mode: self
             prompt_id: null
@@ -53,16 +63,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Lie down and find a stone. I'll take a photo of it."
+            verify_mode: photo
+            prompt_id: p_stone
+            variable: true
+          - sequence: 4
             prompt_text: "Run around something you can see, stopping four times to look. Which side looks most different?"
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find a flower and look at it from up high and down low. Tell me which view is better, then I'll photograph it."
+            verify_mode: photo
+            prompt_id: p_flower
+            variable: true
+          - sequence: 6
             prompt_text: "Look at me through your legs, then from lying down. Which view makes me look taller?"
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Your turn: tell me to crouch, tiptoe or lie down, and tell me what to look for."
             verify_mode: self
             prompt_id: null
@@ -81,16 +101,26 @@ templates:
             prompt_id: null
             variable: true
           - sequence: 3
+            prompt_text: "Predict which leaf you can find will be the biggest. Find it, then I'll take a photo of it."
+            verify_mode: photo
+            prompt_id: p_leaf
+            variable: true
+          - sequence: 4
             prompt_text: "Plan three views of the same thing: low, high and far. Run to each and decide which surprised you most."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 4
+          - sequence: 5
+            prompt_text: "Find a stick and choose the viewpoint that makes it look longest. I'll photograph it from your spot."
+            verify_mode: photo
+            prompt_id: p_stick
+            variable: true
+          - sequence: 6
             prompt_text: "Find a spot where I look small enough to stand on your hand."
             verify_mode: self
             prompt_id: null
             variable: true
-          - sequence: 5
+          - sequence: 7
             prompt_text: "Set me a viewpoint challenge: tell me where to stand and what to look at, then I'll tell you what I see."
             verify_mode: self
             prompt_id: null
