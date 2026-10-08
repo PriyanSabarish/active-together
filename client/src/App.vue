@@ -1,5 +1,5 @@
 <template>
-  <div class="phone" :class="{ dark: isDark }">
+  <div class="phone" :class="{ dark: isDark, green: isGreen }">
     <LoginGate v-if="!authed" @authenticated="signIn" />
     <template v-else>
       <router-view v-slot="{ Component, route }">
@@ -37,6 +37,7 @@ import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
 import { usePhotoStore } from './photoStore'
+import { useMissionStore } from './missionStore'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
@@ -91,6 +92,9 @@ const transitionName = ref('slide-left')
 
 const currentTab = computed(() => router.currentRoute.value.meta.tab ?? '')
 const isDark = computed(() => !!router.currentRoute.value.meta.dark)
+// The end-of-mission photo prompt sits on a green shell.
+const missionStore = useMissionStore()
+const isGreen = computed(() => router.currentRoute.value.name === 'mission-finished' && missionStore.status === 'done' && missionStore.finishPhase === 'capture')
 const showTabBar = computed(() => !!currentTab.value && !router.currentRoute.value.meta.hideTabBar)
 
 watch(

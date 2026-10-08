@@ -97,12 +97,19 @@ const weatherPill = computed(() => {
   white-space: nowrap;
 }
 
-/* dark screen variant */
-.phone.dark .pin-body { fill: var(--paper); }
-.phone.dark .pin-smile { stroke: var(--dark); }
+/* dark (mission run) and green (photo prompt) screen variants */
+.phone.dark .pin-body,
+.phone.green .pin-body { fill: var(--paper); }
+.phone.dark .pin-smile,
 .phone.dark .pin-smile-2 { stroke: var(--dark); }
-.phone.dark .pin-eye { fill: var(--accent); }
+.phone.green .pin-smile,
+.phone.green .pin-smile-2 { stroke: var(--green); }
+.phone.dark .pin-eye,
+.phone.green .pin-eye { fill: var(--accent); }
 .phone.dark .w-active,
-.phone.dark .w-together { color: rgba(242, 241, 236, 0.85); }
-.phone.dark .wx-pill { background: rgba(242, 241, 236, 0.1); color: rgba(242, 241, 236, 0.85); }
+.phone.dark .w-together,
+.phone.green .w-active,
+.phone.green .w-together { color: var(--paper); }
+.phone.dark .wx-pill,
+.phone.green .wx-pill { background: rgba(242, 241, 236, 0.1); color: rgba(242, 241, 236, 0.85); }
 </style>

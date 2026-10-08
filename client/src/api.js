@@ -64,11 +64,37 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
 }
 
 // GET /data/context?lat=&lon=
-// returns the current Open-Meteo readings for a point:
+// returns the current readings for a point:
 // { available, temp_c, precip_prob, wind_gust_kmh, uv_index, pm25, pm10 }
-export function getContext({ latitude, longitude }) {
+// Since Oct 2026 the backend wraps them as { status, context: {...} }; both
+// shapes are accepted so callers always get the flat readings.
+export async function getContext({ latitude, longitude }) {
   const qs = new URLSearchParams({ lat: String(latitude), lon: String(longitude) })
-  return request(`/data/context?${qs}`)
+  const data = await request(`/data/context?${qs}`)
+  return data && typeof data.context === 'object' && data.context !== null ? data.context : data
+}
+
+// Hourly forecast for the Start page's "When?" strip, straight from Open-Meteo
+// (free, no key) until the backend serves a forecast. Coordinates are rounded
+// to 2 dp (~1 km) before they leave the phone.
+// returns: [{ time: Date, temp, rain (0-100), uv }] for the next 7 days.
+export async function getHourlyForecast({ latitude, longitude }) {
+  const qs = new URLSearchParams({
+    latitude: latitude.toFixed(2),
+    longitude: longitude.toFixed(2),
+    hourly: 'temperature_2m,precipitation_probability,uv_index',
+    timezone: 'Australia/Melbourne',
+    forecast_days: '7'
+  })
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?${qs}`)
+  if (!res.ok) throw new ApiError('Forecast unavailable.', res.status)
+  const h = (await res.json()).hourly ?? {}
+  return (h.time ?? []).map((t, i) => ({
+    time: new Date(t),
+    temp: h.temperature_2m?.[i] ?? null,
+    rain: h.precipitation_probability?.[i] ?? null,
+    uv: h.uv_index?.[i] ?? null
+  }))
 }
 
 // GET /locations/autocomplete?q=&limit=
