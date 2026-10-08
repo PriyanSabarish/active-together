@@ -260,11 +260,22 @@ export const useSearchStore = defineStore('search', {
     loading: false,
     status: 'idle', // 'idle' | 'ok' | 'zero_results' | 'out_of_bounds' | 'error'
     message: '',
+    suggestions: [], // zero-result next steps from the server (more_time, other_mode)
     error: '',
     results: [],
     _requestSeq: 0
   }),
   getters: {
+    // Whole outing in minutes: travel out + play + travel back, capped at the
+    // 120 the backend accepts. This is what POST /recommendations plans around;
+    // the backend picks each place's own plan length from what is left.
+    outingMin(state) {
+      return Math.min(120, Math.max(20, state.travelMin * 2 + state.stayMin))
+    },
+    // The server's "more time" suggestion, if any, when nothing fits.
+    moreTime(state) {
+      return state.suggestions.find((x) => x.kind === 'more_time') ?? null
+    },
     locationLabel(state) {
       if (state.useMyLocation) return 'your location'
       if (state.selectedAddress) return state.selectedAddress.label
@@ -350,6 +361,7 @@ export const useSearchStore = defineStore('search', {
       this.results = []
       this.status = 'idle'
       this.message = ''
+      this.suggestions = []
       this.error = ''
       try {
         const preferencesStore = usePreferencesStore()
@@ -357,7 +369,8 @@ export const useSearchStore = defineStore('search', {
           latitude: coords.latitude,
           longitude: coords.longitude,
           radiusKm: this.radiusKm,
-          durationMin: this.durationMin,
+          durationMin: this.outingMin,
+          travelMode: this.travelMode,
           excludedCategories: preferencesStore.excludedCategories
         })
         if (seq !== this._requestSeq) return // a newer search superseded this one
@@ -365,6 +378,7 @@ export const useSearchStore = defineStore('search', {
         this.results = (data.combos ?? []).map((c) => mapCombo(c, ctx))
         this.status = data.status ?? (this.results.length ? 'ok' : 'zero_results')
         this.message = data.message ?? ''
+        this.suggestions = data.suggestions ?? []
       } catch (e) {
         if (seq !== this._requestSeq) return
         this.status = 'error'
