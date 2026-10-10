@@ -39,6 +39,8 @@ export function mapMission(mission, { placeName, category, reason }) {
       title: s.prompt_text,
       confirm: s.verify_mode === 'photo' ? 'photo' : 'tap',
       promptId: s.prompt_id ?? null,
+      // Stick-figure illustration id; the run screen falls back to icon.
+      figure: s.figure ?? null,
       icon: STEP_ICONS[i % STEP_ICONS.length]
     }))
   }

@@ -101,6 +101,12 @@ export async function getHourlyForecast({ latitude, longitude }) {
   }))
 }
 
+// Step illustration SVG, served by the backend from server/app/assets.
+// figure is the id POST /missions puts on each step.
+export function figureUrl(figure) {
+  return `${BASE_URL}/assets/figures/${encodeURIComponent(figure)}.svg`
+}
+
 // GET /locations/autocomplete?q=&limit=
 // returns Vicmap addresses restricted to the three pilot LGAs.
 export function searchAddresses(query, { signal } = {}) {

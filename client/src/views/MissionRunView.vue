@@ -47,8 +47,10 @@
           </div>
         </div>
 
-        <div v-else class="sketch" aria-hidden="true">
-          <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path :d="taskIcon(step.icon)" /></svg>
+        <div v-else class="sketch" :class="{ 'has-figure': !!figureSvg }" aria-hidden="true">
+          <!-- Stick figure for this step when the backend names one, else the step icon. -->
+          <div v-if="figureSvg" class="figure-art" v-html="figureSvg" />
+          <svg v-else width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path :d="taskIcon(step.icon)" /></svg>
         </div>
 
         <span v-if="isPhotoStep && pc === 'idle'" class="pc-pill">
@@ -140,6 +142,7 @@ import { useMissionStore } from '../missionStore'
 import { usePhotoStore } from '../photoStore'
 import { postVerifyStep } from '../api'
 import { taskIcon, CAMERA } from '../taskIcons'
+import { loadFigure } from '../figures'
 
 const ORANGE = '#E8913A'
 const OFF = 'rgba(242,241,236,.22)'
@@ -151,6 +154,15 @@ const mission = computed(() => missionStore.active)
 const step = computed(() => missionStore.currentStep)
 const isLast = computed(() => missionStore.stepIndex === missionStore.totalSteps - 1)
 const isPhotoStep = computed(() => step.value?.confirm === 'photo')
+
+// Stick-figure SVG for the current step ('' while loading or when there is none).
+const figureSvg = ref('')
+watch(() => step.value?.figure, async (id) => {
+  figureSvg.value = ''
+  if (!id) return
+  const svg = await loadFigure(id)
+  if (step.value?.figure === id) figureSvg.value = svg
+}, { immediate: true })
 
 const sheet = ref(false)
 const camera = ref(null) // null | 'keep' | 'check'
@@ -437,6 +449,12 @@ function advance(result) {
   color: rgba(242, 241, 236, 0.55);
 }
 
+/* Stick figures are drawn for the dark card; line art in currentColor picks
+   up the paper colour here. */
+.sketch.has-figure { height: 168px; margin: -6px -10px 12px; color: rgba(242, 241, 236, 0.9); }
+.figure-art { width: 100%; height: 100%; }
+.figure-art :deep(svg) { display: block; width: 100%; height: 100%; }
+
 .pc-pill {
   display: inline-flex;
   align-items: center;
@@ -498,6 +516,7 @@ function advance(result) {
    the task and its buttons fit; anything left over scrolls. */
 @media (max-height: 760px) {
   .sketch { height: 72px; margin-bottom: 10px; }
+  .sketch.has-figure { height: 104px; }
   .sketch svg { width: 52px; height: 52px; }
   .step-card { padding: 18px 20px 20px; margin-bottom: 14px; }
   .step-big { font-size: 26px; }
