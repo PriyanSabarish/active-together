@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
+import { RECORDS, getAll, put, remove, askPersist } from './db'
 
 // ---------------------------------------------------------------------------
 // F20 — completed-mission history, written to by MissionFinishedView (F19)
-// and read by Today's this-week count (F21) and Weekly insights (F22/F23).
+// and read by the Week diary and You.
 //
-// In-memory only for now. Whether this needs to survive a reload (localStorage
-// / IndexedDB) or become a server record is an open item in the doc
-// ("Insights persistence") with no owner yet — not decided here.
+// F55/F56: real records are saved to IndexedDB (db.js) on the device and
+// loaded back by hydrate() at startup; nothing is sent to a server. Demo
+// records (demo: true) live in memory only and are never saved.
 // ---------------------------------------------------------------------------
 
 export function mondayOf(date) {
@@ -105,7 +106,8 @@ export const useHistoryStore = defineStore('history', {
     // templateId is the backend template_id, absent on records made before
     // real /missions wiring — recentTemplateIds tolerates that.
     records: [],
-    _recordSeq: 0 // disambiguates ids when two records land in the same millisecond
+    _recordSeq: 0, // disambiguates ids when two records land in the same millisecond
+    hydrated: false
   }),
   getters: {
     // Most-recent-first template_ids, for POST /missions' recent_template_ids
@@ -150,14 +152,32 @@ export const useHistoryStore = defineStore('history', {
     }
   },
   actions: {
+    // Load saved outings from the device, newest first. Safe to call twice.
+    async hydrate() {
+      if (this.hydrated) return
+      this.hydrated = true
+      const saved = await getAll(RECORDS)
+      if (!saved.length) return
+      const known = new Set(this.records.map((r) => r.id))
+      const merged = [...this.records, ...saved.filter((r) => !known.has(r.id))]
+      merged.sort((a, b) => (b.date + (b.createdAt ?? '')).localeCompare(a.date + (a.createdAt ?? '')))
+      this.records = merged
+    },
     addRecord(record) {
       // Date.now() alone can collide when two records are added in the same
       // millisecond (seen in tests) — a counter keeps ids unique.
       this._recordSeq += 1
-      this.records.unshift({ id: `rec-${Date.now()}-${this._recordSeq}`, ...record })
+      const row = { id: `rec-${Date.now()}-${this._recordSeq}`, createdAt: new Date().toISOString(), ...record }
+      this.records.unshift(row)
+      if (!row.demo) {
+        askPersist()
+        put(RECORDS, { ...row })
+      }
+      return row
     },
     removeRecord(id) {
       this.records = this.records.filter((r) => r.id !== id)
+      remove(RECORDS, id)
     }
   }
 })

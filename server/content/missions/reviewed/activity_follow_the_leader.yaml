@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: null, status: draft}
+    review: {author: Ritvik, reviewed_by: null, status: draft}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_around_and_copy_how_i_walk
           - sequence: 2
             prompt_text: "Follow me again. This time we're animals, so copy my animal!"
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_again_this_time_were_animals_so_copy_my_animal
           - sequence: 3
             prompt_text: "Lead me like an animal to a leaf. I'll photograph it."
             verify_mode: photo
             prompt_id: p_leaf
             variable: true
+            figure: leaf_simple
           - sequence: 4
             prompt_text: "Your turn to lead. I'll follow everything you do."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: your_turn_to_lead_ill_follow_everything_you_do
           - sequence: 5
             prompt_text: "Copy my frog jumps, then find something round to photograph."
             verify_mode: photo
             prompt_id: p_round
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 6
             prompt_text: "Follow me and copy two moves in a row."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 7
             prompt_text: "Lead me on an animal parade. Change animals whenever you want."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: lead_me_on_an_animal_parade_change_animals_whenever_you_want
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_around_and_copy_how_i_walk
           - sequence: 2
             prompt_text: "Animal follow: copy my moves, like ten frog jumps, then a crab walk."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_again_this_time_were_animals_so_copy_my_animal
           - sequence: 3
             prompt_text: "Lead me to a stone, using three different moves on the way. I'll take a photo of it."
             verify_mode: photo
             prompt_id: p_stone
             variable: true
+            figure: your_turn_to_lead_ill_follow_everything_you_do
           - sequence: 4
             prompt_text: "Your turn to lead. Use at least three different moves and I'll follow."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: your_turn_to_lead_ill_follow_everything_you_do
           - sequence: 5
             prompt_text: "Copy my moves until I stop, then find something red within ten steps. I'll photograph it."
             verify_mode: photo
             prompt_id: p_red
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 6
             prompt_text: "Copy my three-move combo in order. If you miss one, we try it again."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 7
             prompt_text: "Lead me on a route around our space, using a different move for each part."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: lead_me_on_an_animal_parade_change_animals_whenever_you_want
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_around_and_copy_how_i_walk
           - sequence: 2
             prompt_text: "Plan an animal route with three animals. Tell me where each one changes."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_again_this_time_were_animals_so_copy_my_animal
           - sequence: 3
             prompt_text: "Plan an animal route that ends at a flower, with a different animal for each part. Lead me there for a photo."
             verify_mode: photo
             prompt_id: p_flower
             variable: true
+            figure: lead_me_on_an_animal_parade_change_animals_whenever_you_want
           - sequence: 4
             prompt_text: "Lead me through your animal route and count how many changes I copy right."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: your_turn_to_lead_ill_follow_everything_you_do
           - sequence: 5
             prompt_text: "Find two rough things and decide which is rougher. Lead me to it with a move I have to copy, and I'll photograph it."
             verify_mode: photo
             prompt_id: p_rough
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 6
             prompt_text: "Copy my five-move combo in order. Count how many you get right, then try again."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: follow_me_and_copy_two_moves_in_a_row
           - sequence: 7
             prompt_text: "Design a combo with one tricky move. Lead it until I can copy it all."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: lead_me_on_an_animal_parade_change_animals_whenever_you_want

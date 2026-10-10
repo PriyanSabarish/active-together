@@ -1,0 +1,12 @@
+<svg viewBox="0 0 280 132" width="280" height="132" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stem -->
+  <path d="M140 70 L140 115" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <!-- Petals -->
+  <circle cx="140" cy="50" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+  <circle cx="120" cy="65" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+  <circle cx="160" cy="65" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+  <circle cx="128" cy="85" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+  <circle cx="152" cy="85" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+  <!-- Center -->
+  <circle cx="140" cy="70" r="8" fill="none" stroke="currentColor" stroke-width="3"/>
+</svg>

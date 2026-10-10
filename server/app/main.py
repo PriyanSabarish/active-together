@@ -7,11 +7,15 @@ import asyncio
 import dataclasses
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 import httpx
+import yaml
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from async_lru import alru_cache
 from sqlalchemy.orm import Session
@@ -30,6 +34,7 @@ from app.photo.verify import verify_step as run_verify_step
 from app.recommendation.recommend import recommend
 from app.recommendation.travel import get_travel_times
 from app.services import RecommendationRequest, SettingEnum
+
 
 class ImageSanitizingFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
@@ -65,6 +70,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Figure SVGs: served at /assets/figures/<figure_id>.svg
+FIGURES_DIR = Path(__file__).resolve().parent / "assets"
+app.mount("/assets/figures", StaticFiles(directory=FIGURES_DIR), name="figures")
 
 PILOT_LGAS = {"melbourne", "monash", "melton"}
 MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
@@ -183,6 +192,39 @@ class MissionRequest(BaseModel):
     recent_template_ids: list[str] = Field(default_factory=list, description="Recently served template IDs to avoid repetition")
 
 
+# Figure lookup: (template_id, age_band, step sequence) -> figure id, read from the reviewed YAML files.
+def _load_figure_map() -> dict:
+    fmap: dict = {}
+    root = Path(__file__).resolve().parents[1] / "content" / "missions" / "reviewed"
+    for f in root.glob("*.yaml"):
+        try:
+            data = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+        except Exception as e:
+            logger.error(f"Could not read figures from {f.name}: {type(e).__name__}")
+            continue
+        for t in data.get("templates", []):
+            for band, b in (t.get("bands") or {}).items():
+                for s in (b or {}).get("steps", []):
+                    if s.get("figure"):
+                        fmap[(t["template_id"], str(band), s["sequence"])] = s["figure"]
+    return fmap
+
+FIGURE_MAP = _load_figure_map()
+
+
+def _with_figures(missions) -> list[dict]:
+    """Return plain dicts with each step's figure filled in. Does not mutate the cached objects."""
+    out = []
+    for m in missions:
+        d = m.model_dump(mode="json") if hasattr(m, "model_dump") else dict(m)
+        for s in d.get("steps", []):
+            s["figure"] = FIGURE_MAP.get(
+                (d["template_id"], str(d["age_band"]), s["sequence"]), s.get("figure")
+            )
+        out.append(d)
+    return out
+
+
 # Task A29: Generation caching keyed by combo, age, duration, preferences, and recency history
 @alru_cache(ttl=3600, maxsize=500)
 async def _cached_mission_fetch(
@@ -232,7 +274,7 @@ async def create_missions(request: Request, payload: MissionRequest):
             preferences_tuple=tuple(sorted(payload.preferences or [])),
             recent_template_ids_tuple=tuple(sorted(payload.recent_template_ids)),
         )
-        return {"missions": missions}
+        return {"missions": _with_figures(missions)}
     except Exception as e:
         logger.error(f"Mission generation error: {type(e).__name__}")
         # Task A25: degrade to a safe empty payload rather than an HTTP error.
