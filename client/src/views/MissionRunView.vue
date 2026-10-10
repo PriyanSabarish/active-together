@@ -494,7 +494,21 @@ function advance(result) {
   cursor: pointer;
 }
 
-.giveup:hover { color: var(--accent); }
+/* Short screens (a phone with browser bars): a smaller sketch and card, so
+   the task and its buttons fit; anything left over scrolls. */
+@media (max-height: 760px) {
+  .sketch { height: 72px; margin-bottom: 10px; }
+  .sketch svg { width: 52px; height: 52px; }
+  .step-card { padding: 18px 20px 20px; margin-bottom: 14px; }
+  .step-big { font-size: 26px; }
+  .step-hint { margin-top: 10px; }
+  .run-track { margin-bottom: 6px; }
+}
+
+/* Hover only where there is a pointer: on a phone a tap leaves :hover stuck. */
+@media (hover: hover) {
+  .giveup:hover { color: var(--accent); }
+}
 
 .offline-note { text-align: center; font-size: 12.5px; color: rgba(242, 241, 236, 0.72); line-height: 1.4; padding-top: 2px; }
 

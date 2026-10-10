@@ -267,6 +267,19 @@ function finish() {
 .see-week { flex: none; display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; border: none; border-radius: 999px; background: var(--ink); color: var(--paper); font-family: inherit; font-size: 16.5px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 24px rgba(30, 42, 31, 0.22); }
 .see-week:active { transform: scale(0.985); }
 
+/* Short screens: smaller headline and stickers so the photo buttons and the
+   privacy note stay above the tab bar; anything left over scrolls. */
+@media (max-height: 760px) {
+  .capture { gap: 10px; }
+  .cap-title { font-size: 52px; }
+  .cap-stickers { min-height: 150px; }
+  .sticker.tasks { top: 8px; width: 84px; height: 84px; }
+  .sticker.mins { top: 80px; left: 84px; width: 72px; height: 72px; }
+  .cap-sun { top: 90px; width: 260px; height: 260px; }
+  .cheese { top: 108px; left: 34px; }
+  .cap-ring { top: 140px; }
+}
+
 .placeholder { display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 0 8px; }
 .placeholder h1 { margin-top: 4px; }
 </style>
