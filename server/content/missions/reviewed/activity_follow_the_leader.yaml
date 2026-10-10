@@ -140,3 +140,9 @@ templates:
             prompt_id: null
             variable: true
             figure: follow_me_and_copy_two_moves_in_a_row
+          - sequence: 7
+            prompt_text: "Design a combo with one tricky move. Lead it until I can copy it all."
+            verify_mode: self
+            prompt_id: null
+            variable: true
+            figure: lead_me_on_an_animal_parade_change_animals_whenever_you_want
