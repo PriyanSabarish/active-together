@@ -1,5 +1,6 @@
 import { localIso, mondayOf, useHistoryStore } from './historyStore'
 import { usePreferencesStore } from './preferencesStore'
+import { hasSavedPreferences } from './persist'
 
 // ---------------------------------------------------------------------------
 // Demo data for Insights and Prefs. Both screens are device-local only and
@@ -16,8 +17,9 @@ function iso(base, offsetDays) {
 }
 
 // tone: a colour placeholder standing in for an outing photo (demo only).
+// demo: true keeps these in memory only — they are never saved to the device.
 const rec = (date, time, placeName, category, missionTitle, durationMin, feedback, tone = null, photoStepsCount = 1, totalSteps = 3) => ({
-  date, time, placeName, category, missionTitle, durationMin, feedback, tone, photoStepsCount, totalSteps
+  date, time, placeName, category, missionTitle, durationMin, feedback, tone, photoStepsCount, totalSteps, demo: true
 })
 
 export const DEMO_KEY = 'at-demo-data'
@@ -67,12 +69,14 @@ export function seedDemoData() {
     seed.forEach((r) => history.addRecord(r))
   }
 
-  // A spread of likes / neutral / not-for-me so the Prefs cards show all three tags.
+  // A couple of likes so the You page has something to show — only on a
+  // device that has never saved its own preferences. Nothing is set to "Not
+  // for me": that really removes places from the search now.
+  if (hasSavedPreferences()) return
   prefs.setAffinity('playground', 80)
   prefs.setAffinity('trail_access', 80)
   prefs.setAffinity('park_and_garden', 50)
   prefs.setAffinity('picnic_day_use', 50)
   prefs.setAffinity('court', 50)
   prefs.setAffinity('skate_bmx', 50)
-  prefs.setAffinity('sports_ground', 20)
 }

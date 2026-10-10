@@ -71,7 +71,7 @@ import { computed, h } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { CATEGORY_META } from '../store'
-import { usePreferencesStore, AGE_BANDS } from '../preferencesStore'
+import { usePreferencesStore, AGE_BANDS, levelOf } from '../preferencesStore'
 import { useHistoryStore, weekStreak } from '../historyStore'
 import { usePhotosFor, tileStyle } from '../journal'
 import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
@@ -98,9 +98,9 @@ const thumbs = computed(() => historyStore.records.flatMap((r) => photosFor(r).s
 
 // Likes first, then not-for-me; "no preference" is left out.
 const likes = computed(() => Object.entries(prefs.affinities)
-  .filter(([, v]) => v >= 67 || v < 34)
+  .filter(([, v]) => levelOf(v) !== 'neutral')
   .sort(([, a], [, b]) => b - a)
-  .map(([key, v]) => ({ key, up: v >= 67, label: CATEGORY_META[key]?.label ?? key })))
+  .map(([key, v]) => ({ key, up: levelOf(v) === 'likes', label: CATEGORY_META[key]?.label ?? key })))
 
 // The walkthrough is gated on a localStorage flag in App.vue; clearing it and
 // reloading is the simplest way to see it again.

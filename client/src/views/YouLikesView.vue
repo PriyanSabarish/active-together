@@ -38,23 +38,14 @@
 import AppHeader from '../components/AppHeader.vue'
 import SubPageHead from '../components/SubPageHead.vue'
 import { CATEGORY_META } from '../store'
-import { usePreferencesStore } from '../preferencesStore'
+import { usePreferencesStore, PREF_LEVELS, levelOf } from '../preferencesStore'
 import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
 
 const prefs = usePreferencesStore()
 
-const OPTIONS = [
-  { id: 'likes', label: 'Likes', value: 80, icon: THUMB_UP },
-  { id: 'neutral', label: 'No preference', value: 50, icon: 'M6 12h12' },
-  { id: 'nope', label: 'Not for me', value: 20, icon: THUMB_DOWN }
-]
-
-// 0-100 affinity -> which of the three is lit.
-function degreeClass(v) {
-  if (v >= 67) return 'likes'
-  if (v >= 34) return 'neutral'
-  return 'nope'
-}
+const ICON = { likes: THUMB_UP, neutral: 'M6 12h12', nope: THUMB_DOWN }
+const OPTIONS = PREF_LEVELS.map((l) => ({ ...l, icon: ICON[l.id] }))
+const degreeClass = levelOf
 </script>
 
 <style scoped>
