@@ -1,0 +1,9 @@
+<svg viewBox="0 0 280 132" width="280" height="132" xmlns="http://www.w3.org/2000/svg">
+  <!-- Backrest -->
+  <path d="M80 45 L200 45 M80 65 L200 65" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <!-- Seat -->
+  <path d="M70 75 L210 75 M75 85 L205 85" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <!-- Legs / Supports -->
+  <path d="M90 75 L90 105 M190 75 L190 105" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <path d="M75 105 L205 105" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+</svg>
