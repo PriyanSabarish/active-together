@@ -26,18 +26,34 @@
       </div>
 
       <div class="group">
-        <div class="group-head"><span>Likes</span><span class="muted">{{ likes.length }} on</span></div>
-        <div class="likes">
-          <button v-for="l in KID_LIKES" :key="l.name" class="like" :class="{ on: likes.includes(l.name) }" role="switch" :aria-checked="likes.includes(l.name)" @click="toggle(l.name)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="l.icon" /></svg>
-            <span class="like-name">{{ l.name }}</span>
-            <span class="track"><span class="knob" /></span>
-          </button>
+        <div class="group-head"><span>Likes</span><span class="muted">{{ summary }}</span></div>
+        <div class="like-list">
+          <div v-for="(meta, key) in CATEGORY_META" :key="key" class="like" :class="draft[key]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="categoryIcon(key)" /></svg>
+            <span class="like-name">{{ meta.label }}</span>
+            <span class="tri" role="radiogroup" :aria-label="meta.label">
+              <button
+                v-for="o in PREF_LEVELS"
+                :key="o.id"
+                type="button"
+                class="tri-btn"
+                :class="[o.id, { on: draft[key] === o.id }]"
+                role="radio"
+                :aria-checked="draft[key] === o.id"
+                :aria-label="o.label"
+                :title="o.label"
+                @click="draft[key] = o.id"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path :d="ICON[o.id]" /></svg>
+              </button>
+            </span>
+          </div>
         </div>
+        <p class="note">"Not for me" places and missions are left out of suggestions.</p>
       </div>
 
       <div class="actions">
-        <button class="clear" @click="likes = []">Clear</button>
+        <button class="clear" @click="clearAll">Clear</button>
         <button class="save" @click="save">Save</button>
       </div>
     </div>
@@ -45,28 +61,39 @@
 </template>
 
 <script setup>
-// "Your kid" sheet from the Start page: age band and simple likes. Edits a
-// draft; Save writes it to the preferences store, closing discards it.
+// "Your kid" sheet from the Start page: age band and, per place category,
+// Likes / No preference / Not for me — the same preferences as You → Likes.
+// Edits a draft; Save writes it to the preferences store (and so to the
+// device and the next search), closing discards it.
 
-import { ref } from 'vue'
-import { usePreferencesStore, AGE_BANDS, KID_LIKES } from '../preferencesStore'
+import { computed, reactive, ref } from 'vue'
+import { usePreferencesStore, AGE_BANDS, PREF_LEVELS, levelOf } from '../preferencesStore'
+import { CATEGORY_META } from '../store'
+import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
 
 const emit = defineEmits(['close'])
 const prefs = usePreferencesStore()
 
 const KID_ICON = 'M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4 M12 7v7 M8 10h8 M12 14l-3 6 M12 14l3 6'
+const ICON = { likes: THUMB_UP, neutral: 'M6 12h12', nope: THUMB_DOWN }
 const band = ref(prefs.ageBand)
-const likes = ref([...prefs.kidLikes])
+const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.affinities[k])])))
 
 const label = (id) => id.replace('-', '–')
+const summary = computed(() => {
+  const v = Object.values(draft)
+  const likes = v.filter((x) => x === 'likes').length
+  const nope = v.filter((x) => x === 'nope').length
+  return [likes && `${likes} liked`, nope && `${nope} not for me`].filter(Boolean).join(' · ') || 'None set'
+})
 
-function toggle(name) {
-  likes.value = likes.value.includes(name) ? likes.value.filter((n) => n !== name) : [...likes.value, name]
+function clearAll() {
+  for (const k of Object.keys(draft)) draft[k] = 'neutral'
 }
 
 function save() {
   prefs.setAgeBand(band.value)
-  prefs.setKidLikes(likes.value)
+  for (const [k, level] of Object.entries(draft)) prefs.setLevel(k, level)
   emit('close')
 }
 </script>
@@ -120,13 +147,18 @@ function save() {
 .age { height: 40px; border: none; border-radius: 999px; background: transparent; color: #3A5240; font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
 .age.on { background: var(--green); color: #FFFFFF; box-shadow: 0 4px 10px rgba(47, 107, 54, 0.3); }
 
-.likes { display: flex; flex-direction: column; gap: 6px; }
-.like { display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border: none; border-radius: 14px; background: transparent; font-family: inherit; text-align: left; cursor: pointer; transition: background 0.16s ease; }
-.like.on { background: rgba(47, 107, 54, 0.08); }
-.like-name { flex: 1; font-size: 14.5px; font-weight: 600; color: var(--ink); }
-.track { width: 42px; height: 26px; border-radius: 999px; padding: 3px; background: #D5DBD2; display: flex; justify-content: flex-start; transition: background 0.2s ease; }
-.like.on .track { background: var(--green); justify-content: flex-end; }
-.knob { width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(30, 42, 31, 0.3); }
+.like-list { display: flex; flex-direction: column; gap: 6px; max-height: 300px; overflow-y: auto; }
+.like { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 6px 0 12px; border-radius: 14px; transition: background 0.16s ease; }
+.like.likes { background: rgba(47, 107, 54, 0.08); }
+.like.nope { background: rgba(196, 118, 30, 0.08); }
+.like-name { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+.tri { display: inline-flex; gap: 2px; padding: 2px; border-radius: 11px; background: rgba(30, 42, 31, 0.055); }
+.tri-btn { width: 34px; height: 30px; border: none; border-radius: 9px; background: transparent; color: rgba(30, 42, 31, 0.38); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.16s ease; }
+.tri-btn.on { color: #FFFFFF; }
+.tri-btn.on.likes { background: var(--green); }
+.tri-btn.on.neutral { background: #8D9689; }
+.tri-btn.on.nope { background: #C4761E; }
+.note { font-size: 12px; color: #56625A; }
 
 .actions { display: flex; gap: 8px; }
 .clear { flex: none; padding: 0 18px; height: 54px; border: none; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1.5px rgba(30, 42, 31, 0.18); font-family: inherit; font-size: 15px; font-weight: 600; color: var(--ink); cursor: pointer; }

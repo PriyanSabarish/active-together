@@ -284,8 +284,13 @@ const ctaText = computed(() => {
 })
 
 const kidShort = computed(() => {
-  const n = prefs.kidLikes.length
-  return `${prefs.ageBand.replace('-', '–')} yrs · ${n ? `${n} like${n === 1 ? '' : 's'}` : 'no likes yet'}`
+  const n = prefs.likedCategories.length
+  const x = prefs.excludedCategories.length
+  const parts = [`${prefs.ageBand.replace('-', '–')} yrs`]
+  if (n) parts.push(`${n} like${n === 1 ? '' : 's'}`)
+  if (x) parts.push(`${x} not for me`)
+  if (!n && !x) parts.push('no likes yet')
+  return parts.join(' · ')
 })
 
 function fmt(m) {
