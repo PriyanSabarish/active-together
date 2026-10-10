@@ -201,6 +201,7 @@ class Step(BaseModel):
     prompt_text: str
     verify_mode: VerifyMode
     prompt_id: Optional[str] = None
+    figure: Optional[str] = None
 
 
 class Mission(BaseModel):
@@ -211,3 +212,11 @@ class Mission(BaseModel):
     estimated_minutes: int
     equipment: list[str] = Field(default_factory=list)
     steps: list[Step]
+
+class TemplateStep(BaseModel):
+    sequence: int
+    prompt_text: str
+    verify_mode: str
+    prompt_id: Optional[str] = None
+    variable: bool = False
+    figure: Optional[str] = None   # new
