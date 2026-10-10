@@ -346,7 +346,9 @@ function openById(id) {
   transition: box-shadow 0.12s ease, transform 0.12s ease;
 }
 
-.result-card:hover { box-shadow: var(--shadow-raised); }
+@media (hover: hover) {
+  .result-card:hover { box-shadow: var(--shadow-raised); }
+}
 .result-card:active { transform: scale(0.985); }
 
 .card-top { display: flex; align-items: center; gap: 12px; }

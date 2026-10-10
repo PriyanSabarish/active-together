@@ -1,18 +1,27 @@
 import { defineStore } from 'pinia'
+import { PHOTOS, getAll, put, remove, removeByRun, askPersist } from './db'
 
 // ---------------------------------------------------------------------------
-// Mission photos (story 10.3 / 10.4), held in memory for this iteration.
+// Mission photos (story 10.3 / 10.4), saved on the device in IndexedDB
+// (db.js, store journey_photo) and never sent anywhere — the photo-check
+// upload is a separate copy made by the run screen.
 //
 // Every photo is tied to its outing by runId (created when a mission starts,
-// never sent to the server). Nothing here is written to IndexedDB yet, so a
-// reload drops the photos — the device store (F55) swaps in underneath this
-// API later without the screens changing.
+// never sent to the server). A photo is written as soon as it is taken; one
+// whose run never became a record (the app closed mid-mission) is dropped by
+// hydrate() on the next start, the same as an abandoned run (D11).
 //
 // source: 'mission' (keepsake taken on any step), 'check' (photo-check image,
 // kept in the journal) or 'end' (end-of-mission photo).
 // ---------------------------------------------------------------------------
 
 let seq = 0
+
+// What is written to IndexedDB: everything but the page-local object URL.
+function toRow(photo) {
+  const { url, ...row } = photo
+  return row
+}
 
 function revoke(photo) {
   if (photo?.url && typeof URL !== 'undefined' && URL.revokeObjectURL) {
@@ -22,7 +31,7 @@ function revoke(photo) {
 
 export const usePhotoStore = defineStore('photos', {
   state: () => ({
-    photos: [], // { id, runId, stepIndex, stepText, source, url, capturedAt }
+    photos: [], // { id, runId, stepIndex, stepText, source, url, capturedAt, blob }
     toast: null, // { text, undo?: () => void }
     _toastTimer: null,
     _pendingRevoke: null // photo removed but still undoable
@@ -39,6 +48,23 @@ export const usePhotoStore = defineStore('photos', {
     }
   },
   actions: {
+    // Load saved photos at startup. keepRuns is the set of runIds that have a
+    // record (plus any run in progress); every other saved photo is an orphan
+    // from a run that never finished and is deleted.
+    async hydrate(keepRuns) {
+      const saved = await getAll(PHOTOS)
+      const have = new Set(this.photos.map((p) => p.id))
+      for (const row of saved) {
+        if (have.has(row.id)) continue
+        if (!keepRuns.has(row.runId)) {
+          remove(PHOTOS, row.id)
+          continue
+        }
+        const { blob, ...meta } = row
+        this.photos.push({ ...meta, blob, url: blob ? URL.createObjectURL(blob) : '' })
+      }
+      this.photos.sort((a, b) => a.capturedAt.localeCompare(b.capturedAt))
+    },
     addPhoto({ runId, blob, url, stepIndex = null, stepText = '', source = 'mission' }) {
       seq += 1
       const photo = {
@@ -48,9 +74,14 @@ export const usePhotoStore = defineStore('photos', {
         stepText,
         source,
         url: url ?? (blob ? URL.createObjectURL(blob) : ''),
-        capturedAt: new Date().toISOString()
+        capturedAt: new Date().toISOString(),
+        blob: blob ?? null
       }
       this.photos.push(photo)
+      if (blob) {
+        askPersist()
+        put(PHOTOS, toRow(photo))
+      }
       return photo
     },
     // Delete one photo with a short undo window; the record stays (D15).
@@ -58,11 +89,13 @@ export const usePhotoStore = defineStore('photos', {
       const idx = this.photos.findIndex((p) => p.id === id)
       if (idx === -1) return
       const [photo] = this.photos.splice(idx, 1)
+      remove(PHOTOS, photo.id)
       if (!undoable) return revoke(photo)
       this.finishPendingRevoke()
       this._pendingRevoke = photo
       this.flash('Photo deleted', () => {
         this.photos.splice(Math.min(idx, this.photos.length), 0, photo)
+        if (photo.blob) put(PHOTOS, toRow(photo))
         this._pendingRevoke = null
       })
     },
@@ -71,6 +104,7 @@ export const usePhotoStore = defineStore('photos', {
       if (!runId) return
       this.photos.filter((p) => p.runId === runId).forEach(revoke)
       this.photos = this.photos.filter((p) => p.runId !== runId)
+      removeByRun(runId)
     },
     flash(text, undo = null) {
       clearTimeout(this._toastTimer)
