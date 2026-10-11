@@ -9,7 +9,7 @@ templates:
     equipment: [ball]
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_help_support_our_soft_ball_comfortably
           - sequence: 2
             prompt_text: "Take one tiny forward step with me."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_take_one_tiny_forward_step_with_me
           - sequence: 3
             prompt_text: "Pause together and let me hold the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pause_together_and_let_me_hold_the_ball
           - sequence: 4
             prompt_text: "Choose a word that means one gentle step."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_word_that_means_one_gentle_step
           - sequence: 5
             prompt_text: "Support the ball, try our step, then release it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_support_the_ball_try_our_step_then_release_it
           - sequence: 6
             prompt_text: "Choose a word that means pause."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_word_that_means_pause
           - sequence: 7
             prompt_text: "Try one shared step and pause with me holding it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_try_one_shared_step_and_pause_with_me_holding_it
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_help_support_our_soft_ball_comfortably
           - sequence: 2
             prompt_text: "Agree a cue and take one small forward step together."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_take_one_tiny_forward_step_with_me
           - sequence: 3
             prompt_text: "Pause and let your adult hold the ball while discussing coordination."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pause_together_and_let_me_hold_the_ball
           - sequence: 4
             prompt_text: "Choose a clearer cue or a smaller step."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_word_that_means_one_gentle_step
           - sequence: 5
             prompt_text: "Test the adjustment together and finish with the adult holding it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_support_the_ball_try_our_step_then_release_it
           - sequence: 6
             prompt_text: "Swap who gives the cue for another small shared step."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_word_that_means_pause
           - sequence: 7
             prompt_text: "Try it once and explain which cue was easier to follow."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_try_one_shared_step_and_pause_with_me_holding_it
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_help_support_our_soft_ball_comfortably
           - sequence: 2
             prompt_text: "Use agreed cues while the adult supports most of the ball's weight."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_take_one_tiny_forward_step_with_me
           - sequence: 3
             prompt_text: "Pause, let the adult hold it and evaluate one coordination choice."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pause_together_and_let_me_hold_the_ball
           - sequence: 4
             prompt_text: "Change either your cue or your step size, not both."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_word_that_means_one_gentle_step
           - sequence: 5
             prompt_text: "Test the change over a short carry and release to the adult."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_support_the_ball_try_our_step_then_release_it
           - sequence: 6
             prompt_text: "Design a simpler cue sequence for the same short movement."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_word_that_means_pause
           - sequence: 7
             prompt_text: "Try it together and explain the improvement with the ball held."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_try_one_shared_step_and_pause_with_me_holding_it
