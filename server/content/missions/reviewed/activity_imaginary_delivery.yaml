@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_pretend_your_empty_hands_hold_a_tiny_parcel
           - sequence: 2
             prompt_text: "Show me how you would hold it gently."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_me_how_you_would_hold_it_gently
           - sequence: 3
             prompt_text: "Pretend to give it to me and describe its contents."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pretend_to_give_it_to_me_and_describe_its_contents
           - sequence: 4
             prompt_text: "Imagine another parcel with a different shape."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_imagine_another_parcel_with_a_different_shape
           - sequence: 5
             prompt_text: "Show its shape and pretend to hand it over."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_show_its_shape_and_pretend_to_hand_it_over
           - sequence: 6
             prompt_text: "Choose a funny imaginary parcel for me to copy."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_funny_imaginary_parcel_for_me_to_copy
           - sequence: 7
             prompt_text: "Demonstrate its delivery and compare our pretend parcels."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_demonstrate_its_delivery_and_compare_our_pretend_parcels
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_pretend_your_empty_hands_hold_a_tiny_parcel
           - sequence: 2
             prompt_text: "Walk beside your adult while pretending to carry the parcel."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_me_how_you_would_hold_it_gently
           - sequence: 3
             prompt_text: "Mime handing it over and explain what made it unusual."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pretend_to_give_it_to_me_and_describe_its_contents
           - sequence: 4
             prompt_text: "Imagine its contents change without adding any real weight."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_imagine_another_parcel_with_a_different_shape
           - sequence: 5
             prompt_text: "Demonstrate the changed delivery while staying in the checked space."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_show_its_shape_and_pretend_to_hand_it_over
           - sequence: 6
             prompt_text: "Let your adult suggest a new imaginary recipient."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_funny_imaginary_parcel_for_me_to_copy
           - sequence: 7
             prompt_text: "Mime a delivery to that pretend recipient and explain your choices."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_demonstrate_its_delivery_and_compare_our_pretend_parcels
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_pretend_your_empty_hands_hold_a_tiny_parcel
           - sequence: 2
             prompt_text: "Plan a short delivery within positions your adult has checked."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_me_how_you_would_hold_it_gently
           - sequence: 3
             prompt_text: "Perform it beside your adult and explain the handling choice."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_pretend_to_give_it_to_me_and_describe_its_contents
           - sequence: 4
             prompt_text: "Change the imaginary requirement without adding real obstacles or weight."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_imagine_another_parcel_with_a_different_shape
           - sequence: 5
             prompt_text: "Adapt your delivery and compare it with the first version."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_show_its_shape_and_pretend_to_hand_it_over
           - sequence: 6
             prompt_text: "Ask your adult to suggest a different pretend purpose."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_a_funny_imaginary_parcel_for_me_to_copy
           - sequence: 7
             prompt_text: "Perform a revised handover and explain how the purpose changed it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_demonstrate_its_delivery_and_compare_our_pretend_parcels
