@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    review: {author: Ritvik, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,26 +19,31 @@ templates:
             verify_mode: photo
             prompt_id: p_stick
             variable: true
+            figure: 01_play_a_giant_pretend_drum_with_big_swinging_arms
           - sequence: 2
             prompt_text: "March with me like a band, playing your drum."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_march_with_me_like_a_band_playing_your_drum
           - sequence: 3
             prompt_text: "Find a stone for a photo. Tap a beat on it."
             verify_mode: photo
             prompt_id: p_stone
             variable: true
+            figure: 03_act_out_an_instrument_ill_guess_what_it_is
           - sequence: 4
             prompt_text: "Watch my arms: high means play big, low means tiny."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_watch_my_arms_high_means_play_big_low_means_tiny
           - sequence: 5
             prompt_text: "Your turn to conduct. Make me play big and tiny."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_to_conduct_make_me_play_big_and_tiny
       "8-10":
         title: null
         steps:
@@ -47,26 +52,31 @@ templates:
             verify_mode: photo
             prompt_id: p_stick
             variable: true
+            figure: 01_play_a_giant_pretend_drum_with_big_swinging_arms
           - sequence: 2
             prompt_text: "Marching band: march around our space playing an instrument, and switch every ten steps."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_march_with_me_like_a_band_playing_your_drum
           - sequence: 3
             prompt_text: "Find a stone and take a photo. Tap out a beat on it for me to copy."
             verify_mode: photo
             prompt_id: p_stone
             variable: true
+            figure: 03_act_out_an_instrument_ill_guess_what_it_is
           - sequence: 4
             prompt_text: "I'll conduct: arms high means big and fast, arms low means small and slow."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_watch_my_arms_high_means_play_big_low_means_tiny
           - sequence: 5
             prompt_text: "Your turn to conduct me. Make the music go from tiny to huge and back again."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_to_conduct_make_me_play_big_and_tiny
       "11-12":
         title: null
         steps:
@@ -75,23 +85,28 @@ templates:
             verify_mode: photo
             prompt_id: p_stick
             variable: true
+            figure: 01_play_a_giant_pretend_drum_with_big_swinging_arms
           - sequence: 2
             prompt_text: "Plan a three-instrument song. Decide which goes first, second and last, then play it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_march_with_me_like_a_band_playing_your_drum
           - sequence: 3
             prompt_text: "Find a stone and take a photo. Tap out a rhythm for me to copy, then change it."
             verify_mode: photo
             prompt_id: p_stone
             variable: true
+            figure: 03_act_out_an_instrument_ill_guess_what_it_is
           - sequence: 4
             prompt_text: "Make up conducting signals for big, tiny, fast and stop, and teach them to me."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_watch_my_arms_high_means_play_big_low_means_tiny
           - sequence: 5
             prompt_text: "Conduct me through your three-instrument song using your signals."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_to_conduct_make_me_play_big_and_tiny

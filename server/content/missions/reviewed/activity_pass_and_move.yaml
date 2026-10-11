@@ -9,7 +9,7 @@ templates:
     equipment: [ball]
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_in_our_checked_space_with_our_soft_ball
           - sequence: 2
             prompt_text: "Roll the ball gently towards my waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_the_ball_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Stop my gentle return roll and hold the ball still."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_stop_my_gentle_return_roll_and_hold_the_ball_still
           - sequence: 4
             prompt_text: "Let me hold the ball while we move slightly closer."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_hold_the_ball_while_we_move_slightly_closer
           - sequence: 5
             prompt_text: "Roll once each from here and stop the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_once_each_from_here_and_stop_the_ball
           - sequence: 6
             prompt_text: "Choose our closer position or our first checked position."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_our_closer_position_or_our_first_checked_position
           - sequence: 7
             prompt_text: "Roll once each there and finish holding the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_each_there_and_finish_holding_the_ball
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_in_our_checked_space_with_our_soft_ball
           - sequence: 2
             prompt_text: "Roll it gently towards their waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_the_ball_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Receive the return roll and describe what helped you stop it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_stop_my_gentle_return_roll_and_hold_the_ball_still
           - sequence: 4
             prompt_text: "While the adult holds the ball, agree slightly closer positions."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_hold_the_ball_while_we_move_slightly_closer
           - sequence: 5
             prompt_text: "Move together, roll once each and compare the shorter distance."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_once_each_from_here_and_stop_the_ball
           - sequence: 6
             prompt_text: "Choose one gentle rolling adjustment without increasing force."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_our_closer_position_or_our_first_checked_position
           - sequence: 7
             prompt_text: "Try the adjustment together and finish with the ball stopped."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_each_there_and_finish_holding_the_ball
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_in_our_checked_space_with_our_soft_ball
           - sequence: 2
             prompt_text: "Roll a soft ball to your adult and receive the return."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_the_ball_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Identify one adjustment that made the exchange easier to control."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_stop_my_gentle_return_roll_and_hold_the_ball_still
           - sequence: 4
             prompt_text: "Pause with the ball held and agree a shorter rolling distance."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_hold_the_ball_while_we_move_slightly_closer
           - sequence: 5
             prompt_text: "Move together, test the exchange and compare control at both distances."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_once_each_from_here_and_stop_the_ball
           - sequence: 6
             prompt_text: "Choose a simple cue for when the receiver is ready."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_our_closer_position_or_our_first_checked_position
           - sequence: 7
             prompt_text: "Test the cue over another exchange and finish holding the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_each_there_and_finish_holding_the_ball

@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: count
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_beside_me_name_an_animal_and_a_vehicle
           - sequence: 2
             prompt_text: "Show low hands for animals, high hands for vehicles."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_low_hands_for_animals_high_hands_for_vehicles
           - sequence: 3
             prompt_text: "Sort my two spoken names using those hand positions."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_sort_my_two_spoken_names_using_those_hand_positions
           - sequence: 4
             prompt_text: "Give me an animal name for low hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_give_me_an_animal_name_for_low_hands
           - sequence: 5
             prompt_text: "Give me a vehicle name and check my high hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_give_me_a_vehicle_name_and_check_my_high_hands
           - sequence: 6
             prompt_text: "Choose which group means one gentle marching step."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_which_group_means_one_gentle_marching_step
           - sequence: 7
             prompt_text: "Sort two spoken names using our chosen movements."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_sort_two_spoken_names_using_our_chosen_movements
       "8-10":
         title: null
         steps:
@@ -62,11 +69,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_low_hands_for_animals_high_hands_for_vehicles
           - sequence: 3
             prompt_text: "Sort the four names and explain one choice."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_sort_my_two_spoken_names_using_those_hand_positions
           - sequence: 4
             prompt_text: "Choose a different grouping rule for the same names."
             verify_mode: self
@@ -77,16 +86,19 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_sort_my_two_spoken_names_using_those_hand_positions
           - sequence: 6
             prompt_text: "Assign one gentle on-the-spot movement to each group."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_which_group_means_one_gentle_marching_step
           - sequence: 7
             prompt_text: "Take turns sorting spoken names with the agreed movements."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_sort_two_spoken_names_using_our_chosen_movements
       "11-12":
         title: null
         steps:
@@ -100,11 +112,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_show_low_hands_for_animals_high_hands_for_vehicles
           - sequence: 3
             prompt_text: "Classify the objects and explain one borderline choice."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_sort_my_two_spoken_names_using_those_hand_positions
           - sequence: 4
             prompt_text: "Change the grouping rule without changing the four objects."
             verify_mode: self
@@ -115,13 +129,16 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_sort_my_two_spoken_names_using_those_hand_positions
           - sequence: 6
             prompt_text: "Define a simple grounded movement for each revised group."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_which_group_means_one_gentle_marching_step
           - sequence: 7
             prompt_text: "Test your adult's classifications and clarify one ambiguous rule."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_sort_two_spoken_names_using_our_chosen_movements

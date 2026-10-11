@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: find
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_facing_me_look_at_my_comfortable_hand_shape
           - sequence: 2
             prompt_text: "Watch me change one finger position."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_watch_me_change_one_finger_position
           - sequence: 3
             prompt_text: "Point to the change and show the original shape."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_point_to_the_change_and_show_the_original_shape
           - sequence: 4
             prompt_text: "Choose a hand shape for me to watch."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_hand_shape_for_me_to_watch
           - sequence: 5
             prompt_text: "Change one finger and help me find the difference."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_change_one_finger_and_help_me_find_the_difference
           - sequence: 6
             prompt_text: "Copy my hand shape with your own hand."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_copy_my_hand_shape_with_your_own_hand
           - sequence: 7
             prompt_text: "Change one part and describe our different shapes."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_change_one_part_and_describe_our_different_shapes
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_facing_me_look_at_my_comfortable_hand_shape
           - sequence: 2
             prompt_text: "Watch one position change while the other stays the same."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_watch_me_change_one_finger_position
           - sequence: 3
             prompt_text: "Identify the change and explain what stayed unchanged."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_point_to_the_change_and_show_the_original_shape
           - sequence: 4
             prompt_text: "Show your adult a two-part hand pose."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_hand_shape_for_me_to_watch
           - sequence: 5
             prompt_text: "Change one part and compare your adult's observation with yours."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_change_one_finger_and_help_me_find_the_difference
           - sequence: 6
             prompt_text: "Choose a smaller visible change in the same pose."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_copy_my_hand_shape_with_your_own_hand
           - sequence: 7
             prompt_text: "Reveal the change and explain which detail helped identify it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_change_one_part_and_describe_our_different_shapes
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_facing_me_look_at_my_comfortable_hand_shape
           - sequence: 2
             prompt_text: "Observe a change and distinguish it from the unchanged feature."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_watch_me_change_one_finger_position
           - sequence: 3
             prompt_text: "Explain the evidence for your answer and recreate the original pose."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_point_to_the_change_and_show_the_original_shape
           - sequence: 4
             prompt_text: "Design a pose with one easily described variable."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_choose_a_hand_shape_for_me_to_watch
           - sequence: 5
             prompt_text: "Change that variable and test whether your adult identifies it."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_change_one_finger_and_help_me_find_the_difference
           - sequence: 6
             prompt_text: "Make the change subtler without concealing your hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_copy_my_hand_shape_with_your_own_hand
           - sequence: 7
             prompt_text: "Compare the observations and explain which description was most precise."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_change_one_part_and_describe_our_different_shapes
