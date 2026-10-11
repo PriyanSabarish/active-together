@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: find
     safety_tags: [inherited]
-    review: {author: Priyan, reviewed_by: null, status: draft}
+    review: {author: Ritvik, reviewed_by: null, status: draft}
     bands:
       "5-7":
         title: null
@@ -19,11 +19,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_turn_your_back_when_i_clap_point_to_where_i_am
           - sequence: 2
             prompt_text: "Turn your back again. When I clap, run to me."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_turn_your_back_again_when_i_clap_run_to_me
           - sequence: 3
             prompt_text: "When I clap, find something round. I'll photograph it."
             verify_mode: photo
@@ -34,6 +36,7 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_copy_my_clap_pattern_by_stomping_your_feet
           - sequence: 5
             prompt_text: "Two claps means find something red. I'll photograph it."
             verify_mode: photo
@@ -44,11 +47,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_walk_while_i_clap_when_i_stop_freeze
           - sequence: 7
             prompt_text: "Your turn: clap a pattern for me to copy with stomps."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_clap_a_pattern_for_me_to_copy_with_stomps
       "8-10":
         title: null
         steps:
@@ -57,11 +62,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_turn_your_back_when_i_clap_point_to_where_i_am
           - sequence: 2
             prompt_text: "I'll clap a few times. Jump the same number of times."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_turn_your_back_again_when_i_clap_run_to_me
           - sequence: 3
             prompt_text: "Turn your back. When I clap, find something round before I clap again. I'll photograph it."
             verify_mode: photo
@@ -72,6 +79,7 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_copy_my_clap_pattern_by_stomping_your_feet
           - sequence: 5
             prompt_text: "Count my claps, take that many big steps, then find something red nearby. I'll photograph it."
             verify_mode: photo
@@ -82,11 +90,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_walk_while_i_clap_when_i_stop_freeze
           - sequence: 7
             prompt_text: "Your turn: make a clap pattern with a pause in it, and see if I can stomp it back."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_clap_a_pattern_for_me_to_copy_with_stomps
       "11-12":
         title: null
         steps:
@@ -95,11 +105,13 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_turn_your_back_when_i_clap_point_to_where_i_am
           - sequence: 2
             prompt_text: "Stomp back my clap pattern. Each round I'll add one clap. How long can you go?"
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_copy_my_clap_pattern_by_stomping_your_feet
           - sequence: 3
             prompt_text: "Find something round that would make a good drum and tell me why you chose it. I'll photograph it, then you clap a rhythm next to it."
             verify_mode: photo
@@ -110,6 +122,7 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_your_turn_clap_a_pattern_for_me_to_copy_with_stomps
           - sequence: 5
             prompt_text: "Find something red before I finish ten claps. After I photograph it, try again and beat my clap count."
             verify_mode: photo
@@ -120,8 +133,10 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_walk_while_i_clap_when_i_stop_freeze
           - sequence: 7
             prompt_text: "Play the stomp-back game again and try to go one clap longer than before."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_copy_my_clap_pattern_by_stomping_your_feet

@@ -11,7 +11,7 @@ templates:
     equipment: ["rolled socks", "paper cups", "laundry basket or cardboard box", "paper"]
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -21,26 +21,31 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_roll_and_toss_softly_with_me_to_test_our_space
           - sequence: 2
             prompt_text: "Roll at our cup pins; rebuild them for another round."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_at_our_cup_pins_rebuild_them_for_another_round
           - sequence: 3
             prompt_text: "Toss into our basket; choose our final team challenge."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_toss_into_our_basket_choose_our_final_team_challenge
           - sequence: 4
             prompt_text: "Throw at our cup snow forts, then rebuild them differently."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_throw_at_our_cup_snow_forts_then_rebuild_them_differently
           - sequence: 5
             prompt_text: "Roll towards our paper target; try stopping closer each round."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_our_paper_target_try_stopping_closer_each_round
       "8-10":
         title: null
         steps:
@@ -49,26 +54,31 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_roll_and_toss_softly_with_me_to_test_our_space
           - sequence: 2
             prompt_text: "Roll twice at six cup pins, then reset them. Change the pattern and compare rounds."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_at_our_cup_pins_rebuild_them_for_another_round
           - sequence: 3
             prompt_text: "Take turns tossing into our basket from two spots. Finish with a shared scoring goal."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_toss_into_our_basket_choose_our_final_team_challenge
           - sequence: 4
             prompt_text: "Build two cup snow forts. Take turns throwing at the forts, then change their layouts."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_throw_at_our_cup_snow_forts_then_rebuild_them_differently
           - sequence: 5
             prompt_text: "Roll three socks towards our paper target. Compare where they stop, then adjust your next round."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_our_paper_target_try_stopping_closer_each_round
       "11-12":
         title: null
         steps:
@@ -77,23 +87,28 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_roll_and_toss_softly_with_me_to_test_our_space
           - sequence: 2
             prompt_text: "Design two six-pin layouts. Play three rounds of each and decide which demands more control."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_at_our_cup_pins_rebuild_them_for_another_round
           - sequence: 3
             prompt_text: "Choose two throwing distances and a scoring rule. Play alternating rounds, then set a shared final goal."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_toss_into_our_basket_choose_our_final_team_challenge
           - sequence: 4
             prompt_text: "Design a cup snow fort within our boundaries. Alternate throws at each other's forts; rebuild to test a new layout."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_throw_at_our_cup_snow_forts_then_rebuild_them_differently
           - sequence: 5
             prompt_text: "Choose a target distance and predict where your rolls will stop. Adjust your force across rounds, then coach me."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_our_paper_target_try_stopping_closer_each_round
