@@ -9,7 +9,7 @@ templates:
     equipment: []
     mechanic: imagine
     safety_tags: [inherited]
-    review: {author: Priyan, reviewed_by: null, status: reviewed}
+    review: {author: Ritvik, reviewed_by: null, status: reviewed}
     bands:
       "5-7":
         title: null
