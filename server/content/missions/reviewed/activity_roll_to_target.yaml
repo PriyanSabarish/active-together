@@ -9,7 +9,7 @@ templates:
     equipment: [ball]
     mechanic: move
     safety_tags: [inherited]
-    review: {author: Jiabin, reviewed_by: lychen, status: reviewed}
+    review: {author: Ritvik, reviewed_by: lychen, status: reviewed}
     bands:
       "5-7":
         title: null
@@ -19,36 +19,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_with_our_soft_ball_in_the_checked_space
           - sequence: 2
             prompt_text: "Roll gently towards my waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Watch me stop it and describe where it rolled."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_watch_me_stop_it_and_describe_where_it_rolled
           - sequence: 4
             prompt_text: "Let me return the ball to your waiting hands."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_return_the_ball_to_your_waiting_hands
           - sequence: 5
             prompt_text: "Roll towards my hands again using a gentler push."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_my_hands_again_using_a_gentler_push
           - sequence: 6
             prompt_text: "Choose the gentle push you found easiest."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_the_gentle_push_you_found_easiest
           - sequence: 7
             prompt_text: "Roll once more and let me stop the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_more_and_let_me_stop_the_ball
       "8-10":
         title: null
         steps:
@@ -57,36 +64,43 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_with_our_soft_ball_in_the_checked_space
           - sequence: 2
             prompt_text: "Roll gently and observe where the adult stops the ball."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Describe one change that could make your next roll easier."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_watch_me_stop_it_and_describe_where_it_rolled
           - sequence: 4
             prompt_text: "Try that change from the same checked position."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_return_the_ball_to_your_waiting_hands
           - sequence: 5
             prompt_text: "Compare the two rolls without scoring or increasing force."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_my_hands_again_using_a_gentler_push
           - sequence: 6
             prompt_text: "Ask your adult to move their hands slightly closer."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_the_gentle_push_you_found_easiest
           - sequence: 7
             prompt_text: "Try the shorter roll and explain how your push changed."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_more_and_let_me_stop_the_ball
       "11-12":
         title: null
         steps:
@@ -95,33 +109,40 @@ templates:
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 01_face_me_with_our_soft_ball_in_the_checked_space
           - sequence: 2
             prompt_text: "Test it with a soft ball in the checked level area."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 02_roll_gently_towards_my_waiting_hands
           - sequence: 3
             prompt_text: "Explain the difference between your intended and observed roll."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 03_watch_me_stop_it_and_describe_where_it_rolled
           - sequence: 4
             prompt_text: "Adjust one part of your rolling action without increasing force."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 04_let_me_return_the_ball_to_your_waiting_hands
           - sequence: 5
             prompt_text: "Test the adjustment and compare its effect on direction."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 05_roll_towards_my_hands_again_using_a_gentler_push
           - sequence: 6
             prompt_text: "Ask your adult to set their waiting hands slightly closer."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 06_choose_the_gentle_push_you_found_easiest
           - sequence: 7
             prompt_text: "Adapt your push for the shorter roll and explain the adjustment."
             verify_mode: self
             prompt_id: null
             variable: true
+            figure: 07_roll_once_more_and_let_me_stop_the_ball
