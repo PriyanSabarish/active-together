@@ -120,6 +120,21 @@ describe('AC-1.1.2 — Radius options (chosen as travel minutes)', () => {
   })
 })
 
+describe('Start header on scroll', () => {
+  it('is a plain bar at the top and floats as a pill once the page has scrolled', async () => {
+    const wrapper = mountView()
+    expect(wrapper.find('.app-header').classes()).not.toContain('floating')
+    const area = wrapper.find('.scroll-area.start')
+    area.element.scrollTop = 40
+    await area.trigger('scroll')
+    expect(wrapper.find('.app-header').classes()).toContain('floating')
+    expect(wrapper.find('.app-header').classes()).toContain('overlay')
+    area.element.scrollTop = 0
+    await area.trigger('scroll')
+    expect(wrapper.find('.app-header').classes()).not.toContain('floating')
+  })
+})
+
 describe('Story 9.1 — Outdoors / At home / Indoor place', () => {
   it('At home hides the location steps and needs a mission instead of a place', async () => {
     const wrapper = mountView()

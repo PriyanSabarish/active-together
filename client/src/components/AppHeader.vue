@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-header" :class="{ floating, overlay }">
     <div class="app-bar">
       <button v-if="back" class="back-btn" aria-label="Back" @click="$router.back()">
         <svg width="18" height="24" viewBox="0 0 18 24">
@@ -42,7 +42,11 @@ defineProps({
   total: { type: Number, default: 3 },
   back: { type: Boolean, default: false },
   // Tab-root screens show just the logo bar, no funnel step dots.
-  plain: { type: Boolean, default: true }
+  plain: { type: Boolean, default: true },
+  // Once the screen below has scrolled, the bar becomes a floating white pill (Start design).
+  floating: { type: Boolean, default: false },
+  // Sit over the screen instead of above it, so the content scrolls underneath (Start).
+  overlay: { type: Boolean, default: false }
 })
 
 // Right-hand weather pill, as in the Canvas header. Only shows once the
@@ -61,6 +65,47 @@ const weatherPill = computed(() => {
 </script>
 
 <style scoped>
+.app-header { position: relative; z-index: 3; }
+
+/* Over the screen: the content scrolls underneath, behind a paper fade. */
+.app-header.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  padding: 24px 24px 0;
+  pointer-events: none; /* only the bar itself takes taps; the fade lets scrolling through */
+}
+.app-header.overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -14px 0; /* the fade runs 14px past the pill, as in the design */
+  z-index: -1;
+  background: linear-gradient(180deg, var(--paper) 0%, rgba(242, 241, 236, 0.92) 55%, rgba(242, 241, 236, 0) 100%);
+}
+.app-header.overlay .app-bar { pointer-events: auto; margin-bottom: 0; }
+
+/* As in the Start design: at rest the row is 32px tall with 6px side padding and a 19px
+   title. Scrolled, it grows to a 42px white capsule (5px / 12px padding, shadow) and
+   the title drops to 16px. Every property has a start value so each one animates;
+   the row eases over .25s and the title over .2s, as in the design. */
+.app-header.overlay .app-bar {
+  min-height: 32px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 10px 26px -12px rgba(30, 42, 31, 0), 0 0 0 1px rgba(30, 42, 31, 0);
+  transition: padding 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.app-header.overlay.floating .app-bar {
+  padding: 5px 5px 5px 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 26px -12px rgba(30, 42, 31, 0.4), 0 0 0 1px rgba(30, 42, 31, 0.06);
+}
+.app-header.overlay .app-name { font-size: 19px; transition: font-size 0.2s ease; }
+.app-header.overlay.floating .app-name { font-size: 16px; }
+
 .brand-link {
   display: inline-flex;
   align-items: center;
@@ -69,7 +114,6 @@ const weatherPill = computed(() => {
   color: inherit;
   min-width: 0;
 }
-
 .grow { flex: 1; }
 .logo-pin { flex-shrink: 0; }
 .progress-track { margin-bottom: 28px; }

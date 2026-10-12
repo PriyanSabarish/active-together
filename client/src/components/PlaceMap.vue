@@ -16,6 +16,8 @@
 // props.places   [{ id, name, latitude, longitude, badge? }]
 //                markers for candidate places; emits 'select' with the id
 // props.fit      true → zoom to fit centre + places instead of a fixed zoom
+// props.pill     { label, icon } → draw the place as a labelled pill, not a numbered pin
+// props.zoom     fixed zoom when not fitting
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -28,7 +30,11 @@ const props = defineProps({
   places: { type: Array, default: () => [] },
   fit: { type: Boolean, default: false },
   height: { type: String, default: '172px' },
-  showYou: { type: Boolean, default: true }
+  showYou: { type: Boolean, default: true },
+  // One place shown as a pill (icon + label) with a stem and dot, as on the place page.
+  // { label: '0.6 km', icon: <svg path d> }
+  pill: { type: Object, default: null },
+  zoom: { type: Number, default: null }
 })
 const emit = defineEmits(['select'])
 
@@ -56,6 +62,16 @@ function pinIcon(warn, n) {
     iconSize: [26, 36],
     iconAnchor: [13, 36],
     popupAnchor: [0, -32]
+  })
+}
+
+function pillIcon({ label, icon }) {
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+  return L.divIcon({
+    className: 'map-pill',
+    html: `<div class="pill-pin"><span class="pp-chip"><span class="pp-ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1E2A1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${esc(icon)}"/></svg></span>${esc(label)}</span><span class="pp-stem"></span><span class="pp-dot"></span></div>`,
+    iconSize: [0, 0],
+    iconAnchor: [0, 0]
   })
 }
 
@@ -90,8 +106,9 @@ function draw() {
 
   props.places.forEach((p, i) => {
     if (p.latitude == null || p.longitude == null) return
-    const m = L.marker(toLatLng(p), { icon: pinIcon(p.badge?.type === 'warn', props.numbered ? i + 1 : 0), title: p.name }).addTo(layer)
-    m.bindTooltip(p.name, { direction: 'top', offset: [0, -28] })
+    const icon = props.pill ? pillIcon(props.pill) : pinIcon(p.badge?.type === 'warn', props.numbered ? i + 1 : 0)
+    const m = L.marker(toLatLng(p), { icon, title: p.name }).addTo(layer)
+    if (!props.pill) m.bindTooltip(p.name, { direction: 'top', offset: [0, -28] })
     m.on('click', () => emit('select', p.id))
     bounds.push(toLatLng(p))
   })
@@ -101,7 +118,7 @@ function draw() {
   } else if (props.center && props.radiusKm) {
     map.setView(toLatLng(centre), ZOOM_FOR_RADIUS[props.radiusKm] ?? 12)
   } else {
-    map.setView(toLatLng(centre), props.center ? 14 : 11)
+    map.setView(toLatLng(centre), props.zoom ?? (props.center ? 14 : 11))
   }
 }
 
@@ -125,7 +142,7 @@ onMounted(() => {
   }
 })
 
-watch(() => [props.center, props.radiusKm, props.places, props.fit], draw, { deep: true })
+watch(() => [props.center, props.radiusKm, props.places, props.fit, props.pill, props.zoom], draw, { deep: true })
 
 onBeforeUnmount(() => {
   if (map) map.remove()
@@ -155,6 +172,13 @@ onBeforeUnmount(() => {
 }
 
 .place-map .leaflet-control-attribution a { color: var(--green); }
+
+.map-pill { background: none; border: none; }
+.pill-pin { position: absolute; left: 0; top: 0; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; margin-top: 6px; pointer-events: none; }
+.pp-chip { height: 30px; padding: 0 11px 0 6px; border-radius: 999px; display: flex; align-items: center; gap: 6px; background: #2F6B36; color: #FFFFFF; font-family: var(--font-body); font-size: 12px; font-weight: 700; white-space: nowrap; box-shadow: 0 8px 18px -8px rgba(30, 42, 31, 0.7); }
+.pp-ic { width: 20px; height: 20px; border-radius: 50%; background: #B4D278; display: flex; align-items: center; justify-content: center; }
+.pp-stem { width: 2px; height: 10px; background: #2F6B36; }
+.pp-dot { width: 12px; height: 12px; border-radius: 50%; background: #2F6B36; box-shadow: 0 0 0 4px rgba(47, 107, 54, 0.25), 0 0 0 9px rgba(47, 107, 54, 0.12); }
 
 .map-you span {
   display: block;
