@@ -6,7 +6,7 @@
 
     <!-- One row per backend category with a three-way choice: likes / no preference /
          not for me. Stored as an affinity (80 / 50 / 20) so the recommender can weight it. -->
-    <div v-for="(meta, key) in CATEGORY_META" :key="key" class="pref-row" :class="degreeClass(prefs.affinities[key])">
+    <div v-for="(meta, key) in CATEGORY_META" :key="key" class="pref-row" :class="degreeClass(prefs.shownAffinities[key])">
       <span class="glyph">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="categoryIcon(key)" /></svg>
       </span>
@@ -17,11 +17,11 @@
           :key="o.id"
           type="button"
           class="tri-btn"
-          :class="[o.id, { on: degreeClass(prefs.affinities[key]) === o.id }]"
+          :class="[o.id, { on: degreeClass(prefs.shownAffinities[key]) === o.id }]"
           :title="o.label"
           :aria-label="o.label"
           role="radio"
-          :aria-checked="degreeClass(prefs.affinities[key]) === o.id"
+          :aria-checked="degreeClass(prefs.shownAffinities[key]) === o.id"
           @click="prefs.setAffinity(key, o.value)"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="o.icon" /></svg>

@@ -124,21 +124,27 @@
       <section v-if="isHome" class="step">
         <div class="step-head">
           <h2><span class="num">{{ nums.mission }}</span>Pick a mission</h2>
-          <span class="count">{{ fits.length }} fit</span>
+          <span v-if="homeOptions.length" class="count">{{ homeOptions.length }} for {{ store.stayMin }} min</span>
         </div>
-        <div class="home-list">
-          <button
-            v-for="m in HOME_MISSIONS"
-            :key="m.id"
-            class="home-item"
-            :class="{ on: homePick === m.id }"
-            :disabled="m.durationMin > store.stayMin"
-            @click="homePick = m.id"
-          >
-            <span class="home-name">{{ m.title }}</span>
-            <span class="home-len">{{ m.durationMin }} min</span>
-            <span class="radio"><svg v-if="homePick === m.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
-          </button>
+        <p v-if="missionStore.homeLoading" class="home-note">Finding activities…</p>
+        <div v-else-if="missionStore.homeError" class="home-note">
+          {{ missionStore.homeError }}
+          <button class="home-retry" @click="loadHome">Try again</button>
+        </div>
+        <p v-else-if="!homeOptions.length" class="home-note">No at-home activities for this time yet. Try a different length.</p>
+        <div v-else class="home-list">
+          <div v-for="m in homeOptions" :key="m.id" class="home-row">
+            <button class="home-item" :class="{ on: homePick === m.id }" @click="homePick = m.id">
+              <span class="home-name">{{ m.title }}</span>
+              <span class="home-len">{{ m.durationMin }} min</span>
+              <span class="radio"><svg v-if="homePick === m.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
+            </button>
+            <!-- Setup and rules to read before choosing: some take 5-10 minutes to prepare. -->
+            <button v-if="m.guide" class="home-guide" :aria-label="`Parent guide for ${m.title}`" @click="guideMission = m">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /></svg>
+              Guide
+            </button>
+          </div>
         </div>
       </section>
     </div>
@@ -161,6 +167,12 @@
   </div>
 
   <KidSheet v-if="kidOpen" @close="kidOpen = false" />
+  <ParentGuideSheet
+    v-if="guideMission?.guide"
+    :guide="guideMission.guide"
+    :age-band="guideMission.ageBand"
+    @close="guideMission = null"
+  />
 </template>
 
 <script setup>
@@ -176,13 +188,16 @@ import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
+import ParentGuideSheet from '../components/ParentGuideSheet.vue'
 import { searchAddresses, getHourlyForecast } from '../api'
 import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
-import { useMissionStore, HOME_MISSIONS } from '../missionStore'
+import { useMissionStore } from '../missionStore'
+import { useHistoryStore } from '../historyStore'
 import { usePreferencesStore } from '../preferencesStore'
 
 const store = useSearchStore()
 const missionStore = useMissionStore()
+const historyStore = useHistoryStore()
 const prefs = usePreferencesStore()
 const router = useRouter()
 
@@ -241,7 +256,8 @@ const SegBar = defineComponent({
 
 const query = ref(store.selectedAddress?.label || store.suburb)
 const open = ref(false)
-const menuOpen = ref(false)
+const menuOpen = ref(store.openSettingMenu)
+store.openSettingMenu = false
 const kidOpen = ref(false)
 const homePick = ref(null)
 const locating = ref(false)
@@ -272,10 +288,22 @@ const nums = computed(() => {
 })
 
 const modeWord = computed(() => (store.travelMode === 'walking' ? 'walk' : 'drive'))
-const fits = computed(() => HOME_MISSIONS.filter((m) => m.durationMin <= store.stayMin))
-watch(() => store.stayMin, () => { if (!fits.value.some((m) => m.id === homePick.value)) homePick.value = null })
+const homeOptions = computed(() => missionStore.homeMissions)
+const guideMission = ref(null) // the home mission whose parent guide is open
 
-const pickedHome = computed(() => HOME_MISSIONS.find((m) => m.id === homePick.value) ?? null)
+// At home the missions come from the server for the chosen time (story 9.2).
+// Only the time and the child's age band are sent, never a location.
+function loadHome() {
+  homePick.value = null
+  missionStore.fetchHomeMissions({
+    durationMin: store.stayMin,
+    ageBand: prefs.ageBand,
+    recentTemplateIds: historyStore.recentTemplateIds(6)
+  })
+}
+watch(() => [store.setting, store.stayMin, prefs.ageBand], () => { if (store.setting === 'home') loadHome() }, { immediate: true })
+
+const pickedHome = computed(() => homeOptions.value.find((m) => m.id === homePick.value) ?? null)
 const ready = computed(() => (isHome.value ? !!pickedHome.value : store.hasLocation))
 const ctaText = computed(() => {
   if (isHome.value) return pickedHome.value ? `Play ${pickedHome.value.title}` : 'Pick a mission'
@@ -748,6 +776,23 @@ function next() {
 .count { font-size: 12.5px; font-weight: 600; color: #56625A; }
 
 .home-list { display: flex; flex-direction: column; gap: 6px; }
+.home-row { display: flex; align-items: stretch; gap: 6px; }
+.home-row .home-item { flex: 1; min-width: 0; }
+.home-guide {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(47, 107, 54, 0.12);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  cursor: pointer;
+}
 .home-item {
   display: flex;
   align-items: center;
@@ -771,6 +816,8 @@ function next() {
 .home-len { flex: none; font-size: 12px; font-weight: 600; color: #56625A; }
 .home-item.on .home-len { color: #D3E4D0; }
 .radio { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(30, 42, 31, 0.25); display: flex; align-items: center; justify-content: center; }
+.home-note { margin: 10px 2px; font-size: 13.5px; color: var(--ink-3); }
+.home-retry { margin-left: 6px; border: none; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--green-dark); cursor: pointer; }
 .home-item.on .radio { border: none; background: var(--accent); }
 
 /* ---- glass tray ---- */

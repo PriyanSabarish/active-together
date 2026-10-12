@@ -23,6 +23,7 @@
     "@vue/test-utils": "^2.5.0",
     "jsdom": "^30.0.1",
     "vite": "^7.1.12",
+    "vite-plugin-pwa": "^2.0.0",
     "vitest": "^4.1.11"
   }
 }

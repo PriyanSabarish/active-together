@@ -26,6 +26,19 @@
       </button>
     </div>
 
+    <!-- Minutes per day, this week. No average line, target or goal (story 8.3). -->
+    <div v-if="weekRecords.length || lastWeekMins" class="chart">
+      <p class="chart-title">Minutes active</p>
+      <div v-if="weekRecords.length" class="bars" role="img" :aria-label="`${totalMins} minutes active this week`">
+        <span v-for="d in dayMins" :key="d.iso" class="bar-col">
+          <span class="bar-min">{{ d.min || '' }}</span>
+          <span class="bar" :class="{ none: !d.min }" :style="{ height: d.min ? Math.max(8, Math.round((d.min / maxDayMin) * 56)) + 'px' : '4px' }" />
+          <span class="bar-day">{{ d.name }}</span>
+        </span>
+      </div>
+      <p class="last-week">Last week: {{ lastWeekMins }} min</p>
+    </div>
+
     <div v-if="weekRecords.length" class="mix">
       <span v-for="k in mix" :key="k.id" class="mix-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="k.d" /></svg>
@@ -129,6 +142,18 @@ const days = computed(() => WD.map((name, i) => {
 }))
 
 const weekRecords = computed(() => days.value.flatMap((d) => d.items))
+const dayMins = computed(() => days.value.map((d) => ({ iso: d.iso, name: d.name, min: d.items.reduce((a, r) => a + (r.durationMin || 0), 0) })))
+const maxDayMin = computed(() => Math.max(1, ...dayMins.value.map((d) => d.min)))
+// Minutes in the 7 days before the week on screen.
+const lastWeekMins = computed(() => {
+  let n = 0
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(weekStart.value)
+    d.setDate(d.getDate() - i)
+    n += (historyStore.byDate[iso(d)] ?? []).reduce((a, r) => a + (r.durationMin || 0), 0)
+  }
+  return n
+})
 const totalMins = computed(() => weekRecords.value.reduce((a, r) => a + (r.durationMin || 0), 0))
 const mix = computed(() => KINDS
   .map((k) => ({ ...k, d: KIND_ICON[k.id], n: weekRecords.value.filter((r) => kindOf(r) === k.id).length }))
@@ -215,6 +240,16 @@ function swipeEnd(e) {
 .day.has:active .day-box { transform: scale(0.95); }
 .day-name { font-size: 11px; font-weight: 600; color: var(--ink-3); }
 .day.today .day-name { color: var(--accent); }
+
+.chart { padding: 12px 2px 4px; border-top: 1px solid rgba(30, 42, 31, 0.1); }
+.chart-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; margin-top: 10px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; }
+.bar { width: 100%; max-width: 26px; border-radius: 6px; background: var(--green); }
+.bar.none { background: rgba(30, 42, 31, 0.1); }
+.bar-min { font-size: 11px; font-weight: 600; color: var(--ink-3); min-height: 13px; }
+.bar-day { font-size: 11px; color: var(--ink-4); }
+.last-week { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
 
 .mix {
   display: flex;

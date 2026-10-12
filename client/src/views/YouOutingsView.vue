@@ -16,6 +16,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="t.d" /></svg>
         <span class="tile-n">{{ t.n }}</span>
         <span class="tile-label">{{ t.label }}</span>
+        <span v-if="t.sub" class="tile-sub">{{ t.sub }}</span>
       </button>
     </div>
 
@@ -27,6 +28,8 @@
         <span class="x-name">{{ x.name }}</span>
       </div>
     </div>
+
+    <StorageNotices />
 
     <template v-if="months.length">
       <div v-for="m in months" :key="m.name">
@@ -57,7 +60,8 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import SubPageHead from '../components/SubPageHead.vue'
-import { useHistoryStore, weekStreak } from '../historyStore'
+import StorageNotices from '../components/StorageNotices.vue'
+import { useHistoryStore, weekStreak, bestStreak } from '../historyStore'
 import { categoryLabel } from '../store'
 import { usePhotosFor, tileStyle } from '../journal'
 import { categoryIcon, PIN, SHAPES, CALENDAR } from '../taskIcons'
@@ -85,11 +89,12 @@ const kinds = computed(() => {
 })
 
 const streak = computed(() => weekStreak(historyStore.records))
+const best = computed(() => bestStreak(historyStore.records))
 
 const tiles = computed(() => [
   { key: 'places', d: PIN, n: places.value.length, label: places.value.length === 1 ? 'place' : 'places', tappable: true },
   { key: 'play', d: SHAPES, n: kinds.value.length, label: 'kinds of play', tappable: true },
-  { key: 'streak', d: CALENDAR, n: streak.value, label: streak.value === 1 ? 'week' : 'weeks in a row', tappable: false }
+  { key: 'streak', d: CALENDAR, n: streak.value, label: streak.value === 1 ? 'week' : 'weeks in a row', sub: best.value > 0 ? `Best ${best.value}` : '', tappable: false }
 ])
 
 const expandItems = computed(() => (expand.value === 'places' ? places.value : expand.value === 'play' ? kinds.value : []))
@@ -132,6 +137,7 @@ const months = computed(() => {
 .tile.tappable { cursor: pointer; }
 .tile.on { box-shadow: inset 0 0 0 1.5px var(--green), var(--shadow-card); }
 .tile-n { margin-top: 8px; font-family: var(--font-display); font-weight: 700; font-size: 28px; line-height: 1; color: var(--ink); }
+.tile-sub { font-size: 11px; color: var(--ink-4); }
 .tile-label { margin-top: 4px; font-size: 12px; line-height: 1.25; color: rgba(30, 42, 31, 0.55); }
 
 .expand {

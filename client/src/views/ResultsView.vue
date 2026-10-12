@@ -33,6 +33,13 @@
       <button class="pill adjust-btn" @click="openAdjust">Adjust</button>
     </div>
 
+    <!-- Wet forecast: offer Indoors. Optional and dismissible; the results below stay. -->
+    <div v-if="store.suggestIndoors && !store.indoorsDismissed && !store.loading" class="try-indoors" role="note">
+      <span class="try-text">Rain is likely. Want to try something indoors?</span>
+      <button class="try-go" @click="tryIndoors">Try Indoors</button>
+      <button class="try-x" aria-label="Dismiss" @click="store.indoorsDismissed = true">×</button>
+    </div>
+
     <!-- loading: three skeleton cards while /recommendations is in flight -->
     <template v-if="store.loading">
       <div v-for="i in 3" :key="i" class="skeleton-card">
@@ -134,6 +141,11 @@
         </div>
       </article>
 
+      <p v-if="store.results.some((p) => p.travel)" class="footnote attribution">
+        Travel times by <a href="https://openrouteservice.org" target="_blank" rel="noopener">OpenRouteService</a>
+        with map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+      </p>
+
       <p v-if="store.results.length === 1" class="footnote">
         Only one place within {{ store.radiusKm }} km of {{ store.locationLabel }}.
         <template v-if="store.radiusKm < 10">Widen the radius to see more options.</template>
@@ -190,6 +202,12 @@ import { useMissionStore } from '../missionStore'
 const store = useSearchStore()
 const missionStore = useMissionStore()
 const router = useRouter()
+
+// Back to Start with the Outdoors / Indoors menu open. The results stay in the store.
+function tryIndoors() {
+  store.openSettingMenu = true
+  router.push('/')
+}
 
 // Landing here directly (e.g. page refresh) still runs the search.
 if (!store.loading && store.status === 'idle') store.fetchRecommendations()
@@ -290,6 +308,20 @@ function openById(id) {
 .resume-go { color: var(--accent); font-weight: 700; white-space: nowrap; }
 
 
+.try-indoors {
+  margin-top: 12px;
+  padding: 10px 10px 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-light);
+  border-radius: var(--radius-field);
+  font-size: 13.5px;
+}
+.try-text { flex: 1; color: var(--ink); }
+.try-go { border: none; background: none; padding: 4px 6px; font: inherit; font-weight: 700; color: var(--green-dark); cursor: pointer; white-space: nowrap; }
+.try-x { border: none; background: none; padding: 2px 8px; font-size: 20px; line-height: 1; color: var(--ink-3); cursor: pointer; }
+
 .card-foot { margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 .window-row {
@@ -365,6 +397,7 @@ function openById(id) {
   margin-top: 20px;
   line-height: 1.5;
 }
+.footnote a { color: inherit; text-decoration: underline; }
 
 /* skeleton */
 .skeleton-card {

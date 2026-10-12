@@ -60,6 +60,19 @@ class Settings(BaseSettings):
     # checks are unaffected. Set MISSION_GENERATION_ENABLED=false for the demo.
     mission_generation_enabled: bool = True
 
+    # OpenRouteService (A37). Empty: every travel time is a labelled estimate.
+    # Lives in an environment variable only, never in the repository.
+    ors_api_key: str = ""
+    ors_daily_limit: int = 400  # academic quota safeguard (A41)
+
+    # Place lookups (A57-A60). Bump DATASET_VERSION after a pipeline refresh so
+    # cached results are dropped. KEEPALIVE_URL, when set, is pinged so a host
+    # that sleeps when idle stays awake.
+    dataset_version: str = "1"
+    candidate_cache_ttl_s: float = 3600.0
+    keepalive_url: str | None = None
+    keepalive_interval_s: float = 600.0
+
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20
     max_duration_min: int = 120

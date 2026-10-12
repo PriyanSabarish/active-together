@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { postRecommendations, getContext } from './api'
+import { postRecommendations, postIndoorPlaces, getContext } from './api'
 import { usePreferencesStore } from './preferencesStore'
 
 // ---------------------------------------------------------------------------
@@ -153,6 +153,21 @@ export function displayName(rawName, label) {
 }
 
 // Convert one backend Combo into the flat shape the cards render.
+// The server's travel block (story 3.2), camelCased. Null when a response has
+// none, so older fixtures and cached results still map.
+export function mapTravel(t) {
+  if (!t) return null
+  return {
+    mode: t.mode,
+    outMin: t.out_min,
+    backMin: t.back_min,
+    onSiteMin: t.on_site_min,
+    totalMin: t.total_min,
+    source: t.source === 'openrouteservice' ? 'openrouteservice' : 'estimate',
+    backFromOutbound: t.back_from_outbound !== false
+  }
+}
+
 export function mapCombo(combo, ctx) {
   const place = combo.place
   const summary = combo.environmental_summary ?? { available: false }
@@ -194,6 +209,7 @@ export function mapCombo(combo, ctx) {
     comboTitle: combo.combo_template,
     durationBucket: combo.duration_bucket,
     enteredDurationMin: combo.entered_duration_min,
+    travel: mapTravel(combo.travel),
     expect: `${combo.combo_template}: ${combo.activity_type}. Category-level suggestion based on open data. Not verified on site.`
   }
 }
@@ -213,27 +229,23 @@ export function radiusFor(travelMin, mode) {
   return [3, 5, 10].find((r) => r >= km) ?? 10
 }
 
-// Indoor places (story 9.3) until the backend's indoor_place setting is wired:
-// a short, unverified list near the starting point, nearest first.
-const INDOOR_KINDS = [
-  { suffix: 'Library', label: 'Library', category: 'library', km: 0.8 },
-  { suffix: 'Leisure Centre', label: 'Leisure centre', category: 'leisure_centre', km: 1.6 },
-  { suffix: 'Indoor Play Centre', label: 'Indoor play', category: 'indoor_play', km: 2.4 },
-  { suffix: 'Community Hall', label: 'Community hall', category: 'community_hall', km: 3.1 }
-]
-
-export function mockIndoorPlaces(center, label, radiusKm) {
-  const base = (label || 'Local').split(/\s+/).slice(0, 2).join(' ').replace(/[0-9/]+/g, '').trim() || 'Local'
-  return INDOOR_KINDS.filter((k) => k.km <= radiusKm).map((k, i) => ({
-    id: `indoor-${i}`,
-    name: `${base} ${k.suffix}`,
-    category: k.category,
-    categoryLabel: k.label,
-    distanceKm: k.km,
-    latitude: center.latitude + 0.006 * (i + 1) * (i % 2 ? 1 : -1),
-    longitude: center.longitude + 0.007 * (i + 1),
+// One indoor place from POST /recommendations (setting indoor_place), flattened for
+// the list and its page. The server sends no coordinates, so the map and the
+// directions link cope without them. Always unverified (D25).
+export function mapIndoorPlace(p) {
+  const label = categoryLabel(p.category ?? 'indoor')
+  const { name } = displayName(p.display_name, label)
+  const distanceM = Number(p.distance_m ?? 0)
+  return {
+    id: p.place_id,
+    name,
+    category: p.category,
+    categoryLabel: label,
+    distanceKm: Math.round(distanceM / 100) / 10,
+    latitude: p.latitude ?? null,
+    longitude: p.longitude ?? null,
     unverified: true
-  }))
+  }
 }
 
 export const useSearchStore = defineStore('search', {
@@ -245,6 +257,9 @@ export const useSearchStore = defineStore('search', {
     stayMin: 40, // time to play there (or at home)
     whenAt: null, // chosen forecast hour (ISO string); null = now
     indoorResults: [],
+    indoorStatus: 'idle', // 'idle' | 'loading' | 'ok' | 'zero_results' | 'error'
+    indoorError: '',
+    _indoorSeq: 0,
     // screen 1
     suburb: '',
     selectedAddress: null, // { id, label, latitude, longitude, suburb, postcode }
@@ -261,6 +276,9 @@ export const useSearchStore = defineStore('search', {
     status: 'idle', // 'idle' | 'ok' | 'zero_results' | 'out_of_bounds' | 'error'
     message: '',
     suggestions: [], // zero-result next steps from the server (more_time, other_mode)
+    suggestIndoors: false, // wet forecast: offer Indoors (story 9.1)
+    indoorsDismissed: false,
+    openSettingMenu: false, // set by the Try Indoors prompt; Start opens its Outdoors / Indoors menu once
     error: '',
     results: [],
     _requestSeq: 0
@@ -313,9 +331,28 @@ export const useSearchStore = defineStore('search', {
       this.stayMin = minutes
       this.durationMin = minutes
     },
-    searchIndoor() {
+    // POST /recommendations for the current location and radius (story 9.3).
+    async searchIndoor() {
       const c = this.coords
-      this.indoorResults = c ? mockIndoorPlaces(c, this.selectedAddress?.suburb || this.suburb || 'Local', this.radiusKm) : []
+      if (!c) {
+        this.indoorResults = []
+        this.indoorStatus = 'idle'
+        return
+      }
+      const seq = ++this._indoorSeq
+      this.indoorStatus = 'loading'
+      this.indoorError = ''
+      this.indoorResults = []
+      try {
+        const data = await postIndoorPlaces({ latitude: c.latitude, longitude: c.longitude, radiusKm: this.radiusKm })
+        if (seq !== this._indoorSeq) return
+        this.indoorResults = (data.places ?? []).map(mapIndoorPlace)
+        this.indoorStatus = this.indoorResults.length ? 'ok' : 'zero_results'
+      } catch (e) {
+        if (seq !== this._indoorSeq) return
+        this.indoorStatus = 'error'
+        this.indoorError = e?.message ?? 'Something went wrong.'
+      }
     },
     rememberSuburb(name) {
       if (!name) return
@@ -362,6 +399,8 @@ export const useSearchStore = defineStore('search', {
       this.status = 'idle'
       this.message = ''
       this.suggestions = []
+      this.suggestIndoors = false
+      this.indoorsDismissed = false
       this.error = ''
       try {
         const preferencesStore = usePreferencesStore()
@@ -379,6 +418,7 @@ export const useSearchStore = defineStore('search', {
         this.status = data.status ?? (this.results.length ? 'ok' : 'zero_results')
         this.message = data.message ?? ''
         this.suggestions = data.suggestions ?? []
+        this.suggestIndoors = data.suggest_indoors === true
       } catch (e) {
         if (seq !== this._requestSeq) return
         this.status = 'error'

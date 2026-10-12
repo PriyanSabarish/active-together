@@ -37,7 +37,7 @@ from app.missions.instrumentation import RejectionStats
 from app.missions.loader import load_template_dir
 from app.missions.models import MissionTemplate
 from app.model_client import ModelClient
-from app.models import AgeBand, Context, Mission, Place, Setting
+from app.models import ActivityCategory, AgeBand, Context, Mission, Place, Setting
 
 # Demo allowlist: only the families whose wording has been rewritten are
 # served for now. Add an id here as each remaining family is updated; an
@@ -54,6 +54,9 @@ ENABLED_TEMPLATE_IDS: frozenset[str] = frozenset({
 
 TEMPLATES: list[MissionTemplate] = [
     t for t in load_template_dir() if t.template_id in ENABLED_TEMPLATE_IDS
+]
+HOME_TEMPLATES: list[MissionTemplate] = [
+    t for t in load_template_dir() if t.template_id.startswith("activity_home_")
 ]
 ELIGIBLE_CATEGORIES: dict[str, list[str]] = load_eligible_categories()
 REJECTION_STATS = RejectionStats()
@@ -98,6 +101,56 @@ def get_missions(
             stats=REJECTION_STATS,
             eligible_categories=ELIGIBLE_CATEGORIES,
             setting=setting,
+        )
+        if missions:
+            return missions
+    return []
+
+
+# At-home missions (story 9.2). There is no place and weather does not apply
+# (D23), so the selector gets a placeholder place and an unavailable context;
+# the home templates are category "any", so neither is read for matching.
+_HOME_PLACE = Place(
+    place_id="home",
+    display_name="Home",
+    activity_category=ActivityCategory.PLAYGROUND,
+    lga_name="",
+    latitude=0.0,
+    longitude=0.0,
+    distance_m=0,
+    classification_confidence=0.0,
+)
+_NO_WEATHER = Context(available=False)
+
+
+def home_bucket(total_min: int) -> int:
+    """Plan length for a home session: the largest of 20/40/60 that fits, and 20
+    for anything shorter (the minimum for home is still an open item)."""
+    return max((b for b in STEPS_FOR if b <= total_min), default=min(STEPS_FOR))
+
+
+def get_home_missions(
+    age_band: AgeBand,
+    total_min: int,
+    recent_template_ids: Iterable[str] = (),
+    max_missions: int = MAX_MISSIONS,
+) -> list[Mission]:
+    """2-3 at-home missions through the same selection, build and validation path
+    as outdoor ones, with the two home safety rules applied. Library wording
+    only: the model prompt describes a place and the weather, neither of which
+    exists at home, so no rewrite is requested and nothing waits on a model."""
+    for bucket in sorted((b for b in STEPS_FOR if b <= home_bucket(total_min)), reverse=True):
+        missions = generate_missions(
+            HOME_TEMPLATES,
+            _HOME_PLACE,
+            _NO_WEATHER,
+            age_band,
+            bucket,
+            recent_template_ids=recent_template_ids,
+            model_client=None,
+            max_missions=max_missions,
+            stats=REJECTION_STATS,
+            setting=Setting.HOME,
         )
         if missions:
             return missions

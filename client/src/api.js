@@ -4,6 +4,8 @@
 // clone runs with no configuration. Override with VITE_API_BASE_URL in
 // client/.env (e.g. http://localhost:8000 for a local backend).
 
+import { stripJpegMetadata } from './jpeg'
+
 const DEFAULT_BASE_URL = 'https://active-together.onrender.com'
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, '')
 
@@ -67,6 +69,24 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
   })
 }
 
+// POST /recommendations with setting "indoor_place" (story 9.3).
+// body: { setting, latitude, longitude, radius_km } — coordinates cut to 4 dp.
+// returns: { status: 'ok' | 'zero_results', places: [{ place_id, display_name, category,
+//            distance_m, unverified: true }], suggestions?: ['larger_radius', 'at_home'] }
+// Nearest first, then by name. No mission, weather or travel time.
+const to4dp = (n) => Math.round(Number(n) * 1e4) / 1e4
+export function postIndoorPlaces({ latitude, longitude, radiusKm }) {
+  return request('/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      setting: 'indoor_place',
+      latitude: to4dp(latitude),
+      longitude: to4dp(longitude),
+      radius_km: radiusKm
+    })
+  })
+}
+
 // GET /data/context?lat=&lon=
 // returns the current readings for a point:
 // { available, temp_c, precip_prob, wind_gust_kmh, uv_index, pm25, pm10 }
@@ -123,6 +143,9 @@ export function searchAddresses(query, { signal } = {}) {
 // timeoutMs) throws, and the run screen falls back to a tap confirm — never an
 // endless spinner.
 export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 8000 }) {
+  // Only the image, prompt_id and attempt leave the phone: no run identifier, record or
+  // journal data, and no metadata inside the JPEG itself.
+  const body = image instanceof Blob ? await stripJpegMetadata(image) : image
   const query = new URLSearchParams({ prompt_id: String(promptId ?? ''), attempt: String(attempt) })
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), timeoutMs)
@@ -130,7 +153,7 @@ export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 800
   try {
     res = await fetch(`${BASE_URL}/verify-step?${query}`, {
       method: 'POST',
-      body: image,
+      body,
       headers: { Accept: 'application/json', 'Content-Type': 'image/jpeg' },
       signal: ctrl.signal
     })
@@ -141,6 +164,21 @@ export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 800
   }
   if (!res.ok) throw new ApiError('The photo check is unavailable.', res.status)
   return res.json()
+}
+
+// POST /recommendations with setting "home" (story 9.2).
+// body: { setting, duration_min, age_band, recent_template_ids } — no lat, lng or radius is sent.
+// returns: { setting: 'home', missions: [Mission + place_name: 'Home', place_id: null] } (2-3).
+export function postHomeMissions({ durationMin, ageBand, recentTemplateIds = [] }) {
+  return request('/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      setting: 'home',
+      duration_min: durationMin,
+      age_band: ageBand,
+      recent_template_ids: recentTemplateIds
+    })
+  })
 }
 
 // POST /missions

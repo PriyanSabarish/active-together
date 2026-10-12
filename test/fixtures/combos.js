@@ -43,3 +43,16 @@ export function makeCombo(overrides = {}) {
 export function okResponse(combos, extra = {}) {
   return { status: 'ok', combos, ...extra }
 }
+
+export function makeTravel(overrides = {}) {
+  return {
+    mode: 'walking',
+    out_min: 10,
+    back_min: 10,
+    on_site_min: 40,
+    total_min: 60,
+    source: 'openrouteservice',
+    back_from_outbound: true,
+    ...overrides
+  }
+}
