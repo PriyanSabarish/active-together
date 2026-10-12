@@ -1,5 +1,5 @@
 <template>
-  <AppHeader>
+  <AppHeader :floating="scrolled" overlay>
     <template #right>
       <button class="env-pill" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="ENV[store.setting].icon" /></svg>
@@ -18,7 +18,7 @@
     </button>
   </div>
 
-  <div class="scroll-area start" @click="menuOpen = false">
+  <div class="scroll-area start" @click="menuOpen = false" @scroll.passive="scrolled = $event.target.scrollTop > 2">
     <!-- 1 · Where are you starting? -->
     <section v-if="showFrom" class="from">
       <svg v-if="isOutdoor" class="from-sun" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2" stroke-linecap="round"><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M12 2.5v2 M12 19.5v2 M2.5 12h2 M19.5 12h2 M5.3 5.3l1.4 1.4 M17.3 17.3l1.4 1.4 M5.3 18.7l1.4-1.4 M17.3 6.7l1.4-1.4" /></svg>
@@ -257,6 +257,7 @@ const SegBar = defineComponent({
 const query = ref(store.selectedAddress?.label || store.suburb)
 const open = ref(false)
 const menuOpen = ref(store.openSettingMenu)
+const scrolled = ref(false) // the page has scrolled: the header floats as a pill
 store.openSettingMenu = false
 const kidOpen = ref(false)
 const homePick = ref(null)
@@ -530,7 +531,7 @@ function next() {
 </script>
 
 <style scoped>
-.start { display: flex; flex-direction: column; gap: 12px; padding-bottom: 0; }
+.start { display: flex; flex-direction: column; gap: 12px; padding-bottom: 0; padding-top: 46px; } /* clears the overlaid header: the row is 32px tall at rest, so content starts ~14px below it */
 
 /* ---- header env menu ---- */
 .env-pill {
@@ -552,7 +553,7 @@ function next() {
 
 .env-menu {
   position: absolute;
-  top: 64px;
+  top: 72px;
   right: 22px;
   z-index: 20;
   width: 200px;

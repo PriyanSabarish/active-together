@@ -5,7 +5,7 @@
     <!-- End-of-mission photo (story 10.3): optional, taken by the parent. Green shell. -->
     <div v-if="missionStore.finishPhase === 'capture'" class="scroll-area capture">
       <div class="cap-art" aria-hidden="true">
-        <div class="cap-sun"><span class="cheese">Say cheese!</span></div>
+        <div class="cap-sun" />
         <div class="cap-ring" />
       </div>
       <span class="badge-pill">Mission complete</span>
@@ -193,7 +193,6 @@ function finish() {
 
 .cap-art { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .cap-sun { position: absolute; right: -90px; top: 120px; width: 300px; height: 300px; border-radius: 50%; background: var(--accent); }
-.cheese { position: absolute; left: 44px; top: 128px; width: 130px; text-align: center; transform: rotate(-6deg); font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: -0.3px; color: var(--ink); white-space: nowrap; }
 .cap-ring { position: absolute; right: -30px; top: 180px; width: 180px; height: 180px; border-radius: 50%; border: 2px dashed rgba(30, 42, 31, 0.4); }
 
 .cap-title { position: relative; margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 64px; line-height: 0.88; letter-spacing: -2.8px; color: var(--paper); }
@@ -276,7 +275,6 @@ function finish() {
   .sticker.tasks { top: 8px; width: 84px; height: 84px; }
   .sticker.mins { top: 80px; left: 84px; width: 72px; height: 72px; }
   .cap-sun { top: 90px; width: 260px; height: 260px; }
-  .cheese { top: 108px; left: 34px; }
   .cap-ring { top: 140px; }
 }
 
