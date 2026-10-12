@@ -133,17 +133,18 @@
         </div>
         <p v-else-if="!homeOptions.length" class="home-note">No at-home activities for this time yet. Try a different length.</p>
         <div v-else class="home-list">
-          <button
-            v-for="m in homeOptions"
-            :key="m.id"
-            class="home-item"
-            :class="{ on: homePick === m.id }"
-            @click="homePick = m.id"
-          >
-            <span class="home-name">{{ m.title }}</span>
-            <span class="home-len">{{ m.durationMin }} min</span>
-            <span class="radio"><svg v-if="homePick === m.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
-          </button>
+          <div v-for="m in homeOptions" :key="m.id" class="home-row">
+            <button class="home-item" :class="{ on: homePick === m.id }" @click="homePick = m.id">
+              <span class="home-name">{{ m.title }}</span>
+              <span class="home-len">{{ m.durationMin }} min</span>
+              <span class="radio"><svg v-if="homePick === m.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
+            </button>
+            <!-- Setup and rules to read before choosing: some take 5-10 minutes to prepare. -->
+            <button v-if="guideFor(m.templateId)" class="home-guide" :aria-label="`Parent guide for ${m.title}`" @click="guideMission = m">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /></svg>
+              Guide
+            </button>
+          </div>
         </div>
       </section>
     </div>
@@ -166,6 +167,12 @@
   </div>
 
   <KidSheet v-if="kidOpen" @close="kidOpen = false" />
+  <ParentGuideSheet
+    v-if="guideMission && guideFor(guideMission.templateId)"
+    :guide="guideFor(guideMission.templateId)"
+    :age-band="guideMission.ageBand"
+    @close="guideMission = null"
+  />
 </template>
 
 <script setup>
@@ -181,6 +188,8 @@ import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
+import ParentGuideSheet from '../components/ParentGuideSheet.vue'
+import { guideFor } from '../parentGuides'
 import { searchAddresses, getHourlyForecast } from '../api'
 import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
 import { useMissionStore } from '../missionStore'
@@ -281,6 +290,7 @@ const nums = computed(() => {
 
 const modeWord = computed(() => (store.travelMode === 'walking' ? 'walk' : 'drive'))
 const homeOptions = computed(() => missionStore.homeMissions)
+const guideMission = ref(null) // the home mission whose parent guide is open
 
 // At home the missions come from the server for the chosen time (story 9.2).
 // Only the time and the child's age band are sent, never a location.
@@ -767,6 +777,23 @@ function next() {
 .count { font-size: 12.5px; font-weight: 600; color: #56625A; }
 
 .home-list { display: flex; flex-direction: column; gap: 6px; }
+.home-row { display: flex; align-items: stretch; gap: 6px; }
+.home-row .home-item { flex: 1; min-width: 0; }
+.home-guide {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(47, 107, 54, 0.12);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  cursor: pointer;
+}
 .home-item {
   display: flex;
   align-items: center;

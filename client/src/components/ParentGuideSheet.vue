@@ -49,7 +49,7 @@
             <p>“{{ stage.closing }}”</p>
           </div>
         </section>
-        <p v-else class="empty">There is no guide for this task. Follow the steps on screen.</p>
+        <p v-else-if="stageIndex != null" class="empty">There is no guide for this task. Follow the steps on screen.</p>
 
         <div class="accordions">
           <div class="acc">
@@ -111,15 +111,16 @@ import { SHARED_RULES } from '../parentGuides'
 // Layout follows "Parent Guide Sheet.html" in the iteration 3 designs.
 const props = defineProps({
   guide: { type: Object, required: true },
-  stageIndex: { type: Number, default: 0 },
+  // null = read before play (from the picker): setup and rules, no task.
+  stageIndex: { type: Number, default: null },
   ageBand: { type: String, default: '8-10' },
   isLastStep: { type: Boolean, default: false }
 })
 defineEmits(['close'])
 
-const stage = computed(() => props.guide.stages[props.stageIndex] ?? null)
-// Setup is open on the first task so it is read before play starts.
-const setupOpen = ref(props.stageIndex === 0)
+const stage = computed(() => (props.stageIndex == null ? null : props.guide.stages[props.stageIndex] ?? null))
+// Setup is open before play and on the first task, so it is read before play starts.
+const setupOpen = ref(!props.stageIndex)
 const safetyOpen = ref(false)
 
 const lowerFirst = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t)
@@ -129,7 +130,7 @@ const lowerFirst = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t)
 .scrim {
   position: absolute;
   inset: 0;
-  z-index: 9;
+  z-index: 30;
   background: rgba(10, 14, 11, 0.62);
   display: flex;
   flex-direction: column;

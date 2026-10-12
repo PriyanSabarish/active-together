@@ -143,6 +143,31 @@ describe('Story 9.1 — Outdoors / At home / Indoor place', () => {
     expect(cta.text()).toMatch(/^Play /)
   })
 
+  it('At home: each activity has a Guide link that opens the setup and rules before play', async () => {
+    const wrapper = mountView()
+    const store = useSearchStore()
+    postHomeMissions.mockResolvedValue({
+      missions: [
+        { mission_id: 'a', template_id: 'activity_home_missing_power_crystals', title: 'Home: Crystals', age_band: '8-10', estimated_minutes: 20, equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }] },
+        { mission_id: 'b', template_id: 'activity_not_home', title: 'No guide', age_band: '8-10', estimated_minutes: 20, equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }] }
+      ]
+    })
+    store.setting = 'home'
+    await flushPromises()
+    const links = wrapper.findAll('.home-guide')
+    expect(links).toHaveLength(1) // only the activity that has a guide
+    await links[0].trigger('click')
+    const sheet = wrapper.find('[aria-label="Parent guide"]')
+    expect(sheet.exists()).toBe(true)
+    expect(sheet.text()).toMatch(/Before you start/)
+    expect(sheet.text()).toMatch(/Say first/)
+    expect(sheet.text()).not.toMatch(/Task 1/)
+    // opening the guide does not pick the activity
+    expect(wrapper.find('.btn-primary').attributes('disabled')).toBeDefined()
+    await sheet.find('.close').trigger('click')
+    expect(wrapper.find('[aria-label="Parent guide"]').exists()).toBe(false)
+  })
+
   it('Indoor place keeps where-from and how far, drops when and time there', async () => {
     const wrapper = mountView()
     const store = useSearchStore()
