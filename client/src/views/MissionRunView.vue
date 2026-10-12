@@ -5,6 +5,7 @@
     <div class="scroll-area run-scroll">
       <div class="run-head">
         <span class="run-title">{{ mission.title }}</span>
+        <button v-if="guide" class="run-guide" @click="guideOpen = true">Parent guide</button>
         <button class="run-count" @click="sheet = true">
           Task {{ missionStore.stepIndex + 1 }} of {{ missionStore.totalSteps }}
           <span class="caret">▼</span>
@@ -79,6 +80,15 @@
       </p>
     </div>
 
+    <ParentGuideSheet
+      v-if="guide && guideOpen"
+      :guide="guide"
+      :stage-index="missionStore.stepIndex"
+      :age-band="mission.ageBand"
+      :is-last-step="isLast"
+      @close="guideOpen = false"
+    />
+
     <!-- All tasks: jump to any one. -->
     <div v-if="sheet" class="sheet-scrim" @click="sheet = false">
       <div class="sheet" @click.stop>
@@ -140,6 +150,8 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CameraOverlay from '../components/CameraOverlay.vue'
+import ParentGuideSheet from '../components/ParentGuideSheet.vue'
+import { guideFor } from '../parentGuides'
 import { useMissionStore } from '../missionStore'
 import { usePhotoStore } from '../photoStore'
 import { postVerifyStep } from '../api'
@@ -175,6 +187,10 @@ watch(() => step.value?.figure, async (id) => {
 watch(() => mission.value?.steps, (steps) => preloadFigures((steps ?? []).map((s) => s.figure)), { immediate: true })
 
 const sheet = ref(false)
+// At-home missions come with a parent guide (setup, clue answers, what to say).
+const guide = computed(() => guideFor(mission.value?.templateId))
+// Opens on its own at the first task so the setup is read before play starts.
+const guideOpen = ref(!!guide.value && missionStore.stepIndex === 0)
 const camera = ref(null) // null | 'keep' | 'check'
 const pc = ref('idle') // idle | checking | matched | retry | fallback | offline
 const tries = ref(0)
@@ -327,6 +343,18 @@ function advance(result) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.run-guide {
+  background: rgba(232, 145, 58, 0.16);
+  border: none;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
 }
 
 .caret { font-size: 10px; opacity: 0.75; }
