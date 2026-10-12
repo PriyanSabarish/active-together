@@ -47,9 +47,11 @@
           </div>
         </div>
 
-        <div v-else class="sketch" :class="{ 'has-figure': !!figureSvg }" aria-hidden="true">
-          <!-- Stick figure for this step when the backend names one, else the step icon. -->
+        <div v-else class="sketch" :class="{ 'has-figure': !!figureSvg || figureLoading }" aria-hidden="true">
+          <!-- Stick figure for this step when the backend names one, else the step icon.
+               While the figure is still loading the box stays empty at full size. -->
           <div v-if="figureSvg" class="figure-art" v-html="figureSvg" />
+          <div v-else-if="figureLoading" class="figure-art figure-wait" />
           <svg v-else width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path :d="taskIcon(step.icon)" /></svg>
         </div>
 
@@ -142,7 +144,7 @@ import { useMissionStore } from '../missionStore'
 import { usePhotoStore } from '../photoStore'
 import { postVerifyStep } from '../api'
 import { taskIcon, CAMERA } from '../taskIcons'
-import { loadFigure } from '../figures'
+import { loadFigure, cachedFigure, preloadFigures } from '../figures'
 
 const ORANGE = '#E8913A'
 const OFF = 'rgba(242,241,236,.22)'
@@ -156,13 +158,21 @@ const isLast = computed(() => missionStore.stepIndex === missionStore.totalSteps
 const isPhotoStep = computed(() => step.value?.confirm === 'photo')
 
 // Stick-figure SVG for the current step ('' while loading or when there is none).
+// The step icon only shows when the step has no figure or it failed to load.
 const figureSvg = ref('')
+const figureLoading = ref(false)
 watch(() => step.value?.figure, async (id) => {
-  figureSvg.value = ''
-  if (!id) return
+  figureSvg.value = cachedFigure(id)
+  figureLoading.value = !!id && !figureSvg.value
+  if (!figureLoading.value) return
   const svg = await loadFigure(id)
-  if (step.value?.figure === id) figureSvg.value = svg
+  if (step.value?.figure !== id) return
+  figureSvg.value = svg
+  figureLoading.value = false
 }, { immediate: true })
+
+// Fetch every step's figure as soon as the mission opens.
+watch(() => mission.value?.steps, (steps) => preloadFigures((steps ?? []).map((s) => s.figure)), { immediate: true })
 
 const sheet = ref(false)
 const camera = ref(null) // null | 'keep' | 'check'
@@ -454,6 +464,7 @@ function advance(result) {
 .sketch.has-figure { height: 168px; margin: -6px -10px 12px; color: rgba(242, 241, 236, 0.9); }
 .figure-art { width: 100%; height: 100%; }
 .figure-art :deep(svg) { display: block; width: 100%; height: 100%; }
+.figure-wait { border-radius: 18px; background: rgba(242, 241, 236, 0.04); }
 
 .pc-pill {
   display: inline-flex;

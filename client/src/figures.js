@@ -13,6 +13,7 @@ import { figureUrl } from './api'
 // ---------------------------------------------------------------------------
 
 const cache = new Map() // figure id -> Promise<string>
+const ready = new Map() // figure id -> sanitised SVG, once fetched
 
 const BLOCKED = ['script', 'foreignObject', 'iframe', 'object', 'embed', 'audio', 'video']
 
@@ -65,7 +66,22 @@ export function loadFigure(id) {
     const p = fetchFigure(id)
     cache.set(id, p)
     // A failed fetch is not remembered, so the next step or mission retries.
-    p.then((svg) => { if (!svg) cache.delete(id) })
+    p.then((svg) => {
+      if (svg) ready.set(id, svg)
+      else cache.delete(id)
+    })
   }
   return cache.get(id)
+}
+
+// Already-fetched markup, read synchronously so a preloaded step shows its
+// figure on the first frame. '' when it has not arrived (yet).
+export function cachedFigure(id) {
+  return ready.get(id) ?? ''
+}
+
+// Start fetching every figure a mission uses, so moving to the next step
+// does not wait on the network.
+export function preloadFigures(ids) {
+  for (const id of new Set(ids)) if (id) loadFigure(id)
 }
