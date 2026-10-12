@@ -28,6 +28,7 @@ from app.data.addresses import autocomplete_addresses
 from app.data.database import SessionLocal, get_db, engine
 from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
+from app.data.candidate_cache import DatasetUnavailable, get_candidates
 from app.missions import service as mission_service
 from app.missions.guides import guide_for
 from app.models import AgeBand, TravelMode
@@ -39,25 +40,63 @@ from app.services import RecommendationRequest, SettingEnum
 
 class ImageSanitizingFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
-        msg = record.getMessage()
-        if "image_bytes" in msg or "content-type: image" in msg.lower():
+        args = record.args if isinstance(record.args, tuple) else tuple(record.args.values()) if isinstance(record.args, dict) else ()
+        carries_bytes = any(isinstance(a, (bytes, bytearray, memoryview)) for a in args)
+        try:
+            msg = record.getMessage()
+        except Exception:
+            msg = ""
+        if carries_bytes or "image_bytes" in msg or "content-type: image" in msg.lower():
+            # args must go too, or formatting the replacement message fails and
+            # logging prints the original arguments in its own error report
             record.msg = "[REDACTED_IMAGE_PAYLOAD]"
+            record.args = ()
         return True
 
 logger = logging.getLogger("uvicorn.error")
 logger.addFilter(ImageSanitizingFilter())
 
-# Task A57: Startup lifespan handler to pre-warm DB pool connections
+# Melbourne CBD, the centre of the pilot area: the lookup used to warm things up.
+WARM_ORIGIN = (-37.8136, 144.9631)
+
+
+def _warm_dataset() -> None:
+    """Task A57: open a pooled connection and run one representative place query,
+    which also fills the result cache, so the first real request is not the one
+    that pays for a cold database. A failure only logs; it never stops startup."""
+    db = SessionLocal()
+    try:
+        get_candidates(db, *WARM_ORIGIN, 5.0, "outdoor", lambda *a, **k: fetch_candidate_places(*a, **k))
+        logger.info("Place dataset warmed during startup.")
+    except DatasetUnavailable:
+        logger.error("Could not warm the place dataset during startup.")
+    finally:
+        db.close()
+
+
+async def _keepalive(url: str, interval_s: float) -> None:
+    """Task A59: ping our own health URL so a host that sleeps when idle stays up."""
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        while True:
+            await asyncio.sleep(interval_s)
+            try:
+                await client.get(url)
+            except httpx.HTTPError:
+                logger.warning("Keep-alive ping failed.")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Warm up database connection pool
+    await asyncio.to_thread(_warm_dataset)
+    keepalive = None
+    if settings.keepalive_url:
+        keepalive = asyncio.create_task(_keepalive(settings.keepalive_url, settings.keepalive_interval_s))
     try:
-        with engine.connect() as conn:
-            conn.exec_driver_sql("SELECT 1")
-        logger.info("Database connection pool successfully warmed up during startup.")
-    except Exception as e:
-        logger.error(f"Failed to pre-warm database connection pool: {e}")
-    yield
+        yield
+    finally:
+        if keepalive:
+            keepalive.cancel()
+
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title=settings.app_name, debug=settings.debug, lifespan=lifespan)
@@ -113,6 +152,16 @@ async def locations_autocomplete(
         )
 
 
+def _cached_places(db, lat, lon, radius_km, setting, loader):
+    """Cached place lookup (A58). A failed read with nothing cached is the
+    dataset-unavailable state (A60), a 503 the client already words, never an
+    empty list."""
+    try:
+        return get_candidates(db, lat, lon, radius_km, setting, loader)
+    except DatasetUnavailable:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="dataset_unavailable")
+
+
 @app.post("/recommendations")
 async def create_recommendations(req: RecommendationRequest, db: Session = Depends(get_db)):
     if req.setting == SettingEnum.HOME:
@@ -146,7 +195,7 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
         if req.radius_km not in (3, 5, 10):
             raise HTTPException(status_code=400, detail="radius_km must be 3, 5, or 10 for indoor places")
         
-        indoor_candidates = fetch_indoor_places(db, lat=lat, lon=lon, radius_km=float(req.radius_km))
+        indoor_candidates = _cached_places(db, lat, lon, float(req.radius_km), "indoor_place", lambda *a, **k: fetch_indoor_places(*a, **k))
         if not indoor_candidates:
             return {
                 "status": "zero_results",
@@ -174,7 +223,7 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
     if not (20 <= req.duration_min <= 120):
         raise HTTPException(status_code=400, detail="duration_min must be between 20 and 120")
 
-    candidates = fetch_candidate_places(db, lat=lat, lon=lon, radius_km=float(req.radius_km))
+    candidates = _cached_places(db, lat, lon, float(req.radius_km), "outdoor", lambda *a, **k: fetch_candidate_places(*a, **k))
     if not candidates or not any(p.lga_name.lower() in PILOT_LGAS for p in candidates):
         return {"status": "out_of_bounds", "message": "Selected location is outside pilot area.", "combos": []}
 
@@ -356,7 +405,13 @@ async def verify_step(request: Request):
         raise HTTPException(status_code=400, detail="Empty image.")
     try:
         # Memory only. verify_step() calls the scorers, which are blocking.
-        result = await asyncio.to_thread(run_verify_step, image_bytes, prompt_id, attempt)
+        try:
+            result = await asyncio.to_thread(run_verify_step, image_bytes, prompt_id, attempt)
+        except Exception as e:
+            # Name the failure only: the exception text or traceback could carry
+            # the image. A child is never stuck, so a broken scorer means tap.
+            logger.error(f"Photo check failed: {type(e).__name__}")
+            return {"result": "use_tap", "attempts_left": 0, "checked_by": None}
         return dataclasses.asdict(result)
     finally:
         del image_bytes

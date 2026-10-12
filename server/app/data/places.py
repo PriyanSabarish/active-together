@@ -159,4 +159,4 @@ def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -
         ]
     except Exception:
         logging.getLogger("uvicorn.error").exception("Indoor place query failed")
-        return []
+        raise  # a failed read is "dataset unavailable", not "no places nearby"

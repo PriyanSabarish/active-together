@@ -36,3 +36,12 @@ CREATE TABLE IF NOT EXISTS indoor_places (
 
 CREATE INDEX IF NOT EXISTS indoor_place_location_idx ON indoor_places USING GIST (location);
 CREATE INDEX IF NOT EXISTS indoor_place_category_idx ON indoor_places (activity_category);
+
+
+-- Daily request budget for external services, shared by every worker (A41).
+CREATE TABLE IF NOT EXISTS api_usage (
+    day date NOT NULL,
+    service text NOT NULL,
+    count integer NOT NULL DEFAULT 0,
+    PRIMARY KEY (day, service)
+);

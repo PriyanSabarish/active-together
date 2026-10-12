@@ -97,6 +97,23 @@ export function weekStreak(records, now = new Date()) {
   return n
 }
 
+// Longest run of consecutive weeks (Monday to Sunday) with at least one outing:
+// the personal best next to the current streak (D5). Never goes down.
+export function bestStreak(records) {
+  const weeks = [...new Set(records.map((r) => mondayOf(new Date(r.date)).getTime()))].sort((a, b) => a - b)
+  let best = 0
+  let run = 0
+  let prev = null
+  for (const w of weeks) {
+    const d = new Date(w)
+    d.setDate(d.getDate() - 7)
+    run = prev !== null && d.getTime() === prev ? run + 1 : 1
+    best = Math.max(best, run)
+    prev = w
+  }
+  return best
+}
+
 export const useHistoryStore = defineStore('history', {
   state: () => ({
     // newest first: { id, runId, date, time, placeName, category, missionTitle,

@@ -4,6 +4,8 @@
 // clone runs with no configuration. Override with VITE_API_BASE_URL in
 // client/.env (e.g. http://localhost:8000 for a local backend).
 
+import { stripJpegMetadata } from './jpeg'
+
 const DEFAULT_BASE_URL = 'https://active-together.onrender.com'
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, '')
 
@@ -141,6 +143,9 @@ export function searchAddresses(query, { signal } = {}) {
 // timeoutMs) throws, and the run screen falls back to a tap confirm — never an
 // endless spinner.
 export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 8000 }) {
+  // Only the image, prompt_id and attempt leave the phone: no run identifier, record or
+  // journal data, and no metadata inside the JPEG itself.
+  const body = image instanceof Blob ? await stripJpegMetadata(image) : image
   const query = new URLSearchParams({ prompt_id: String(promptId ?? ''), attempt: String(attempt) })
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), timeoutMs)
@@ -148,7 +153,7 @@ export async function postVerifyStep({ image, promptId, attempt, timeoutMs = 800
   try {
     res = await fetch(`${BASE_URL}/verify-step?${query}`, {
       method: 'POST',
-      body: image,
+      body,
       headers: { Accept: 'application/json', 'Content-Type': 'image/jpeg' },
       signal: ctrl.signal
     })

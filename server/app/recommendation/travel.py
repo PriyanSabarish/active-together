@@ -5,10 +5,9 @@ and Task A41 (daily request limits resetting at Melbourne midnight).
 """
 
 import math
-import datetime
-from zoneinfo import ZoneInfo
 import httpx
 from app.config import settings
+from app.data.quota import try_consume
 from app.services import TravelTime
 
 SPEEDS = {
@@ -17,28 +16,11 @@ SPEEDS = {
     "driving": 30.0
 }
 DRIVING_PARKING_BUFFER_MIN = 5
-DAILY_ORS_LIMIT = 400  # Academic quota ceiling safeguard
-
-# Thread-safe tracker state for Task A41
-_ors_usage_state = {
-    "date": None,
-    "count": 0
-}
+DAILY_ORS_LIMIT = settings.ors_daily_limit  # Academic quota ceiling safeguard
 
 def _check_and_increment_quota() -> bool:
-    """Resets counter at Melbourne midnight and checks against quota limit."""
-    melbourne_tz = ZoneInfo("Australia/Melbourne")
-    today_melbourne = datetime.datetime.now(melbourne_tz).date()
-
-    if _ors_usage_state["date"] != today_melbourne:
-        _ors_usage_state["date"] = today_melbourne
-        _ors_usage_state["count"] = 0
-
-    if _ors_usage_state["count"] >= DAILY_ORS_LIMIT:
-        return False
-
-    _ors_usage_state["count"] += 1
-    return True
+    """One shared daily budget across workers, reset at Melbourne midnight (A41)."""
+    return try_consume("openrouteservice", DAILY_ORS_LIMIT)
 
 
 def estimate_travel_time(lat1: float, lon1: float, lat2: float, lon2: float, mode: str) -> TravelTime:
@@ -69,6 +51,14 @@ async def get_travel_times(origin: tuple[float, float], candidates: list, mode: 
     if not candidates:
         return travel_times
 
+    # No key configured: every time is a labelled estimate, and no quota is spent.
+    if not settings.ors_api_key:
+        for candidate in candidates:
+            travel_times[candidate.place_id] = estimate_travel_time(
+                rounded_origin[0], rounded_origin[1], candidate.latitude, candidate.longitude, mode
+            )
+        return travel_times
+
     # Task A41: Fall back automatically if daily Melbourne quota is exhausted
     if not _check_and_increment_quota():
         for candidate in candidates:
@@ -82,7 +72,7 @@ async def get_travel_times(origin: tuple[float, float], candidates: list, mode: 
 
     url = f"https://api.openrouteservice.org/v2/matrix/{mode}"
     headers = {
-        "Authorization": getattr(settings, "ors_api_key", ""),
+        "Authorization": settings.ors_api_key,
         "Content-Type": "application/json"
     }
     payload = {
