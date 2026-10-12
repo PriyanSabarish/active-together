@@ -210,7 +210,8 @@ const facts = computed(() => {
   const rain = ok && w.precip_prob != null ? Math.round(w.precip_prob * 100) : null
   const [air, airNote] = airLabel(ok ? w.pm25 : null)
   const km = Number(place.value?.distanceKm ?? 0)
-  const driving = store.travelMode === 'driving'
+  const tv = place.value?.travel
+  const driving = (tv?.mode ?? store.travelMode) === 'driving'
   return {
     temp: ok && w.temp_c != null ? `${Math.round(w.temp_c)}°` : '—',
     rain: rain == null ? (ok ? 'No rain data' : 'Weather unavailable') : rain >= 50 ? 'Rain likely' : rain >= 25 ? `${rain}% chance of rain` : 'Clear',
@@ -218,8 +219,12 @@ const facts = computed(() => {
     uvNote: uvNote(ok ? w.uv_index : null),
     air,
     airNote,
-    travel: km ? `${Math.max(1, Math.round(km * (driving ? 2 : 12)))} min` : '—',
-    travelNote: driving ? 'each way, by car' : 'each way, on foot'
+    // The server's travel block when the combo has one; the pace estimate only
+    // for results that arrive without it.
+    travel: tv ? `${tv.outMin} min` : km ? `${Math.max(1, Math.round(km * (driving ? 2 : 12)))} min` : '—',
+    travelNote: tv
+      ? `out, ${tv.source === 'openrouteservice' && tv.mode !== 'driving' ? 'routed' : 'estimated'}`
+      : driving ? 'each way, by car' : 'each way, on foot'
   }
 })
 

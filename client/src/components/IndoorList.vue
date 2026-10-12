@@ -3,8 +3,19 @@
     <h1>Your top options</h1>
     <p class="subtitle">Pick a place and we'll get you there.</p>
 
-    <template v-if="store.indoorResults.length">
-      <PlaceMap class="map" :center="store.coords" :places="store.indoorResults" fit numbered you-chip height="150px" @select="openById" />
+    <template v-if="store.indoorStatus === 'loading'">
+      <p class="loading-note">Looking for indoor places nearby…</p>
+    </template>
+
+    <div v-else-if="store.indoorStatus === 'error'" class="empty">
+      <span class="empty-glyph">!</span>
+      <p class="empty-title">We couldn't load indoor places</p>
+      <p class="empty-text">{{ store.indoorError }}</p>
+      <button class="btn btn-primary" @click="store.searchIndoor()">Try again</button>
+    </div>
+
+    <template v-else-if="store.indoorResults.length">
+      <PlaceMap v-if="store.indoorResults.some((p) => p.latitude != null)" class="map" :center="store.coords" :places="store.indoorResults" fit numbered you-chip height="150px" @select="openById" />
 
       <article v-for="p in store.indoorResults" :key="p.id" class="card" role="button" tabindex="0" @click="open(p)" @keydown.enter="open(p)">
         <div class="card-top">
@@ -40,7 +51,7 @@
 // Play tab for an Indoor place (story 9.3): nearby indoor places, nearest
 // first, each labelled unverified. No mission, weather or travel breakdown —
 // a place opens its page with directions and a "Completed" button. Mock data
-// until the backend's indoor_place setting is wired (store.searchIndoor).
+// from POST /recommendations with setting indoor_place (store.searchIndoor).
 
 import { useRouter } from 'vue-router'
 import PlaceMap from './PlaceMap.vue'
@@ -49,7 +60,7 @@ import { useSearchStore } from '../store'
 const router = useRouter()
 const store = useSearchStore()
 
-if (!store.indoorResults.length && store.hasLocation) store.searchIndoor()
+if (store.indoorStatus === 'idle' && store.hasLocation) store.searchIndoor()
 
 function open(p) {
   router.push(`/play/indoor/${p.id}`)
@@ -80,6 +91,7 @@ function tryHome() {
 .card-foot { display: flex; margin-top: 12px; }
 .dir-pill { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--green); background: rgba(47, 107, 54, 0.12); }
 
+.loading-note { margin-top: 24px; text-align: center; font-size: 14px; color: var(--ink-3); }
 .footnote { margin: 4px 2px 12px; font-size: 12.5px; color: var(--ink-4); text-align: center; }
 
 .empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 48px 12px 0; }

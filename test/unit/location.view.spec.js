@@ -1,12 +1,13 @@
 // Iteration 1 — component tests for LocationView (AC-1.1.1, AC-1.1.2).
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { createRouter, createMemoryHistory } from 'vue-router'
 
 vi.mock('../../client/src/api', () => ({
   postRecommendations: vi.fn(),
+  postHomeMissions: vi.fn(),
   getContext: vi.fn(),
   getHourlyForecast: vi.fn(() => Promise.resolve([])),
   searchAddresses: vi.fn()
@@ -14,7 +15,7 @@ vi.mock('../../client/src/api', () => ({
 
 import LocationView from '../../client/src/views/LocationView.vue'
 import { useSearchStore } from '../../client/src/store'
-import { searchAddresses } from '../../client/src/api'
+import { searchAddresses, postHomeMissions } from '../../client/src/api'
 
 let pinia
 let geoMock
@@ -123,13 +124,21 @@ describe('Story 9.1 — Outdoors / At home / Indoor place', () => {
   it('At home hides the location steps and needs a mission instead of a place', async () => {
     const wrapper = mountView()
     const store = useSearchStore()
+    postHomeMissions.mockResolvedValue({
+      missions: [1, 2, 3].map((n) => ({
+        mission_id: 'm' + n, template_id: 'activity_home_' + n, title: 'Home ' + n, age_band: '8-10', estimated_minutes: 40,
+        equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }]
+      }))
+    })
     store.setting = 'home'
-    await wrapper.vm.$nextTick()
+    await flushPromises()
+    expect(postHomeMissions).toHaveBeenCalledWith({ durationMin: store.stayMin, ageBand: '8-10', recentTemplateIds: [] })
+    expect(wrapper.findAll('.home-item')).toHaveLength(3)
     expect(wrapper.find('button.use-location').exists()).toBe(false)
     expect(wrapper.find('.travel-btn').exists()).toBe(false)
     const cta = wrapper.find('.btn-primary')
     expect(cta.attributes('disabled')).toBeDefined()
-    await wrapper.find('.home-item:not([disabled])').trigger('click')
+    await wrapper.find('.home-item').trigger('click')
     expect(cta.attributes('disabled')).toBeUndefined()
     expect(cta.text()).toMatch(/^Play /)
   })

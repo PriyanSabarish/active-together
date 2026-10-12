@@ -124,15 +124,20 @@
       <section v-if="isHome" class="step">
         <div class="step-head">
           <h2><span class="num">{{ nums.mission }}</span>Pick a mission</h2>
-          <span class="count">{{ fits.length }} fit</span>
+          <span v-if="homeOptions.length" class="count">{{ homeOptions.length }} for {{ store.stayMin }} min</span>
         </div>
-        <div class="home-list">
+        <p v-if="missionStore.homeLoading" class="home-note">Finding activities…</p>
+        <div v-else-if="missionStore.homeError" class="home-note">
+          {{ missionStore.homeError }}
+          <button class="home-retry" @click="loadHome">Try again</button>
+        </div>
+        <p v-else-if="!homeOptions.length" class="home-note">No at-home activities for this time yet. Try a different length.</p>
+        <div v-else class="home-list">
           <button
-            v-for="m in HOME_MISSIONS"
+            v-for="m in homeOptions"
             :key="m.id"
             class="home-item"
             :class="{ on: homePick === m.id }"
-            :disabled="m.durationMin > store.stayMin"
             @click="homePick = m.id"
           >
             <span class="home-name">{{ m.title }}</span>
@@ -178,11 +183,13 @@ import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
 import { searchAddresses, getHourlyForecast } from '../api'
 import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
-import { useMissionStore, HOME_MISSIONS } from '../missionStore'
+import { useMissionStore } from '../missionStore'
+import { useHistoryStore } from '../historyStore'
 import { usePreferencesStore } from '../preferencesStore'
 
 const store = useSearchStore()
 const missionStore = useMissionStore()
+const historyStore = useHistoryStore()
 const prefs = usePreferencesStore()
 const router = useRouter()
 
@@ -241,7 +248,8 @@ const SegBar = defineComponent({
 
 const query = ref(store.selectedAddress?.label || store.suburb)
 const open = ref(false)
-const menuOpen = ref(false)
+const menuOpen = ref(store.openSettingMenu)
+store.openSettingMenu = false
 const kidOpen = ref(false)
 const homePick = ref(null)
 const locating = ref(false)
@@ -272,10 +280,21 @@ const nums = computed(() => {
 })
 
 const modeWord = computed(() => (store.travelMode === 'walking' ? 'walk' : 'drive'))
-const fits = computed(() => HOME_MISSIONS.filter((m) => m.durationMin <= store.stayMin))
-watch(() => store.stayMin, () => { if (!fits.value.some((m) => m.id === homePick.value)) homePick.value = null })
+const homeOptions = computed(() => missionStore.homeMissions)
 
-const pickedHome = computed(() => HOME_MISSIONS.find((m) => m.id === homePick.value) ?? null)
+// At home the missions come from the server for the chosen time (story 9.2).
+// Only the time and the child's age band are sent, never a location.
+function loadHome() {
+  homePick.value = null
+  missionStore.fetchHomeMissions({
+    durationMin: store.stayMin,
+    ageBand: prefs.ageBand,
+    recentTemplateIds: historyStore.recentTemplateIds(6)
+  })
+}
+watch(() => [store.setting, store.stayMin, prefs.ageBand], () => { if (store.setting === 'home') loadHome() }, { immediate: true })
+
+const pickedHome = computed(() => homeOptions.value.find((m) => m.id === homePick.value) ?? null)
 const ready = computed(() => (isHome.value ? !!pickedHome.value : store.hasLocation))
 const ctaText = computed(() => {
   if (isHome.value) return pickedHome.value ? `Play ${pickedHome.value.title}` : 'Pick a mission'
@@ -771,6 +790,8 @@ function next() {
 .home-len { flex: none; font-size: 12px; font-weight: 600; color: #56625A; }
 .home-item.on .home-len { color: #D3E4D0; }
 .radio { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(30, 42, 31, 0.25); display: flex; align-items: center; justify-content: center; }
+.home-note { margin: 10px 2px; font-size: 13.5px; color: var(--ink-3); }
+.home-retry { margin-left: 6px; border: none; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--green-dark); cursor: pointer; }
 .home-item.on .radio { border: none; background: var(--accent); }
 
 /* ---- glass tray ---- */

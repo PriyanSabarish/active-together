@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { CATEGORY_META } from './store'
+import { CATEGORY_META, useSearchStore } from './store'
 
 // ---------------------------------------------------------------------------
 // F10 — preferences store. Each place category has a 0-100 affinity, set
@@ -17,6 +17,14 @@ export const AGE_BANDS = [
 function defaultAffinities() {
   // Neutral by default — nothing is pre-favoured until a parent sets it.
   return Object.fromEntries(Object.keys(CATEGORY_META).map((c) => [c, 50]))
+}
+
+// Indoor place (story 9.3) lists only these for now, so they start liked and the
+// rest start as "Not for me". Kept apart from the outdoor likes, which are untouched.
+export const INDOOR_CATEGORIES = ['court', 'skate_bmx', 'sports_ground']
+
+function defaultIndoorAffinities() {
+  return Object.fromEntries(Object.keys(CATEGORY_META).map((c) => [c, INDOOR_CATEGORIES.includes(c) ? 80 : 20]))
 }
 
 // At or below this, a category counts as "excluded": it is sent as
@@ -43,9 +51,15 @@ export function levelOf(value) {
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     affinities: defaultAffinities(),
+    indoorAffinities: defaultIndoorAffinities(),
     ageBand: '8-10'
   }),
   getters: {
+    // The likes the Start sheet and You → Likes show and edit: the indoor set
+    // while Indoor place is chosen, the outdoor set otherwise.
+    shownAffinities(state) {
+      return useSearchStore().setting === 'indoor_place' ? state.indoorAffinities : state.affinities
+    },
     ageBandInfo(state) {
       return AGE_BANDS.find((b) => b.id === state.ageBand) ?? AGE_BANDS[1]
     },
@@ -62,8 +76,9 @@ export const usePreferencesStore = defineStore('preferences', {
   },
   actions: {
     setAffinity(category, value) {
-      if (!(category in this.affinities)) return
-      this.affinities[category] = Math.min(100, Math.max(0, Math.round(value)))
+      const target = useSearchStore().setting === 'indoor_place' ? this.indoorAffinities : this.affinities
+      if (!(category in target)) return
+      target[category] = Math.min(100, Math.max(0, Math.round(value)))
     },
     setLevel(category, levelId) {
       const level = PREF_LEVELS.find((l) => l.id === levelId)

@@ -14,7 +14,7 @@ vi.mock('../../client/src/api', () => ({
 import { postRecommendations } from '../../client/src/api'
 import ResultsView from '../../client/src/views/ResultsView.vue'
 import { useSearchStore } from '../../client/src/store'
-import { makeCombo, okResponse } from '../fixtures/combos'
+import { makeCombo, makeTravel, okResponse } from '../fixtures/combos'
 
 let pinia
 
@@ -136,5 +136,58 @@ describe('AC-3.1.2 — Order comes from the backend and is preserved', () => {
     const last = wrapper.findAll('.result-card')[2]
     expect(last.text()).toContain('Merri Creek Trail')
     expect(last.text()).toMatch(/windy/i)
+  })
+})
+
+describe('Story 3.2 — server travel block', () => {
+  it('TC-3.2-01 — the travel block is mapped onto each place, with its own plan length', async () => {
+    const { store } = await mountResults(
+      okResponse([
+        makeCombo({ travel: makeTravel() }),
+        makeCombo({
+          place: { place_id: 'p-002', display_name: 'Fawkner Park' },
+          travel: makeTravel({ on_site_min: 20, source: 'estimate' })
+        })
+      ])
+    )
+    expect(store.results[0].travel).toMatchObject({ outMin: 10, backMin: 10, onSiteMin: 40, totalMin: 60, source: 'openrouteservice' })
+    expect(store.results[1].travel).toMatchObject({ onSiteMin: 20, source: 'estimate' })
+  })
+
+  it('TC-3.2-02 — attribution shows with travel times, and a combo without a block still renders', async () => {
+    const withTravel = await mountResults(okResponse([makeCombo({ travel: makeTravel() })]))
+    expect(withTravel.wrapper.find('.attribution').text()).toMatch(/OpenRouteService.*OpenStreetMap/s)
+    pinia = createPinia()
+    setActivePinia(pinia)
+    const without = await mountResults(okResponse([makeCombo()]))
+    expect(without.store.results[0].travel).toBeNull()
+    expect(without.wrapper.find('.result-card').exists()).toBe(true)
+    expect(without.wrapper.find('.attribution').exists()).toBe(false)
+  })
+})
+
+describe('Story 9.1 — Try Indoors suggestion', () => {
+  it('TC-9.1-01 — shown when suggest_indoors is true, with the results still listed', async () => {
+    const { wrapper } = await mountResults(okResponse([makeCombo()], { suggest_indoors: true }))
+    expect(wrapper.find('.try-indoors').exists()).toBe(true)
+    expect(wrapper.findAll('.result-card')).toHaveLength(1)
+  })
+
+  it('TC-9.1-02 — hidden when suggest_indoors is false or missing', async () => {
+    const { wrapper } = await mountResults(okResponse([makeCombo()], { suggest_indoors: false }))
+    expect(wrapper.find('.try-indoors').exists()).toBe(false)
+  })
+
+  it('TC-9.1-03 — dismissing hides it and keeps the results', async () => {
+    const { wrapper } = await mountResults(okResponse([makeCombo()], { suggest_indoors: true }))
+    await wrapper.find('.try-x').trigger('click')
+    expect(wrapper.find('.try-indoors').exists()).toBe(false)
+    expect(wrapper.findAll('.result-card')).toHaveLength(1)
+  })
+
+  it('TC-9.1-04 — Try Indoors returns to Start with the Outdoors / Indoors menu to open', async () => {
+    const { wrapper, store } = await mountResults(okResponse([makeCombo()], { suggest_indoors: true }))
+    await wrapper.find('.try-go').trigger('click')
+    expect(store.openSettingMenu).toBe(true)
   })
 })

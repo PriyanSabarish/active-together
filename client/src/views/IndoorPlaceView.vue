@@ -44,7 +44,11 @@ const missionStore = useMissionStore()
 const place = computed(() => store.indoorPlace(props.id))
 const directionsUrl = computed(() => {
   const p = place.value
-  return `https://www.google.com/maps/dir/?api=1&destination=${p.latitude.toFixed(5)},${p.longitude.toFixed(5)}`
+  // The server sends no coordinates, so search by name when there are none.
+  const dest = p.latitude != null && p.longitude != null
+    ? `${p.latitude.toFixed(5)},${p.longitude.toFixed(5)}`
+    : encodeURIComponent(`${p.name} ${store.locationLabel}`)
+  return `https://www.google.com/maps/dir/?api=1&destination=${dest}`
 })
 
 function complete() {

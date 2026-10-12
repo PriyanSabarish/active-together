@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { postMissions } from './api'
+import { postMissions, postHomeMissions } from './api'
 
 // ---------------------------------------------------------------------------
 // F14 — mission data model. F15-F18 (preview, pick, run, overview) all read
@@ -92,23 +92,6 @@ export const MOCK_MISSIONS = [
   }
 ]
 
-// At-home missions (story 9.2) until the backend's home setting is wired.
-// Same shape as every other mission, so the run screen needs nothing new.
-const home = (id, title, durationMin, steps) => ({
-  id, title, durationMin, placeName: 'Home', category: 'home', ageBand: '5-7', equipment: '',
-  whyThisMission: 'An indoor pick for when going out is not on.',
-  steps: steps.map(([t, icon]) => ({ title: t, confirm: 'tap', icon }))
-})
-
-export const HOME_MISSIONS = [
-  home('home-freeze-dance', 'Freeze dance', 20, [['Play a song and dance as wild as you can.', 'sun'], ['Freeze like a statue when the music stops.', 'hand'], ['Freeze as an animal next time.', 'paw']]),
-  home('home-sock-basketball', 'Sock basketball', 20, [['Roll socks into three balls.', 'spiral'], ['Shoot them into a basket from one big step away.', 'ruler'], ['Take two steps back and try again.', 'eye']]),
-  home('home-animal-relay', 'Animal walk relay', 30, [['Bear-crawl to the end of the room.', 'paw'], ['Hop back like a frog.', 'leaf'], ['Crab-walk one more lap.', 'rock'], ['Pick an animal for the grown-up.', 'eye']]),
-  home('home-pillow-fort', 'Pillow-fort engineers', 40, [['Collect every pillow and blanket you can carry.', 'hand'], ['Build walls that stand on their own.', 'ruler'], ['Add a roof and a door.', 'leaf'], ['Crawl inside and test it.', 'moon']]),
-  home('home-obstacle-course', 'Living-room obstacle course', 40, [['Lay out a path of cushions to jump between.', 'spiral'], ['Add something to crawl under.', 'rock'], ['Time one full lap.', 'sun'], ['Beat that time.', 'wind']]),
-  home('home-balloon-league', 'Balloon keep-up league', 60, [['Blow up one balloon.', 'drop'], ['Keep it off the floor for ten taps.', 'hand'], ['Only use elbows and knees.', 'paw'], ['Play first to five points.', 'eye']])
-]
-
 function newRunId() {
   if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID()
   return `run-${Date.now()}-${Math.random().toString(36).slice(2)}`
@@ -116,6 +99,10 @@ function newRunId() {
 
 export const useMissionStore = defineStore('mission', {
   state: () => ({
+    homeMissions: [], // at-home options from the server (story 9.2)
+    homeLoading: false,
+    homeError: '',
+    _homeSeq: 0,
     candidates: [], // options offered by Pick-a-mission (F16); empty until fetchMissions runs
     // Set by reloadMissions when the server could only offer the same set again
     // (nothing else is eligible for this place), so the screen can say so.
@@ -221,9 +208,29 @@ export const useMissionStore = defineStore('mission', {
       this.runId = newRunId()
       this.finishPhase = 'capture'
     },
+    // POST /recommendations (setting home): 2-3 missions for the chosen time.
+    // No location is sent. A newer request supersedes an older one.
+    async fetchHomeMissions({ durationMin, ageBand, recentTemplateIds = [] }) {
+      const seq = ++this._homeSeq
+      this.homeLoading = true
+      this.homeError = ''
+      try {
+        const data = await postHomeMissions({ durationMin, ageBand, recentTemplateIds })
+        if (seq !== this._homeSeq) return
+        this.homeMissions = (data.missions ?? []).map((m) =>
+          mapMission(m, { placeName: 'Home', category: 'home', reason: 'An indoor pick for when going out is not on.' })
+        )
+      } catch (e) {
+        if (seq !== this._homeSeq) return
+        this.homeMissions = []
+        this.homeError = e?.message ?? 'Something went wrong.'
+      } finally {
+        if (seq === this._homeSeq) this.homeLoading = false
+      }
+    },
     // Start an at-home mission straight from Start (no place, no Play list).
     startHomeMission(missionId) {
-      const m = HOME_MISSIONS.find((x) => x.id === missionId)
+      const m = this.homeMissions.find((x) => x.id === missionId)
       if (!m) return
       this.candidates = [m]
       this.chooseMission(m.id)

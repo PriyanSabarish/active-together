@@ -77,7 +77,7 @@ const prefs = usePreferencesStore()
 const KID_ICON = 'M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4 M12 7v7 M8 10h8 M12 14l-3 6 M12 14l3 6'
 const ICON = { likes: THUMB_UP, neutral: 'M6 12h12', nope: THUMB_DOWN }
 const band = ref(prefs.ageBand)
-const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.affinities[k])])))
+const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.shownAffinities[k])])))
 
 const label = (id) => id.replace('-', '–')
 const summary = computed(() => {
