@@ -140,7 +140,7 @@
               <span class="radio"><svg v-if="homePick === m.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
             </button>
             <!-- Setup and rules to read before choosing: some take 5-10 minutes to prepare. -->
-            <button v-if="guideFor(m.templateId)" class="home-guide" :aria-label="`Parent guide for ${m.title}`" @click="guideMission = m">
+            <button v-if="m.guide" class="home-guide" :aria-label="`Parent guide for ${m.title}`" @click="guideMission = m">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /></svg>
               Guide
             </button>
@@ -168,8 +168,8 @@
 
   <KidSheet v-if="kidOpen" @close="kidOpen = false" />
   <ParentGuideSheet
-    v-if="guideMission && guideFor(guideMission.templateId)"
-    :guide="guideFor(guideMission.templateId)"
+    v-if="guideMission?.guide"
+    :guide="guideMission.guide"
     :age-band="guideMission.ageBand"
     @close="guideMission = null"
   />
@@ -189,7 +189,6 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
 import ParentGuideSheet from '../components/ParentGuideSheet.vue'
-import { guideFor } from '../parentGuides'
 import { searchAddresses, getHourlyForecast } from '../api'
 import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
 import { useMissionStore } from '../missionStore'

@@ -94,3 +94,12 @@ def test_home_missions_are_checked_by_the_home_safety_rules(monkeypatch):
     monkeypatch.setattr(service, "generate_missions", spy)
     assert service.get_home_missions(AgeBand.BAND_8_10, 40)
     assert seen and all(str(s.value if hasattr(s, "value") else s) == "home" for s in seen)
+
+
+def test_each_home_mission_carries_its_parent_guide(client):
+    missions = client.post("/recommendations", json=HOME).json()["missions"]
+    for m in missions:
+        g = m["parent_guide"]
+        assert g["rules"] and g["kit"] and g["setup"] and g["opening"]
+        assert len(g["stages"]) == 5
+        assert len(g["stages"]) >= len(m["steps"])  # step N is stage N

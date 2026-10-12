@@ -33,6 +33,8 @@ export function mapMission(mission, { placeName, category, reason }) {
     // Empty when the mission needs nothing, so the card shows no line at all.
     equipment: mission.equipment?.length ? 'Bring: ' + mission.equipment.join(', ') : '',
     whyThisMission: reason,
+    // At-home missions arrive with their parent guide (setup, rules, what to say).
+    guide: mission.parent_guide ?? null,
     // Backend steps carry no icon; cycle through the task glyphs so each step
     // gets a different sketch on the run screen.
     steps: mission.steps.map((s, i) => ({

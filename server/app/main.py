@@ -29,6 +29,7 @@ from app.data.database import SessionLocal, get_db, engine
 from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
 from app.missions import service as mission_service
+from app.missions.guides import guide_for
 from app.models import AgeBand, TravelMode
 from app.photo.verify import verify_step as run_verify_step
 from app.recommendation.recommend import recommend
@@ -131,7 +132,10 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
             missions = []
         return {
             "setting": "home",
-            "missions": [{**m, "place_name": "Home", "place_id": None} for m in _with_figures(missions)],
+            "missions": [
+                {**m, "place_name": "Home", "place_id": None, "parent_guide": guide_for(m["template_id"])}
+                for m in _with_figures(missions)
+            ],
         }
 
     if req.latitude is None or req.longitude is None:

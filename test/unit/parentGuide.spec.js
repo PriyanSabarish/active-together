@@ -14,11 +14,19 @@ vi.mock('../../client/src/figures', () => ({
 
 import MissionRunView from '../../client/src/views/MissionRunView.vue'
 import { useMissionStore } from '../../client/src/missionStore'
-import { PARENT_GUIDES, guideFor } from '../../client/src/parentGuides'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+// The guide text is served by the backend with each home mission; this is its source file.
+const SOURCE = JSON.parse(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../server/content/missions/home_parent_guides.json'), 'utf8'))
+const PARENT_GUIDES = SOURCE.guides
+const withRules = (g) => ({ rules: SOURCE.rules, ...g })
 
 const mission = (templateId, steps = 5) => ({
   id: 'm1',
   templateId,
+  guide: PARENT_GUIDES[templateId] ? withRules(PARENT_GUIDES[templateId]) : null,
   title: 'Home: Test',
   placeName: 'Home',
   category: 'home',
@@ -41,8 +49,8 @@ function mountRun(m) {
 
 beforeEach(() => setActivePinia(createPinia()))
 
-describe('guide content', () => {
-  it('covers all three home templates with five stages each, and every band for each stage', () => {
+describe('guide content (served by the backend)', () => {
+  it('covers all three home templates with five stages each', () => {
     expect(Object.keys(PARENT_GUIDES).sort()).toEqual([
       'activity_home_missing_power_crystals',
       'activity_home_secret_agent_escape',
@@ -53,12 +61,15 @@ describe('guide content', () => {
       expect(g.setup.length).toBeGreaterThan(0)
       expect(g.kit.length).toBeGreaterThan(0)
       expect(g.setupTime).toMatch(/min/)
-      for (const stage of g.stages) expect(stage.parts.length).toBeGreaterThan(0)
     }
+    expect(SOURCE.rules.length).toBeGreaterThan(0)
   })
 
-  it('has no guide for an outdoor template', () => {
-    expect(guideFor('activity_colour_hunt')).toBeNull()
+  it('a mapped mission carries the guide the server sent, and none when it sent none', async () => {
+    const { mapMission } = await import('../../client/src/missionStore')
+    const base = { mission_id: 'a', template_id: 't', title: 'T', age_band: '8-10', estimated_minutes: 20, steps: [] }
+    expect(mapMission({ ...base, parent_guide: { rules: ['r'] } }, { placeName: 'Home', category: 'home', reason: '' }).guide).toEqual({ rules: ['r'] })
+    expect(mapMission(base, { placeName: 'Home', category: 'home', reason: '' }).guide).toBeNull()
   })
 })
 

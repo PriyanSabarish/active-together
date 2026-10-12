@@ -151,7 +151,6 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import CameraOverlay from '../components/CameraOverlay.vue'
 import ParentGuideSheet from '../components/ParentGuideSheet.vue'
-import { guideFor } from '../parentGuides'
 import { useMissionStore } from '../missionStore'
 import { usePhotoStore } from '../photoStore'
 import { postVerifyStep } from '../api'
@@ -188,7 +187,7 @@ watch(() => mission.value?.steps, (steps) => preloadFigures((steps ?? []).map((s
 
 const sheet = ref(false)
 // At-home missions come with a parent guide (setup, clue answers, what to say).
-const guide = computed(() => guideFor(mission.value?.templateId))
+const guide = computed(() => mission.value?.guide ?? null)
 // Opens on its own at the first task so the setup is read before play starts.
 const guideOpen = ref(!!guide.value && missionStore.stepIndex === 0)
 const camera = ref(null) // null | 'keep' | 'check'

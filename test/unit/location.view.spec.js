@@ -148,7 +148,7 @@ describe('Story 9.1 — Outdoors / At home / Indoor place', () => {
     const store = useSearchStore()
     postHomeMissions.mockResolvedValue({
       missions: [
-        { mission_id: 'a', template_id: 'activity_home_missing_power_crystals', title: 'Home: Crystals', age_band: '8-10', estimated_minutes: 20, equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }] },
+        { mission_id: 'a', template_id: 'activity_home_missing_power_crystals', title: 'Home: Crystals', parent_guide: { rules: ['Walk indoors.'], setupTime: '5–10 min', kit: ['Socks'], setup: ['Draw a map.'], opening: 'Captain, go.', stages: [{ title: 'S1', parts: [{ do: ['x'] }] }] }, age_band: '8-10', estimated_minutes: 20, equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }] },
         { mission_id: 'b', template_id: 'activity_not_home', title: 'No guide', age_band: '8-10', estimated_minutes: 20, equipment: [], steps: [{ sequence: 1, prompt_text: 'Go.', verify_mode: 'self', prompt_id: null }] }
       ]
     })

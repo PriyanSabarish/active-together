@@ -439,10 +439,10 @@ its checks. No family playtest or end-to-end app test has been verified here.
 - Real household equipment is listed explicitly and is supported by the runtime
   model and the content schema's equipment allowlist. The original outdoor
   equipment names remain allowed; arbitrary unlisted equipment remains invalid.
-- The application currently transmits short steps, not this parent guide.
-  For a facilitated demo, give the parent/facilitator this guide beforehand.
-  For an in-app demo, provide a guide/preparation view or equivalent reviewed
-  delivery mechanism first; the YAML alone is not a self-contained experience.
+- The app shows a condensed version of this guide on the run screen and on the
+  At home picker. The condensed text is `home_parent_guides.json` in this folder;
+  the server sends the matching guide with each home mission (`parent_guide`).
+  If you change this guide, change that file too.
 - `variable: true` preserves the current authored contract. Exact escape clue
   text, numbers, route and answers must remain fixed. Serve these missions from
   the library without model rewriting for the demo, or explicitly implement

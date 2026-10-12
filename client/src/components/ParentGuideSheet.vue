@@ -90,7 +90,7 @@
               <svg class="chev" :class="{ up: safetyOpen }" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>
             </button>
             <div v-if="safetyOpen" class="acc-body tight">
-              <div v-for="(r, i) in SHARED_RULES" :key="i" class="bullet">
+              <div v-for="(r, i) in guide.rules" :key="i" class="bullet">
                 <span class="dot" />
                 <p>{{ r }}</p>
               </div>
@@ -104,11 +104,10 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { SHARED_RULES } from '../parentGuides'
 
 // Setup, rules, clue answers and what to say for the at-home activities
 // (story 9.2). Opened from the run screen; one task of the guide per step.
-// Layout follows "Parent Guide Sheet.html" in the iteration 3 designs.
+// The guide comes from the server with the mission (parent_guide). Layout follows "Parent Guide Sheet.html" in the iteration 3 designs.
 const props = defineProps({
   guide: { type: Object, required: true },
   // null = read before play (from the picker): setup and rules, no task.
