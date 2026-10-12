@@ -1,3 +1,6 @@
+import logging
+from dataclasses import dataclass
+
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -85,9 +88,31 @@ def fetch_place_by_id(db: Session, place_id: str) -> Place | None:
         classification_confidence=str(row["classification_confidence"]),
     )
 
-def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -> list[Place]:
+@dataclass(frozen=True)
+class IndoorPlace:
+    """An indoor place (story 9.3). Not app.models.Place: its category is an
+    indoor one, not an ActivityCategory, and it is always unverified (D25)."""
+    place_id: str
+    display_name: str | None
+    activity_category: str
+    lga_name: str
+    latitude: float
+    longitude: float
+    distance_m: int
+    classification_confidence: str | None = None
+    unverified: bool = True
+
+
+# Until real indoor data is loaded into indoor_places (scripts/load_indoor_places.py),
+# the Indoor place setting lists these categories from the places table.
+# Switch the FROM below to indoor_places and drop the category filter once it is.
+INDOOR_STAND_IN_CATEGORIES = ("court", "skate_bmx", "sports_ground")
+
+
+def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -> list[IndoorPlace]:
     """
-    Fetches indoor places within the specified radius from latitude/longitude.
+    Fetches indoor places within the specified radius from latitude/longitude,
+    limited to INDOOR_STAND_IN_CATEGORIES for now.
     Orders results by distance ascending, then display name.
     """
     indoor_query = text("""
@@ -100,8 +125,9 @@ def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -
             ST_X(location::geometry) AS longitude,
             ST_Distance(location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography) AS distance_m,
             classification_confidence
-        FROM indoor_places
-        WHERE ST_DWithin(
+        FROM places
+        WHERE activity_category = ANY(:categories)
+          AND ST_DWithin(
             location,
             ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
             :radius_m
@@ -115,22 +141,22 @@ def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -
     try:
         rows = db.execute(
             indoor_query,
-            {"lat": lat, "lon": lon, "radius_m": radius_km * 1000.0}
+            {"lat": lat, "lon": lon, "radius_m": radius_km * 1000.0, "categories": list(INDOOR_STAND_IN_CATEGORIES)}
         ).mappings().all()
 
         return [
-            Place(
+            IndoorPlace(
                 place_id=r["place_id"],
                 display_name=r["display_name"],
-                activity_category=ActivityCategory(r["activity_category"]),
+                activity_category=r["activity_category"],
                 lga_name=r["lga_name"],
                 latitude=round(r["latitude"], settings.coordinate_decimal_places),
                 longitude=round(r["longitude"], settings.coordinate_decimal_places),
                 distance_m=int(round(r["distance_m"])),
                 classification_confidence=str(r["classification_confidence"]),
-                unverified=True,
             )
             for r in rows
         ]
     except Exception:
+        logging.getLogger("uvicorn.error").exception("Indoor place query failed")
         return []

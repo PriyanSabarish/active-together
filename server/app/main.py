@@ -75,6 +75,7 @@ app.add_middleware(
 FIGURES_DIR = Path(__file__).resolve().parent / "assets"
 app.mount("/assets/figures", StaticFiles(directory=FIGURES_DIR), name="figures")
 
+HOME_MIN_DURATION = 10  # minimum for at-home sessions; still an open item in the plan
 PILOT_LGAS = {"melbourne", "monash", "melton"}
 MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
@@ -114,18 +115,27 @@ async def locations_autocomplete(
 @app.post("/recommendations")
 async def create_recommendations(req: RecommendationRequest, db: Session = Depends(get_db)):
     if req.setting == SettingEnum.HOME:
+        # No location is read, used or logged at home (D23, A52): lat/lng in the
+        # request are ignored. Missions come through the normal generation path.
+        if req.age_band is None:
+            raise HTTPException(status_code=422, detail="age_band is required for at-home activities")
+        total = req.duration_min if req.duration_min is not None else 20
+        if not (HOME_MIN_DURATION <= total <= 120):
+            raise HTTPException(status_code=400, detail=f"duration_min must be between {HOME_MIN_DURATION} and 120")
+        try:
+            missions = await asyncio.to_thread(
+                mission_service.get_home_missions, req.age_band, total, tuple(req.recent_template_ids)
+            )
+        except Exception as e:
+            logger.error(f"At-home mission error: {type(e).__name__}")
+            missions = []
         return {
             "setting": "home",
-            "missions": [
-                {
-                    "mission_id": "home_1",
-                    "title": "Living Room Obstacle Course",
-                    "place_name": "Home",
-                    "place_id": None,
-                    "estimated_minutes": 20
-                }
-            ]
+            "missions": [{**m, "place_name": "Home", "place_id": None} for m in _with_figures(missions)],
         }
+
+    if req.latitude is None or req.longitude is None:
+        raise HTTPException(status_code=422, detail="latitude and longitude are required")
 
     if req.setting == SettingEnum.INDOOR_PLACE:
         lat, lon = round(req.latitude, 4), round(req.longitude, 4)

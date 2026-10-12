@@ -11,6 +11,8 @@ from enum import Enum
 from pydantic import BaseModel, Field
 from typing import Optional, Literal
 
+from app.models import AgeBand
+
 
 class SettingEnum(str, Enum):
     OUTDOOR = "outdoor"
@@ -37,13 +39,15 @@ class ActivityCategory(str, Enum):
 
 class RecommendationRequest(BaseModel):
     setting: SettingEnum = Field(SettingEnum.OUTDOOR, description="Environment setting: outdoor, home, or indoor_place")
-    latitude: float = Field(..., description="User latitude (ignored when setting = home)")
-    longitude: float = Field(..., description="User longitude (ignored when setting = home)")
+    latitude: Optional[float] = Field(None, description="User latitude; required for outdoor and indoor_place, ignored when setting = home")
+    longitude: Optional[float] = Field(None, description="User longitude; required for outdoor and indoor_place, ignored when setting = home")
     radius_km: Optional[int] = Field(5, description="Search radius in kilometers (3 | 5 | 10)")
     timestamp: Optional[str] = Field(None, description="ISO timestamp within forecast range")
     duration_min: Optional[int] = Field(60, description="Total activity duration in minutes")
     travel_mode: TravelModeEnum = Field(TravelModeEnum.WALKING, description="Mode of travel")
     excluded_categories: list[str] = Field(default_factory=list)
+    recent_template_ids: list[str] = Field(default_factory=list, description="Recently played templates to avoid repeating (home)")
+    age_band: Optional[AgeBand] = Field(None, description="5-7 | 8-10 | 11-12; required when setting = home")
 
 
 @dataclass(frozen=True)
