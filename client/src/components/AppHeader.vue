@@ -103,8 +103,8 @@ const weatherPill = computed(() => {
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 10px 26px -12px rgba(30, 42, 31, 0.4), 0 0 0 1px rgba(30, 42, 31, 0.06);
 }
-.app-header.overlay .app-name { font-size: 19px; transition: font-size 0.2s ease; }
-.app-header.overlay.floating .app-name { font-size: 16px; }
+.app-header.overlay .app-name { font-size: clamp(15px, 4.4vw, 19px); transition: font-size 0.2s ease; }
+.app-header.overlay.floating .app-name { font-size: clamp(14px, 3.9vw, 16px); }
 
 .brand-link {
   display: inline-flex;
@@ -113,8 +113,10 @@ const weatherPill = computed(() => {
   text-decoration: none;
   color: inherit;
   min-width: 0;
+  flex: 0 1 auto;
 }
-.grow { flex: 1; }
+.app-name { overflow: hidden; text-overflow: ellipsis; }
+.grow { flex: 1; min-width: 0; }
 .logo-pin { flex-shrink: 0; }
 .progress-track { margin-bottom: 28px; }
 
@@ -129,6 +131,10 @@ const weatherPill = computed(() => {
 .w-dot { color: var(--accent); }
 
 .wx-pill {
+  min-width: 0;
+  max-width: 52vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
   height: 28px;
   padding: 0 11px;
   border-radius: var(--radius-pill);

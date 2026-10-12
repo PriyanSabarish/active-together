@@ -39,6 +39,14 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* stop the installed app drifting sideways or rubber-banding on iOS */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: var(--font-body);
   background: var(--paper);
@@ -112,6 +120,7 @@ body {
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 h1 {

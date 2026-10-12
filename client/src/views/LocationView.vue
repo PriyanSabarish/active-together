@@ -3,7 +3,7 @@
     <template #right>
       <button class="env-pill" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="ENV[store.setting].icon" /></svg>
-        {{ ENV[store.setting].label }}
+        <span class="env-label">{{ ENV[store.setting].label }}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#56625A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path :d="menuOpen ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6'" /></svg>
       </button>
     </template>
@@ -534,7 +534,13 @@ function next() {
 .start { display: flex; flex-direction: column; gap: 12px; padding-bottom: 0; padding-top: 46px; } /* clears the overlaid header: the row is 32px tall at rest, so content starts ~14px below it */
 
 /* ---- header env menu ---- */
+/* Narrow phones (up to 365px): the setting shows as its icon and chevron only, so the logo keeps its line. */
+@media (max-width: 365px) {
+  .env-label { display: none; }
+}
+
 .env-pill {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 6px;
