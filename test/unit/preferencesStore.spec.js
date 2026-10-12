@@ -4,7 +4,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { usePreferencesStore, AGE_BANDS, levelOf } from '../../client/src/preferencesStore'
 import { sanitisePrefs } from '../../client/src/persist'
-import { CATEGORY_META, useSearchStore } from '../../client/src/store'
+import { CATEGORY_META } from '../../client/src/store'
 
 beforeEach(() => {
   setActivePinia(createPinia())
@@ -69,27 +69,5 @@ describe('Iteration 3 — three-way preferences reach the backend', () => {
       .toEqual({ ageBand: '5-7', affinities: { playground: 20 } })
     expect(sanitisePrefs({ ageBand: 'adult' }, cats)).toEqual({})
     expect(sanitisePrefs('garbage', cats)).toEqual({})
-  })
-})
-
-describe('Indoor place likes', () => {
-  it('start with courts, skate and BMX and sporting ground liked, the rest not for me', () => {
-    const store = usePreferencesStore()
-    useSearchStore().setting = 'indoor_place'
-    const shown = store.shownAffinities
-    for (const c of ['court', 'skate_bmx', 'sports_ground']) expect(levelOf(shown[c])).toBe('likes')
-    for (const c of ['playground', 'park_and_garden', 'picnic_day_use']) expect(levelOf(shown[c])).toBe('nope')
-  })
-
-  it('outdoor likes are untouched and edits go to whichever set is shown', () => {
-    const store = usePreferencesStore()
-    const search = useSearchStore()
-    search.setting = 'indoor_place'
-    store.setLevel('playground', 'likes')
-    expect(store.indoorAffinities.playground).toBe(80)
-    expect(store.affinities.playground).toBe(50)
-    search.setting = 'outdoor'
-    expect(store.shownAffinities).toBe(store.affinities)
-    expect(store.affinities.court).toBe(50)
   })
 })

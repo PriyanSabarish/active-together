@@ -316,6 +316,7 @@ const kidShort = computed(() => {
   const n = prefs.likedCategories.length
   const x = prefs.excludedCategories.length
   const parts = [`${prefs.ageBand.replace('-', '–')} yrs`]
+  if (store.setting !== 'outdoor') return parts.join(' · ') // likes only apply to outdoor places
   if (n) parts.push(`${n} like${n === 1 ? '' : 's'}`)
   if (x) parts.push(`${x} not for me`)
   if (!n && !x) parts.push('no likes yet')

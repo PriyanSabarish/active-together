@@ -120,6 +120,35 @@ describe('AC-1.1.2 — Radius options (chosen as travel minutes)', () => {
   })
 })
 
+describe('Your kid sheet', () => {
+  async function openKid(setting) {
+    const wrapper = mountView()
+    useSearchStore().setting = setting
+    await wrapper.vm.$nextTick()
+    await wrapper.find('.kid-row').trigger('click')
+    return wrapper
+  }
+
+  it('shows the age band and the outdoor likes for Outdoors', async () => {
+    const wrapper = await openKid('outdoor')
+    const sheet = wrapper.find('[aria-label="Your kid"]')
+    expect(sheet.exists()).toBe(true)
+    expect(sheet.text()).toContain('Age')
+    expect(sheet.text()).toContain('Likes')
+    expect(sheet.text()).toContain('Playground')
+  })
+
+  it.each(['indoor_place', 'home'])('shows only the age band for %s, with no likes', async (setting) => {
+    const wrapper = await openKid(setting)
+    const sheet = wrapper.find('[aria-label="Your kid"]')
+    expect(sheet.exists()).toBe(true)
+    expect(sheet.text()).toContain('Age')
+    expect(sheet.text()).not.toContain('Likes')
+    expect(sheet.text()).not.toContain('Playground')
+    expect(sheet.find('.clear').exists()).toBe(false)
+  })
+})
+
 describe('Start header on scroll', () => {
   it('is a plain bar at the top and floats as a pill once the page has scrolled', async () => {
     const wrapper = mountView()
