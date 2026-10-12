@@ -1,8 +1,8 @@
 // Iteration 3 — stick-figure step illustrations: the figure id survives
 // mapping from POST /missions, and fetched SVG is sanitised before inlining.
 
-import { describe, it, expect } from 'vitest'
-import { sanitizeSvg } from '../../client/src/figures'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { sanitizeSvg, loadFigure, cachedFigure, preloadFigures } from '../../client/src/figures'
 import { mapMission } from '../../client/src/missionStore'
 import { figureUrl } from '../../client/src/api'
 
@@ -38,5 +38,30 @@ describe('stick figures', () => {
   it('sanitizeSvg rejects anything that is not an SVG', () => {
     expect(sanitizeSvg('<html><body>404</body></html>')).toBe('')
     expect(sanitizeSvg('{"detail":"Not Found"}')).toBe('')
+  })
+
+  describe('preloading', () => {
+    afterEach(() => vi.unstubAllGlobals())
+
+    it('preloadFigures fetches each figure once and cachedFigure returns it synchronously', async () => {
+      const fetchMock = vi.fn(async () => ({ ok: true, text: async () => '<svg xmlns="http://www.w3.org/2000/svg"><path d="M1 1"/></svg>' }))
+      vi.stubGlobal('fetch', fetchMock)
+      expect(cachedFigure('pre_a')).toBe('')
+      preloadFigures(['pre_a', 'pre_b', 'pre_a', null])
+      expect(fetchMock).toHaveBeenCalledTimes(2)
+      await loadFigure('pre_a')
+      await loadFigure('pre_b')
+      expect(cachedFigure('pre_a')).toMatch(/<svg/)
+      expect(cachedFigure('pre_b')).toMatch(/<svg/)
+    })
+
+    it('a failed figure is not cached, so the step icon shows and a later load retries', async () => {
+      const fetchMock = vi.fn(async () => ({ ok: false, text: async () => '' }))
+      vi.stubGlobal('fetch', fetchMock)
+      expect(await loadFigure('pre_missing')).toBe('')
+      expect(cachedFigure('pre_missing')).toBe('')
+      await loadFigure('pre_missing')
+      expect(fetchMock).toHaveBeenCalledTimes(2)
+    })
   })
 })
