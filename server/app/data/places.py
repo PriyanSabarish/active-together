@@ -5,6 +5,8 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.data.club_places import club_place_names
+from app.data.indoor_kinds import indoor_kind
 from app.models import ActivityCategory, Place
 
 PLACE_BY_ID_QUERY = text("""
@@ -103,16 +105,25 @@ class IndoorPlace:
     unverified: bool = True
 
 
-# Until real indoor data is loaded into indoor_places (scripts/load_indoor_places.py),
-# the Indoor place setting lists these categories from the places table.
-# Switch the FROM below to indoor_places and drop the category filter once it is.
-INDOOR_STAND_IN_CATEGORIES = ("court", "skate_bmx", "sports_ground")
+# Until real indoor data is loaded into indoor_places (scripts/load_indoor_places.py), the
+# Indoor place setting lists the "sports complex" rows of the places table: leisure
+# centres, baths, aquatic centres and indoor stadiums (data/vicmap_app_ready.csv), plus the club
+# places in data/club_places.csv (see app/data/club_places.py).
+# Switch the FROM below to indoor_places and drop these filters once that table is loaded.
+INDOOR_SUBTYPE = "sports complex"
+# Stadiums and arenas are not somewhere to take a child to play, so they are left out.
+INDOOR_EXCLUDED_NAMES = (
+    "Mcg", "Marvel Stadium", "Rod Laver Arena", "Margaret Court Arena", "John Cain Arena",
+    "Ikon Park", "Aami Park", "Melbourne Park", "Olympic Park", "Olympic Park Oval", "Festival Hall",
+)
 
 
 def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -> list[IndoorPlace]:
     """
     Fetches indoor places within the specified radius from latitude/longitude,
-    limited to INDOOR_STAND_IN_CATEGORIES for now.
+    limited to the sports complex rows for now (see INDOOR_SUBTYPE), minus stadiums and
+    unnamed sites, plus the club places. A club with several rows (one per court) is
+    listed once, at its nearest row.
     Orders results by distance ascending, then display name.
     """
     indoor_query = text("""
@@ -126,7 +137,10 @@ def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -
             ST_Distance(location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography) AS distance_m,
             classification_confidence
         FROM places
-        WHERE activity_category = ANY(:categories)
+        WHERE (
+            (feature_subtype = :subtype AND display_name <> ALL(:excluded) AND display_name NOT LIKE 'Unnamed %')
+            OR display_name = ANY(:clubs)
+          )
           AND ST_DWithin(
             location,
             ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
@@ -141,22 +155,27 @@ def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -
     try:
         rows = db.execute(
             indoor_query,
-            {"lat": lat, "lon": lon, "radius_m": radius_km * 1000.0, "categories": list(INDOOR_STAND_IN_CATEGORIES)}
+            {"lat": lat, "lon": lon, "radius_m": radius_km * 1000.0, "subtype": INDOOR_SUBTYPE, "excluded": list(INDOOR_EXCLUDED_NAMES), "clubs": list(club_place_names())}
         ).mappings().all()
 
-        return [
-            IndoorPlace(
-                place_id=r["place_id"],
-                display_name=r["display_name"],
-                activity_category=r["activity_category"],
-                lga_name=r["lga_name"],
-                latitude=round(r["latitude"], settings.coordinate_decimal_places),
-                longitude=round(r["longitude"], settings.coordinate_decimal_places),
-                distance_m=int(round(r["distance_m"])),
-                classification_confidence=str(r["classification_confidence"]),
+        places, seen = [], set()
+        for r in rows:  # nearest first, so the first row of a name is its nearest
+            if r["display_name"] in seen:
+                continue
+            seen.add(r["display_name"])
+            places.append(
+                IndoorPlace(
+                    place_id=r["place_id"],
+                    display_name=r["display_name"],
+                    activity_category=indoor_kind(r["display_name"]),
+                    lga_name=r["lga_name"],
+                    latitude=round(r["latitude"], settings.coordinate_decimal_places),
+                    longitude=round(r["longitude"], settings.coordinate_decimal_places),
+                    distance_m=int(round(r["distance_m"])),
+                    classification_confidence=str(r["classification_confidence"]),
+                )
             )
-            for r in rows
-        ]
+        return places
     except Exception:
         logging.getLogger("uvicorn.error").exception("Indoor place query failed")
         raise  # a failed read is "dataset unavailable", not "no places nearby"

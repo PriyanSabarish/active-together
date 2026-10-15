@@ -68,7 +68,7 @@ def test_schema_defines_indoor_places_with_the_columns_the_query_reads():
     assert "USING GIST (location)" in block
 
 
-def test_fetch_indoor_places_accepts_non_outdoor_categories():
+def test_indoor_places_are_given_an_indoor_kind_not_an_outdoor_category():
     from app.data.places import fetch_indoor_places
 
     class Row(dict):
@@ -86,18 +86,19 @@ def test_fetch_indoor_places_accepts_non_outdoor_categories():
             return Result()
 
     places = fetch_indoor_places(Db(), lat=-37.8, lon=144.97, radius_km=5)
-    assert [p.activity_category for p in places] == ["library"]
+    assert [p.activity_category for p in places] == ["recreation_centre"]
     assert places[0].unverified is True and places[0].distance_m == 812
 
 
-def test_indoor_places_are_limited_to_court_skate_and_sports_ground_for_now():
-    from app.data.places import INDOOR_STAND_IN_CATEGORIES, fetch_indoor_places
+def test_indoor_places_are_the_sports_complex_rows_minus_stadiums_and_unnamed_sites():
+    from app.data.places import INDOOR_EXCLUDED_NAMES, INDOOR_SUBTYPE, fetch_indoor_places
 
     seen = {}
 
     class Result:
         def mappings(self):
             return self
+
         def all(self):
             return []
 
@@ -107,6 +108,27 @@ def test_indoor_places_are_limited_to_court_skate_and_sports_ground_for_now():
             return Result()
 
     fetch_indoor_places(Db(), lat=-37.8, lon=144.97, radius_km=5)
-    assert set(INDOOR_STAND_IN_CATEGORIES) == {"court", "skate_bmx", "sports_ground"}
-    assert seen["params"]["categories"] == ["court", "skate_bmx", "sports_ground"]
-    assert "FROM places" in seen["sql"] and "ANY(:categories)" in seen["sql"]
+    assert INDOOR_SUBTYPE == "sports complex"
+    assert seen["params"]["subtype"] == "sports complex"
+    assert "Mcg" in seen["params"]["excluded"] and "Marvel Stadium" in seen["params"]["excluded"]
+    assert set(seen["params"]["excluded"]) == set(INDOOR_EXCLUDED_NAMES)
+    assert "FROM places" in seen["sql"] and "feature_subtype = :subtype" in seen["sql"]
+    assert "NOT LIKE 'Unnamed %'" in seen["sql"]
+
+
+def test_the_places_dataset_has_indoor_sports_complexes_in_all_three_councils():
+    """Checks the real data file: the rows the query selects exist, stadiums are out, and a
+    child-friendly indoor venue is in."""
+    import csv
+    from pathlib import Path
+
+    from app.data.places import INDOOR_EXCLUDED_NAMES
+
+    path = Path(__file__).resolve().parents[2] / "data" / "vicmap_app_ready.csv"
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = [r for r in csv.DictReader(f) if r["feature_subtype"] == "sports complex"]
+    kept = [r for r in rows if r["display_name"] not in INDOOR_EXCLUDED_NAMES and not r["display_name"].startswith("Unnamed ")]
+    assert {r["lga_name"] for r in kept} == {"MELBOURNE", "MELTON", "MONASH"}
+    names = {r["display_name"] for r in kept}
+    assert {"Caroline Springs Leisure Centre", "Swimland Indoor Pool", "Oakleigh Recreation Centre"} <= names
+    assert not names & set(INDOOR_EXCLUDED_NAMES)

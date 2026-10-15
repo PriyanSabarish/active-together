@@ -11,6 +11,7 @@ vi.mock('../../client/src/api', () => ({
 
 import { postIndoorPlaces } from '../../client/src/api'
 import { useSearchStore, mapIndoorPlace } from '../../client/src/store'
+import { usePreferencesStore } from '../../client/src/preferencesStore'
 
 const SERVER_PLACE = { place_id: 'in-1', display_name: 'Carlton Library', category: 'library', distance_m: 820, unverified: true }
 
@@ -60,11 +61,26 @@ describe('indoor place search', () => {
     expect(store.indoorStatus).toBe('ok')
   })
 
+  it('TC-9.3-07 — the kinds marked not for me are sent with the search', async () => {
+    postIndoorPlaces.mockResolvedValue({ status: 'ok', places: [] })
+    const prefs = usePreferencesStore()
+    prefs.setIndoorLevel('clubs', 'nope')
+    prefs.setIndoorLevel('swimming', 'likes')
+    const store = storeAt()
+    await store.searchIndoor()
+    expect(postIndoorPlaces).toHaveBeenCalledWith(expect.objectContaining({ excludedCategories: ['clubs'] }))
+  })
+
   it('TC-9.3-04 — with no location nothing is requested', async () => {
     const store = useSearchStore()
     await store.searchIndoor()
     expect(postIndoorPlaces).not.toHaveBeenCalled()
     expect(store.indoorStatus).toBe('idle')
+  })
+
+  it('TC-9.3-06 — each kind of indoor place has a plain label', () => {
+    const label = (category) => mapIndoorPlace({ ...SERVER_PLACE, category }).categoryLabel
+    expect([label('swimming'), label('recreation_centre'), label('indoor_sports'), label('clubs')]).toEqual(['Swimming', 'Recreation centre', 'Indoor sports', 'Clubs'])
   })
 
   it('TC-9.3-05 — a place without coordinates still maps', () => {

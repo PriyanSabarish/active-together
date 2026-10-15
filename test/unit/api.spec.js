@@ -99,7 +99,15 @@ describe('POST /recommendations for indoor places (story 9.3)', () => {
     await postIndoorPlaces({ latitude: -37.813612345, longitude: 144.963198765, radiusKm: 5 })
     const [url, init] = fetch.mock.calls[0]
     expect(url).toMatch(/\/recommendations$/)
-    expect(JSON.parse(init.body)).toEqual({ setting: 'indoor_place', latitude: -37.8136, longitude: 144.9632, radius_km: 5 })
+    expect(JSON.parse(init.body)).toEqual({ setting: 'indoor_place', latitude: -37.8136, longitude: 144.9632, radius_km: 5, excluded_categories: [] })
+  })
+})
+
+describe('indoor place preferences', () => {
+  it('sends the kinds marked not for me as excluded_categories', async () => {
+    fetch.mockResolvedValue(jsonResponse({ status: 'ok', places: [] }))
+    await postIndoorPlaces({ latitude: -37.8, longitude: 144.9, radiusKm: 5, excludedCategories: ['clubs', 'swimming'] })
+    expect(JSON.parse(fetch.mock.calls[0][1].body).excluded_categories).toEqual(['clubs', 'swimming'])
   })
 })
 
