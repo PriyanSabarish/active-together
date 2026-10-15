@@ -79,30 +79,21 @@
     </section>
 
     <div class="steps">
-      <!-- How far? travel minutes each way, walking or driving -->
-      <section v-if="showFar" class="step" :class="secCls('far')">
+      <!-- How long there? / How long to play? -->
+      <section v-if="showThere" class="step" :class="secCls('there')">
         <div class="step-head">
           <h2>
-            <span class="num" :class="numCls('far')"><template v-if="numDone('far')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.far }}</template></span>How far?<span v-if="fresh && active === 'far'" class="turn">Your turn</span>
+            <span class="num" :class="numCls('there')"><template v-if="numDone('there')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.there }}</template></span>{{ isHome ? 'How long to play?' : 'How long there?' }}<span v-if="fresh && active === 'there'" class="turn">Your turn</span>
           </h2>
-          <div class="modes">
-            <button v-for="m in MODES" :key="m.id" class="mode" :class="{ on: store.travelMode === m.id }" @click="store.setTravel({ mode: m.id })">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="m.icon" /></svg>
-              {{ m.label }}
-            </button>
-          </div>
+          <span v-if="isOutdoor && tripShown" class="outing-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5V12l3 2 M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z" /></svg>
+            {{ fmt(store.travelMin * 2 + store.stayMin) }} outing
+          </span>
         </div>
-        <p v-if="firstRun" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How far you are happy to travel, walking or driving.</span></p>
-        <p v-if="done.far" class="big">Up to <b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
-        <span v-if="!done.far" class="pick-pill" :class="{ act: active === 'far' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick a {{ modeWord }} time</span>
-        <SegBar :stops="TRAVEL_STOPS" :value="done.far ? store.travelMin : null" label="Travel minutes each way" item-class="travel-btn" @pick="pickFar" />
-        <!-- Mix it up spreads the top three across the travel range and kinds of place; Nearest first is the plain closest three. -->
-        <div v-if="done.far && isOutdoor" class="rank">
-          <div class="rank-opts" role="group" aria-label="How to choose places">
-            <button v-for="r in RANKING_MODES" :key="r.id" class="rank-btn" :class="{ on: store.rankingMode === r.id }" @click="store.setRankingMode(r.id)">{{ r.label }}</button>
-          </div>
-          <p class="rank-help">Mix it up shows different kinds of places across your travel time.</p>
-        </div>
+        <p v-if="firstRun && !isHome" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How long the kids get to play once you arrive.</span></p>
+        <p v-if="done.there" class="big"><b>{{ store.stayMin }}</b>min to play</p>
+        <span v-if="!done.there" class="pick-pill" :class="{ act: active === 'there' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick how long to play</span>
+        <SegBar :stops="STAY_STOPS" :value="done.there ? store.stayMin : null" label="Minutes to play" item-class="stay-btn" @pick="pickStay" />
       </section>
 
       <!-- When? hourly forecast strip (outdoors only) -->
@@ -128,21 +119,23 @@
         </p>
       </section>
 
-      <!-- How long there? / How long to play? -->
-      <section v-if="showThere" class="step" :class="secCls('there')">
+      <!-- How far? travel minutes each way, walking or driving -->
+      <section v-if="showFar" class="step" :class="secCls('far')">
         <div class="step-head">
           <h2>
-            <span class="num" :class="numCls('there')"><template v-if="numDone('there')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.there }}</template></span>{{ isHome ? 'How long to play?' : 'How long there?' }}<span v-if="fresh && active === 'there'" class="turn">Your turn</span>
+            <span class="num" :class="numCls('far')"><template v-if="numDone('far')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.far }}</template></span>How far?<span v-if="fresh && active === 'far'" class="turn">Your turn</span>
           </h2>
-          <span v-if="isOutdoor && tripShown" class="outing-pill">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5V12l3 2 M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z" /></svg>
-            {{ fmt(store.travelMin * 2 + store.stayMin) }} outing
-          </span>
+          <div class="modes">
+            <button v-for="m in MODES" :key="m.id" class="mode" :class="{ on: store.travelMode === m.id }" @click="store.setTravel({ mode: m.id })">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="m.icon" /></svg>
+              {{ m.label }}
+            </button>
+          </div>
         </div>
-        <p v-if="firstRun && !isHome" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How long the kids get to play once you arrive.</span></p>
-        <p v-if="done.there" class="big"><b>{{ store.stayMin }}</b>min to play</p>
-        <span v-if="!done.there" class="pick-pill" :class="{ act: active === 'there' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick how long to play</span>
-        <SegBar :stops="STAY_STOPS" :value="done.there ? store.stayMin : null" label="Minutes to play" item-class="stay-btn" @pick="pickStay" />
+        <p v-if="firstRun" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How far you are happy to travel, walking or driving.</span></p>
+        <p v-if="done.far" class="big">Up to <b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
+        <span v-if="!done.far" class="pick-pill" :class="{ act: active === 'far' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick a {{ modeWord }} time</span>
+        <SegBar :stops="TRAVEL_STOPS" :value="done.far ? store.travelMin : null" label="Travel minutes each way" item-class="travel-btn" @pick="pickFar" />
         <div v-if="isOutdoor && tripShown" class="trip">
           <div class="trip-bar">
             <span class="go" :style="{ flex: store.travelMin }" />
@@ -154,6 +147,13 @@
             <span class="mid" :style="{ flex: store.stayMin }">Play {{ store.stayMin }}m</span>
             <span class="end" :style="{ flex: store.travelMin }">Back ~{{ store.travelMin }}m</span>
           </div>
+        </div>
+        <!-- Mix it up spreads the top three across the travel range and kinds of place; Nearest first is the plain closest three. -->
+        <div v-if="done.far && isOutdoor" class="rank">
+          <div class="rank-opts" role="group" aria-label="How to choose places">
+            <button v-for="r in RANKING_MODES" :key="r.id" class="rank-btn" :class="{ on: store.rankingMode === r.id }" @click="store.setRankingMode(r.id)">{{ r.label }}</button>
+          </div>
+          <p class="rank-help">Mix it up shows different kinds of places across your travel time.</p>
         </div>
       </section>
 
@@ -215,8 +215,8 @@
 <script setup>
 // Start (iteration 3 design): first Outdoors, At home or an Indoor place,
 // then only the steps that setting needs —
-//   Outdoors:     where from, how far (travel minutes, walk/drive), when
-//                 (hourly forecast), how long there, with the trip split
+//   Outdoors:     where from, how long there, when (hourly forecast), how
+//                 far (travel minutes, walk/drive), with the trip split
 //   At home:      how long to play, then pick a home mission and play it
 //   Indoor place: where from and how far, then a list of indoor places
 // Where-from is browser geolocation (asked only on tap, nothing stored), a
@@ -273,7 +273,7 @@ const SegBar = defineComponent({
       role: 'radiogroup',
       'aria-label': props.label,
       style: { gridTemplateColumns: `repeat(${props.stops.length}, minmax(0, 1fr))` },
-      onPointerdown: (e) => { dragging = true; e.currentTarget.setPointerCapture?.(e.pointerId) },
+      onPointerdown: (e) => { dragging = true; e.currentTarget.setPointerCapture?.(e.pointerId); pickAt(e) },
       onPointermove: (e) => { if (dragging) pickAt(e) },
       onPointerup: () => { dragging = false },
       onPointercancel: () => { dragging = false }
@@ -323,9 +323,9 @@ const showThere = computed(() => store.setting !== 'indoor_place')
 const nums = computed(() => {
   let n = showFrom.value ? 1 : 0
   return {
-    far: showFar.value ? ++n : 0,
-    when: isOutdoor.value ? ++n : 0,
     there: showThere.value ? ++n : 0,
+    when: isOutdoor.value ? ++n : 0,
+    far: showFar.value ? ++n : 0,
     mission: isHome.value ? ++n : 0
   }
 })
@@ -337,7 +337,7 @@ const nums = computed(() => {
 const bannerOff = ref(false)
 const touched = reactive({ far: false, when: false, there: false })
 const fresh = computed(() => store.guided)
-const order = computed(() => [showFrom.value && 'from', showFar.value && 'far', isOutdoor.value && 'when', showThere.value && !isHome.value && 'there'].filter(Boolean))
+const order = computed(() => [showFrom.value && 'from', showThere.value && !isHome.value && 'there', isOutdoor.value && 'when', showFar.value && 'far'].filter(Boolean))
 const done = computed(() => ({
   from: store.hasLocation,
   far: !fresh.value || touched.far,
@@ -826,10 +826,10 @@ function next() {
 .step { display: flex; flex-direction: column; gap: 14px; padding: 20px 0 22px; border-top: 1px solid rgba(30, 42, 31, 0.1); }
 .step:first-child { border-top: none; }
 
-.step-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 26px; }
+.step-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; min-height: 26px; }
 .step-head h2 { display: flex; align-items: center; margin: 0; font-size: 19px; line-height: 1.15; white-space: nowrap; }
 
-.modes { display: flex; gap: 14px; }
+.modes { display: flex; gap: 14px; margin-left: auto; }
 .mode { display: flex; align-items: center; gap: 5px; padding: 3px 0; border: none; border-bottom: 2px solid transparent; background: none; font-family: inherit; font-size: 13px; font-weight: 600; color: rgba(30, 42, 31, 0.45); cursor: pointer; }
 .mode.on { color: var(--ink); border-bottom-color: var(--accent); }
 .rank { margin-top: 12px; }
