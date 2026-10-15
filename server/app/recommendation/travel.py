@@ -16,6 +16,13 @@ SPEEDS = {
     "driving": 30.0
 }
 DRIVING_PARKING_BUFFER_MIN = 5
+
+# OpenRouteService names its routing profiles differently from our travel modes; "walking" is not
+# a profile, so the request must use these or ORS rejects every call.
+ORS_PROFILES = {"walking": "foot-walking", "cycling": "cycling-regular", "driving": "driving-car"}
+# One matrix request covers at most this many places, nearest first (they arrive ordered by
+# distance). The rest use the labelled estimate, which keeps the request small and fast.
+MAX_ORS_DESTINATIONS = 50
 DAILY_ORS_LIMIT = settings.ors_daily_limit  # Academic quota ceiling safeguard
 
 def _check_and_increment_quota() -> bool:
@@ -59,18 +66,21 @@ async def get_travel_times(origin: tuple[float, float], candidates: list, mode: 
             )
         return travel_times
 
-    # Task A41: Fall back automatically if daily Melbourne quota is exhausted
-    if not _check_and_increment_quota():
+    # Task A41: Fall back automatically if daily Melbourne quota is exhausted, or if the mode has
+    # no ORS profile (checked first so no quota is spent on a call that cannot be made).
+    if mode not in ORS_PROFILES or not _check_and_increment_quota():
         for candidate in candidates:
             travel_times[candidate.place_id] = estimate_travel_time(
                 rounded_origin[0], rounded_origin[1], candidate.latitude, candidate.longitude, mode
             )
         return travel_times
 
-    ors_destinations = [[c.longitude, c.latitude] for c in candidates if c.longitude and c.latitude]
+    profile = ORS_PROFILES.get(mode)
+    routed = candidates[:MAX_ORS_DESTINATIONS]
+    ors_destinations = [[c.longitude, c.latitude] for c in routed]
     ors_sources = [rounded_origin[1], rounded_origin[0]]
 
-    url = f"https://api.openrouteservice.org/v2/matrix/{mode}"
+    url = f"https://api.openrouteservice.org/v2/matrix/{profile}"
     headers = {
         "Authorization": settings.ors_api_key,
         "Content-Type": "application/json"
@@ -92,7 +102,7 @@ async def get_travel_times(origin: tuple[float, float], candidates: list, mode: 
             durations = data.get("durations", [[]])[0]
 
             for idx, candidate in enumerate(candidates):
-                seconds = durations[idx] if idx < len(durations) else None
+                seconds = durations[idx] if idx < len(routed) and idx < len(durations) else None
                 if seconds is None:
                     travel_times[candidate.place_id] = estimate_travel_time(
                         rounded_origin[0], rounded_origin[1], candidate.latitude, candidate.longitude, mode
