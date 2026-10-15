@@ -85,7 +85,7 @@ export function persistSearchState({ store }) {
 export const PREFS_KEY = 'at-prefs-v1'
 const AGE_BAND_IDS = ['5-7', '8-10', '11-12']
 
-export function sanitisePrefs(saved, categories) {
+export function sanitisePrefs(saved, categories, indoorKinds = []) {
   if (!saved || typeof saved !== 'object') return {}
   const out = {}
   if (AGE_BAND_IDS.includes(saved.ageBand)) out.ageBand = saved.ageBand
@@ -96,6 +96,14 @@ export function sanitisePrefs(saved, categories) {
       if (Number.isFinite(v) && v >= 0 && v <= 100) aff[c] = Math.round(v)
     }
     if (Object.keys(aff).length) out.affinities = aff
+  }
+  if (saved.indoorAffinities && typeof saved.indoorAffinities === 'object') {
+    const aff = {}
+    for (const k of indoorKinds) {
+      const v = saved.indoorAffinities[k]
+      if (Number.isFinite(v) && v >= 0 && v <= 100) aff[k] = Math.round(v)
+    }
+    if (Object.keys(aff).length) out.indoorAffinities = aff
   }
   return out
 }
@@ -121,8 +129,9 @@ export function persistPreferences({ store }) {
   try {
     const raw = storage.getItem(PREFS_KEY)
     if (raw) {
-      const clean = sanitisePrefs(JSON.parse(raw), Object.keys(store.affinities))
+      const clean = sanitisePrefs(JSON.parse(raw), Object.keys(store.affinities), Object.keys(store.indoorAffinities))
       if (clean.affinities) clean.affinities = { ...store.affinities, ...clean.affinities }
+      if (clean.indoorAffinities) clean.indoorAffinities = { ...store.indoorAffinities, ...clean.indoorAffinities }
       store.$patch(clean)
     }
   } catch {
@@ -132,7 +141,7 @@ export function persistPreferences({ store }) {
   store.$subscribe(
     (_mutation, state) => {
       try {
-        storage.setItem(PREFS_KEY, JSON.stringify({ ageBand: state.ageBand, affinities: state.affinities }))
+        storage.setItem(PREFS_KEY, JSON.stringify({ ageBand: state.ageBand, affinities: state.affinities, indoorAffinities: state.indoorAffinities }))
       } catch {
         /* quota or storage unavailable */
       }

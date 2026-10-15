@@ -43,6 +43,18 @@ export const CATEGORY_ICON = {
   home: HOUSE
 }
 
+// Icon per kind of indoor place (INDOOR_KIND_META in store.js).
+export const INDOOR_ICON = {
+  swimming: 'M3 15c2 0 2-1.5 4.5-1.5S10 15 12 15s2-1.5 4.5-1.5S19 15 21 15 M3 19c2 0 2-1.5 4.5-1.5S10 19 12 19s2-1.5 4.5-1.5S19 19 21 19 M15.5 4.5a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0Z M8 12l4-3.2 3 2.2',
+  recreation_centre: 'M4.5 20V8l7.5-4 7.5 4v12 M4.5 20h15 M9 20v-5h6v5 M9 10.5h.01 M15 10.5h.01',
+  indoor_sports: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18 M3 12h18 M12 3c3 3 3 15 0 18 M12 3c-3 3-3 15 0 18',
+  clubs: 'M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6 M5.5 19c.7-3 3-4.5 6.5-4.5s5.8 1.5 6.5 4.5 M4.5 9.5a2.2 2.2 0 1 0 0-4.4 M19.5 9.5a2.2 2.2 0 1 0 0-4.4'
+}
+
+export function indoorIcon(key) {
+  return INDOOR_ICON[key] ?? INDOOR_ICON.recreation_centre
+}
+
 export function categoryIcon(key) {
   return CATEGORY_ICON[key] ?? TREE
 }

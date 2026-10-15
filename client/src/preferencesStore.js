@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { CATEGORY_META } from './store'
+import { CATEGORY_META, INDOOR_KIND_META } from './store'
 
 // ---------------------------------------------------------------------------
 // F10 — preferences store. Each place category has a 0-100 affinity, set
@@ -17,6 +17,10 @@ export const AGE_BANDS = [
 function defaultAffinities() {
   // Neutral by default — nothing is pre-favoured until a parent sets it.
   return Object.fromEntries(Object.keys(CATEGORY_META).map((c) => [c, 50]))
+}
+
+function defaultIndoorAffinities() {
+  return Object.fromEntries(Object.keys(INDOOR_KIND_META).map((k) => [k, 50]))
 }
 
 // At or below this, a category counts as "excluded": it is sent as
@@ -43,11 +47,19 @@ export function levelOf(value) {
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     affinities: defaultAffinities(),
+    // The same three-way choice for the kinds of indoor place (Indoor place setting).
+    indoorAffinities: defaultIndoorAffinities(),
     ageBand: '8-10'
   }),
   getters: {
     ageBandInfo(state) {
       return AGE_BANDS.find((b) => b.id === state.ageBand) ?? AGE_BANDS[1]
+    },
+    // Kinds of indoor place marked "not for me", sent as excluded_categories for Indoor place.
+    excludedIndoorKinds(state) {
+      return Object.entries(state.indoorAffinities)
+        .filter(([, value]) => value <= EXCLUSION_THRESHOLD)
+        .map(([kind]) => kind)
     },
     excludedCategories(state) {
       return Object.entries(state.affinities)
@@ -64,6 +76,10 @@ export const usePreferencesStore = defineStore('preferences', {
     setAffinity(category, value) {
       if (!(category in this.affinities)) return
       this.affinities[category] = Math.min(100, Math.max(0, Math.round(value)))
+    },
+    setIndoorLevel(kind, levelId) {
+      const level = PREF_LEVELS.find((l) => l.id === levelId)
+      if (level && kind in this.indoorAffinities) this.indoorAffinities[kind] = level.value
     },
     setLevel(category, levelId) {
       const level = PREF_LEVELS.find((l) => l.id === levelId)

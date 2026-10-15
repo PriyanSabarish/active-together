@@ -70,19 +70,21 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
 }
 
 // POST /recommendations with setting "indoor_place" (story 9.3).
-// body: { setting, latitude, longitude, radius_km } — coordinates cut to 4 dp.
+// body: { setting, latitude, longitude, radius_km, excluded_categories } — coordinates cut to 4 dp.
+// excluded_categories are the kinds of indoor place marked "not for me" (swimming, clubs, ...).
 // returns: { status: 'ok' | 'zero_results', places: [{ place_id, display_name, category,
 //            distance_m, unverified: true }], suggestions?: ['larger_radius', 'at_home'] }
 // Nearest first, then by name. No mission, weather or travel time.
 const to4dp = (n) => Math.round(Number(n) * 1e4) / 1e4
-export function postIndoorPlaces({ latitude, longitude, radiusKm }) {
+export function postIndoorPlaces({ latitude, longitude, radiusKm, excludedCategories = [] }) {
   return request('/recommendations', {
     method: 'POST',
     body: JSON.stringify({
       setting: 'indoor_place',
       latitude: to4dp(latitude),
       longitude: to4dp(longitude),
-      radius_km: radiusKm
+      radius_km: radiusKm,
+      excluded_categories: excludedCategories
     })
   })
 }

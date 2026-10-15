@@ -45,6 +45,7 @@ logs/
 .claude/
 .windsurf/
 .aider*
+GEMINI.md
 # RStudio local files
 .Rhistory
 .RData
@@ -62,4 +63,4 @@ data/validation/vicmap/*_reviewed.xlsx
 data/archive/
 
 # generated test output
-test/coverage/
+test/coverage/

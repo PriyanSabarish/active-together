@@ -184,7 +184,7 @@
 // Emits 'done' with 'setup' or 'skip'.
 import { computed, onMounted, ref, watch } from 'vue'
 import { getHourlyForecast } from '../api'
-import { SUBURB_COORDS, TRAVEL_STOPS, STAY_STOPS, guidedStartEnabled, useSearchStore } from '../store'
+import { SUBURB_COORDS, TRAVEL_STOPS, STAY_STOPS, useSearchStore } from '../store'
 
 const emit = defineEmits(['done'])
 const store = useSearchStore()
@@ -369,7 +369,7 @@ function apply() {
 // Skip leaves everything as it was. A first-time user (no saved starting
 // point) lands on the guided Start; a returning one just sees theirs.
 function skip() {
-  store.guided = guidedStartEnabled() && !store.hasLocation
+  store.guided = !store.hasLocation
   emit('done', 'skip')
 }
 </script>
