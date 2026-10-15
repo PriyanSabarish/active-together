@@ -21,7 +21,7 @@ import {
   CATEGORY_META,
   SUBURB_COORDS
 } from '../../client/src/store'
-import { makeCombo, makeSummary, okResponse } from '../fixtures/combos'
+import { makeCombo, makeSummary, okResponse, spreadResponse } from '../fixtures/combos'
 
 beforeEach(() => {
   setActivePinia(createPinia())
@@ -45,8 +45,30 @@ describe('AC-1.1.2 — Radius and pilot boundary are enforced', () => {
       // the whole outing: travel each way x 2 + play time (10 x 2 + 40 by default)
       durationMin: 60,
       travelMode: 'walking',
+      travelLimitMin: 10,
+      rankingMode: 'spread',
       excludedCategories: []
     })
+  })
+
+  it('the ranking toggle is sent as rankingMode and re-runs the search', async () => {
+    postRecommendations.mockResolvedValue(okResponse([makeCombo()]))
+    const store = useSearchStore()
+    store.suburb = 'Melbourne'
+    await store.fetchRecommendations()
+    expect(postRecommendations.mock.calls.at(-1)[0].rankingMode).toBe('spread')
+    store.setRankingMode('nearest')
+    await Promise.resolve()
+    expect(postRecommendations).toHaveBeenCalledTimes(2)
+    expect(postRecommendations.mock.calls.at(-1)[0].rankingMode).toBe('nearest')
+  })
+
+  it('each card carries its one-way travel minutes', async () => {
+    postRecommendations.mockResolvedValue(spreadResponse())
+    const store = useSearchStore()
+    store.suburb = 'Melbourne'
+    await store.fetchRecommendations()
+    expect(store.results.map((p) => p.travelMin)).toEqual([7, 16, 27])
   })
 
   it('the whole outing, not just play time, is what the server plans around', async () => {

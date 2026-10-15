@@ -73,6 +73,12 @@ class Settings(BaseSettings):
     keepalive_url: str | None = None
     keepalive_interval_s: float = 600.0
 
+    # Travel spread (iteration 3): "spread" picks the top three across the
+    # travel range and across activity kinds; "nearest" is the old nearest-3.
+    travel_spread_band_count: int = 3
+    travel_spread_min_band_width_min: int = 5
+    travel_spread_default_mode: Literal["spread", "nearest"] = "spread"
+
     allowed_radius_km: tuple[int, ...] = (3, 5, 10)
     min_duration_min: int = 20
     max_duration_min: int = 120

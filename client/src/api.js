@@ -55,7 +55,7 @@ async function request(path, init = {}) {
 // returns: { status: 'ok' | 'zero_results' | 'out_of_bounds', combos: [...], message?,
 //            suggest_indoors, suggestions?: [{ kind: 'more_time', total_min, fits_count } | { kind: 'other_mode', mode }] }
 // Each combo has its own plan length (duration_bucket) and a travel block.
-export function postRecommendations({ latitude, longitude, radiusKm, durationMin, travelMode = 'walking', excludedCategories = [] }) {
+export function postRecommendations({ latitude, longitude, radiusKm, durationMin, travelMode = 'walking', travelLimitMin, rankingMode, excludedCategories = [] }) {
   return request('/recommendations', {
     method: 'POST',
     body: JSON.stringify({
@@ -64,6 +64,8 @@ export function postRecommendations({ latitude, longitude, radiusKm, durationMin
       radius_km: radiusKm,
       duration_min: durationMin,
       travel_mode: travelMode,
+      travel_limit_min: travelLimitMin,
+      ranking_mode: rankingMode,
       excluded_categories: excludedCategories
     })
   })

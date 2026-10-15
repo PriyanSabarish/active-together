@@ -32,6 +32,7 @@ export function makeCombo(overrides = {}) {
     environmental_summary: makeSummary(summaryOverrides),
     tier: 'normal',
     duration_bucket: 40,
+    travel_min: 8, // one way
     entered_duration_min: 45,
     activity_type: 'Open play and a walk',
     combo_template: '40-minute park visit',
@@ -42,6 +43,18 @@ export function makeCombo(overrides = {}) {
 
 export function okResponse(combos, extra = {}) {
   return { status: 'ok', combos, ...extra }
+}
+
+// A spread result: one place near, one mid-range, one far (7, 16, 27 min one way).
+export function spreadResponse() {
+  return okResponse(
+    [
+      makeCombo({ place: { place_id: 's-1', display_name: 'Near Park', distance_m: 500 }, travel_min: 7 }),
+      makeCombo({ place: { place_id: 's-2', display_name: 'Mid Oval', activity_category: 'sports_ground', distance_m: 1300 }, travel_min: 16 }),
+      makeCombo({ place: { place_id: 's-3', display_name: 'Far Playground', activity_category: 'playground', distance_m: 2200 }, travel_min: 27 })
+    ],
+    { ranking_mode: 'spread' }
+  )
 }
 
 export function makeTravel(overrides = {}) {

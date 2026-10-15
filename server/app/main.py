@@ -29,6 +29,7 @@ from app.data.database import SessionLocal, get_db, engine
 from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
 from app.data.candidate_cache import DatasetUnavailable, get_candidates
+from app.data.indoor_kinds import filter_by_kind
 from app.missions import service as mission_service
 from app.missions.guides import guide_for
 from app.models import AgeBand, TravelMode
@@ -196,6 +197,8 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
             raise HTTPException(status_code=400, detail="radius_km must be 3, 5, or 10 for indoor places")
         
         indoor_candidates = _cached_places(db, lat, lon, float(req.radius_km), "indoor_place", lambda *a, **k: fetch_indoor_places(*a, **k))
+        # The parent's "not for me" kinds (pools, clubs...) are left out; excluding everything keeps the list.
+        indoor_candidates = filter_by_kind(indoor_candidates, req.excluded_categories)
         if not indoor_candidates:
             return {
                 "status": "zero_results",
@@ -223,6 +226,11 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
     if not (20 <= req.duration_min <= 120):
         raise HTTPException(status_code=400, detail="duration_min must be between 20 and 120")
 
+    if req.travel_limit_min is not None and not (5 <= req.travel_limit_min <= 30 and req.travel_limit_min % 5 == 0):
+        raise HTTPException(status_code=400, detail="travel_limit_min must be 5 to 30 in steps of 5")
+    # Missing or unknown ranking_mode takes the configured default.
+    ranking_mode = req.ranking_mode if req.ranking_mode in ("spread", "nearest") else settings.travel_spread_default_mode
+
     candidates = _cached_places(db, lat, lon, float(req.radius_km), "outdoor", lambda *a, **k: fetch_candidate_places(*a, **k))
     if not candidates or not any(p.lga_name.lower() in PILOT_LGAS for p in candidates):
         return {"status": "out_of_bounds", "message": "Selected location is outside pilot area.", "combos": []}
@@ -243,6 +251,8 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
         radius_km=req.radius_km,
         timestamp=req.timestamp,
         excluded_categories=tuple(req.excluded_categories),
+        travel_limit_min=req.travel_limit_min,
+        ranking_mode=ranking_mode,
     )
     return {**jsonable_encoder(result), "suggest_indoors": suggest_indoors}
 

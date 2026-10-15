@@ -45,6 +45,8 @@ class RecommendationRequest(BaseModel):
     timestamp: Optional[str] = Field(None, description="ISO timestamp within forecast range")
     duration_min: Optional[int] = Field(60, description="Total activity duration in minutes")
     travel_mode: TravelModeEnum = Field(TravelModeEnum.WALKING, description="Mode of travel")
+    travel_limit_min: Optional[int] = Field(None, description="Longest one-way travel, 5 to 30 in steps of 5; enables spread ranking")
+    ranking_mode: Optional[str] = Field(None, description="'spread' or 'nearest'; missing or unknown uses the server default")
     excluded_categories: list[str] = Field(default_factory=list)
     recent_template_ids: list[str] = Field(default_factory=list, description="Recently played templates to avoid repeating (home)")
     age_band: Optional[AgeBand] = Field(None, description="5-7 | 8-10 | 11-12; required when setting = home")

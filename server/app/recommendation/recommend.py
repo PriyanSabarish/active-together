@@ -39,7 +39,7 @@ from app.recommendation.eligibility import (
     plan_bucket_for,
 )
 from app.recommendation.explanation import build_explanation
-from app.recommendation.ordering import order_candidates, sort_key
+from app.recommendation.ordering import select_nearest, select_spread, sort_key
 from app.recommendation.preferences import filter_by_preference
 from app.recommendation.tier import assess
 
@@ -157,6 +157,7 @@ def _build_combo(
         combo_template=template.title,
         tier=tier,
         environmental_summary=summary,
+        travel_min=travel_time.minutes,
         explanation=build_explanation(
             distance_m=place.distance_m,
             entered_total_min=total_min,
@@ -178,6 +179,8 @@ def recommend(
     timestamp: str | None = None,
     min_confidence: float = MIN_CONFIDENCE,
     excluded_categories: tuple[ActivityCategory, ...] = (),
+    travel_limit_min: int | None = None,
+    ranking_mode: str = "nearest",
 ) -> Recommendation:
     tier, summary = assess(context)
 
@@ -193,8 +196,24 @@ def recommend(
         travel_times=travel_times,
         min_confidence=min_confidence,
     )
-    # Straight-line distance, then name, is unchanged by travel time (D17).
-    ordered = order_candidates(eligible, tier)
+    # "nearest": straight-line distance, then name (D17), take three.
+    # "spread": one place per slice of the travel limit, varying the kind of
+    # place where possible, then shown nearest first. Spread needs the limit;
+    # without it we fall back to nearest and say so in the response.
+    used_mode = "nearest"
+    if ranking_mode == "spread" and travel_limit_min:
+        used_mode = "spread"
+        # "Up to N min" is a ceiling: a short stay can leave room for places
+        # slightly past it, which spread leaves out unless nothing else fits.
+        within = tuple(p for p in eligible if travel_times[p.place_id].minutes <= travel_limit_min)
+        ordered = select_spread(
+            within or eligible,
+            tier,
+            {pid: t.minutes for pid, t in travel_times.items()},
+            travel_limit_min,
+        )
+    else:
+        ordered = select_nearest(eligible, tier)
 
     if not ordered:
         return Recommendation(
@@ -202,6 +221,7 @@ def recommend(
             combos=(),
             message=zero_result_message(),
             suggestions=suggest_next_steps(in_scope, total_min, mode, travel_times),
+            ranking_mode=used_mode,
         )
 
     combos = tuple(
@@ -220,4 +240,4 @@ def recommend(
 
     # Fewer than three returns what exists — the cap in order_candidates
     # truncates but never pads (B11).
-    return Recommendation(status=RecommendationStatus.OK, combos=combos)
+    return Recommendation(status=RecommendationStatus.OK, combos=combos, ranking_mode=used_mode)
