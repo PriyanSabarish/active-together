@@ -15,7 +15,9 @@ class Settings(BaseSettings):
 
     app_name: str = "Active Together API"
     environment: Literal["local", "staging", "production"] = "local"
-    debug: bool = True
+    # False unless asked for: debug mode puts tracebacks (and so exception text) in error
+    # responses. Set DEBUG=true in server/.env (git-ignored) for local development.
+    debug: bool = False
 
     database_url: str = "postgresql+pg8000://postgres:postgres@localhost:5433/active_together"
 

@@ -78,7 +78,9 @@ body {
   body { background: #E7E5DC; }
   #app { align-items: center; }
   .phone {
-    width: 440px;
+    /* Phone-shaped on any window: the width follows the height (about 1 : 2) instead of being a
+       fixed 440px, which looked squat on a short laptop screen. Never below 340px, never above 440px. */
+    width: clamp(340px, calc((100dvh - 24px) * 0.5), 440px);
     height: min(100% - 24px, 940px);
     border-radius: 36px;
     box-shadow: 0 0 0 10px #1E2A1F, 0 30px 70px rgba(30, 42, 31, 0.35);
