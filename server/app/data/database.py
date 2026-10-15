@@ -7,7 +7,9 @@ import logging
 import os
 load_dotenv()  # This explicitly forces python to read the .env file
 logging.basicConfig()
-logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+# Not INFO: that logs every SQL statement with its bound values, which would put the
+# coordinates of every search in the logs.
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(

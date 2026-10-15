@@ -69,6 +69,8 @@ def _tracked_files() -> list[Path]:
 def test_no_api_key_or_token_is_committed():
     findings = []
     for path in _tracked_files():
+        if not path.exists():  # deleted in the working tree, not yet committed
+            continue
         if path.suffix.lower() not in TEXT_SUFFIXES and path.name != ".env":
             continue
         if "package-lock" in path.name or path.stat().st_size > 2_000_000:
