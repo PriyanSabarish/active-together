@@ -25,32 +25,32 @@
         </div>
       </div>
 
-      <!-- Likes are about outdoor places: at home and Indoor place do not use them. -->
+      <!-- Outdoors: the kinds of outdoor place. Indoor place: the kinds of indoor venue. At home has no likes. -->
       <div v-if="showLikes" class="group">
         <div class="group-head"><span>Likes</span><span class="muted">{{ summary }}</span></div>
         <div class="like-list">
-          <div v-for="(meta, key) in CATEGORY_META" :key="key" class="like" :class="draft[key]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="categoryIcon(key)" /></svg>
-            <span class="like-name">{{ meta.label }}</span>
-            <span class="tri" role="radiogroup" :aria-label="meta.label">
+          <div v-for="row in rows" :key="row.key" class="like" :class="draft[row.key]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="row.icon" /></svg>
+            <span class="like-name">{{ row.label }}</span>
+            <span class="tri" role="radiogroup" :aria-label="row.label">
               <button
                 v-for="o in PREF_LEVELS"
                 :key="o.id"
                 type="button"
                 class="tri-btn"
-                :class="[o.id, { on: draft[key] === o.id }]"
+                :class="[o.id, { on: draft[row.key] === o.id }]"
                 role="radio"
-                :aria-checked="draft[key] === o.id"
+                :aria-checked="draft[row.key] === o.id"
                 :aria-label="o.label"
                 :title="o.label"
-                @click="draft[key] = o.id"
+                @click="draft[row.key] = o.id"
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path :d="ICON[o.id]" /></svg>
               </button>
             </span>
           </div>
         </div>
-        <p class="note">"Not for me" places and missions are left out of suggestions.</p>
+        <p class="note">{{ isIndoor ? '"Not for me" kinds are left out of the indoor places we show.' : '"Not for me" places and missions are left out of suggestions.' }}</p>
       </div>
 
       <div class="actions">
@@ -69,17 +69,24 @@
 
 import { computed, reactive, ref } from 'vue'
 import { usePreferencesStore, AGE_BANDS, PREF_LEVELS, levelOf } from '../preferencesStore'
-import { CATEGORY_META, useSearchStore } from '../store'
-import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
+import { CATEGORY_META, INDOOR_KIND_META, useSearchStore } from '../store'
+import { categoryIcon, indoorIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
 
 const emit = defineEmits(['close'])
 const prefs = usePreferencesStore()
-const showLikes = useSearchStore().setting === 'outdoor'
+const setting = useSearchStore().setting
+const isIndoor = setting === 'indoor_place'
+const showLikes = setting !== 'home'
+// The list the parent edits: outdoor categories, or the kinds of indoor place.
+const rows = isIndoor
+  ? Object.entries(INDOOR_KIND_META).map(([key, m]) => ({ key, label: m.label, icon: indoorIcon(key) }))
+  : Object.entries(CATEGORY_META).map(([key, m]) => ({ key, label: m.label, icon: categoryIcon(key) }))
+const source = isIndoor ? prefs.indoorAffinities : prefs.affinities
 
 const KID_ICON = 'M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4 M12 7v7 M8 10h8 M12 14l-3 6 M12 14l3 6'
 const ICON = { likes: THUMB_UP, neutral: 'M6 12h12', nope: THUMB_DOWN }
 const band = ref(prefs.ageBand)
-const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.affinities[k])])))
+const draft = reactive(Object.fromEntries(rows.map((r) => [r.key, levelOf(source[r.key])])))
 
 const label = (id) => id.replace('-', '–')
 const summary = computed(() => {
@@ -95,7 +102,7 @@ function clearAll() {
 
 function save() {
   prefs.setAgeBand(band.value)
-  if (showLikes) for (const [k, level] of Object.entries(draft)) prefs.setLevel(k, level)
+  if (showLikes) for (const [k, level] of Object.entries(draft)) (isIndoor ? prefs.setIndoorLevel(k, level) : prefs.setLevel(k, level))
   emit('close')
 }
 </script>

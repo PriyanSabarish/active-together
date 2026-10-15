@@ -297,6 +297,7 @@ export const useSearchStore = defineStore('search', {
     suggestIndoors: false, // wet forecast: offer Indoors (story 9.1)
     indoorsDismissed: false,
     openSettingMenu: false, // set by the Try Indoors prompt; Start opens its Outdoors / Indoors menu once
+    hints: guidedStartEnabled(), // You tab 'Guided Start': the extra sentences under each step
     guided: false, // first run after Skip: Start walks through its steps one at a time (not saved)
     error: '',
     results: [],
@@ -380,10 +381,19 @@ export const useSearchStore = defineStore('search', {
     },
     // First-run Start: no starting point yet, steps answered one at a time.
     startGuided() {
+      this.resetStart()
+      this.guided = true
+    },
+    // Forget the last visit's answers so Start begins with nothing chosen.
+    resetStart() {
       this.suburb = ''
       this.selectedAddress = null
       this.useMyLocation = false
-      this.guided = true
+      this.myLocation = null
+      this.whenAt = null
+      this.setting = 'outdoor'
+      this.setTravel({ minutes: 10, mode: 'walking' })
+      this.setStay(40)
     },
     rememberSuburb(name) {
       if (!name) return

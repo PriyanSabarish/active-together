@@ -339,7 +339,7 @@ const done = computed(() => ({
 }))
 const remaining = computed(() => (fresh.value ? order.value.filter((k) => !done.value[k]).length : 0))
 const active = computed(() => (fresh.value ? order.value.find((k) => !done.value[k]) ?? null : null))
-const firstRun = computed(() => fresh.value && !bannerOff.value && remaining.value > 0)
+const firstRun = computed(() => fresh.value && store.hints && !bannerOff.value && remaining.value > 0)
 const tripShown = computed(() => !fresh.value || (touched.far && touched.there))
 const stateOf = (k) => (!fresh.value || done.value[k] ? 'done' : active.value === k ? 'act' : 'next')
 const secCls = (k) => (fresh.value ? stateOf(k) : '')

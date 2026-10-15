@@ -37,7 +37,7 @@ import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
 import { usePhotoStore } from './photoStore'
-import { useSearchStore, guidedStartEnabled } from './store'
+import { useSearchStore } from './store'
 import { useMissionStore } from './missionStore'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
@@ -73,6 +73,7 @@ function signIn() {
 // goes straight to the app. The flag below only records that it has been seen.
 const ONBOARDED_KEY = 'at-onboarded-v1'
 const REPLAY_KEY = 'at-replay-intro'
+const VISIT_KEY = 'at-visit-started'
 function takeReplayFlag() {
   try {
     const on = localStorage.getItem(REPLAY_KEY) === '1'
@@ -92,10 +93,17 @@ function beginSession() {
   const replay = takeReplayFlag()
   showOnboarding.value = replay
   showCover.value = replay
-  if (!replay && guidedStartEnabled()) {
-    // First-run Start: no starting point yet, steps answered one at a time.
-    search.startGuided()
+  // Each time the app is opened fresh (a new browser tab or window, not a
+  // reload) Start forgets the last visit's answers and begins unselected.
+  let fresh = true
+  try {
+    fresh = sessionStorage.getItem(VISIT_KEY) !== '1'
+    sessionStorage.setItem(VISIT_KEY, '1')
+  } catch {
+    /* storage unavailable: treat every load as fresh */
   }
+  if (replay || !fresh) return
+  search.startGuided() // steps answered one at a time
 }
 if (authed.value) beginSession()
 

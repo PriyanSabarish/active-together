@@ -61,7 +61,7 @@
     <div class="card row-link">
       <span class="row-text">
         <span class="row-label">Guided Start</span>
-        <span class="block-sub">Walk through Start one step at a time on each visit.</span>
+        <span class="block-sub">Show a short hint under each step on Start.</span>
       </span>
       <button class="switch" :class="{ on: guidedOn }" role="switch" :aria-checked="guidedOn" aria-label="Guided Start" @click="toggleGuided">
         <span class="knob" />
@@ -114,18 +114,12 @@ const likes = computed(() => Object.entries(prefs.affinities)
 
 // The cover and setup flow play only when this flag is set; App.vue reads and
 // clears it on the next load. Otherwise Start opens in first-run mode.
-// Guided Start (the first-run steps on Start) is on unless switched off here.
+// Guided Start: the short hint under each Start step; on unless switched off here.
 const search = useSearchStore()
 const guidedOn = ref(guidedStartEnabled())
 function toggleGuided() {
   guidedOn.value = !guidedOn.value
-  if (guidedOn.value) {
-    // Switching on takes effect now: open Start in its first-run mode.
-    search.startGuided()
-    router.push('/')
-  } else {
-    search.guided = false
-  }
+  search.hints = guidedOn.value
   try {
     localStorage.setItem(GUIDED_START_KEY, guidedOn.value ? '1' : '0')
   } catch {
