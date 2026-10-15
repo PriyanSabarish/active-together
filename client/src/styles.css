@@ -72,6 +72,20 @@ body {
   overflow: hidden;
 }
 
+/* On a desktop browser, show the app as a phone in the middle of the page so
+   there is no need to switch DevTools to mobile view. Phones are unaffected. */
+@media (min-width: 600px) {
+  body { background: #E7E5DC; }
+  #app { align-items: center; }
+  .phone {
+    width: 440px;
+    height: min(100% - 24px, 940px);
+    border-radius: 36px;
+    box-shadow: 0 0 0 10px #1E2A1F, 0 30px 70px rgba(30, 42, 31, 0.35);
+    transform: translateZ(0); /* keeps fixed-position children inside the frame */
+  }
+}
+
 /* header and footer stay pinned; only this region scrolls */
 .scroll-area {
   flex: 1;

@@ -19,10 +19,26 @@
   </div>
 
   <div class="scroll-area start" @click="menuOpen = false" @scroll.passive="scrolled = $event.target.scrollTop > 2">
+    <!-- First run (after Skip): a short note, then the steps light up one at a time. -->
+    <div v-if="firstRun" class="first-note">
+      <span class="first-pin"><span class="fp-body"></span><span class="fp-face"><i class="fp-eye"></i><i class="fp-smile"></i></span></span>
+      <span class="first-text">
+        <b>New here? {{ wordFor(order.length) }} quick {{ order.length === 1 ? 'step' : 'steps' }}.</b>
+        <span>Fill these in and we'll find three places nearby, each with a mission.</span>
+      </span>
+      <button class="first-x" type="button" aria-label="Dismiss" @click="bannerOff = true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3F4A41" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12 M18 6 6 18" /></svg>
+      </button>
+    </div>
+
     <!-- 1 · Where are you starting? -->
-    <section v-if="showFrom" class="from">
+    <section v-if="showFrom" class="from" :class="{ act: fresh && active === 'from' }">
       <svg v-if="isOutdoor" class="from-sun" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2" stroke-linecap="round"><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M12 2.5v2 M12 19.5v2 M2.5 12h2 M19.5 12h2 M5.3 5.3l1.4 1.4 M17.3 17.3l1.4 1.4 M5.3 18.7l1.4-1.4 M17.3 6.7l1.4-1.4" /></svg>
-      <h1 class="from-title"><span class="num light">1</span>Where are you starting?</h1>
+      <h1 class="from-title">
+        <span class="num light" :class="numCls('from')"><template v-if="numDone('from')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>1</template></span>
+        Where are you starting?
+      </h1>
+      <p v-if="firstRun" class="hint light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>Search a suburb, or tap Locate to use where you are now.</span></p>
 
       <div class="from-row">
         <div class="field" :class="{ ok: store.hasLocation, err: !!locationError }">
@@ -64,9 +80,11 @@
 
     <div class="steps">
       <!-- How far? travel minutes each way, walking or driving -->
-      <section v-if="showFar" class="step">
+      <section v-if="showFar" class="step" :class="secCls('far')">
         <div class="step-head">
-          <h2><span class="num">{{ nums.far }}</span>How far?</h2>
+          <h2>
+            <span class="num" :class="numCls('far')"><template v-if="numDone('far')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.far }}</template></span>How far?<span v-if="fresh && active === 'far'" class="turn">Your turn</span>
+          </h2>
           <div class="modes">
             <button v-for="m in MODES" :key="m.id" class="mode" :class="{ on: store.travelMode === m.id }" @click="store.setTravel({ mode: m.id })">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="m.icon" /></svg>
@@ -74,39 +92,51 @@
             </button>
           </div>
         </div>
-        <p class="big"><b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
-        <SegBar :stops="TRAVEL_STOPS" :value="store.travelMin" label="Travel minutes each way" item-class="travel-btn" @pick="(v) => store.setTravel({ minutes: v })" />
+        <p v-if="firstRun" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How far you are happy to travel, walking or driving.</span></p>
+        <p v-if="done.far" class="big"><b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
+        <span v-if="!done.far" class="pick-pill" :class="{ act: active === 'far' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick a {{ modeWord }} time</span>
+        <SegBar :stops="TRAVEL_STOPS" :value="done.far ? store.travelMin : null" label="Travel minutes each way" item-class="travel-btn" @pick="pickFar" />
       </section>
 
       <!-- When? hourly forecast strip (outdoors only) -->
-      <section v-if="isOutdoor" class="step">
-        <div class="step-head"><h2><span class="num">{{ nums.when }}</span>When?</h2></div>
+      <section v-if="isOutdoor" class="step" :class="secCls('when')">
+        <div class="step-head">
+          <h2>
+            <span class="num" :class="numCls('when')"><template v-if="numDone('when')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.when }}</template></span>When?<span v-if="fresh && active === 'when'" class="turn">Your turn</span>
+          </h2>
+        </div>
+        <p v-if="firstRun" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>Now or later. We check the weather for the time you pick.</span></p>
+        <span v-if="!done.when" class="pick-pill" :class="{ act: active === 'when' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick when you're going</span>
         <div ref="stripEl" class="strip">
-          <button v-for="c in cells" :key="c.key" class="cell" :class="{ on: c.key === selectedKey }" @click="store.whenAt = c.iso">
+          <button v-for="c in cells" :key="c.key" class="cell" :class="{ on: c.key === selectedKey && done.when }" @click="pickWhen(c.iso)">
             <span class="cell-day">{{ c.day }}</span>
             <span class="cell-t">{{ c.t }}</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" :stroke="c.key === selectedKey ? '#FFFFFF' : c.ic" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="WX_ICON[c.icon]" /></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" :stroke="c.key === selectedKey && done.when ? '#FFFFFF' : c.ic" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path :d="WX_ICON[c.icon]" /></svg>
             <span class="cell-temp">{{ c.temp }}</span>
           </button>
         </div>
-        <p v-if="store.hasLocation" class="wx-note" :class="{ wet: selectedWx?.wet }">
+        <p v-if="store.hasLocation && done.when" class="wx-note" :class="{ wet: selectedWx?.wet }">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="WX_ICON[selectedWx?.icon ?? 'cloud']" /></svg>
           {{ wxText }}
         </p>
       </section>
 
       <!-- How long there? / How long to play? -->
-      <section v-if="showThere" class="step">
+      <section v-if="showThere" class="step" :class="secCls('there')">
         <div class="step-head">
-          <h2><span class="num">{{ nums.there }}</span>{{ isHome ? 'How long to play?' : 'How long there?' }}</h2>
-          <span v-if="isOutdoor" class="outing-pill">
+          <h2>
+            <span class="num" :class="numCls('there')"><template v-if="numDone('there')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7" /></svg></template><template v-else>{{ nums.there }}</template></span>{{ isHome ? 'How long to play?' : 'How long there?' }}<span v-if="fresh && active === 'there'" class="turn">Your turn</span>
+          </h2>
+          <span v-if="isOutdoor && tripShown" class="outing-pill">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5V12l3 2 M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z" /></svg>
             {{ fmt(store.travelMin * 2 + store.stayMin) }} outing
           </span>
         </div>
-        <p class="big"><b>{{ store.stayMin }}</b>min to play</p>
-        <SegBar :stops="STAY_STOPS" :value="store.stayMin" label="Minutes to play" item-class="stay-btn" @pick="(v) => store.setStay(v)" />
-        <div v-if="isOutdoor" class="trip">
+        <p v-if="firstRun && !isHome" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How long the kids get to play once you arrive.</span></p>
+        <p v-if="done.there" class="big"><b>{{ store.stayMin }}</b>min to play</p>
+        <span v-if="!done.there" class="pick-pill" :class="{ act: active === 'there' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick how long to play</span>
+        <SegBar :stops="STAY_STOPS" :value="done.there ? store.stayMin : null" label="Minutes to play" item-class="stay-btn" @pick="pickStay" />
+        <div v-if="isOutdoor && tripShown" class="trip">
           <div class="trip-bar">
             <span class="go" :style="{ flex: store.travelMin }" />
             <span class="play" :style="{ flex: store.stayMin }" />
@@ -184,7 +214,7 @@
 //   Indoor place: where from and how far, then a list of indoor places
 // Where-from is browser geolocation (asked only on tap, nothing stored), a
 // pilot suburb chip, or a Vicmap address from the autocomplete endpoint.
-import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
@@ -193,7 +223,7 @@ import { searchAddresses, getHourlyForecast } from '../api'
 import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
 import { useMissionStore } from '../missionStore'
 import { useHistoryStore } from '../historyStore'
-import { usePreferencesStore } from '../preferencesStore'
+import { usePreferencesStore, levelOf } from '../preferencesStore'
 
 const store = useSearchStore()
 const missionStore = useMissionStore()
@@ -256,6 +286,11 @@ const SegBar = defineComponent({
 
 const query = ref(store.selectedAddress?.label || store.suburb)
 const open = ref(false)
+// The walkthrough can set the starting point while Start is mounted underneath.
+watch(() => [store.suburb, store.selectedAddress, store.useMyLocation], () => {
+  const v = store.useMyLocation ? 'Your location' : store.selectedAddress?.label || store.suburb
+  if (v) query.value = v
+})
 const menuOpen = ref(store.openSettingMenu)
 const scrolled = ref(false) // the page has scrolled: the header floats as a pill
 store.openSettingMenu = false
@@ -288,6 +323,33 @@ const nums = computed(() => {
   }
 })
 
+// ---- first run (store.guided, set by Skip on the walkthrough) ----
+// The steps light up one at a time: the active one is lifted and labelled
+// "Your turn", later ones are dimmed, and each shows a dash until it has been
+// answered. Where-from counts as answered once a starting point is set.
+const bannerOff = ref(false)
+const touched = reactive({ far: false, when: false, there: false })
+const fresh = computed(() => store.guided)
+const order = computed(() => [showFrom.value && 'from', showFar.value && 'far', isOutdoor.value && 'when', showThere.value && !isHome.value && 'there'].filter(Boolean))
+const done = computed(() => ({
+  from: store.hasLocation,
+  far: !fresh.value || touched.far,
+  when: !fresh.value || touched.when,
+  there: !fresh.value || touched.there
+}))
+const remaining = computed(() => (fresh.value ? order.value.filter((k) => !done.value[k]).length : 0))
+const active = computed(() => (fresh.value ? order.value.find((k) => !done.value[k]) ?? null : null))
+const firstRun = computed(() => fresh.value && !bannerOff.value && remaining.value > 0)
+const tripShown = computed(() => !fresh.value || (touched.far && touched.there))
+const stateOf = (k) => (!fresh.value || done.value[k] ? 'done' : active.value === k ? 'act' : 'next')
+const secCls = (k) => (fresh.value ? stateOf(k) : '')
+const numCls = (k) => (fresh.value ? stateOf(k) : '')
+const numDone = (k) => fresh.value && stateOf(k) === 'done'
+const wordFor = (n) => ['Zero', 'One', 'Two', 'Three', 'Four'][n] ?? String(n)
+function pickFar(v) { touched.far = true; store.setTravel({ minutes: v }) }
+function pickStay(v) { touched.there = true; store.setStay(v) }
+function pickWhen(iso) { touched.when = true; store.whenAt = iso }
+
 const modeWord = computed(() => (store.travelMode === 'walking' ? 'walk' : 'drive'))
 const homeOptions = computed(() => missionStore.homeMissions)
 const guideMission = ref(null) // the home mission whose parent guide is open
@@ -305,18 +367,20 @@ function loadHome() {
 watch(() => [store.setting, store.stayMin, prefs.ageBand], () => { if (store.setting === 'home') loadHome() }, { immediate: true })
 
 const pickedHome = computed(() => homeOptions.value.find((m) => m.id === homePick.value) ?? null)
-const ready = computed(() => (isHome.value ? !!pickedHome.value : store.hasLocation))
+const ready = computed(() => (isHome.value ? !!pickedHome.value : store.hasLocation && remaining.value === 0))
 const ctaText = computed(() => {
   if (isHome.value) return pickedHome.value ? `Play ${pickedHome.value.title}` : 'Pick a mission'
+  if (remaining.value) return `Answer ${remaining.value} more to see ideas`
   if (!store.hasLocation) return 'Choose a starting point'
   return store.setting === 'indoor_place' ? 'Show indoor places' : 'Show 3 ideas'
 })
 
 const kidShort = computed(() => {
-  const n = prefs.likedCategories.length
-  const x = prefs.excludedCategories.length
+  const indoor = store.setting === 'indoor_place'
+  const n = indoor ? Object.values(prefs.indoorAffinities).filter((v) => levelOf(v) === 'likes').length : prefs.likedCategories.length
+  const x = indoor ? prefs.excludedIndoorKinds.length : prefs.excludedCategories.length
   const parts = [`${prefs.ageBand.replace('-', '–')} yrs`]
-  if (store.setting !== 'outdoor') return parts.join(' · ') // likes only apply to outdoor places
+  if (store.setting === 'home') return parts.join(' · ') // at home has no likes
   if (n) parts.push(`${n} like${n === 1 ? '' : 's'}`)
   if (x) parts.push(`${x} not for me`)
   if (!n && !x) parts.push('no likes yet')
@@ -523,6 +587,7 @@ function next() {
     return
   }
   if (store.suburb) store.rememberSuburb(store.suburb)
+  store.guided = false
   store.setTravel() // keep the radius in step with the travel choice
   store.setStay(store.stayMin) // and the requested minutes with the play time
   if (store.setting === 'indoor_place') store.searchIndoor()
@@ -608,6 +673,36 @@ function next() {
 }
 
 .num.light { background: var(--paper); color: var(--green); }
+
+/* first-run states: the step you are on, steps still to come, steps answered */
+.num { box-sizing: border-box; transition: all 0.2s ease; }
+.num.act { box-shadow: 0 0 0 4px rgba(47, 107, 54, 0.14); }
+.num.next { background: transparent; color: #8A938B; box-shadow: inset 0 0 0 1.5px #B5BCB3; }
+.num.light.act { background: #B4D278; color: var(--ink); box-shadow: 0 0 0 3px rgba(180, 210, 120, 0.4); }
+.num.light.next { background: transparent; color: var(--paper); box-shadow: inset 0 0 0 1.5px rgba(242, 241, 236, 0.6); }
+.num.light.done { background: #B4D278; color: var(--ink); }
+.from { transition: box-shadow 0.25s ease; }
+.from.act { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px #B4D278; }
+.step { transition: opacity 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-radius 0.25s ease, margin 0.25s ease, padding 0.25s ease, border-color 0.25s ease; }
+.step.next { opacity: 0.4; }
+.step.act { margin: 4px 0; padding: 16px 16px 18px; border-top-color: transparent; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30, 42, 31, 0.06), 0 16px 32px -18px rgba(30, 42, 31, 0.35); }
+.turn { margin-left: 9px; flex: none; height: 22px; padding: 0 9px; border-radius: 999px; background: #E3ECDF; color: var(--green); font-family: var(--font-body); font-size: 11px; font-weight: 800; letter-spacing: 0.3px; display: inline-flex; align-items: center; }
+.pick-pill { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px 0 10px; border-radius: 999px; background: #ECEBE5; color: #6B756D; font-size: 13.5px; font-weight: 700; }
+.pick-pill.act { background: #E3ECDF; color: var(--green); }
+.big b.dim { color: #B5BCB3; }
+.hint { display: flex; align-items: flex-start; gap: 7px; margin: -6px 0 0; font-size: 13px; font-weight: 500; line-height: 1.4; color: #56625A; }
+.hint svg { flex: none; margin-top: 2px; }
+.hint.light { color: #CFE0CC; }
+
+.first-note { position: relative; flex: none; display: flex; align-items: center; gap: 12px; padding: 14px 44px 14px 14px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 0 0 1px rgba(30, 42, 31, 0.06); }
+.first-pin { position: relative; flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E3ECDF; }
+.fp-body { position: absolute; top: 10px; left: 10px; width: 20px; height: 20px; border-radius: 50% 50% 3px 50%; transform: rotate(45deg); background: var(--green); }
+.fp-face { position: absolute; top: 14px; left: 14px; width: 12px; height: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5px; }
+.fp-eye { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.fp-smile { width: 8px; height: 4px; border-bottom: 1.5px solid var(--paper); border-radius: 0 0 8px 8px; }
+.first-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; font-size: 13px; font-weight: 500; line-height: 1.35; color: #56625A; }
+.first-text b { font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.15; color: var(--ink); }
+.first-x { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; padding: 0; border: none; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
 /* ---- where from (green card) ---- */
 .from {

@@ -60,7 +60,17 @@ export const SUBURB_COORDS = {
   'Taylors Hill': { latitude: -37.7152, longitude: 144.7501 }
 }
 
-export const SUBURBS = Object.keys(SUBURB_COORDS).sort()
+// You tab switch for the guided first-run Start; on unless explicitly '0'.
+export const GUIDED_START_KEY = 'at-guided-start'
+export function guidedStartEnabled() {
+  try {
+    return localStorage.getItem(GUIDED_START_KEY) !== '0'
+  } catch {
+    return true
+  }
+}
+
+export const SUBURBS =Object.keys(SUBURB_COORDS).sort()
 
 // The backend's DURATION_BUCKETS. Ties (30, 50) resolve to the lower bucket,
 // matching app/recommendation/duration.py. Results carry the bucket the
@@ -85,6 +95,14 @@ export const CATEGORY_META = {
   court: { label: 'Court', shape: 'ground' },
   skate_bmx: { label: 'Skate and BMX', shape: 'ground' },
   trail_access: { label: 'Trail', shape: 'trail' }
+}
+
+// The kinds of indoor place a parent can like or not (the server works them out from the venue's name).
+export const INDOOR_KIND_META = {
+  swimming: { label: 'Swimming' },
+  recreation_centre: { label: 'Recreation centre' },
+  indoor_sports: { label: 'Indoor sports' },
+  clubs: { label: 'Clubs' }
 }
 
 export function categoryLabel(category) {
@@ -233,7 +251,7 @@ export function radiusFor(travelMin, mode) {
 // the list and its page. The server sends no coordinates, so the map and the
 // directions link cope without them. Always unverified (D25).
 export function mapIndoorPlace(p) {
-  const label = categoryLabel(p.category ?? 'indoor')
+  const label = INDOOR_KIND_META[p.category]?.label ?? categoryLabel(p.category ?? 'indoor')
   const { name } = displayName(p.display_name, label)
   const distanceM = Number(p.distance_m ?? 0)
   return {
@@ -279,6 +297,7 @@ export const useSearchStore = defineStore('search', {
     suggestIndoors: false, // wet forecast: offer Indoors (story 9.1)
     indoorsDismissed: false,
     openSettingMenu: false, // set by the Try Indoors prompt; Start opens its Outdoors / Indoors menu once
+    guided: false, // first run after Skip: Start walks through its steps one at a time (not saved)
     error: '',
     results: [],
     _requestSeq: 0
@@ -344,7 +363,12 @@ export const useSearchStore = defineStore('search', {
       this.indoorError = ''
       this.indoorResults = []
       try {
-        const data = await postIndoorPlaces({ latitude: c.latitude, longitude: c.longitude, radiusKm: this.radiusKm })
+        const data = await postIndoorPlaces({
+          latitude: c.latitude,
+          longitude: c.longitude,
+          radiusKm: this.radiusKm,
+          excludedCategories: usePreferencesStore().excludedIndoorKinds
+        })
         if (seq !== this._indoorSeq) return
         this.indoorResults = (data.places ?? []).map(mapIndoorPlace)
         this.indoorStatus = this.indoorResults.length ? 'ok' : 'zero_results'
@@ -353,6 +377,13 @@ export const useSearchStore = defineStore('search', {
         this.indoorStatus = 'error'
         this.indoorError = e?.message ?? 'Something went wrong.'
       }
+    },
+    // First-run Start: no starting point yet, steps answered one at a time.
+    startGuided() {
+      this.suburb = ''
+      this.selectedAddress = null
+      this.useMyLocation = false
+      this.guided = true
     },
     rememberSuburb(name) {
       if (!name) return
