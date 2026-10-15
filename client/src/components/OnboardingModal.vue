@@ -58,20 +58,11 @@
           </div>
         </div>
 
-        <!-- 2 · How far -->
+        <!-- 2 · How long -->
         <div v-else-if="step === 1" class="card white">
-          <div class="seg-toggle">
-            <button v-for="m in MODES" :key="m.id" type="button" :class="{ on: travel === m.id }" @click="travel = m.id">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="m.icon" /></svg>{{ m.label }}
-            </button>
-          </div>
-          <div class="big"><b>{{ farMins }}</b><span>min {{ modeWord }}, each way</span></div>
-          <div class="segs" :style="{ gridTemplateColumns: `repeat(${TRAVEL_STOPS.length}, minmax(0, 1fr))` }">
-            <button v-for="(n, i) in TRAVEL_STOPS" :key="n" type="button" class="seg" :class="{ on: i === far, done: i < far }" @click="far = i"><span class="seg-bar" /><span class="seg-n">{{ n }}</span></button>
-          </div>
-          <div class="note green-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.4 7-12a7 7 0 1 0-14 0c0 5.6 7 12 7 12Z" /><circle cx="12" cy="9" r="2.5" /></svg>
-            {{ reachText }}
+          <div class="big"><b>{{ stayMins }}</b><span>min to play</span></div>
+          <div class="segs" :style="{ gridTemplateColumns: `repeat(${STAY_STOPS.length}, minmax(0, 1fr))` }">
+            <button v-for="(n, i) in STAY_STOPS" :key="n" type="button" class="seg" :class="{ on: i === stay, done: i < stay }" @click="stay = i"><span class="seg-bar" /><span class="seg-n">{{ n }}</span></button>
           </div>
         </div>
 
@@ -94,15 +85,24 @@
           </div>
         </div>
 
-        <!-- 4 · How long -->
+        <!-- 4 · How far -->
         <div v-else-if="step === 3" class="card white">
-          <div class="big"><b>{{ stayMins }}</b><span>min to play</span></div>
-          <div class="segs" :style="{ gridTemplateColumns: `repeat(${STAY_STOPS.length}, minmax(0, 1fr))` }">
-            <button v-for="(n, i) in STAY_STOPS" :key="n" type="button" class="seg" :class="{ on: i === stay, done: i < stay }" @click="stay = i"><span class="seg-bar" /><span class="seg-n">{{ n }}</span></button>
+          <div class="seg-toggle">
+            <button v-for="m in MODES" :key="m.id" type="button" :class="{ on: travel === m.id }" @click="travel = m.id">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="m.icon" /></svg>{{ m.label }}
+            </button>
+          </div>
+          <div class="big"><b>{{ farMins }}</b><span>min {{ modeWord }}, each way</span></div>
+          <div class="segs" :style="{ gridTemplateColumns: `repeat(${TRAVEL_STOPS.length}, minmax(0, 1fr))` }">
+            <button v-for="(n, i) in TRAVEL_STOPS" :key="n" type="button" class="seg" :class="{ on: i === far, done: i < far }" @click="far = i"><span class="seg-bar" /><span class="seg-n">{{ n }}</span></button>
           </div>
           <div class="trip">
             <div class="trip-bar"><span class="go" :style="{ flex: farMins }" /><span class="play" :style="{ flex: stayMins }" /><span class="go" :style="{ flex: farMins }" /></div>
             <div class="trip-labels"><span>{{ travel === 'walking' ? 'Walk' : 'Drive' }} ~{{ farMins }}m</span><span class="mid">Play {{ stayMins }}m</span><span class="end">Back ~{{ farMins }}m</span></div>
+          </div>
+          <div class="note green-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.4 7-12a7 7 0 1 0-14 0c0 5.6 7 12 7 12Z" /><circle cx="12" cy="9" r="2.5" /></svg>
+            {{ reachText }}
           </div>
           <div class="note green-note">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2F6B36" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></svg>
@@ -128,21 +128,21 @@
             <svg class="p-tree-a" width="24" height="29" viewBox="0 0 24 29"><path d="M12 1 18 11H14.5L20 20H4l5.5-9H6Z" fill="#2F6B36" stroke="#2F6B36" stroke-width="1.5" stroke-linejoin="round" /><rect x="10" y="20" width="4" height="8" rx="1.5" fill="#2F6B36" /></svg>
             <svg class="p-tree-b" width="19" height="23" viewBox="0 0 19 23"><path d="M9.5 1 13.5 8H11L15 15H4l4-7H5.5Z" fill="#2F6B36" stroke="#2F6B36" stroke-width="1.5" stroke-linejoin="round" /><rect x="7.7" y="15" width="3.6" height="6" rx="1.3" fill="#2F6B36" /></svg>
           </template>
-          <template v-else-if="step === 1">
+          <template v-else-if="step === 3">
             <svg class="p-flag-a" width="26" height="30" viewBox="0 0 26 30" fill="none" stroke="#E8913A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 29V2" /><path d="M4 3 20 8 4 13Z" fill="#E8913A" /></svg>
             <svg class="p-flag-b" width="20" height="24" viewBox="0 0 20 24" fill="none" stroke="#2F6B36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 23V2" /><path d="M4 3 16 7 4 11Z" fill="#2F6B36" /></svg>
           </template>
           <template v-else-if="step === 2">
             <svg class="p-cal" width="20" height="18" viewBox="0 0 20 18"><rect x="1" y="3" width="18" height="14" rx="4" fill="#E8913A" stroke="#E8913A" stroke-width="1.5" /><path d="M1 8h18" stroke="#FFFFFF" stroke-width="1.5" /><path d="M6 1v4 M14 1v4" stroke="#1E2A1F" stroke-width="2" stroke-linecap="round" /></svg>
           </template>
-          <template v-else-if="step === 3">
+          <template v-else-if="step === 1">
             <svg class="p-heart" width="24" height="22" viewBox="0 0 24 22"><path d="M12 20.5S2 14.6 2 7.5C2 3.6 5 1 8.3 1.6c1.7.3 3 1.5 3.7 3 .7-1.5 2-2.7 3.7-3C19 1 22 3.6 22 7.5c0 7.1-10 13-10 13Z" fill="#E8913A" stroke="#E8913A" stroke-width="1.5" stroke-linejoin="round" /></svg>
             <svg class="p-spark" width="18" height="18" viewBox="0 0 18 18" fill="#2F6B36"><path d="M9 0 L11 7 L18 9 L11 11 L9 18 L7 11 L0 9 L7 7 Z" /></svg>
           </template>
           <i class="twinkle t1"></i><i class="twinkle t2"></i><i class="twinkle t3"></i>
           <div class="shadow"></div>
           <div class="mascot">
-            <template v-if="step === 1">
+            <template v-if="step === 3">
               <i class="car"></i><i class="wheel w1"></i><i class="wheel w2"></i>
             </template>
             <i class="mascot-body"></i>
@@ -176,7 +176,7 @@
 
 <script setup>
 // Setup walkthrough, full screen over Start, shown after the cover on every
-// sign-in. Four questions (where, how far, when, how long) and an "All set"
+// sign-in. Four questions (where, how long, when, how far) and an "All set"
 // recap, with the mascot reacting to each. Nothing is saved until the last
 // button: "Let's go" writes the answers into the search store so Start opens
 // already filled in; Skip leaves the store alone and Start opens in its
@@ -205,9 +205,9 @@ const TOMORROW_HOURS = [9, 11, 13, 15, 17]
 
 const COPY = [
   { eb: 'Step 1 of 4', title: 'Where are you starting?', body: 'Pick a suburb or use your location.' },
-  { eb: 'Step 2 of 4', title: 'How far will you go?', body: 'Each way. Walking or driving, your call.' },
+  { eb: 'Step 2 of 4', title: 'How long to play?', body: 'Time at the place, not counting travel.' },
   { eb: 'Step 3 of 4', title: 'When are you heading out?', body: 'We check the weather for that time.' },
-  { eb: 'Step 4 of 4', title: 'How long to play?', body: 'Time at the place, not counting travel.' },
+  { eb: 'Step 4 of 4', title: 'How far will you go?', body: 'Each way. Walking or driving, your call.' },
   { eb: 'All set', title: "You're all set.", body: "We've filled in your Start screen with these. Tap any to change it." }
 ]
 
@@ -336,9 +336,9 @@ function pickCell(i) {
 // ---- recap + finish ----
 const recap = computed(() => [
   { k: 'Starting from', v: placeLabel.value },
-  { k: 'How far', v: `${farMins.value} min ${modeWord.value}, each way` },
+  { k: 'How long', v: `${stayMins.value} min to play` },
   { k: 'When', v: `${whenBig.value} ${day.value ? 'tomorrow' : 'today'}${cur.value?.f?.temp != null ? ` · ${Math.round(cur.value.f.temp)}°` : ''}` },
-  { k: 'How long', v: `${stayMins.value} min to play` }
+  { k: 'How far', v: `${farMins.value} min ${modeWord.value}, each way` }
 ])
 
 function next() {
@@ -538,6 +538,33 @@ function skip() {
 .cta:active { transform: scale(0.985); }
 .cta-text { font-size: 16.5px; font-weight: 700; }
 .cta-arrow { width: 40px; height: 40px; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; }
+
+/* Short screens: tighten spacing so every step fits without scrolling. */
+@media (max-height: 920px) {
+  .onb-page { padding-top: 40px; padding-bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 12px)); }
+  .main { padding-top: clamp(16px, 5vh, 44px); }
+  .eyebrow-row { margin-bottom: 8px; }
+  .card { padding: 14px; gap: 10px; }
+  .seg { padding: 3px 0; }
+  .seg-toggle button { height: 34px; }
+  .big b { font-size: 38px; }
+  .note { padding: 6px 10px; }
+  .text { padding-top: 12px; }
+  .mascot-box { zoom: 0.7; margin-bottom: 4px; }
+  .title { font-size: 27px; margin-bottom: 6px; }
+  .body { font-size: 14.5px; line-height: 1.35; }
+  .foot { padding-top: 12px; gap: 10px; }
+  .cta { height: 52px; }
+}
+@media (max-height: 760px) {
+  .onb-page { padding-top: 28px; }
+  .main { padding-top: clamp(14px, 4vh, 30px); }
+  .mascot-box { display: none; }
+  .text { padding-top: 14px; }
+  .cell { padding: 7px 0 8px; gap: 4px; }
+  .green-note + .green-note { display: none; }
+  .recap-row { padding: 9px 0; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .mascot, .twinkle { animation: none; }
