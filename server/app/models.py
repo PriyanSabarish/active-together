@@ -158,6 +158,7 @@ class Combo:
     environmental_summary: EnvironmentalSummary
     explanation: str
     travel: TravelBlock
+    travel_min: int = 0  # one way, minutes
 
 
 @dataclass(frozen=True)
@@ -166,6 +167,7 @@ class Recommendation:
     combos: tuple[Combo, ...] = ()
     message: str | None = None
     suggestions: tuple[Suggestion, ...] = ()
+    ranking_mode: str = "nearest"  # the mode actually used: "spread" | "nearest"
 
 
 # Client Requests

@@ -228,6 +228,7 @@ export function mapCombo(combo, ctx) {
     durationBucket: combo.duration_bucket,
     enteredDurationMin: combo.entered_duration_min,
     travel: mapTravel(combo.travel),
+    travelMin: combo.travel_min ?? combo.travel?.out_min ?? null, // one way, minutes
     expect: `${combo.combo_template}: ${combo.activity_type}. Category-level suggestion based on open data. Not verified on site.`
   }
 }
@@ -240,6 +241,12 @@ export const SETTINGS = ['outdoor', 'home', 'indoor_place']
 export const TRAVEL_MODES = ['walking', 'driving']
 export const TRAVEL_STOPS = [5, 10, 15, 20, 25, 30]
 export const STAY_STOPS = [20, 30, 40, 50, 60]
+// How the top three are chosen: spread across the travel range and kinds of
+// place, or just the closest three. Session only, not saved.
+export const RANKING_MODES = [
+  { id: 'spread', label: 'Mix it up' },
+  { id: 'nearest', label: 'Nearest first' }
+]
 const SPEED_KMH = { walking: 5, driving: 30 }
 
 export function radiusFor(travelMin, mode) {
@@ -273,6 +280,7 @@ export const useSearchStore = defineStore('search', {
     travelMode: 'walking',
     travelMin: 10, // each way
     stayMin: 40, // time to play there (or at home)
+    rankingMode: 'spread', // 'spread' (Mix it up) | 'nearest' (Nearest first)
     whenAt: null, // chosen forecast hour (ISO string); null = now
     indoorResults: [],
     indoorStatus: 'idle', // 'idle' | 'loading' | 'ok' | 'zero_results' | 'error'
@@ -346,6 +354,12 @@ export const useSearchStore = defineStore('search', {
       this.travelMin = minutes
       this.travelMode = mode
       this.radiusKm = radiusFor(minutes, mode)
+    },
+    // Switching how the top three are chosen re-runs the search if results are showing.
+    setRankingMode(mode) {
+      if (this.rankingMode === mode) return
+      this.rankingMode = mode
+      if (this.status !== 'idle' || this.results.length) this.fetchRecommendations()
     },
     setStay(minutes) {
       this.stayMin = minutes
@@ -451,6 +465,8 @@ export const useSearchStore = defineStore('search', {
           radiusKm: this.radiusKm,
           durationMin: this.outingMin,
           travelMode: this.travelMode,
+          travelLimitMin: this.travelMin,
+          rankingMode: this.rankingMode,
           excludedCategories: preferencesStore.excludedCategories
         })
         if (seq !== this._requestSeq) return // a newer search superseded this one
