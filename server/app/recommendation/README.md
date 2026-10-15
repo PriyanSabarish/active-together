@@ -14,7 +14,7 @@ fixtures before any infrastructure exists.
 | Duration | Bucketing 20–120 minutes into 20/40/60, with the tie-break rule |
 | Environment | Threshold configuration, tier assignment, warnings and reminders |
 | Eligibility | Which candidates can be recommended at all |
-| Ordering | Deterministic sort — tier, then distance, then name |
+| Ordering | Deterministic. Default "spread" picks three across the travel limit and activity kinds; "nearest" is tier, then distance, then name. Either way the chosen places are shown nearest first |
 | Output | Combo payloads, explanations, zero-result responses |
 
 ## What Backend B provides
@@ -27,6 +27,34 @@ Consumed by Backend A's endpoint layer (task A12). Takes a list of `Place`, a
 `Context`, and the parent's entered duration. Returns a `Recommendation`
 containing at most three `Combo` objects, or a zero-result status with a
 message.
+
+## Ranking: spread vs nearest (B14)
+
+Request fields `travel_limit_min` (5–30, step 5) and `ranking_mode`
+(`spread` | `nearest`; missing or unknown uses `TRAVEL_SPREAD_DEFAULT_MODE`).
+The response echoes the mode actually used. Spread without a travel limit falls
+back to nearest.
+
+**Why:** the old rule (nearest three) made the travel slider look like it did
+nothing, because a larger limit only added places that never ranked in the top
+three. Nearest-only also often returned three of the same kind of place.
+
+Spread rules (`ordering.select_spread`), in priority order:
+tier → distance band → unseen activity category → `sort_key` (distance, name).
+
+- Bands are equal slices of the limit: 30 min → (0,10], (10,20], (20,30]. A
+  place exactly on an edge goes in the lower band. Count: `TRAVEL_SPREAD_BAND_COUNT` (3).
+- If `limit / band_count < TRAVEL_SPREAD_MIN_BAND_WIDTH_MIN` (5), bands are
+  skipped and only category variety applies: the nearest place of each unseen
+  category, so 5 and 10 min give near places of mixed kinds; 15+ spread by distance.
+- Distance beats category: a band is never skipped to get a new kind, and
+  category variety never removes a place, it only changes which one is picked.
+- An empty band is backfilled with the next best leftover (unseen kind first,
+  then nearest). Fewer than three candidates returns what exists, no padding.
+- In spread mode places whose one-way travel is past the limit are left out
+  (a short stay can leave room for them to pass eligibility), unless nothing is within it.
+- Travel minutes come from `travel_times`, the same values the eligibility
+  filter uses, so filtering and banding agree.
 
 ## Thresholds
 

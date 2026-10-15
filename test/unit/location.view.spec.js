@@ -15,6 +15,7 @@ vi.mock('../../client/src/api', () => ({
 
 import LocationView from '../../client/src/views/LocationView.vue'
 import { useSearchStore } from '../../client/src/store'
+import { usePreferencesStore } from '../../client/src/preferencesStore'
 import { searchAddresses, postHomeMissions } from '../../client/src/api'
 
 let pinia
@@ -120,6 +121,22 @@ describe('AC-1.1.2 — Radius options (chosen as travel minutes)', () => {
   })
 })
 
+describe('Travel spread toggle', () => {
+  it('the label reads "Up to ..." and the toggle switches ranking mode', async () => {
+    const wrapper = mountView()
+    const store = useSearchStore()
+    await wrapper.findAll('.travel-btn')[5].trigger('click')
+    expect(wrapper.find('.big').text()).toMatch(/^Up to 30\s*min walk, each way/)
+    const buttons = wrapper.findAll('.rank-btn')
+    expect(buttons.map((b) => b.text())).toEqual(['Mix it up', 'Nearest first'])
+    expect(store.rankingMode).toBe('spread')
+    await buttons[1].trigger('click')
+    expect(store.rankingMode).toBe('nearest')
+    await buttons[0].trigger('click')
+    expect(store.rankingMode).toBe('spread')
+  })
+})
+
 describe('Your kid sheet', () => {
   async function openKid(setting) {
     const wrapper = mountView()
@@ -138,13 +155,31 @@ describe('Your kid sheet', () => {
     expect(sheet.text()).toContain('Playground')
   })
 
-  it.each(['indoor_place', 'home'])('shows only the age band for %s, with no likes', async (setting) => {
-    const wrapper = await openKid(setting)
+  it('shows the kinds of indoor place to like for Indoor place, not the outdoor categories', async () => {
+    const wrapper = await openKid('indoor_place')
     const sheet = wrapper.find('[aria-label="Your kid"]')
-    expect(sheet.exists()).toBe(true)
+    expect(sheet.text()).toContain('Age')
+    expect(sheet.text()).toContain('Likes')
+    for (const kind of ['Swimming', 'Recreation centre', 'Indoor sports', 'Clubs']) expect(sheet.text()).toContain(kind)
+    expect(sheet.text()).not.toContain('Playground')
+    expect(sheet.findAll('.like')).toHaveLength(4)
+  })
+
+  it('saves indoor choices apart from the outdoor ones', async () => {
+    const wrapper = await openKid('indoor_place')
+    const prefs = usePreferencesStore()
+    const row = wrapper.findAll('.like').find((r) => r.text().includes('Clubs'))
+    await row.find('.tri-btn.nope').trigger('click')
+    await wrapper.find('.save').trigger('click')
+    expect(prefs.excludedIndoorKinds).toEqual(['clubs'])
+    expect(prefs.excludedCategories).toEqual([])
+  })
+
+  it('shows only the age band for At home, with no likes', async () => {
+    const wrapper = await openKid('home')
+    const sheet = wrapper.find('[aria-label="Your kid"]')
     expect(sheet.text()).toContain('Age')
     expect(sheet.text()).not.toContain('Likes')
-    expect(sheet.text()).not.toContain('Playground')
     expect(sheet.find('.clear').exists()).toBe(false)
   })
 })

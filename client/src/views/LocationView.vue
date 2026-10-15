@@ -93,9 +93,16 @@
           </div>
         </div>
         <p v-if="firstRun" class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8913A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 11v5 M12 7.6v.1" /></svg><span>How far you are happy to travel, walking or driving.</span></p>
-        <p v-if="done.far" class="big"><b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
+        <p v-if="done.far" class="big">Up to <b>{{ store.travelMin }}</b>min {{ modeWord }}, each way</p>
         <span v-if="!done.far" class="pick-pill" :class="{ act: active === 'far' }"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14 M6 13l6 6 6-6" /></svg>Pick a {{ modeWord }} time</span>
         <SegBar :stops="TRAVEL_STOPS" :value="done.far ? store.travelMin : null" label="Travel minutes each way" item-class="travel-btn" @pick="pickFar" />
+        <!-- Mix it up spreads the top three across the travel range and kinds of place; Nearest first is the plain closest three. -->
+        <div v-if="done.far && isOutdoor" class="rank">
+          <div class="rank-opts" role="group" aria-label="How to choose places">
+            <button v-for="r in RANKING_MODES" :key="r.id" class="rank-btn" :class="{ on: store.rankingMode === r.id }" @click="store.setRankingMode(r.id)">{{ r.label }}</button>
+          </div>
+          <p class="rank-help">Mix it up shows different kinds of places across your travel time.</p>
+        </div>
       </section>
 
       <!-- When? hourly forecast strip (outdoors only) -->
@@ -220,7 +227,7 @@ import AppHeader from '../components/AppHeader.vue'
 import KidSheet from '../components/KidSheet.vue'
 import ParentGuideSheet from '../components/ParentGuideSheet.vue'
 import { searchAddresses, getHourlyForecast } from '../api'
-import { useSearchStore, TRAVEL_STOPS, STAY_STOPS } from '../store'
+import { useSearchStore, TRAVEL_STOPS, STAY_STOPS, RANKING_MODES } from '../store'
 import { useMissionStore } from '../missionStore'
 import { useHistoryStore } from '../historyStore'
 import { usePreferencesStore, levelOf } from '../preferencesStore'
@@ -825,6 +832,11 @@ function next() {
 .modes { display: flex; gap: 14px; }
 .mode { display: flex; align-items: center; gap: 5px; padding: 3px 0; border: none; border-bottom: 2px solid transparent; background: none; font-family: inherit; font-size: 13px; font-weight: 600; color: rgba(30, 42, 31, 0.45); cursor: pointer; }
 .mode.on { color: var(--ink); border-bottom-color: var(--accent); }
+.rank { margin-top: 12px; }
+.rank-opts { display: inline-flex; border: 1px solid #D5E0D1; border-radius: 999px; padding: 2px; background: #fff; }
+.rank-btn { border: none; background: none; font-family: inherit; font-size: 13px; font-weight: 600; padding: 5px 14px; border-radius: 999px; color: rgba(30, 42, 31, 0.55); cursor: pointer; }
+.rank-btn.on { background: var(--green); color: #fff; }
+.rank-help { margin: 6px 0 0; font-size: 12px; color: #56625A; }
 
 .big { display: flex; align-items: baseline; gap: 8px; font-size: 14px; font-weight: 600; color: #56625A; white-space: nowrap; }
 .big b { font-family: var(--font-display); font-weight: 500; font-size: 40px; line-height: 1; letter-spacing: -1.4px; color: var(--ink); }

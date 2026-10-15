@@ -122,6 +122,13 @@ describe('AC-1.2.2 / AC-3.2.1 — Card facts', () => {
     }
   })
 
+  it('every card shows its travel time one way', async () => {
+    const { wrapper } = await mountResults(okResponse(threeCombos()))
+    for (const card of wrapper.findAll('.result-card')) {
+      expect(card.find('.place-meta').text()).toMatch(/\d+ min walk/)
+    }
+  })
+
 })
 
 describe('AC-3.1.2 — Order comes from the backend and is preserved', () => {

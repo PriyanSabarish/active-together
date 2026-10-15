@@ -130,7 +130,7 @@
           <CategoryIcon :category="place.category" />
           <div class="card-title">
             <p class="place-name" :class="{ unnamed: place.unnamed }">{{ place.name }}</p>
-            <p class="place-meta">{{ place.categoryLabel }} · {{ place.distanceKm }} km</p>
+            <p class="place-meta">{{ place.categoryLabel }} · {{ place.distanceKm }} km<template v-if="place.travelMin"> · {{ place.travelMin }} min {{ place.travel?.mode === 'driving' ? 'drive' : 'walk' }}</template></p>
           </div>
           <ConditionBadge :badge="place.badge" />
         </div>
