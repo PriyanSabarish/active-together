@@ -58,6 +58,16 @@
       <Chevron />
     </button>
 
+    <div class="card row-link">
+      <span class="row-text">
+        <span class="row-label">Guided Start</span>
+        <span class="block-sub">Walk through Start one step at a time on each visit.</span>
+      </span>
+      <button class="switch" :class="{ on: guidedOn }" role="switch" :aria-checked="guidedOn" aria-label="Guided Start" @click="toggleGuided">
+        <span class="knob" />
+      </button>
+    </div>
+
     <button class="btn btn-outline replay" @click="replayIntro">Replay the intro</button>
   </div>
 </template>
@@ -67,10 +77,10 @@
 // latest photos, what the kid likes, About, and replaying the intro. Each card
 // opens its own page. Everything here is device-local.
 
-import { computed, h } from 'vue'
+import { computed, h, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import { CATEGORY_META } from '../store'
+import { CATEGORY_META, GUIDED_START_KEY, guidedStartEnabled, useSearchStore } from '../store'
 import { usePreferencesStore, AGE_BANDS, levelOf } from '../preferencesStore'
 import { useHistoryStore, weekStreak } from '../historyStore'
 import { usePhotosFor, tileStyle } from '../journal'
@@ -102,12 +112,30 @@ const likes = computed(() => Object.entries(prefs.affinities)
   .sort(([, a], [, b]) => b - a)
   .map(([key, v]) => ({ key, up: levelOf(v) === 'likes', label: CATEGORY_META[key]?.label ?? key })))
 
-// The walkthrough is gated on a localStorage flag in App.vue; clearing it and
-// reloading is the simplest way to see it again.
+// The cover and setup flow play only when this flag is set; App.vue reads and
+// clears it on the next load. Otherwise Start opens in first-run mode.
+// Guided Start (the first-run steps on Start) is on unless switched off here.
+const search = useSearchStore()
+const guidedOn = ref(guidedStartEnabled())
+function toggleGuided() {
+  guidedOn.value = !guidedOn.value
+  if (guidedOn.value) {
+    // Switching on takes effect now: open Start in its first-run mode.
+    search.startGuided()
+    router.push('/')
+  } else {
+    search.guided = false
+  }
+  try {
+    localStorage.setItem(GUIDED_START_KEY, guidedOn.value ? '1' : '0')
+  } catch {
+    /* storage unavailable; applies until reload */
+  }
+}
+
 function replayIntro() {
   try {
-    localStorage.removeItem('at-onboarded-v1')
-    sessionStorage.removeItem('at-admin-authed') // the intro is shown right after the gate
+    localStorage.setItem('at-replay-intro', '1')
   } catch {
     /* storage unavailable */
   }
@@ -147,6 +175,12 @@ function replayIntro() {
 .row-link { flex-direction: row; align-items: center; gap: 12px; padding: 14px 18px; color: var(--ink); }
 .row-link > svg:first-child { color: rgba(30, 42, 31, 0.5); }
 .row-label { flex: 1; font-size: 15.5px; font-weight: 600; }
+
+.row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.switch { flex: none; position: relative; width: 48px; height: 28px; padding: 0; border: none; border-radius: 999px; background: #CDD3CA; cursor: pointer; transition: background 0.2s ease; }
+.switch.on { background: var(--green); }
+.knob { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(30, 42, 31, 0.3); transition: transform 0.2s ease; }
+.switch.on .knob { transform: translateX(20px); }
 
 .replay { width: 100%; height: 52px; border-radius: 999px; margin-top: 4px; box-shadow: inset 0 0 0 1.5px rgba(30, 42, 31, 0.2); }
 </style>

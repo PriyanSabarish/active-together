@@ -37,12 +37,14 @@ import LandingCover from './components/LandingCover.vue'
 import OnboardingModal from './components/OnboardingModal.vue'
 import TabShell from './components/TabShell.vue'
 import { usePhotoStore } from './photoStore'
+import { useSearchStore, guidedStartEnabled } from './store'
 import { useMissionStore } from './missionStore'
 
 // Local-only admin gate for the pilot demo. Kept for the browser session so a
 // refresh does not ask again; closing the tab signs out.
 const router = useRouter()
 const photoStore = usePhotoStore()
+const search = useSearchStore()
 
 const AUTH_KEY = 'at-admin-authed'
 const authed = ref(readAuthed())
@@ -57,8 +59,7 @@ function readAuthed() {
 
 function signIn() {
   authed.value = true
-  showOnboarding.value = true
-  showCover.value = true
+  beginSession()
   // Always land on Start after the gate; the walkthrough sits on top of it.
   router.replace('/')
   try {
@@ -68,11 +69,35 @@ function signIn() {
   }
 }
 
-// Welcome cover + walkthrough. Shown after every sign-in; a reload mid-session
+// Welcome cover + walkthrough. Shown after sign-in only when replay was asked for; a reload mid-session
 // goes straight to the app. The flag below only records that it has been seen.
 const ONBOARDED_KEY = 'at-onboarded-v1'
+const REPLAY_KEY = 'at-replay-intro'
+function takeReplayFlag() {
+  try {
+    const on = localStorage.getItem(REPLAY_KEY) === '1'
+    localStorage.removeItem(REPLAY_KEY)
+    return on
+  } catch {
+    return false
+  }
+}
 const showOnboarding = ref(false)
-const showCover = ref(false) // welcome cover, shown after each sign-in
+const showCover = ref(false) // welcome cover, shown only for a replay
+
+// The cover and setup flow only play when 'Replay the intro' (You tab) asked
+// for them; otherwise Start opens in its guided first-run mode. Runs on every
+// app load (and after the pilot gate), so it works with or without the gate.
+function beginSession() {
+  const replay = takeReplayFlag()
+  showOnboarding.value = replay
+  showCover.value = replay
+  if (!replay && guidedStartEnabled()) {
+    // First-run Start: no starting point yet, steps answered one at a time.
+    search.startGuided()
+  }
+}
+if (authed.value) beginSession()
 
 
 function finishOnboarding(reason) {

@@ -89,15 +89,13 @@ export function sanitisePrefs(saved, categories) {
   if (!saved || typeof saved !== 'object') return {}
   const out = {}
   if (AGE_BAND_IDS.includes(saved.ageBand)) out.ageBand = saved.ageBand
-  for (const key of ['affinities', 'indoorAffinities']) {
-    if (saved[key] && typeof saved[key] === 'object') {
-      const aff = {}
-      for (const c of categories) {
-        const v = saved[key][c]
-        if (Number.isFinite(v) && v >= 0 && v <= 100) aff[c] = Math.round(v)
-      }
-      if (Object.keys(aff).length) out[key] = aff
+  if (saved.affinities && typeof saved.affinities === 'object') {
+    const aff = {}
+    for (const c of categories) {
+      const v = saved.affinities[c]
+      if (Number.isFinite(v) && v >= 0 && v <= 100) aff[c] = Math.round(v)
     }
+    if (Object.keys(aff).length) out.affinities = aff
   }
   return out
 }
@@ -125,7 +123,6 @@ export function persistPreferences({ store }) {
     if (raw) {
       const clean = sanitisePrefs(JSON.parse(raw), Object.keys(store.affinities))
       if (clean.affinities) clean.affinities = { ...store.affinities, ...clean.affinities }
-      if (clean.indoorAffinities) clean.indoorAffinities = { ...store.indoorAffinities, ...clean.indoorAffinities }
       store.$patch(clean)
     }
   } catch {
@@ -135,7 +132,7 @@ export function persistPreferences({ store }) {
   store.$subscribe(
     (_mutation, state) => {
       try {
-        storage.setItem(PREFS_KEY, JSON.stringify({ ageBand: state.ageBand, affinities: state.affinities, indoorAffinities: state.indoorAffinities }))
+        storage.setItem(PREFS_KEY, JSON.stringify({ ageBand: state.ageBand, affinities: state.affinities }))
       } catch {
         /* quota or storage unavailable */
       }

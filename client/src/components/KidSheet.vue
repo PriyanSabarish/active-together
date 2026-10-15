@@ -25,7 +25,8 @@
         </div>
       </div>
 
-      <div class="group">
+      <!-- Likes are about outdoor places: at home and Indoor place do not use them. -->
+      <div v-if="showLikes" class="group">
         <div class="group-head"><span>Likes</span><span class="muted">{{ summary }}</span></div>
         <div class="like-list">
           <div v-for="(meta, key) in CATEGORY_META" :key="key" class="like" :class="draft[key]">
@@ -53,7 +54,7 @@
       </div>
 
       <div class="actions">
-        <button class="clear" @click="clearAll">Clear</button>
+        <button v-if="showLikes" class="clear" @click="clearAll">Clear</button>
         <button class="save" @click="save">Save</button>
       </div>
     </div>
@@ -68,16 +69,17 @@
 
 import { computed, reactive, ref } from 'vue'
 import { usePreferencesStore, AGE_BANDS, PREF_LEVELS, levelOf } from '../preferencesStore'
-import { CATEGORY_META } from '../store'
+import { CATEGORY_META, useSearchStore } from '../store'
 import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
 
 const emit = defineEmits(['close'])
 const prefs = usePreferencesStore()
+const showLikes = useSearchStore().setting === 'outdoor'
 
 const KID_ICON = 'M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4 M12 7v7 M8 10h8 M12 14l-3 6 M12 14l3 6'
 const ICON = { likes: THUMB_UP, neutral: 'M6 12h12', nope: THUMB_DOWN }
 const band = ref(prefs.ageBand)
-const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.shownAffinities[k])])))
+const draft = reactive(Object.fromEntries(Object.keys(CATEGORY_META).map((k) => [k, levelOf(prefs.affinities[k])])))
 
 const label = (id) => id.replace('-', '–')
 const summary = computed(() => {
@@ -93,7 +95,7 @@ function clearAll() {
 
 function save() {
   prefs.setAgeBand(band.value)
-  for (const [k, level] of Object.entries(draft)) prefs.setLevel(k, level)
+  if (showLikes) for (const [k, level] of Object.entries(draft)) prefs.setLevel(k, level)
   emit('close')
 }
 </script>
