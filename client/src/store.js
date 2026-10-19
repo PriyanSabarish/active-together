@@ -285,6 +285,7 @@ export const useSearchStore = defineStore('search', {
     indoorResults: [],
     indoorStatus: 'idle', // 'idle' | 'loading' | 'ok' | 'zero_results' | 'error'
     indoorError: '',
+    indoorBeyondRadius: false, // nothing inside the radius, so the list is the nearest few however far
     _indoorSeq: 0,
     // screen 1
     suburb: '',
@@ -377,6 +378,7 @@ export const useSearchStore = defineStore('search', {
       this.indoorStatus = 'loading'
       this.indoorError = ''
       this.indoorResults = []
+      this.indoorBeyondRadius = false
       try {
         const data = await postIndoorPlaces({
           latitude: c.latitude,
@@ -386,6 +388,7 @@ export const useSearchStore = defineStore('search', {
         })
         if (seq !== this._indoorSeq) return
         this.indoorResults = (data.places ?? []).map(mapIndoorPlace)
+        this.indoorBeyondRadius = data.beyond_radius === true
         this.indoorStatus = this.indoorResults.length ? 'ok' : 'zero_results'
       } catch (e) {
         if (seq !== this._indoorSeq) return
