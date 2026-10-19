@@ -69,7 +69,7 @@ def test_schema_defines_indoor_places_with_the_columns_the_query_reads():
 
 
 def test_indoor_places_are_given_an_indoor_kind_not_an_outdoor_category():
-    from app.data.places import fetch_indoor_places
+    from app.data.places import fetch_indoor_places_from_db as fetch_indoor_places
 
     class Row(dict):
         pass
@@ -91,7 +91,7 @@ def test_indoor_places_are_given_an_indoor_kind_not_an_outdoor_category():
 
 
 def test_indoor_places_are_the_sports_complex_rows_minus_stadiums_and_unnamed_sites():
-    from app.data.places import INDOOR_EXCLUDED_NAMES, INDOOR_SUBTYPE, fetch_indoor_places
+    from app.data.places import INDOOR_EXCLUDED_NAMES, INDOOR_SUBTYPE, fetch_indoor_places_from_db as fetch_indoor_places
 
     seen = {}
 
