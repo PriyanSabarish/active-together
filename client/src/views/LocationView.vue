@@ -850,6 +850,8 @@ function next() {
 :deep(.seg.on .seg-label) { font-weight: 700; color: var(--ink); }
 
 .strip { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -24px; padding: 0 24px; }
+/* The active step is a card with 16px padding, so the strip bleeds 16px, not 24, or it pokes out of the card. */
+.step.act .strip { margin: 0 -16px; padding: 0 16px; }
 .cell {
   flex: none;
   width: 54px;

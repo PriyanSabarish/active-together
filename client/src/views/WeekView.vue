@@ -96,7 +96,7 @@
 // on screen, newest day first. Days with no outing get an orange point and are
 // counted under the curve, as in the design. All data is device-local.
 
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { useHistoryStore, mondayOf, kindOf, KINDS, feedbackLabel, localIso } from '../historyStore'
@@ -238,7 +238,12 @@ const cover = (r) => {
   return p ? tileStyle(p) : {}
 }
 
-function onScroll() {
+// The week on screen (and the journal below it) only changes once the swipe has
+// settled. Re-rendering the journal and resetting the page scroll while a finger
+// is still dragging makes the carousel catch on phones.
+let settleTimer = null
+function settle() {
+  clearTimeout(settleTimer)
   const el = pagerEl.value
   if (!el || !el.clientWidth) return
   const idx = Math.round(el.scrollLeft / el.clientWidth)
@@ -248,6 +253,11 @@ function onScroll() {
     flash.value = null
     if (listEl.value) listEl.value.scrollTop = 0
   }
+}
+
+function onScroll() {
+  clearTimeout(settleTimer)
+  settleTimer = setTimeout(settle, 120)
 }
 
 function scrollToPage(idx) {
@@ -266,6 +276,7 @@ async function jumpDay(d) {
 }
 
 onMounted(() => { if (pagerEl.value) pagerEl.value.scrollLeft = 0 })
+onBeforeUnmount(() => clearTimeout(settleTimer))
 </script>
 
 <style scoped>
@@ -280,9 +291,9 @@ h1 { margin: 4px 0 0; font-size: 29px; letter-spacing: -0.8px; line-height: 1.08
 .cur-range { font-size: 13.5px; font-weight: 600; color: var(--ink-3); }
 .jump { margin: -8px -6px -8px auto; height: 44px; padding: 0 6px; background: none; border: none; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--green); cursor: pointer; }
 
-.pager { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 8px -24px 0; padding: 4px 0 14px; }
+.pager { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin: 8px -24px 0; padding: 4px 0 14px; }
 .pager::-webkit-scrollbar { display: none; }
-.page { flex: none; width: 100%; padding: 0 24px; scroll-snap-align: center; display: flex; flex-direction: column; gap: 12px; }
+.page { flex: none; width: 100%; padding: 0 24px; scroll-snap-align: center; scroll-snap-stop: always; display: flex; flex-direction: column; gap: 12px; }
 
 .week-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; padding: 12px 6px 10px; }
 .wd { display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 0; font-family: inherit; cursor: pointer; }
