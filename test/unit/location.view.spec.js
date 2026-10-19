@@ -126,7 +126,9 @@ describe('Travel spread toggle', () => {
     const wrapper = mountView()
     const store = useSearchStore()
     await wrapper.findAll('.travel-btn')[5].trigger('click')
-    expect(wrapper.find('.big').text()).toMatch(/^Up to 30\s*min walk, each way/)
+    // The "How long to play?" step now comes first and shows its own .big line.
+    const far = wrapper.findAll('.big').find((b) => b.text().startsWith('Up to'))
+    expect(far.text()).toMatch(/^Up to 30\s*min walk, each way/)
     const buttons = wrapper.findAll('.rank-btn')
     expect(buttons.map((b) => b.text())).toEqual(['Mix it up', 'Nearest first'])
     expect(store.rankingMode).toBe('spread')
