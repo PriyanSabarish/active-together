@@ -192,6 +192,20 @@ export const useHistoryStore = defineStore('history', {
       }
       return row
     },
+    // Demo outings (demo: true) sit in memory beside the real ones and are
+    // never saved. Replaces any demo records already shown; real records are
+    // untouched, so a finished mission always appears with (above) the demo.
+    // An empty list switches the demo off.
+    setDemoRecords(list) {
+      const base = Date.now()
+      const rows = list.map((r, i) => {
+        this._recordSeq += 1
+        return { id: `demo-${this._recordSeq}`, createdAt: new Date(base - (list.length - i)).toISOString(), ...r, demo: true }
+      })
+      const merged = [...this.records.filter((r) => !r.demo), ...rows]
+      merged.sort((a, b) => (b.date + (b.createdAt ?? '')).localeCompare(a.date + (a.createdAt ?? '')))
+      this.records = merged
+    },
     removeRecord(id) {
       this.records = this.records.filter((r) => r.id !== id)
       remove(RECORDS, id)
