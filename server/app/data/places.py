@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.data.club_places import club_place_names
+from app.data import indoor_file
 from app.data.indoor_kinds import indoor_kind
 from app.models import ActivityCategory, Place
 
@@ -118,7 +119,55 @@ INDOOR_EXCLUDED_NAMES = (
 )
 
 
-def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float) -> list[IndoorPlace]:
+def _snap_radius(radius_km: float) -> float:
+    if radius_km not in settings.allowed_radius_km:
+        return min(settings.allowed_radius_km, key=lambda r: abs(r - radius_km))
+    return radius_km
+
+
+def fetch_indoor_places(db: Session, lat: float, lon: float, radius_km: float | None) -> list[IndoorPlace]:
+    """
+    Indoor places near a point. Reads the indoor file shipped with the server first (no
+    database needed); only if that file cannot be read does it query the places table.
+    An empty result from a readable file is a real "nothing nearby", not a failure.
+    A radius of None lists every indoor place, nearest first (the caller takes the first few).
+    """
+    radius_km = None if radius_km is None else _snap_radius(radius_km)
+    try:
+        found = indoor_file.rows_within(lat, lon, radius_km)
+    except Exception:
+        logging.getLogger("uvicorn.error").exception("Indoor places file unavailable, using the database")
+        return fetch_indoor_places_from_db(db, lat, lon, radius_km if radius_km is not None else max(settings.allowed_radius_km))
+
+    places, seen = [], set()
+    for row, d in found:  # nearest first, so the first row of a name is its nearest
+        if row.display_name in seen:
+            continue
+        seen.add(row.display_name)
+        places.append(
+            IndoorPlace(
+                place_id=row.place_id,
+                display_name=row.display_name,
+                activity_category=indoor_kind(row.display_name),
+                lga_name=row.lga_name,
+                latitude=round(row.latitude, settings.coordinate_decimal_places),
+                longitude=round(row.longitude, settings.coordinate_decimal_places),
+                distance_m=int(round(d)),
+                classification_confidence=row.classification_confidence,
+            )
+        )
+    return places
+
+
+NEAREST_COUNT = 5
+
+
+def fetch_nearest_indoor_places(db: Session, lat: float, lon: float) -> list[IndoorPlace]:
+    """The nearest few indoor places however far away, for when none is inside the search radius."""
+    return fetch_indoor_places(db, lat, lon, None)[:NEAREST_COUNT]
+
+
+def fetch_indoor_places_from_db(db: Session, lat: float, lon: float, radius_km: float) -> list[IndoorPlace]:
     """
     Fetches indoor places within the specified radius from latitude/longitude,
     limited to the sports complex rows for now (see INDOOR_SUBTYPE), minus stadiums and

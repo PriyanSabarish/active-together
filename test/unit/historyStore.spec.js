@@ -120,3 +120,30 @@ describe('F20 — relativeDayLabel', () => {
     expect(relativeDayLabel('2026-09-14')).toBe('Monday')
   })
 })
+
+describe('demo records', () => {
+  it('sit beside real records, keep them on toggle, and a new outing lands on top', () => {
+    const store = useHistoryStore()
+    store.addRecord({ date: '2026-01-01', placeName: 'Real' })
+    store.setDemoRecords([
+      { date: '2026-01-02', placeName: 'Demo A' },
+      { date: '2026-01-03', placeName: 'Demo B' }
+    ])
+    expect(store.records.map((r) => r.placeName)).toEqual(['Demo B', 'Demo A', 'Real'])
+    expect(store.records.filter((r) => r.demo)).toHaveLength(2)
+
+    store.addRecord({ date: '2026-01-04', placeName: 'New' })
+    expect(store.records[0].placeName).toBe('New')
+    expect(store.records).toHaveLength(4)
+
+    store.setDemoRecords([])
+    expect(store.records.map((r) => r.placeName)).toEqual(['New', 'Real'])
+  })
+
+  it('replacing the demo set does not duplicate it', () => {
+    const store = useHistoryStore()
+    store.setDemoRecords([{ date: '2026-01-02', placeName: 'Demo A' }])
+    store.setDemoRecords([{ date: '2026-01-02', placeName: 'Demo A' }])
+    expect(store.records).toHaveLength(1)
+  })
+})

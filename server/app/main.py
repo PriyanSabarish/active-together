@@ -26,7 +26,7 @@ from slowapi.errors import RateLimitExceeded
 from app.config import settings
 from app.data.addresses import autocomplete_addresses
 from app.data.database import SessionLocal, get_db, engine
-from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_place_by_id
+from app.data.places import fetch_candidate_places, fetch_indoor_places, fetch_nearest_indoor_places, fetch_place_by_id
 from app.data.weather import fetch_weather_context
 from app.data.candidate_cache import DatasetUnavailable, get_candidates
 from app.data.indoor_kinds import filter_by_kind
@@ -199,15 +199,22 @@ async def create_recommendations(req: RecommendationRequest, db: Session = Depen
         indoor_candidates = _cached_places(db, lat, lon, float(req.radius_km), "indoor_place", lambda *a, **k: fetch_indoor_places(*a, **k))
         # The parent's "not for me" kinds (pools, clubs...) are left out; excluding everything keeps the list.
         indoor_candidates = filter_by_kind(indoor_candidates, req.excluded_categories)
+        beyond_radius = False
+        if not indoor_candidates:
+            # Nothing inside the radius: show the nearest few however far, and say so.
+            nearest = _cached_places(db, lat, lon, 0.0, "indoor_nearest", lambda *a, **k: fetch_nearest_indoor_places(a[0], k["lat"], k["lon"]))
+            indoor_candidates = filter_by_kind(nearest, req.excluded_categories)
+            beyond_radius = bool(indoor_candidates)
         if not indoor_candidates:
             return {
                 "status": "zero_results",
                 "suggestions": ["larger_radius", "at_home"],
                 "places": []
             }
-        
+
         return {
             "status": "ok",
+            "beyond_radius": beyond_radius,
             "places": [
                 {
                     "place_id": p.place_id,

@@ -42,6 +42,17 @@ describe('indoor place search', () => {
     expect(store.indoorPlace('in-2').name).toBe('Leisure Centre')
   })
 
+  it('flags a list that is the nearest few because nothing was in range', async () => {
+    postIndoorPlaces.mockResolvedValue({ status: 'ok', beyond_radius: true, places: [SERVER_PLACE] })
+    const store = storeAt()
+    await store.searchIndoor()
+    expect(store.indoorStatus).toBe('ok')
+    expect(store.indoorBeyondRadius).toBe(true)
+    postIndoorPlaces.mockResolvedValue({ status: 'ok', places: [SERVER_PLACE] })
+    await store.searchIndoor()
+    expect(store.indoorBeyondRadius).toBe(false)
+  })
+
   it('TC-9.3-02 — zero results leaves an empty list with a zero_results status', async () => {
     postIndoorPlaces.mockResolvedValue({ status: 'zero_results', places: [], suggestions: ['larger_radius', 'at_home'] })
     const store = storeAt()

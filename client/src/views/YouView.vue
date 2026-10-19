@@ -68,6 +68,16 @@
       </button>
     </div>
 
+    <div class="card row-link">
+      <span class="row-text">
+        <span class="row-label">Demo mode</span>
+        <span class="block-sub">Fill the Week diary with sample outings. New outings are added on top.</span>
+      </span>
+      <button class="switch" :class="{ on: demoOn }" role="switch" :aria-checked="demoOn" aria-label="Demo mode" @click="toggleDemo">
+        <span class="knob" />
+      </button>
+    </div>
+
     <button class="btn btn-outline replay" @click="replayIntro">Replay the intro</button>
   </div>
 </template>
@@ -85,6 +95,7 @@ import { usePreferencesStore, AGE_BANDS, levelOf } from '../preferencesStore'
 import { useHistoryStore, weekStreak } from '../historyStore'
 import { usePhotosFor, tileStyle } from '../journal'
 import { categoryIcon, THUMB_UP, THUMB_DOWN } from '../taskIcons'
+import { demoEnabled, setDemoEnabled, seedDemoData } from '../demoSeed'
 
 const router = useRouter()
 const prefs = usePreferencesStore()
@@ -111,6 +122,14 @@ const likes = computed(() => Object.entries(prefs.affinities)
   .filter(([, v]) => levelOf(v) !== 'neutral')
   .sort(([, a], [, b]) => b - a)
   .map(([key, v]) => ({ key, up: levelOf(v) === 'likes', label: CATEGORY_META[key]?.label ?? key })))
+
+// Demo mode: sample outings in the Week diary, applied at once.
+const demoOn = ref(demoEnabled())
+function toggleDemo() {
+  demoOn.value = !demoOn.value
+  setDemoEnabled(demoOn.value)
+  seedDemoData()
+}
 
 // The cover and setup flow play only when this flag is set; App.vue reads and
 // clears it on the next load. Otherwise Start opens in first-run mode.

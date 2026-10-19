@@ -15,6 +15,7 @@
     </div>
 
     <template v-else-if="store.indoorResults.length">
+      <p v-if="store.indoorBeyondRadius" class="far-note">Nothing indoors within {{ store.radiusKm }} km, so here are the nearest {{ store.indoorResults.length }}.</p>
       <PlaceMap v-if="store.indoorResults.some((p) => p.latitude != null)" class="map" :center="store.coords" :places="store.indoorResults" fit numbered you-chip height="150px" @select="openById" />
 
       <article v-for="p in store.indoorResults" :key="p.id" class="card" role="button" tabindex="0" @click="open(p)" @keydown.enter="open(p)">
@@ -78,6 +79,7 @@ function tryHome() {
 </script>
 
 <style scoped>
+.far-note { margin: 0 0 12px; padding: 10px 14px; border-radius: 14px; background: rgba(232, 145, 58, 0.14); font-size: 13.5px; font-weight: 600; color: #8A4E11; }
 .subtitle { margin-bottom: 14px; }
 .map { margin-bottom: 14px; }
 

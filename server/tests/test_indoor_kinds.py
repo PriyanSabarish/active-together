@@ -116,7 +116,7 @@ def test_every_club_name_exists_in_the_places_data():
 
 
 def test_the_indoor_query_includes_the_clubs_and_lists_each_club_once():
-    from app.data.places import fetch_indoor_places
+    from app.data.places import fetch_indoor_places_from_db as fetch_indoor_places
 
     seen = {}
 
