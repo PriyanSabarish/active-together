@@ -413,7 +413,7 @@ async function loadForecast() {
 }
 
 const WK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const hourLabel = (d) => { const hr = d.getHours(); return `${((hr + 11) % 12) + 1}${hr < 12 ? 'a' : 'p'}` }
+const hourLabel = (d) => { const hr = d.getHours(); return `${((hr + 11) % 12) + 1}${hr < 12 ? 'am' : 'pm'}` }
 
 const cells = computed(() => {
   const now = new Date()
