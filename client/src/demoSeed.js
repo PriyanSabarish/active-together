@@ -40,12 +40,18 @@ export function setDemoEnabled(on) {
   }
 }
 
+// Shows or hides the demo outings to match the switch. Real outings are kept
+// either way: with the demo on, new outings sit on top of the sample ones.
 export function seedDemoData() {
-  if (!demoEnabled()) return
   const history = useHistoryStore()
   const prefs = usePreferencesStore()
 
-  if (history.records.length === 0) {
+  if (!demoEnabled()) {
+    history.setDemoRecords([])
+    return
+  }
+
+  {
     const thisMon = mondayOf(new Date())
     const weeksAgo = (n) => {
       const d = new Date(thisMon)
@@ -59,14 +65,16 @@ export function seedDemoData() {
       rec(iso(weeksAgo(3), 5), '10:20 am', 'Fawkner Park', 'playground', 'Shadow Detective', 40, 'fun', '#C9DBBE'),
       rec(iso(weeksAgo(2), 2), '4:00 pm', 'Napier Park', 'playground', 'Animal Tracker', 40, 'too_hard', '#D9CDB4'),
       rec(iso(weeksAgo(2), 6), '11:00 am', 'Jells Park', 'trail_access', 'Wind Watchers', 30, 'fun', '#C6D9DC'),
-      rec(iso(weeksAgo(1), 1), '4:10 pm', 'Napier Park', 'playground', 'Colour Hunt', 25, 'fun'),
-      rec(iso(weeksAgo(1), 5), '10:30 am', 'Central Reserve', 'sports_ground', 'Texture Trail', 40, null, '#D6E2C4'),
-      rec(iso(thisMon, 0), '4:05 pm', 'Central Reserve', 'trail_access', 'Exploring', 40, 'fun', '#E6D8BE', 0, 2),
-      rec(iso(thisMon, 1), '3:50 pm', 'Napier Park', 'playground', 'Playground', 15, 'too_easy'),
-      rec(iso(thisMon, 1), '5:30 pm', 'Home', 'home', 'Obstacle course', 15, 'fun', null, 0, 3),
-      rec(iso(thisMon, 3), '10:15 am', 'Jells Park', 'trail_access', 'Trail walk', 55, 'fun', '#BFD4B0', 2, 3)
-    ].filter((r) => r.date <= localIso())
-    seed.forEach((r) => history.addRecord(r))
+      // Four active days in the last week (one outing each), the rest inactive, relative to today so they stay
+      // recent whatever day the app is opened.
+      rec(iso(new Date(), -6), '11:00 am', 'Napier Park', 'playground', 'Playground', 25, 'too_easy', '#D9CDB4', 1, 3),
+      rec(iso(new Date(), -4), '4:05 pm', 'Central Reserve', 'trail_access', 'Exploring', 40, 'fun', '#E6D8BE', 2, 3),
+      rec(iso(new Date(), -2), '10:15 am', 'Jells Park', 'trail_access', 'Trail walk', 55, 'fun', '#BFD4B0', 2, 3),
+      rec(iso(new Date(), -1), '9:30 am', 'Fawkner Park', 'playground', 'Shadow Detective', 30, 'fun', '#C9DBBE', 2, 3)
+    ]
+      // One outing a day: older samples that land on one of those days make way.
+      .filter((r, i, all) => r.date <= localIso() && (i >= all.length - 4 || !all.slice(-4).some((x) => x.date === r.date)))
+    history.setDemoRecords(seed)
   }
 
   // A couple of likes so the You page has something to show — only on a
